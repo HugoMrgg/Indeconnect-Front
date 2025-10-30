@@ -1,42 +1,91 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🌈 ————————————————
+   🎨 Styles globaux Indeconnect
+   ———————————————— */
+
+/* Couleur de fond générale */
+body {
+    @apply bg-white text-gray-800 antialiased;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Liens interactifs */
+a {
+    @apply text-blue-600 hover:text-blue-800 transition-colors;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Titres */
+h1, h2, h3, h4 {
+    @apply font-bold text-gray-900;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Section principale avec marges latérales */
+main {
+    @apply px-4 sm:px-6 md:px-10;
 }
 
+/* Cartes — effet d’ombre et survol léger */
 .card {
-  padding: 2em;
+    @apply bg-white rounded-2xl shadow-md hover:shadow-xl transition transform hover:-translate-y-1;
 }
 
-.read-the-docs {
-  color: #888;
+/* Boutons */
+.btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-full font-medium transition-colors;
+}
+
+.btn-primary {
+    @apply bg-black text-white hover:bg-gray-800;
+}
+
+.btn-secondary {
+    @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
+}
+
+/* Effets de menu flottant */
+.floating-menu {
+    @apply fixed bottom-28 left-6 bg-black text-white rounded-2xl p-3 flex flex-col gap-3 shadow-lg;
+}
+
+.user-menu {
+    @apply fixed bottom-28 right-6 bg-black text-white rounded-2xl p-3 flex flex-col gap-3 shadow-lg;
+}
+
+/* Barre de recherche flottante */
+.search-bar {
+    @apply fixed bottom-20 left-1/2 -translate-x-1/2 w-80 bg-black text-white rounded-full p-3 flex items-center justify-between shadow-xl;
+}
+
+.search-bar input {
+    @apply bg-transparent w-full outline-none placeholder-gray-400 ml-2;
+}
+
+/* Animations douces */
+.fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Scrollbar discrète */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-thumb {
+    background: #c9b18e;
+    border-radius: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f3f3f3;
 }
