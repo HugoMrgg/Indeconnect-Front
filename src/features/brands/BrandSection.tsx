@@ -1,6 +1,6 @@
-﻿import React from "react";
+import React from "react";
 import { BrandCard } from "./BrandCard";
-import {Brand} from "../../../types/brand";
+import {Brand} from "../../types/brand";
 
 
 interface BrandSectionProps {

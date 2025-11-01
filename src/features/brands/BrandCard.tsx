@@ -1,5 +1,5 @@
 ﻿import React from "react";
-import {Brand} from "../../../types/brand";
+import {Brand} from "../../types/brand";
 
 
 export const BrandCard = ({ name, city, description }: Brand) => {

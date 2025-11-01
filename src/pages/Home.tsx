@@ -1,10 +1,8 @@
 ﻿import React from "react";
 import {Brand} from "../types/brand";
-import {Banner} from "../features/banner/components/Banner";
-import {FloatingMenu} from "../features/menus/components/FloatingMenu";
-import {SearchBar} from "../features/search/components/SearchBar";
-import {BrandSection} from "../features/brands/components/BrandSection";
-import {UserMenu} from "../features/menus/components/UserMenu";
+import {Banner} from "../features/banner/Banner";
+import {BrandSection} from "../features/brands/BrandSection";
+import {NavBar} from "../features/navbar/NavBar";
 
 
 export const Home: React.FC = () => {
@@ -22,9 +20,7 @@ export const Home: React.FC = () => {
             <Banner />
             <BrandSection title="Marques proches de chez vous :" brands={brandsNearby} />
             <BrandSection title="Marques éthiques :" brands={ethicalBrands} />
-            <FloatingMenu />
-            <UserMenu />
-            <SearchBar />
+            <NavBar />
         </main>
     );
 };
