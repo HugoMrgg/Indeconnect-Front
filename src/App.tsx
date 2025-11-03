@@ -1,6 +1,6 @@
-import { Home } from "./pages/Home";
 import React from "react";
+import AppRouter from "@/routes/AppRouter";
 
 export const App: React.FC = () => {
-    return <Home />;
+    return <AppRouter />;
 };

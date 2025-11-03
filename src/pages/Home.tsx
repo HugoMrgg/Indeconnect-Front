@@ -1,19 +1,36 @@
 ﻿import React from "react";
-import {Brand} from "../types/brand";
-import {Banner} from "../features/banners/Banner";
-import {BrandSection} from "../features/brands/BrandSection";
-import {NavBar} from "../features/navbar/NavBar";
+import {Banner} from "@/features/banners/Banner";
+import {BrandSection} from "@/features/brands/BrandSection";
+import {NavBar} from "@/features/navbar/NavBar";
+import {useBrands} from "@/hooks/useBrands";
 
 
 export const Home: React.FC = () => {
-    const brandsNearby: Brand[] = [
-        { name: "6K Skateshop", city: "Liège", description: "Please add your content here. Keep it short and simple. And smile :)" },
-        { name: "Name", city: "Namur", description: "Something here" },
-    ];
+    const { brandsNearby, ethicalBrands, loading, error } = useBrands();
 
-    const ethicalBrands: Brand[] = [
-        { name: "EcoWear", city: "Bruxelles", description: "Durable fashion" },
-    ];
+    if (loading) {
+        return (
+            <main className="relative bg-white min-h-screen">
+                <Banner />
+                <div className="w-4/5 mx-auto items-center">
+                    <p className="text-gray-500 animate-pulse">Chargement des marques...</p>
+                    <NavBar />
+                </div>
+            </main>
+        );
+    }
+
+    if (error) {
+        return (
+            <main className="relative bg-white min-h-screen">
+                <Banner />
+                <div className="w-4/5 mx-auto items-center">
+                    <p className="text-red-600">{error}</p>
+                    <NavBar />
+                </div>
+            </main>
+        );
+    }
 
     return (
         <main className="relative bg-white min-h-screen">
