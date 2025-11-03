@@ -4,10 +4,12 @@ import { UserMenu } from "./UserMenu";
 
 export function NavBar() {
     return (
-        <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between border-gray-200 px-4 py-2 shadow-lg">
-            <NavMenu />
-            <SearchBar />
-            <UserMenu />
-        </nav>
+        <div className="fixed bottom-0 left-0 right-0 w-full shadow-2xl z-50 p-2 sm:p-3">
+            <div className="flex items-center w-full max-w-screen-md mx-auto space-x-2">
+                <NavMenu/>
+                <SearchBar/>
+                <UserMenu/>
+            </div>
+        </div>
     );
 }

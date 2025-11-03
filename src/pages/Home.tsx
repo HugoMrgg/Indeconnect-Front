@@ -1,6 +1,6 @@
 ﻿import React from "react";
 import {Brand} from "../types/brand";
-import {Banner} from "../features/banner/Banner";
+import {Banner} from "../features/banners/Banner";
 import {BrandSection} from "../features/brands/BrandSection";
 import {NavBar} from "../features/navbar/NavBar";
 
@@ -16,11 +16,13 @@ export const Home: React.FC = () => {
     ];
 
     return (
-        <main className="relative bg-white min-h-screen pb-40">
+        <main className="relative bg-white min-h-screen">
             <Banner />
-            <BrandSection title="Marques proches de chez vous :" brands={brandsNearby} />
-            <BrandSection title="Marques éthiques :" brands={ethicalBrands} />
-            <NavBar />
+            <div className="w-4/5 mx-auto items-center">{/*mx-20*/}
+                <BrandSection title="Marques proches de chez vous :" brands={brandsNearby} />
+                <BrandSection title="Marques éthiques :" brands={ethicalBrands} />
+                <NavBar />
+            </div>
         </main>
     );
 };
