@@ -28,4 +28,10 @@
 
     /** Indique si le produit est en promotion */
     onSale?: boolean;
+
+    /** Couleur principale du produit en hexadécimal (ex: "#FF5733") */
+    color?: string;
+
+    /** Labels éthiques associés au produit (ex: ["bio", "commerce équitable"]) */
+    ethics?: string[];
 }

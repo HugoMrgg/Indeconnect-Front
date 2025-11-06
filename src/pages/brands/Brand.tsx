@@ -47,12 +47,26 @@ export const BrandPage: React.FC = () => {
                     onClose={() => setFiltersOpen(false)}
                     onReset={filter.resetAll}
                     resetKey={filter.resetKey}
+
+                    // Filtres classiques
                     onChangePrice={filter.handlePrice}
                     onChangeCategories={filter.handleCategories}
                     onChangeSizes={filter.handleSizes}
+
+                    // Nouveaux filtres
+                    onChangeColors={filter.handleColors}
+                    onChangeEthics={filter.handleEthics}
+
                     selectedCategories={filter.categories}
                     selectedSizes={filter.sizes}
+                    selectedColors={filter.colors}
+                    selectedEthics={filter.ethics}
+
+                    // ✅ Ajout dynamique
+                    colorsAvailable={filter.availableColors}
+                    ethicsAvailable={filter.availableEthics}
                 />
+
 
                 <BrandProducts
                     filter={filter}
@@ -67,4 +81,3 @@ export const BrandPage: React.FC = () => {
         </div>
     );
 };
-
