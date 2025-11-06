@@ -4,9 +4,10 @@ import { SlidersHorizontal , Search} from "lucide-react";
 type Props = {
     scope: string;
     enabled?: boolean;
-}
+    onToggleFilters?: () => void;
+};
 
-export function SearchBar({ scope, enabled = true}: Props) {
+export function SearchBar({ scope, enabled = true, onToggleFilters }: Props) {
     const [open, setOpen] = useState(false);
     const placeholder = scope === "brands" ? "Rechercher une marque…" : "Rechercher un vêtement…";
 
@@ -19,7 +20,10 @@ export function SearchBar({ scope, enabled = true}: Props) {
              aria-disabled={!enabled}
         >
             <button
-                onClick={() => setOpen(!open)}
+                onClick={() => {
+                    setOpen(!open);
+                    onToggleFilters?.();
+                }}
                 className="flex items-center space-x-1 p-1 mx-2 rounded-xl bg-gray-600 text-white"
             >
                 <SlidersHorizontal size={20} />

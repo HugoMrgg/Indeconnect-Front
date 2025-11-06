@@ -8,6 +8,7 @@ import { useProducts } from "@/hooks/useProducts";
 import {NavBar} from "@/features/navbar/NavBar";
 import {useBrands} from "@/hooks/useBrands";
 import {Heart, IdCard, Loader2, MapPin, Truck} from "lucide-react";
+ import {FiltersPanel} from "@/features/filters/FiltersPanel";
 
 export const BrandPage: React.FC = () => {
     const { brandName } = useParams();
@@ -16,6 +17,21 @@ export const BrandPage: React.FC = () => {
     const {brandsNearby, ethicalBrands} = useBrands();
     const allBrands = [...brandsNearby, ...ethicalBrands];
     const brand = allBrands.find(b => b.name === decodedBrand);
+
+    // --- Ouverture panneau filtres ---
+    const [filtersOpen, setFiltersOpen] = useState(false);
+
+    // --- Réinitialiser les filtres ---
+    const [resetKey, setResetKey] = useState(0);
+
+    const resetFilters = () => {
+        setPrice({ min: "", max: "" });
+        setCategories([]);
+        setSizes([]);
+        setResetKey(prev => prev + 1); // ✅ déclenche reset
+    };
+
+
 
     // --- s'abonner à une marque
     const [subscribed, setSubscribed] = useState(false);
@@ -157,83 +173,89 @@ export const BrandPage: React.FC = () => {
                 </Link>
             </div>
 
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-[260px_1fr]">
-                    <SidebarFilters
-                    onChangePrice={handlePrice}
-                    onChangeCategories={handleCategories}
-                    onChangeSizes={handleSizes}
-                    selectedCategories={categories}
-                    selectedSizes={sizes}
+            {/* --- PANNEAU FILTRES --- */}
+            <FiltersPanel
+                open={filtersOpen}
+                onClose={() => setFiltersOpen(false)}
+                onReset={resetFilters}
+                resetKey={resetKey}
+                onChangePrice={handlePrice}
+                onChangeCategories={handleCategories}
+                onChangeSizes={handleSizes}
+                selectedCategories={categories}
+                selectedSizes={sizes}
+            />
+
+
+
+            <section className="space-y-4">
+                <SortBar
+                    count={loading ? 0 : items.length}
+                    sort={sort}
+                    setSort={setSort}
+                    view={view}
+                    setView={setView}
                 />
 
-                <section className="space-y-4">
-                    <SortBar
-                        count={loading ? 0 : items.length}
-                        sort={sort}
-                        setSort={setSort}
-                        view={view}
-                        setView={setView}
-                    />
-
-                    {/* --- Chargement Skeleton --- */}
-                    {loading ? (
-                        <div>
-                            <div className="flex items-center gap-2 mb-4 text-gray-500">
-                                <Loader2 className="w-5 h-5 animate-spin" />
-                                <span>Chargement des produits...</span>
-                            </div>
-                            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                                {Array.from({ length: 8 }).map((_, i) => (
-                                    <div
-                                        key={i}
-                                        className="flex flex-col rounded-2xl border border-gray-200 bg-gray-100 animate-pulse"
-                                    >
-                                        <div className="aspect-[4/5] bg-gray-200 rounded-t-2xl" />
-                                        <div className="p-4 space-y-3">
-                                            <div className="h-4 bg-gray-200 rounded w-3/4" />
-                                            <div className="h-4 bg-gray-200 rounded w-1/2" />
-                                            <div className="h-5 bg-gray-300 rounded w-1/3" />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                {/* --- Chargement Skeleton --- */}
+                {loading ? (
+                    <div>
+                        <div className="flex items-center gap-2 mb-4 text-gray-500">
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                            <span>Chargement des produits...</span>
                         </div>
-                    ) : view === "grid" ? (
                         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                            {items.map((p) => (
-                                <ProductCard key={p.id} product={p} />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="space-y-3">
-                            {items.map((p) => (
+                            {Array.from({ length: 8 }).map((_, i) => (
                                 <div
-                                    key={p.id}
-                                    className="flex items-center gap-4 rounded-xl border p-3"
+                                    key={i}
+                                    className="flex flex-col rounded-2xl border border-gray-200 bg-gray-100 animate-pulse"
                                 >
-                                    <img
-                                        src={p.image}
-                                        alt={p.name}
-                                        className="h-20 w-20 rounded-lg object-cover"
-                                    />
-                                    <div className="flex-1">
-                                        <div className="font-medium">{p.name}</div>
-                                        <div className="text-sm text-gray-600">
-                                            € {p.price.toFixed(2)}
-                                        </div>
+                                    <div className="aspect-[4/5] bg-gray-200 rounded-t-2xl" />
+                                    <div className="p-4 space-y-3">
+                                        <div className="h-4 bg-gray-200 rounded w-3/4" />
+                                        <div className="h-4 bg-gray-200 rounded w-1/2" />
+                                        <div className="h-5 bg-gray-300 rounded w-1/3" />
                                     </div>
-                                    <button className="rounded-lg border px-3 py-2 text-sm">
-                                        Voir
-                                    </button>
                                 </div>
                             ))}
                         </div>
-                    )}
-                </section>
-            </div>
+                    </div>
+                ) : view === "grid" ? (
+                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                        {items.map((p) => (
+                            <ProductCard key={p.id} product={p} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className="space-y-3">
+                        {items.map((p) => (
+                            <div
+                                key={p.id}
+                                className="flex items-center gap-4 rounded-xl border p-3"
+                            >
+                                <img
+                                    src={p.image}
+                                    alt={p.name}
+                                    className="h-20 w-20 rounded-lg object-cover"
+                                />
+                                <div className="flex-1">
+                                    <div className="font-medium">{p.name}</div>
+                                    <div className="text-sm text-gray-600">
+                                        € {p.price.toFixed(2)}
+                                    </div>
+                                </div>
+                                <button className="rounded-lg border px-3 py-2 text-sm">
+                                    Voir
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </section>
         </main>
 
-        <NavBar scope="products" />
+        <NavBar scope="products" onToggleFilters={() => setFiltersOpen(prev => !prev)} />
+
     </div>
     );
 };

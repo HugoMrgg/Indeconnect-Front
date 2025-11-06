@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+﻿import React, { useState, useEffect } from "react";
 
 const CATEGORIES = ["t-shirt", "pull", "sweat", "jeans"] as const;
 const SIZES = ["XS", "S", "M", "L", "XL", "XXL"] as const;
@@ -9,6 +9,7 @@ interface SidebarFiltersProps {
     onChangeSizes?: (size: string) => void;
     selectedCategories?: string[];
     selectedSizes?: string[];
+    resetKey?: number; // ✅ clé de réinitialisation
 }
 
 export const SidebarFilters: React.FC<SidebarFiltersProps> = ({
@@ -17,9 +18,18 @@ export const SidebarFilters: React.FC<SidebarFiltersProps> = ({
                                                                   onChangeSizes,
                                                                   selectedCategories = [],
                                                                   selectedSizes = [],
+                                                                  resetKey = 0, // ✅ valeur par défaut
                                                               }) => {
+
     const [min, setMin] = useState<string>("");
     const [max, setMax] = useState<string>("");
+
+    // ✅ Réinitialisation automatique quand resetKey change
+    useEffect(() => {
+        setMin("");
+        setMax("");
+        onChangePrice?.("", "");
+    }, [resetKey]);
 
     return (
         <aside className="space-y-6">
