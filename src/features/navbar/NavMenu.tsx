@@ -1,8 +1,10 @@
 ﻿import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Menu, Dices, Store, Shirt } from "lucide-react";
 
 export function NavMenu() {
     const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <div className="relative h-12 w-12">
@@ -18,7 +20,10 @@ export function NavMenu() {
                 transform transition-all duration-300 ease-out
                 ${open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
             >
-                <button className="flex items-center gap-2 hover:text-gray-300">
+                <button
+                    onClick={() => { setOpen(false); navigate("/"); }}
+                    className="flex items-center gap-2 hover:text-gray-300"
+                >
                     <Dices size={18}/> IndeConnect
                 </button>
                 <button className="flex items-center gap-2 text-left hover:text-gray-300">

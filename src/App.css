@@ -17,11 +17,25 @@ h1, h2, h3, h4 {
     @apply font-bold text-gray-900;
 }
 
-/* Scrollbar discrète */
+/* Scrollbar */
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 10px;
 }
 ::-webkit-scrollbar-thumb {
-    background: black;
+    background: rgba(0,0,0,0.35);
     border-radius: 3px;
+}
+
+/* Scrollbar horizontal */
+.scrollbar-thin-horizontal::-webkit-scrollbar {
+    height: 6px;
+}
+
+.scrollbar-thin-horizontal::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.15);
+    border-radius: 5px;
+}
+
+.scrollbar-thin-horizontal::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.35);
 }

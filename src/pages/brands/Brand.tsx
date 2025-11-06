@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState } from "react";
+﻿ import React, { useMemo, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { BannerBrand } from "@/features/banners/BannerBrand";
 import SidebarFilters from "@/features/filters/SidebarFilters";
@@ -7,7 +7,7 @@ import ProductCard from "@/components/cards/ProductCard";
 import { useProducts } from "@/hooks/useProducts";
 import {NavBar} from "@/features/navbar/NavBar";
 import {useBrands} from "@/hooks/useBrands";
-import {Heart, IdCard, Loader2} from "lucide-react";
+import {Heart, IdCard, Loader2, MapPin, Truck} from "lucide-react";
 
 export const BrandPage: React.FC = () => {
     const { brandName } = useParams();
@@ -16,6 +16,9 @@ export const BrandPage: React.FC = () => {
     const {brandsNearby, ethicalBrands} = useBrands();
     const allBrands = [...brandsNearby, ...ethicalBrands];
     const brand = allBrands.find(b => b.name === decodedBrand);
+
+    // --- s'abonner à une marque
+    const [subscribed, setSubscribed] = useState(false);
 
     // --- États filtres ---
     const [sort, setSort] = useState<"featured" | "price_asc" | "price_desc">("featured");
@@ -70,13 +73,13 @@ export const BrandPage: React.FC = () => {
     if (loading) {
         return (
             <div className="min-h-full bg-white">
-                <BannerBrand />
+                <BannerBrand name={decodedBrand}/>
                 <main className="mx-auto max-w-6xl px-4 pb-16">
                     <p className="text-gray-500 animate-pulse">
                         Chargement de la page des produits de {decodedBrand}...
                     </p>
                 </main>
-                <NavBar/>
+                <NavBar scope="products"/>
             </div>
         );
     }
@@ -84,11 +87,11 @@ export const BrandPage: React.FC = () => {
     if (error) {
         return (
             <div className="min-h-full bg-white">
-                <BannerBrand />
+                <BannerBrand name={decodedBrand}/>
                 <main className="mx-auto max-w-6xl px-4 pb-16">
                     <p className="text-red-600">{error}</p>
                 </main>
-                <NavBar/>
+                <NavBar scope="products" />
             </div>
         );
     }
@@ -96,29 +99,52 @@ export const BrandPage: React.FC = () => {
     // --- Affichage principal ---
     return (
     <div className="min-h-full bg-white">
-        <BannerBrand />
+        <BannerBrand name={decodedBrand} />
 
         <main className="mx-auto max-w-6xl px-4 pb-16">
-            <div className="mx-auto max-w-6xl px-4 pb-16">
-                <div className="mt-8 flex items-start justify-between gap-4">
-                    {/* Description */}
-                    <div>
-                        <h1 className="text-3xl font-bold mb-6">{decodedBrand}</h1>
-                        <p className="mt-2 max-w-3xl text-gray-600">{brand?.description}</p>
-                        <p className="mt-2 max-w-3xl text-gray-600">{brand?.city}</p>
+            <div className="flex justify-between my-8">
+                <div>
+                    <h1 className="text-2xl font-bold text-gray-900">{brand?.name}</h1>
+
+                    <p className="mt-2 text-gray-600 leading-relaxed max-w-2xl">
+                        {brand?.description}
+                    </p>
+
+                    <div className="flex gap-2">
+                        <div className="mt-4 inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
+                            <MapPin size={16} />
+                            {brand?.city}
+                        </div>
+                        <div className="mt-4 inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
+                            <Truck size={16} />
+                            {brand?.transport}
+                        </div>
+
+                        {/*mb mettre une boucle ici pour le reste des mots clés*/}
                     </div>
 
-                    {/* Icônes alignées */}
-                    <div className="hidden md:flex flex-col items-start gap-4 text-base">
-                        <a className="inline-flex items-center gap-3 hover:underline cursor-pointer">
-                            <Heart className="w-6 h-6" />
-                            <span>S'abonner à la marque</span>
-                        </a>
-                        <a className="inline-flex items-center gap-3 hover:underline cursor-pointer">
-                            <IdCard className="w-6 h-6" />
-                            <span>Contact</span>
-                        </a>
-                    </div>
+                </div>
+
+                <div className="flex flex-col gap-3 text-base">
+                    <button
+                        onClick={() => setSubscribed(!subscribed)}
+                        className={`inline-flex content-between w-40 gap-3 px-3 py-2 rounded-xl transition hover:bg-gray-100 active:scale-[0.97]`}
+                    >
+                        <Heart className={`w-6 h-6 transition-all duration-300
+                                        ${subscribed ? "text-red-500 scale-110" : "text-gray-700"}`}
+                            fill={subscribed ? "currentColor" : "none"}
+                        />
+                        <span className="text-gray-800">
+                          {subscribed ? "Abonné ✓" : "S'abonner"}
+                        </span>
+                    </button>
+
+                    <button
+                        className="inline-flex content-between w-40 gap-3 px-3 py-2 rounded-xl transition hover:bg-gray-100 active:scale-[0.97]"
+                    >
+                        <IdCard className="w-6 h-6 text-gray-700" />
+                        <span className="text-gray-800">Contact</span>
+                    </button>
                 </div>
             </div>
 
@@ -132,7 +158,7 @@ export const BrandPage: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-8 md:grid-cols-[260px_1fr]">
-                <SidebarFilters
+                    <SidebarFilters
                     onChangePrice={handlePrice}
                     onChangeCategories={handleCategories}
                     onChangeSizes={handleSizes}
@@ -207,7 +233,7 @@ export const BrandPage: React.FC = () => {
             </div>
         </main>
 
-        <NavBar />
+        <NavBar scope="products" />
     </div>
     );
 };

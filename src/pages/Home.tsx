@@ -14,7 +14,7 @@ export const Home: React.FC = () => {
                 <Banner />
                 <div className="w-4/5 mx-auto items-center">
                     <p className="text-gray-500 animate-pulse">Chargement des marques...</p>
-                    <NavBar />
+                    <NavBar scope="brands" />
                 </div>
             </main>
         );
@@ -26,7 +26,7 @@ export const Home: React.FC = () => {
                 <Banner />
                 <div className="w-4/5 mx-auto items-center">
                     <p className="text-red-600">{error}</p>
-                    <NavBar />
+                    <NavBar scope="brands" />
                 </div>
             </main>
         );
@@ -38,7 +38,7 @@ export const Home: React.FC = () => {
             <div className="w-4/5 mx-auto items-center">{/*mx-20*/}
                 <BrandSection title="Marques proches de chez vous :" brands={brandsNearby} />
                 <BrandSection title="Marques éthiques :" brands={ethicalBrands} />
-                <NavBar />
+                <NavBar scope="brands" />
             </div>
         </main>
     );
