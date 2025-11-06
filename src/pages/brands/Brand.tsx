@@ -53,7 +53,7 @@ export const BrandPage: React.FC = () => {
                     onChangeCategories={filter.handleCategories}
                     onChangeSizes={filter.handleSizes}
 
-                    // Nouveaux filtres
+                    // Filtres avancés
                     onChangeColors={filter.handleColors}
                     onChangeEthics={filter.handleEthics}
 
@@ -62,7 +62,7 @@ export const BrandPage: React.FC = () => {
                     selectedColors={filter.colors}
                     selectedEthics={filter.ethics}
 
-                    // ✅ Ajout dynamique
+                    // Options disponibles dans les produits affichés
                     colorsAvailable={filter.availableColors}
                     ethicsAvailable={filter.availableEthics}
                 />
