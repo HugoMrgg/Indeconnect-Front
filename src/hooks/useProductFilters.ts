@@ -1,4 +1,4 @@
-﻿import {useCallback, useMemo, useState} from "react";
+﻿import {useMemo, useState} from "react";
 import { Product } from "@/types/Product";
 
 export function useProductFilters(products: Product[]) {
