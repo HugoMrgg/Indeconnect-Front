@@ -2,8 +2,8 @@ import { useState } from "react";
 import React from "react";
 import {useNavigate} from "react-router-dom";
 
-import { NavBar } from "@/features/navbar/NavBar";
 import { BackLink } from "@/components/ui/BackLink";
+import {NavBar} from "@/features/navbar/NavBar";
 
 export const RegisterPage: React.FC = () => {
     const navigate = useNavigate();
@@ -129,9 +129,7 @@ export const RegisterPage: React.FC = () => {
                 </p>
             </div>
 
-            <NavBar
-                scope="products"
-            />
+            <NavBar/>
         </div>
     );
 }

@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from "react";
+﻿import {useCallback, useMemo, useState} from "react";
 import { Product } from "@/types/Product";
 
 export function useProductFilters(products: Product[]) {
@@ -66,6 +66,15 @@ export function useProductFilters(products: Product[]) {
         setEthics((prev) =>
             checked ? [...prev, label] : prev.filter((e) => e !== label)
         );
+/*    const handlePrice = useCallback((min: string, max: string) => setPrice({ min, max }), []);
+    const handleCategories = useCallback((cat: string, checked: boolean) =>
+        setCategories(prev => checked ? [...prev, cat] : prev.filter(c => c !== cat)), []);
+    const handleSizes = useCallback((size: string) =>
+        setSizes(prev => prev.includes(size) ? prev.filter(s => s !== size) : [...prev, size]), []);
+    const handleColors = useCallback((color: string) =>
+        setColors(prev => prev.includes(color) ? prev.filter(c => c !== color) : [...prev, color]), []);
+    const handleEthics = useCallback((label: string, checked: boolean) =>
+        setEthics(prev => checked ? [...prev, label] : prev.filter(e => e !== label)), []);*/
 
     // --- Filtrage dynamique ---
     const filtered = useMemo(() => {

@@ -48,7 +48,7 @@ export const SidebarFilters: React.FC<SidebarFiltersProps> = ({
         setMin("");
         setMax("");
         onChangePrice?.("", "");
-    }, [onChangePrice, resetKey]);
+    }, [resetKey]);
 
     return (
         <aside className="space-y-7">

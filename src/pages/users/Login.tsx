@@ -4,8 +4,8 @@ import { useAuth } from "@/hooks/useAuth";
 import {useNavigate} from "react-router-dom";
 
 import { LoginForm } from "@/features/user/UserLoginForm";
-import { NavBar } from "@/features/navbar/NavBar";
 import { BackLink } from "@/components/ui/BackLink";
+import {NavBar} from "@/features/navbar/NavBar";
 
 export const LoginPage: React.FC = () => {
     const { login, error, loading } = useAuth();
@@ -41,9 +41,7 @@ export const LoginPage: React.FC = () => {
             onSubmit={onSubmit}
         />
 
-        <NavBar
-            scope="products"
-        />
+        <NavBar/>
     </div>
     );
 }

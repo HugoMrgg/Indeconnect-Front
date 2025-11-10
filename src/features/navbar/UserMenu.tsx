@@ -39,12 +39,12 @@ export function UserMenu() {
                 ) : (
                     <>
                         <button
-                            onClick={() => { setOpen(false); navigate("/Login"); }}
+                            onClick={() => { setOpen(false); navigate("/login"); }}
                             className="flex items-center gap-2 hover:text-gray-300">
                             <UserRoundCheck size={18}/> Se connecter
                         </button>
                         <button
-                            onClick={() => { setOpen(false); navigate("/Register"); }}
+                            onClick={() => { setOpen(false); navigate("/register"); }}
                             className="flex items-center gap-2 hover:text-gray-300">
                             <UserRoundPlus size={18}/> S’inscrire
                         </button>
