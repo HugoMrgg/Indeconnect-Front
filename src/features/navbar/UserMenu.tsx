@@ -1,9 +1,11 @@
 ﻿import { useState } from "react";
-import { User, Heart, ShoppingCart, Settings, List } from "lucide-react";
+import { User, Heart, ShoppingCart, Settings, List, UserRoundPlus, UserRoundCheck  } from "lucide-react";
+import {useNavigate} from "react-router-dom";
 
 export function UserMenu() {
     const [open, setOpen] = useState(false);
-    const isLoggedIn = true; // plus tard, ce sera un état global (auth context)
+    const navigate = useNavigate();
+    const isLoggedIn = false; // plus tard, ce sera un état global (auth context)
 
     return (
         <div className="relative h-12 w-12">
@@ -36,11 +38,15 @@ export function UserMenu() {
                     </>
                 ) : (
                     <>
-                        <button className="flex items-center gap-2 hover:text-gray-300">
-                            Se connecter
+                        <button
+                            onClick={() => { setOpen(false); navigate("/Login"); }}
+                            className="flex items-center gap-2 hover:text-gray-300">
+                            <UserRoundCheck size={18}/> Se connecter
                         </button>
-                        <button className="flex items-center gap-2 hover:text-gray-300">
-                            S’inscrire
+                        <button
+                            onClick={() => { setOpen(false); navigate("/Register"); }}
+                            className="flex items-center gap-2 hover:text-gray-300">
+                            <UserRoundPlus size={18}/> S’inscrire
                         </button>
                     </>
                 )}
