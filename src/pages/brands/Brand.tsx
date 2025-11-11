@@ -1,4 +1,5 @@
 ﻿import React, { useEffect, useState } from "react";
+
 import { useParams } from "react-router-dom";
 import { useUI } from "@/context/UIContext";
 import { BannerBrand } from "@/features/banners/BannerBrand";
@@ -11,7 +12,8 @@ import { BackToBrands } from "@/features/brands/BackToBrands";
 import { BrandProducts } from "@/features/brands/BrandProducts";
 import { BrandLoading } from "@/features/brands/BrandLoading";
 import { BrandError } from "@/features/brands/BrandError";
-import {NavBar} from "@/features/navbar/NavBar";
+import { AuthPanel} from "@/features/user/auth/AuthPanel";
+import { NavBar } from "@/features/navbar/NavBar";
 
 export const BrandPage: React.FC = () => {
     const { brandName } = useParams();
@@ -66,6 +68,8 @@ export const BrandPage: React.FC = () => {
 
                 <BrandProducts filter={filter} />
             </main>
+
+            <AuthPanel/>
 
             <NavBar/>
         </div>

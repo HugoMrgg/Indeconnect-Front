@@ -1,13 +1,20 @@
 ﻿import { useState } from "react";
-import { Heart } from "lucide-react";
+import { useParams, useNavigate } from "react-router-dom";
+
 import { Tag } from "@/components/cards/Tag";
 import { Product } from "@/types/Product";
 
+import { Heart } from "lucide-react";
+
 export default function ProductCard({ product }: { product: Product }) {
     const [liked, setLiked] = useState(false);
+    const navigate = useNavigate();
+    const { brandName } = useParams();
+    const encodedBrand = encodeURIComponent(brandName ?? "");
 
     return (
-        <div className="group relative flex flex-col rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg overflow-hidden font-poppins">
+        <div onClick={() => navigate(`/brand/${encodeURIComponent(encodedBrand)}/${product.id}`)}
+            className="group relative flex flex-col rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg overflow-hidden font-poppins">
             <div className="relative w-full aspect-[4/5] bg-gray-100 overflow-hidden">
                 {product.image ? (
                     <img

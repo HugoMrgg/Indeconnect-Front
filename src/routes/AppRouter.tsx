@@ -1,16 +1,14 @@
 ﻿import { Routes, Route } from "react-router-dom";
 import { Home } from "@/pages/Home";
-import { BrandPageWrapper } from "@/pages/brands/BrandPageWrapper"; // ou BrandPage directement
-import { LoginPage } from "@/pages/users/Login";
-import { RegisterPage } from "@/pages/users/Register";
+import { BrandPageWrapper } from "@/pages/brands/BrandPageWrapper";
+import { ProductPage } from "@/pages/products/Product";
 
 export default function AppRouter() {
     return (
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/brand/:brandName" element={<BrandPageWrapper />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/brand/:brandName/product/:productId" element={<ProductPage />} />
         </Routes>
     );
 }

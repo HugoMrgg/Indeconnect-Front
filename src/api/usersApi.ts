@@ -40,3 +40,26 @@ export async function login(email: string, password: string): Promise<User | nul
 
     return found ?? null;
 }
+
+export async function register(payload: {email: string;
+                                        password: string;
+                                        first_name: string;
+                                        last_name: string;
+                                    }): Promise<User> {
+    await new Promise((res) => setTimeout(res, 600)); // délai mock
+
+    // prevent duplicate account
+    const exists = MOCK_USERS.some(
+        (u) => u.email.toLowerCase() === payload.email.toLowerCase()
+    );
+    if (exists) throw new Error("Cet email est déjà utilisé.");
+
+    const newUser: User = {
+        id: Date.now(),
+        role: "user",
+        ...payload,
+    };
+
+    MOCK_USERS.push(newUser);
+    return newUser;
+}

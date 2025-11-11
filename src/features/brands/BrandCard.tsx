@@ -25,8 +25,10 @@ export const BrandCard = ({ name, city, description }: Brand) => {
 
 */
 import React from "react";
+
 import { useNavigate } from "react-router-dom";
 import { Brand } from "@/types/brand";
+
 import { Star, MapPin } from "lucide-react";
 
 export const BrandCard: React.FC<Brand> = ({

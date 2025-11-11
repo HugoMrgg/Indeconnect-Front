@@ -1,10 +1,11 @@
-﻿import React, {useEffect} from "react";
-import {Banner} from "@/features/banners/Banner";
-import {BrandSection} from "@/features/brands/BrandSection";
-import {NavBar} from "@/features/navbar/NavBar";
-import {useBrands} from "@/hooks/useBrands";
-import {useUI} from "@/context/UIContext";
+﻿import React, { useEffect } from "react";
 
+import { Banner } from "@/features/banners/Banner";
+import { BrandSection } from "@/features/brands/BrandSection";
+import { NavBar } from "@/features/navbar/NavBar";
+import { useBrands } from "@/hooks/useBrands";
+import { AuthPanel} from "@/features/user/auth/AuthPanel";
+import { useUI } from "@/context/UIContext";
 
 export const Home: React.FC = () => {
     const { brandsNearby, ethicalBrands, loading, error } = useBrands();
@@ -41,6 +42,7 @@ export const Home: React.FC = () => {
             <div className="w-4/5 mx-auto items-center">
                 <BrandSection title="Marques proches de chez vous :" brands={brandsNearby} />
                 <BrandSection title="Marques éthiques :" brands={ethicalBrands} />
+                <AuthPanel/>
                 <NavBar/>
             </div>
         </main>

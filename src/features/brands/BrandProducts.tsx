@@ -1,7 +1,8 @@
-﻿import SortBar from "@/features/sorting/SortBar";
+﻿import React from "react";
+
+import SortBar from "@/features/sorting/SortBar";
 import { ProductGrid } from "./ProductGrid";
 import { ProductList } from "./ProductList";
-import React from "react";
 import { Product } from "@/types/Product";
 
 /* ✅ Typage propre de l'objet retourné par useProductFilters */

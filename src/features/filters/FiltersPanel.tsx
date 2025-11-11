@@ -67,7 +67,7 @@ export const FiltersPanel: React.FC<FiltersPanelProps> = ({
                 `}
             >
                 {/* Header compact */}
-                <div className="flex items-center justify-between p-4 border-b">
+                <div className="flex items-center justify-between p-3 border-b">
                     <h2 className="font-semibold text-lg">Filtres</h2>
                     <button
                         onClick={onClose}
