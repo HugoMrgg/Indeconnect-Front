@@ -50,7 +50,7 @@ export const FiltersPanel: React.FC<FiltersPanelProps> = ({
             {/* Overlay flouté */}
             {open && (
                 <div
-                    className="fixed inset-0 backdrop-blur-[1px] z-40 transition-opacity"
+                    className="fixed inset-0 z-40 transition-opacity"
                     onClick={onClose}
                 />
             )}

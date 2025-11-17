@@ -1,7 +1,7 @@
-﻿import axiosClient from "../http/axiosClient";
+﻿import api from "../../../services/api.ts";
 
 export const setupAuthInterceptor = (getToken: () => string | null) => {
-    axiosClient.interceptors.request.use(
+    api.interceptors.request.use(
         (config) => {
             const token = getToken();
             if (token) {
@@ -12,7 +12,7 @@ export const setupAuthInterceptor = (getToken: () => string | null) => {
         (error) => Promise.reject(error)
     );
 
-    axiosClient.interceptors.response.use(
+    api.interceptors.response.use(
         (response) => response,
         (error) => {
             if (error.response?.status === 401) {

@@ -1,6 +1,6 @@
 ﻿import axios from "axios";
 
-const axiosClient = axios.create({
+const api = axios.create({
     baseURL: process.env.REACT_APP_API_BASE_URL || "http://localhost:5237/indeconnect/",
     timeout: 10000,
     headers: {
@@ -8,4 +8,4 @@ const axiosClient = axios.create({
     },
 });
 
-export default axiosClient;
+export default api;
