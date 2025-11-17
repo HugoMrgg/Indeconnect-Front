@@ -1,0 +1,77 @@
+﻿import React, { useEffect, useState } from "react";
+
+import { useParams } from "react-router-dom";
+import { useUI } from "@/context/UIContext";
+import { BannerBrand } from "@/features/banners/BannerBrand";
+import { FiltersPanel } from "@/features/filters/FiltersPanel";
+import { useProducts } from "@/hooks/useProducts";
+import { useBrands } from "@/hooks/useBrands";
+import { useProductFilters } from "@/hooks/useProductFilters";
+import { BrandHeader } from "@/features/brands/BrandHeader";
+import { BackToBrands } from "@/features/brands/BackToBrands";
+import { BrandProducts } from "@/features/brands/BrandProducts";
+import { BrandLoading } from "@/features/brands/BrandLoading";
+import { BrandError } from "@/features/brands/BrandError";
+import { AuthPanel} from "@/features/user/auth/AuthPanel";
+import { NavBar } from "@/features/navbar/NavBar";
+
+export const BrandPage: React.FC = () => {
+    const { brandName } = useParams();
+    const decodedBrand = decodeURIComponent(brandName ?? "");
+
+    const { setScope, filtersOpen, closeFilters } = useUI();
+    useEffect(() => {
+        setScope("products");
+        return () => closeFilters();
+    }, [setScope, closeFilters]);
+
+    const { products, loading, error } = useProducts(decodedBrand);
+    const [subscribed, setSubscribed] = useState(false);
+    const { brandsNearby, ethicalBrands } = useBrands();
+    const brand = [...brandsNearby, ...ethicalBrands].find(b => b.name === decodedBrand);
+
+    const filter = useProductFilters(products);
+
+    if (loading) return <BrandLoading name={decodedBrand} />;
+    if (error) return <BrandError name={decodedBrand} message={error} />;
+
+    return (
+        <div className="min-h-full bg-white">
+            <BannerBrand name={decodedBrand} />
+
+            <main className="mx-auto max-w-6xl px-4 pb-16">
+                <BrandHeader
+                    brand={brand}
+                    subscribed={subscribed}
+                    onToggleSubscribe={() => setSubscribed(s => !s)}
+                />
+
+                <BackToBrands />
+
+                <FiltersPanel
+                    open={filtersOpen}
+                    onClose={closeFilters}
+                    onReset={filter.resetAll}
+                    resetKey={filter.resetKey}
+                    onChangePrice={filter.handlePrice}
+                    onChangeCategories={filter.handleCategories}
+                    onChangeSizes={filter.handleSizes}
+                    onChangeColors={filter.handleColors}
+                    onChangeEthics={filter.handleEthics}
+                    selectedCategories={filter.categories}
+                    selectedSizes={filter.sizes}
+                    selectedColors={filter.colors}
+                    selectedEthics={filter.ethics}
+                    colorsAvailable={filter.availableColors}
+                    ethicsAvailable={filter.availableEthics}
+                />
+
+                <BrandProducts filter={filter} />
+            </main>
+
+            <AuthPanel/>
+
+            <NavBar/>
+        </div>
+    );
+};
