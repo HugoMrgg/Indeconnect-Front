@@ -1,7 +1,7 @@
 ﻿// exemples d'utilisation axios pour interagir avec une API RESTful pour la gestion des produits
 
-import api from "../../../services/api.ts";
-import { Product } from "@/types/Product";
+import api from "../api.ts";
+import { Product } from "src/types/Product";
 
 export const productsService = {
     async getAll(): Promise<Product[]> {

@@ -8,7 +8,7 @@ import { User } from "lucide-react";
 
 export function UserMenu() {
     const [open, setOpen] = useState(false);
-    const roleLogged = "admin";
+    const roleLogged = "guest";
 
     return (
         <div className="relative h-12 w-12">

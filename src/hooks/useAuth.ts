@@ -1,28 +1,140 @@
-import { useState } from "react";
-
-import { User } from "@/types/users";
-import { login as apiLogin, register as apiRegister } from "@/api/usersApi";
+﻿/*import { useState } from "react";
+import { useAuthContext } from "@/context/useAuthContext";
+import { AuthService } from "@/api/services/auth";
+import { LoginPayload, RegisterPayload, AuthResponse } from "@/api/services/auth/types";
 
 export function useAuth() {
-    const [user, setUser] = useState<User | null>(null);
-    const [error, setError] = useState<string | null>(null);
+    const { token, setToken } = useAuthContext();
+
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [user, setUser] = useState<AuthResponse["user"] | null>(null);
 
-    async function login(email: string, password: string) {
-        setLoading(true); setError(null);
-        const result = await apiLogin(email, password);
-        if (result) setUser(result); else setError("Email ou mot de passe incorrect");
-        setLoading(false);
-    }
+    const login = async (payload: LoginPayload) => {
+        setLoading(true);
+        setError(null);
 
-    async function register(payload: { email: string; password: string; first_name: string; last_name: string; }) {
-        setLoading(true); setError(null);
-        const result = await apiRegister(payload);
-        if (result) setUser(result); else setError("Impossible de créer le compte");
-        setLoading(false);
-    }
+        try {
+            const res = await AuthService.login(payload);
+            setToken(res.token);
+            setUser(res.user);
+            return res;
+        } catch (err: any) {
+            setError(err.response?.data?.message ?? "Login error");
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    function logout() { setUser(null); }
+    const register = async (payload: RegisterPayload) => {
+        setLoading(true);
+        setError(null);
 
-    return { user, login, register, logout, loading, error };
+        try {
+            const res = await AuthService.register(payload);
+            setToken(res.token);
+            setUser(res.user);
+            return res;
+        } catch (err: any) {
+            setError(err.response?.data?.message ?? "Register error");
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return {
+        token,
+        user,
+        loading,
+        error,
+        login,
+        register
+    };
+}*/
+
+import { useState } from "react";
+import { AuthService } from "@/api/services/auth";
+import { useAuthContext } from "@/context/useAuthContext";
+
+import {
+    AuthResponse,
+    LoginPayload,
+    RegisterPayload,
+} from "@/api/services/auth/types";
+
+
+// ============================
+//  Auth Hook
+// ============================
+
+export function useAuth() {
+    const { token, setToken } = useAuthContext();
+
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+    const [user, setUser] = useState<AuthResponse["user"] | null>(null);
+
+    // -------------------------
+    // LOGIN
+    // -------------------------
+    const login = async (payload: LoginPayload): Promise<AuthResponse> => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const res: AuthResponse = await AuthService.login(payload);
+
+            setToken(res.token);
+            setUser(res.user);
+
+            return res;
+        } catch (err: unknown) {
+            const msg =
+                err instanceof Error
+                    ? err.message
+                    : "Login error";
+            setError(msg);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // -------------------------
+    // REGISTER
+    // -------------------------
+    const register = async (payload: RegisterPayload): Promise<AuthResponse> => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const res: AuthResponse = await AuthService.register(payload);
+
+            setToken(res.token);
+            setUser(res.user);
+
+            return res;
+        } catch (err: unknown) {
+            const msg =
+                err instanceof Error
+                    ? err.message
+                    : "Register error";
+            setError(msg);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return {
+        token,
+        user,
+        loading,
+        error,
+        login,
+        register,
+    };
 }
+

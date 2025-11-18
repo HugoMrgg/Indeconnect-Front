@@ -1,4 +1,4 @@
-﻿import api from "../../../services/api.ts";
+﻿import api from "../api";
 
 export const setupAuthInterceptor = (getToken: () => string | null) => {
     api.interceptors.request.use(
