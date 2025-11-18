@@ -34,9 +34,7 @@ export function useAuth() {
 
             setToken(res.token);
             setUser(res.user);
-            console.log("contenu user : "+res.user.role);
             userStorage.setUser(res.user);
-            console.log("contenu userstorage getUser : "+userStorage.getUser()?.role);
 
             toast.success(`Bienvenue ${res.user.firstName} 👋`, {
                 icon: "🚀",

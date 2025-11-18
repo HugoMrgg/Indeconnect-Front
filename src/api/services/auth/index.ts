@@ -27,9 +27,7 @@ function mapBackendToAuthResponse(data: any): AuthResponse {
 export const AuthService = {
     login: async (payload: LoginPayload): Promise<AuthResponse> => {
         const res = await axiosInstance.post(AUTH_ROUTES.login, payload);
-        const data = mapBackendToAuthResponse(res.data);
-        console.log(data);
-        return data;
+        return mapBackendToAuthResponse(res.data);
     },
 
     register: async (payload: RegisterPayload): Promise<AuthResponse> => {
