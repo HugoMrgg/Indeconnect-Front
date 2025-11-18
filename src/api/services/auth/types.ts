@@ -7,13 +7,15 @@ export interface LoginPayload {
 
 export interface RegisterPayload {
     email: string;
-    password: string;
     firstName?: string;
     lastName?: string;
+    password: string;
+    confirmPassword: string;
+    targetRole?: string;
 }
 
 export interface AuthResponse {
     user: User;
     token: string;
-    refreshToken?: string;
+    /*refreshToken?: string;*/
 }

@@ -1,12 +1,14 @@
 ﻿import axios from "axios";
 import { authStorage } from "@/context/AuthStorage";
+import {userStorage} from "@/context/UserStorage";
 
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:5237/indeconnect/",
-    timeout: 10000,
+    baseURL: "http://localhost:5237/indeconnect",
+
     headers: {
         "Content-Type": "application/json",
     },
+    timeout: 10000,
 });
 
 // --- Request Interceptor ---
@@ -26,7 +28,8 @@ axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            authStorage.clear(); // logout automatique
+            authStorage.clearToken(); // logout automatique
+            userStorage.clear();
         }
 
         return Promise.reject(error);

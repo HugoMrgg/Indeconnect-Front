@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+﻿import React, { createContext, useState } from "react";
 import { authStorage } from "./AuthStorage";
 
 interface AuthContextType {
@@ -6,15 +6,15 @@ interface AuthContextType {
     setToken: (token: string | null) => void;
 }
 
-export const AuthContext = React.createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType | null>(null);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [token, setTokenState] = useState<string | null>(authStorage.getToken());
 
     const setToken = (value: string | null) => {
         setTokenState(value);
         if (value) authStorage.setToken(value);
-        else authStorage.clear();
+        else authStorage.clearToken();
     };
 
     return (
@@ -22,4 +22,5 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             {children}
         </AuthContext.Provider>
     );
-}
+};
+

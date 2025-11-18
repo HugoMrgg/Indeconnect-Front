@@ -1,68 +1,14 @@
-﻿/*import { useState } from "react";
-import { useAuthContext } from "@/context/useAuthContext";
+﻿import { useState } from "react";
 import { AuthService } from "@/api/services/auth";
-import { LoginPayload, RegisterPayload, AuthResponse } from "@/api/services/auth/types";
-
-export function useAuth() {
-    const { token, setToken } = useAuthContext();
-
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [user, setUser] = useState<AuthResponse["user"] | null>(null);
-
-    const login = async (payload: LoginPayload) => {
-        setLoading(true);
-        setError(null);
-
-        try {
-            const res = await AuthService.login(payload);
-            setToken(res.token);
-            setUser(res.user);
-            return res;
-        } catch (err: any) {
-            setError(err.response?.data?.message ?? "Login error");
-            throw err;
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const register = async (payload: RegisterPayload) => {
-        setLoading(true);
-        setError(null);
-
-        try {
-            const res = await AuthService.register(payload);
-            setToken(res.token);
-            setUser(res.user);
-            return res;
-        } catch (err: any) {
-            setError(err.response?.data?.message ?? "Register error");
-            throw err;
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return {
-        token,
-        user,
-        loading,
-        error,
-        login,
-        register
-    };
-}*/
-
-import { useState } from "react";
-import { AuthService } from "@/api/services/auth";
-import { useAuthContext } from "@/context/useAuthContext";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import toast from "react-hot-toast";
 
 import {
     AuthResponse,
     LoginPayload,
     RegisterPayload,
 } from "@/api/services/auth/types";
+import {userStorage} from "@/context/UserStorage";
 
 
 // ============================
@@ -88,6 +34,18 @@ export function useAuth() {
 
             setToken(res.token);
             setUser(res.user);
+            console.log("contenu user : "+res.user.role);
+            userStorage.setUser(res.user);
+            console.log("contenu userstorage getUser : "+userStorage.getUser()?.role);
+
+            toast.success(`Bienvenue ${res.user.firstName} 👋`, {
+                icon: "🚀",
+                style: {
+                    borderRadius: "10px",
+                    background: "#000",
+                    color: "#fff",
+                },
+            });
 
             return res;
         } catch (err: unknown) {
@@ -114,6 +72,9 @@ export function useAuth() {
 
             setToken(res.token);
             setUser(res.user);
+            userStorage.setUser(res.user);
+
+            toast.success(`Compte créé 🎉 Bienvenue ${res.user.firstName} !`);
 
             return res;
         } catch (err: unknown) {
@@ -128,6 +89,14 @@ export function useAuth() {
         }
     };
 
+    const logout = () => {
+        setToken(null);
+        setUser(null);
+        localStorage.clear();
+        sessionStorage.clear();
+        toast.success("Déconnecté avec succès 👋");
+    };
+
     return {
         token,
         user,
@@ -135,6 +104,7 @@ export function useAuth() {
         error,
         login,
         register,
+        logout,
     };
 }
 
