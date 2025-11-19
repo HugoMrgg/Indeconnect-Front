@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useUI } from "@/context/UIContext";
 import { useAuth } from "@/hooks/useAuth";
+
 import { LoginForm } from "@/features/user/auth/LoginForm";
 import { RegisterForm } from "@/features/user/auth/RegisterForm";
 
@@ -9,8 +10,9 @@ import { X } from "lucide-react";
 
 export function AuthPanel() {
     const { authOpen, authMode, closeAuth } = useUI();
-    const { login, register, loading, error, user } = useAuth();
+    const { login, register, user, loading, error } = useAuth();
 
+    // Form state
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -19,26 +21,38 @@ export function AuthPanel() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [localError, setLocalError] = useState<string | null>(null);
 
+    // reset form when closing
     useEffect(() => {
         if (!authOpen) {
-            setEmail(""); setPassword("");
-            setFirstName(""); setLastName(""); setConfirmPassword("");
+            setEmail("");
+            setPassword("");
+            setFirstName("");
+            setLastName("");
+            setConfirmPassword("");
             setLocalError(null);
         }
     }, [authOpen]);
 
+    // auto-close on successful login/register
     useEffect(() => {
         if (authOpen && user && !loading && !error) {
             closeAuth();
         }
-    }, [user, loading, error, authOpen, closeAuth]);
+    }, [user]);
 
+    // ---------------------
+    // LOGIN
+    // ---------------------
     const submitLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setLocalError(null);
-        await login(email, password);
+
+        await login({ email, password });
     };
 
+    // ---------------------
+    // REGISTER
+    // ---------------------
     const submitRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         setLocalError(null);
@@ -48,29 +62,36 @@ export function AuthPanel() {
             return;
         }
 
-        if (!register) {
-            setLocalError("L’inscription n’est pas disponible dans cette build.");
-            return;
-        }
-
         await register({
             email,
+            firstName: firstName,
+            lastName: lastName,
             password,
-            first_name: firstName,
-            last_name: lastName,
+            confirmPassword,
+            targetRole: "client",
         });
     };
 
-    return authOpen ? (
-        <div className="fixed inset-0 z-50">
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" onClick={closeAuth} />
+    if (!authOpen) return null;
 
-            <div className="
-                absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
-                w-[420px] max-w-[92vw] bg-white rounded-2xl shadow-2xl p-5
-            ">
+    return (
+        <div className="fixed inset-0 z-50">
+            <div
+                className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"
+                onClick={closeAuth}
+            />
+
+            <div
+                className="
+        absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
+        w-[420px] max-w-[92vw] bg-white rounded-2xl shadow-2xl p-5
+      "
+            >
                 <div className="flex justify-end">
-                    <button onClick={closeAuth} className="p-2 rounded-lg hover:bg-gray-100">
+                    <button
+                        onClick={closeAuth}
+                        className="p-2 rounded-lg hover:bg-gray-100"
+                    >
                         <X className="w-5 h-5" />
                     </button>
                 </div>
@@ -104,5 +125,5 @@ export function AuthPanel() {
                 )}
             </div>
         </div>
-    ) : null;
+    );
 }

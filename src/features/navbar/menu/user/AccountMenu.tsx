@@ -1,12 +1,14 @@
 // import { useState } from "react";
 // import { useNavigate } from "react-router-dom";
-
+import { useAuth } from '@/hooks/useAuth';
 import { Heart, List, Settings, ShoppingCart, LogOut } from "lucide-react";
 
-export function AccountMenu() {
-    // const [ ,setOpen] = useState(false);
-    // const navigate = useNavigate();
-
+export function AccountMenu({ onLogout }: { onLogout: () => void }) {
+    const { logout } = useAuth();
+    const handleLogout = () => {
+        logout();
+        onLogout?.();
+    };
     return (
         <>
             <button className="flex items-center gap-2 hover:text-gray-300">
@@ -21,7 +23,8 @@ export function AccountMenu() {
             <button className="flex items-center gap-2 hover:text-gray-300">
                 <Settings size={18}/> Paramètres
             </button>
-            <button className="flex items-center gap-2 text-red-600 hover:text-gray-300">
+            <button className="flex items-center gap-2 text-red-600 hover:text-gray-300"
+                onClick={handleLogout}>
                 <LogOut size={18}/> Se déconnecter
             </button>
         </>

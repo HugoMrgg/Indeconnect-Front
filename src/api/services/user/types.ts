@@ -1,19 +1,19 @@
-export interface User {
+export type User = {
     /** Identifiant unique de l'utilisateur */
-    id: number;
+    id: number,
 
     /** Prénom de l'utilisateur */
-    first_name: string;
+    firstName: string,
 
     /** Nom de l'utilisateur */
-    last_name: string;
+    lastName: string,
 
     /** Email de l'utilisateur */
-    email: string;
+    email: string,
 
     /** Mot de passe de l'utilisateur */
-    password: string;
+    password: string,
 
     /** Role d'utilisateur */
-    role: string;
-}
+    role: string,
+};

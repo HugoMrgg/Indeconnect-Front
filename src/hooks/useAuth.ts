@@ -1,28 +1,108 @@
-import { useState } from "react";
+﻿import { useState } from "react";
+import { AuthService } from "@/api/services/auth";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import toast from "react-hot-toast";
 
-import { User } from "@/types/users";
-import { login as apiLogin, register as apiRegister } from "@/api/usersApi";
+import {
+    AuthResponse,
+    LoginPayload,
+    RegisterPayload,
+} from "@/api/services/auth/types";
+import {userStorage} from "@/context/UserStorage";
+
+
+// ============================
+//  Auth Hook
+// ============================
 
 export function useAuth() {
-    const [user, setUser] = useState<User | null>(null);
+    const { token, setToken } = useAuthContext();
+
+    const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState(false);
+    const [user, setUser] = useState<AuthResponse["user"] | null>(null);
 
-    async function login(email: string, password: string) {
-        setLoading(true); setError(null);
-        const result = await apiLogin(email, password);
-        if (result) setUser(result); else setError("Email ou mot de passe incorrect");
-        setLoading(false);
-    }
+    // -------------------------
+    // LOGIN
+    // -------------------------
+    const login = async (payload: LoginPayload): Promise<AuthResponse> => {
+        setLoading(true);
+        setError(null);
 
-    async function register(payload: { email: string; password: string; first_name: string; last_name: string; }) {
-        setLoading(true); setError(null);
-        const result = await apiRegister(payload);
-        if (result) setUser(result); else setError("Impossible de créer le compte");
-        setLoading(false);
-    }
+        try {
+            const res: AuthResponse = await AuthService.login(payload);
 
-    function logout() { setUser(null); }
+            setToken(res.token);
+            setUser(res.user);
+            userStorage.setUser(res.user);
 
-    return { user, login, register, logout, loading, error };
+            toast.success(`Bienvenue ${res.user.firstName} 👋`, {
+                icon: "🚀",
+                style: {
+                    borderRadius: "10px",
+                    background: "#000",
+                    color: "#fff",
+                },
+            });
+
+            return res;
+        } catch (err: unknown) {
+            const msg =
+                err instanceof Error
+                    ? err.message
+                    : "Login error";
+            setError(msg);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // -------------------------
+    // REGISTER
+    // -------------------------
+    const register = async (payload: RegisterPayload): Promise<AuthResponse> => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const res: AuthResponse = await AuthService.register(payload);
+
+            setToken(res.token);
+            setUser(res.user);
+            userStorage.setUser(res.user);
+
+            toast.success(`Compte créé 🎉 Bienvenue ${res.user.firstName} !`);
+
+            return res;
+        } catch (err: unknown) {
+            const msg =
+                err instanceof Error
+                    ? err.message
+                    : "Register error";
+            setError(msg);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const logout = () => {
+        setToken(null);
+        setUser(null);
+        localStorage.clear();
+        sessionStorage.clear();
+        toast.success("Déconnecté avec succès 👋");
+    };
+
+    return {
+        token,
+        user,
+        loading,
+        error,
+        login,
+        register,
+        logout,
+    };
 }
+
