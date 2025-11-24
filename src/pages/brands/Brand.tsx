@@ -24,11 +24,11 @@ export const BrandPage: React.FC = () => {
         return () => closeFilters();
     }, [setScope, closeFilters]);
 
-    const { products, loading, error } = useProducts(decodedBrand);
-    const [subscribed, setSubscribed] = useState(false);
-
     const { brands, loading: brandsLoading, error: brandsError } = useBrands();
     const brand = brands.find(b => b.name === decodedBrand);
+
+    const { products, loading, error } = useProducts(brand?.id || null, decodedBrand);
+    const [subscribed, setSubscribed] = useState(false);
 
     const filter = useProductFilters(products);
 

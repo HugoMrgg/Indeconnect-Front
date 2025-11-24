@@ -1,46 +1,140 @@
-﻿import { Product } from "@/types/Product";
+﻿import axiosInstance from "@/api/api";
+import { Product, ProductDetail } from "@/types/Product";
 
-const COLORS = ["white","black","red","blue","green","yellow","pink","orange","purple","brown","gray"] as const;
-const ETHICS = ["bio", "recyclé", "upcycling", "local", "made in belgium", "équitable"] as const;
-
-export async function fetchProductsByBrand(brandName: string): Promise<Product[]> {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-
-            const sampleProducts: Product[] = Array.from(
-                { length: Math.round(Math.random() * 30 + 1) },
-                (_, i) => {
-                    const category = ["t-shirt", "sweat", "jeans", "pull"][i % 4];
-                    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-
-                    return {
-                        id: i + 1,
-                        name: `${brandName} Product ${i + 1}`,
-                        brand: brandName,
-                        category,
-                        price: Math.round(Math.random() * 100 + 20),
-                        image: `/src/assets/${category}.png`,
-                        sizes: ["XS", "S", "M", "L", "XL", "XXL"].slice(
-                            0,
-                            Math.floor(Math.random() * 6) + 1
-                        ),
-                        tags: ["nouveau", "promo", "tendance"].slice(
-                            0,
-                            Math.floor(Math.random() * 3)
-                        ),
-
-                        // ✅ Nouveaux filtres
-                        color,
-                        ethics: ETHICS.slice(
-                            0,
-                            Math.floor(Math.random() * 3) // entre 0 et 2 étiquettes
-                        ),
-                    };
-                }
-            );
-
-            resolve(sampleProducts);
-        }, 1000);
-    });
+interface ProductsResponse {
+    products: any[];
+    totalCount: number;
+    page: number;
+    pageSize: number;
 }
 
+/**
+ * Mapper le DTO backend vers le type Product frontend
+ */
+function mapProductDTO(dto: any, brandName: string): Product {
+    return {
+        id: dto.id,
+        name: dto.name,
+        price: dto.price,
+        primaryImageUrl: dto.primaryImageUrl,
+        description: dto.description,
+        averageRating: dto.averageRating || 0,
+        reviewCount: dto.reviewCount || 0,
+        primaryColor: dto.primaryColor,
+
+        // Compatibilité avec ancien code
+        brand: brandName,
+        category: dto.category || undefined,
+        image: dto.primaryImageUrl || undefined,
+        sizes: [],
+        tags: [],
+        color: dto.primaryColor?.name?.toLowerCase() || undefined,
+        ethics: [],
+    };
+}
+
+/**
+ * Récupère tous les produits d'une marque
+ */
+export async function fetchProductsByBrand(
+    brandId: number,
+    brandName: string,
+    params?: {
+        category?: string;
+        minPrice?: number;
+        maxPrice?: number;
+        searchTerm?: string;
+        sortBy?: "PriceAsc" | "PriceDesc" | "Rating" | "Popular" | "Newest";
+        page?: number;
+        pageSize?: number;
+    }
+): Promise<Product[]> {
+    try {
+        const response = await axiosInstance.get<ProductsResponse>(
+            `/brands/${brandId}/products`,
+            {
+                params: {
+                    Category: params?.category,
+                    MinPrice: params?.minPrice,
+                    MaxPrice: params?.maxPrice,
+                    SearchTerm: params?.searchTerm,
+                    SortBy: params?.sortBy,
+                    Page: params?.page || 1,
+                    PageSize: params?.pageSize || 100,
+                }
+            }
+        );
+
+        return response.data.products.map(p => mapProductDTO(p, brandName));
+    } catch (error) {
+        console.error("Error fetching products:", error);
+        throw error;
+    }
+}
+
+/**
+ * Récupère le détail d'un produit
+ */
+export async function fetchProductById(productId: number): Promise<ProductDetail> {
+    try {
+        const response = await axiosInstance.get<ProductDetail>(`/products/${productId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching product detail:", error);
+        throw error;
+    }
+}
+
+/**
+ * Récupère les variantes de taille d'un produit
+ */
+export async function fetchProductVariants(productId: number) {
+    try {
+        const response = await axiosInstance.get(`/products/${productId}/variants`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching product variants:", error);
+        throw error;
+    }
+}
+
+/**
+ * Récupère les variantes de couleur d'un produit (autres produits du même groupe)
+ */
+export async function fetchProductColorVariants(productId: number) {
+    try {
+        const response = await axiosInstance.get(`/products/${productId}/colors`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching color variants:", error);
+        throw error;
+    }
+}
+
+/**
+ * Récupère le stock d'un produit
+ */
+export async function fetchProductStock(productId: number) {
+    try {
+        const response = await axiosInstance.get(`/products/${productId}/stock`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching product stock:", error);
+        throw error;
+    }
+}
+
+/**
+ * Récupère les avis d'un produit
+ */
+export async function fetchProductReviews(productId: number, page = 1, pageSize = 20) {
+    try {
+        const response = await axiosInstance.get(`/products/${productId}/reviews`, {
+            params: { page, pageSize }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching product reviews:", error);
+        throw error;
+    }
+}
