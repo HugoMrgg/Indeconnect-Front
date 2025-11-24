@@ -1,14 +1,21 @@
 ﻿import axios from "axios";
+import qs from "qs";
 import { authStorage } from "@/context/AuthStorage";
-import {userStorage} from "@/context/UserStorage";
+import { userStorage } from "@/context/UserStorage";
 
 const axiosInstance = axios.create({
     baseURL: "http://localhost:5237/indeconnect",
-
     headers: {
         "Content-Type": "application/json",
     },
     timeout: 10000,
+
+    paramsSerializer: (params) => {
+        return qs.stringify(params, {
+            arrayFormat: 'repeat',
+            skipNulls: true
+        });
+    }
 });
 
 // --- Request Interceptor ---

@@ -1,11 +1,11 @@
 ﻿export interface Brand {
+    id: number;
     name: string;
-    city: string;
-    description: string;
-    distance_km: number;
-    rating: number;
-    ethical_prod: number;
-    ethical_transports: number;
-    transport: string;
-    logo_url: string;
+    logoUrl?: string;
+    description?: string;
+    ethicsScoreProduction: number;
+    ethicsScoreTransport: number;
+    address?: string;
+    distanceKm?: number;
+    userRating: number;
 }

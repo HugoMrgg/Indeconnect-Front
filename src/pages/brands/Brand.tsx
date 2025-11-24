@@ -1,5 +1,4 @@
 ﻿import React, { useEffect, useState } from "react";
-
 import { useParams } from "react-router-dom";
 import { useUI } from "@/context/UIContext";
 import { BannerBrand } from "@/features/banners/BannerBrand";
@@ -12,7 +11,7 @@ import { BackToBrands } from "@/features/brands/BackToBrands";
 import { BrandProducts } from "@/features/brands/BrandProducts";
 import { BrandLoading } from "@/features/brands/BrandLoading";
 import { BrandError } from "@/features/brands/BrandError";
-import { AuthPanel} from "@/features/user/auth/AuthPanel";
+import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
 
 export const BrandPage: React.FC = () => {
@@ -27,13 +26,14 @@ export const BrandPage: React.FC = () => {
 
     const { products, loading, error } = useProducts(decodedBrand);
     const [subscribed, setSubscribed] = useState(false);
-    const { brandsNearby, ethicalBrands } = useBrands();
-    const brand = [...brandsNearby, ...ethicalBrands].find(b => b.name === decodedBrand);
+
+    const { brands, loading: brandsLoading, error: brandsError } = useBrands();
+    const brand = brands.find(b => b.name === decodedBrand);
 
     const filter = useProductFilters(products);
 
-    if (loading) return <BrandLoading name={decodedBrand} />;
-    if (error) return <BrandError name={decodedBrand} message={error} />;
+    if (loading || brandsLoading) return <BrandLoading name={decodedBrand} />;
+    if (error || brandsError) return <BrandError name={decodedBrand} message={error || brandsError || ''} />;
 
     return (
         <div className="min-h-full bg-white">
@@ -69,9 +69,8 @@ export const BrandPage: React.FC = () => {
                 <BrandProducts filter={filter} />
             </main>
 
-            <AuthPanel/>
-
-            <NavBar/>
+            <AuthPanel />
+            <NavBar />
         </div>
     );
 };
