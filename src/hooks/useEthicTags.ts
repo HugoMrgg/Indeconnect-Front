@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect } from "react";
-import { ethicsService } from "@/api/services/ethicsService";
+import { ethicsService } from "@/api/services/ethics";
 
 interface EthicTag {
     key: string;

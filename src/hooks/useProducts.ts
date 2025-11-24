@@ -1,6 +1,6 @@
 ﻿import { useEffect, useState } from "react";
 import { Product } from "@/types/Product";
-import { fetchProductsByBrand } from "@/api/productsApi";
+import { fetchProductsByBrand } from "@/api/services/products";
 
 export function useProducts(brandId: number | null, brandName: string) {
     const [products, setProducts] = useState<Product[]>([]);

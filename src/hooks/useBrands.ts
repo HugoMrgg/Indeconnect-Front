@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect, useRef } from "react";
-import { brandsService } from "@/api/services/brandsService";
+import { brandsService } from "@/api/services/brands";
 import { Brand } from "@/types/brand";
 
 interface BrandFilters {
