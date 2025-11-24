@@ -1,4 +1,6 @@
-﻿import { useState } from "react";
+﻿// src/components/cards/ProductCard.tsx
+
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { Tag } from "@/components/cards/Tag";
@@ -13,12 +15,14 @@ export default function ProductCard({ product }: { product: Product }) {
     const encodedBrand = encodeURIComponent(brandName ?? "");
 
     return (
-        <div onClick={() => navigate(`/brand/${encodeURIComponent(encodedBrand)}/${product.id}`)}
-            className="group relative flex flex-col rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg overflow-hidden font-poppins">
+        <div
+            onClick={() => navigate(`/brand/${encodeURIComponent(encodedBrand)}/${product.id}`)}
+            className="group relative flex flex-col rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg overflow-hidden font-poppins cursor-pointer"
+        >
             <div className="relative w-full aspect-[4/5] bg-gray-100 overflow-hidden">
-                {product.image ? (
+                {product.primaryImageUrl || product.image ? (
                     <img
-                        src={product.image}
+                        src={"../../images/" + product.primaryImageUrl || "../../images/" + product.image}
                         alt={product.name}
                         className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                     />
@@ -28,10 +32,14 @@ export default function ProductCard({ product }: { product: Product }) {
                     </div>
                 )}
 
+                {/* Bouton favoris */}
                 <button
-                    onClick={() => setLiked((v) => !v)}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setLiked((v) => !v);
+                    }}
                     aria-label="Ajouter aux favoris"
-                    className="absolute right-3 top-3 flex items-center justify-center rounded-full bg-white/80 p-2 shadow-sm backdrop-blur-sm transition hover:bg-white"
+                    className="absolute right-3 top-3 flex items-center justify-center rounded-full bg-white/80 p-2 shadow-sm backdrop-blur-sm transition hover:bg-white z-10"
                 >
                     <Heart
                         className={`h-5 w-5 transition-colors duration-200 ${
@@ -39,18 +47,44 @@ export default function ProductCard({ product }: { product: Product }) {
                         }`}
                     />
                 </button>
+
+                {/* Badge couleur */}
+                {product.primaryColor && (
+                    <div className="absolute left-3 top-3 flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1.5 shadow-sm">
+                        <div
+                            className="w-4 h-4 rounded-full border border-gray-300"
+                            style={{ backgroundColor: product.primaryColor.hexa }}
+                        />
+                        <span className="text-xs font-medium text-gray-700">
+                            {product.primaryColor.name}
+                        </span>
+                    </div>
+                )}
             </div>
 
             <div className="flex flex-col flex-grow p-4 text-left">
                 <p className="text-xs uppercase tracking-wide text-gray-500">
-                    {product.category || "T-shirt grimelins"}
+                    {product.category || "Produit"}
                 </p>
                 <h3 className="mt-1 text-lg font-semibold text-gray-900 leading-snug">
                     {product.name}
                 </h3>
-                <p className="mt-2 text-base font-bold text-gray-800">
-                    € {product.price.toFixed(2)}
-                </p>
+
+                <div className="mt-2 flex items-center gap-3">
+                    <p className="text-base font-bold text-gray-800">
+                        € {product.price.toFixed(2)}
+                    </p>
+
+                    {/* Rating */}
+                    {product.reviewCount > 0 && (
+                        <div className="flex items-center gap-1 text-xs text-gray-600">
+                            <span>⭐</span>
+                            <span>{product.averageRating.toFixed(1)}</span>
+                            <span className="text-gray-400">({product.reviewCount})</span>
+                        </div>
+                    )}
+                </div>
+
                 {Array.isArray(product.tags) && product.tags.length > 0 && (
                     <div className="mt-3 flex flex-wrap gap-2">
                         {product.tags.map((t) => (

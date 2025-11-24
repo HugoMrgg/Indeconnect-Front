@@ -1,37 +1,106 @@
-﻿export interface Product {
-    /** Identifiant unique du produit */
+﻿export interface Color {
     id: number;
-
-    /** Nom du produit (ex: "T-shirt Lucid") */
     name: string;
+    hexa: string;
+}
 
-    /** Prix TTC du produit */
+export interface Size {
+    id: number;
+    name: string;
+}
+
+export interface Category {
+    id: number;
+    name: string;
+}
+
+// Type pour le listing de produits (ProductSummaryDto backend)
+export interface Product {
+    id: number;
+    name: string;
     price: number;
+    primaryImageUrl: string | null;
+    description: string;
+    averageRating: number;
+    reviewCount: number;
+    primaryColor: Color | null;
 
-    /** Nom de la marque associée (ex: "6K Skateshop") */
+    // Pour compatibilité avec ton code existant
     brand: string;
-
-    /** Catégorie du produit (ex: "t-shirt", "pull", etc.) */
     category?: string;
-
-    /** URL de l’image produit */
     image?: string;
-
-    /** Liste des tailles disponibles (ex: ["S", "M", "L"]) */
     sizes?: string[];
-
-    /** Tags marketing (ex: ["nouveau", "promo", "eco"]) */
     tags?: string[];
-
-    /** Date de création ou ajout dans le catalogue */
-    createdAt?: string;
-
-    /** Indique si le produit est en promotion */
-    onSale?: boolean;
-
-    /** Couleur principale du produit en hexadécimal (ex: "#FF5733") */
     color?: string;
-
-    /** Labels éthiques associés au produit (ex: ["bio", "commerce équitable"]) */
     ethics?: string[];
+}
+
+// Type détaillé pour la page produit
+export interface ProductDetail {
+    id: number;
+    name: string;
+    description: string;
+    price: number;
+    salePrice: number | null;
+    brand: {
+        id: number;
+        name: string;
+        logoUrl: string | null;
+    };
+    category: Category;
+    primaryColor: Color | null;
+    colorVariants: ColorVariant[];
+    media: ProductMedia[];
+    sizeVariants: SizeVariant[];
+    details: ProductDetailItem[];
+    keywords: string[];
+    reviews: ProductReview[];
+    averageRating: number;
+    reviewCount: number;
+    totalStock: number;
+    isAvailable: boolean;
+    status: string;
+    createdAt: string;
+}
+
+export interface ColorVariant {
+    productId: number;
+    colorId: number | null;
+    colorName: string | null;
+    colorHexa: string | null;
+    thumbnailUrl: string | null;
+    isAvailable: boolean;
+}
+
+export interface ProductMedia {
+    id: number;
+    url: string;
+    type: string;
+    displayOrder: number;
+    isPrimary: boolean;
+}
+
+export interface SizeVariant {
+    id: number;
+    sku: string;
+    size: Size | null;
+    stockCount: number;
+    price: number;
+    isAvailable: boolean;
+}
+
+export interface ProductDetailItem {
+    key: string;
+    value: string;
+    displayOrder: number;
+}
+
+export interface ProductReview {
+    id: number;
+    userId: number;
+    userName: string;
+    rating: number;
+    comment: string;
+    createdAt: string;
+    status: string;
 }
