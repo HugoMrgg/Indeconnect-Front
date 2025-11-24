@@ -6,9 +6,17 @@ type Props = {
     scope?: "brands" | "products";
     enabled?: boolean;
     onToggleFilters?: () => void;
+    value?: string;
+    onChange?: (value: string) => void;
 };
 
-export function SearchBar({ scope: scopeProp, enabled = true, onToggleFilters }: Props) {
+export function SearchBar({
+                              scope: scopeProp,
+                              enabled = true,
+                              onToggleFilters,
+                              value = "",
+                              onChange
+                          }: Props) {
     const [open, setOpen] = useState(false);
     const { scope: scopeCtx, toggleFilters } = useUI();
     const scope = scopeProp ?? scopeCtx;
@@ -31,7 +39,18 @@ export function SearchBar({ scope: scopeProp, enabled = true, onToggleFilters }:
                 <p>Filtres</p>
             </button>
 
-            <input type="text" placeholder={placeholder} className="w-full focus:ring-2 bg-black text-white" />
+            {/**
+             * Input contrôlé par le parent (Home.tsx)
+             * value: vient de searchQuery
+             * onChange: met à jour searchQuery
+             */}
+            <input
+                type="text"
+                placeholder={placeholder}
+                className="w-full focus:ring-2 bg-black text-white outline-none"
+                value={value}
+                onChange={(e) => onChange?.(e.target.value)}
+            />
             <Search size={20} className="text-white mx-2" />
         </div>
     );

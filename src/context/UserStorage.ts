@@ -12,4 +12,3 @@ export const userStorage = {
 
     clear: () => localStorage.removeItem("user"),
 };
-
