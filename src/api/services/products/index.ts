@@ -99,7 +99,7 @@ export async function fetchProductVariants(productId: number) {
  */
 export async function fetchProductColorVariants(productId: number) {
     try {
-        const response = await axiosInstance.get(PRODUCTS_ROUTES.variants(productId));
+        const response = await axiosInstance.get(PRODUCTS_ROUTES.colors(productId));
         return response.data;
     } catch (error) {
         console.error("Error fetching color variants:", error);
