@@ -8,8 +8,6 @@ interface Props {
 }
 
 export function ProductColorSelector({ current, variants, onSelect }: Props) {
-    console.log("Color Variants:", variants);
-
     return (
         <div className="mt-6">
             <div className="font-semibold mb-2">Couleur</div>
