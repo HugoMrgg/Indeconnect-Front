@@ -1,12 +1,8 @@
 ﻿import axiosInstance from "@/api/api";
 import { Product, ProductDetail } from "@/types/Product";
+import { PRODUCTS_ROUTES } from "./routes";
+import { ProductsResponse } from "@/api/services/products/types";
 
-interface ProductsResponse {
-    products: any[];
-    totalCount: number;
-    page: number;
-    pageSize: number;
-}
 
 /**
  * Mapper le DTO backend vers le type Product frontend
@@ -51,7 +47,7 @@ export async function fetchProductsByBrand(
 ): Promise<Product[]> {
     try {
         const response = await axiosInstance.get<ProductsResponse>(
-            `/brands/${brandId}/products`,
+            PRODUCTS_ROUTES.byBrand(brandId),
             {
                 params: {
                     Category: params?.category,
@@ -77,7 +73,7 @@ export async function fetchProductsByBrand(
  */
 export async function fetchProductById(productId: number): Promise<ProductDetail> {
     try {
-        const response = await axiosInstance.get<ProductDetail>(`/products/${productId}`);
+        const response = await axiosInstance.get<ProductDetail>(PRODUCTS_ROUTES.byId(productId));
         return response.data;
     } catch (error) {
         console.error("Error fetching product detail:", error);
@@ -90,7 +86,7 @@ export async function fetchProductById(productId: number): Promise<ProductDetail
  */
 export async function fetchProductVariants(productId: number) {
     try {
-        const response = await axiosInstance.get(`/products/${productId}/variants`);
+        const response = await axiosInstance.get(PRODUCTS_ROUTES.variants(productId));
         return response.data;
     } catch (error) {
         console.error("Error fetching product variants:", error);
@@ -103,7 +99,7 @@ export async function fetchProductVariants(productId: number) {
  */
 export async function fetchProductColorVariants(productId: number) {
     try {
-        const response = await axiosInstance.get(`/products/${productId}/colors`);
+        const response = await axiosInstance.get(PRODUCTS_ROUTES.variants(productId));
         return response.data;
     } catch (error) {
         console.error("Error fetching color variants:", error);
@@ -116,7 +112,7 @@ export async function fetchProductColorVariants(productId: number) {
  */
 export async function fetchProductStock(productId: number) {
     try {
-        const response = await axiosInstance.get(`/products/${productId}/stock`);
+        const response = await axiosInstance.get(PRODUCTS_ROUTES.stock(productId));
         return response.data;
     } catch (error) {
         console.error("Error fetching product stock:", error);
@@ -129,7 +125,7 @@ export async function fetchProductStock(productId: number) {
  */
 export async function fetchProductReviews(productId: number, page = 1, pageSize = 20) {
     try {
-        const response = await axiosInstance.get(`/products/${productId}/reviews`, {
+        const response = await axiosInstance.get(PRODUCTS_ROUTES.reviews(productId), {
             params: { page, pageSize }
         });
         return response.data;

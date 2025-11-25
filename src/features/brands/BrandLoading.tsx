@@ -9,6 +9,6 @@ export const BrandLoading = ({ name }: { name: string }) => (
                 Chargement de la page des produits de {name}...
             </p>
         </main>
-        <NavBar scope="products" />
+        <NavBar/>
     </div>
 );
