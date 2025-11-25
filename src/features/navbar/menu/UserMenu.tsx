@@ -5,11 +5,11 @@
     import { AdminMenu } from "@/features/navbar/menu/user/AdminMenu";
 
     import { User } from "lucide-react";
-    import {userStorage} from "@/context/UserStorage";
+    import {useAuth} from "@/hooks/useAuth";
 
     export function UserMenu() {
         const [open, setOpen] = useState(false);
-        const user = userStorage.getUser();
+        const { user } = useAuth();
 
         const roleLogged = user?.role ?? "Guest";
 
