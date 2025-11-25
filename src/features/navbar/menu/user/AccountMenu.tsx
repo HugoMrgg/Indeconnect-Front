@@ -2,16 +2,21 @@
 // import { useNavigate } from "react-router-dom";
 import { useAuth } from '@/hooks/useAuth';
 import { Heart, List, Settings, ShoppingCart, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export function AccountMenu({ onLogout }: { onLogout: () => void }) {
     const { logout } = useAuth();
+
+    const navigate = useNavigate();
     const handleLogout = () => {
         logout();
         onLogout?.();
     };
     return (
         <>
-            <button className="flex items-center gap-2 hover:text-gray-300">
+            <button
+                onClick={() => navigate(`/wishlist`)}
+                className="flex items-center gap-2 hover:text-gray-300">
                 <Heart size={18}/> Favoris
             </button>
             <button className="flex items-center gap-2 hover:text-gray-300">

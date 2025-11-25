@@ -1,15 +1,19 @@
-﻿// src/components/cards/ProductCard.tsx
-
-import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+﻿import { useParams, useNavigate } from "react-router-dom";
 
 import { Tag } from "@/components/cards/Tag";
 import { Product } from "@/types/Product";
 
 import { Heart } from "lucide-react";
 
-export default function ProductCard({ product }: { product: Product }) {
-    const [liked, setLiked] = useState(false);
+export default function ProductCard({
+                                        product,
+                                        liked,
+                                        onToggleLike
+                                    }: {
+    product: Product;
+    liked: boolean;
+    onToggleLike: () => void;
+}) {
     const navigate = useNavigate();
     const { brandName } = useParams();
     const encodedBrand = encodeURIComponent(brandName ?? "");
@@ -36,7 +40,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 <button
                     onClick={(e) => {
                         e.stopPropagation();
-                        setLiked((v) => !v);
+                        onToggleLike();
                     }}
                     aria-label="Ajouter aux favoris"
                     className="absolute right-3 top-3 flex items-center justify-center rounded-full bg-white/80 p-2 shadow-sm backdrop-blur-sm transition hover:bg-white z-10"

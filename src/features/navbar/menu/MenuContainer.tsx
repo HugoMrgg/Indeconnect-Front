@@ -1,14 +1,17 @@
-﻿    import { useState } from "react";
+﻿import { useState } from "react";
 
 import { BrandMenu } from "@/features/navbar/menu/brand/BrandMenu"
 import { VendorMenu } from "@/features/navbar/menu/brand/VendorMenu";
 import { SuperVendorMenu } from "@/features/navbar/menu/brand/superVendorMenu";
 
 import { Menu } from "lucide-react";
+    import {userStorage} from "@/context/UserStorage";
 
 export function MenuContainer() {
     const [open, setOpen] = useState(false);
-    const roleLogged = "SuperVendor";
+    const user = userStorage.getUser();
+
+    const roleLogged = user?.role ?? "Guest";
 
     return (
         <div className="relative h-12 w-12">

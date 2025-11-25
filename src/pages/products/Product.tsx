@@ -47,7 +47,7 @@ export function ProductPage() {
             setLoading(false);
         }
 
-        load();
+        void load();
     }, [id]);
 
     const handleSelectColor = (variant: ColorVariant) => {
