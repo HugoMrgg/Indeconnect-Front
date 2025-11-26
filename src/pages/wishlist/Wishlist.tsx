@@ -19,6 +19,11 @@ export function Wishlist() {
     // 🔥 User ID → à adapter (token / context)
     const user = userStorage.getUser();
 
+    if (user === null) {
+        toast.error("Connecte-toi pour voir tes favoris ❤️");
+        navigate("/");
+    }
+
     // 🔥 HOOK API WISHLIST
     const { wishlist, loading, error, retry } = useWishlist(user?.id);
 

@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+﻿import React, {useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
 import { useUI } from "@/context/UIContext";
 import { BannerBrand } from "@/features/banners/BannerBrand";
@@ -31,6 +31,7 @@ export const BrandPage: React.FC = () => {
     const [subscribed, setSubscribed] = useState(false);
 
     const filter = useProductFilters(products);
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
     if (loading || brandsLoading) return <BrandLoading name={decodedBrand} />;
     if (error || brandsError) return <BrandError name={decodedBrand} message={error || brandsError || ''} />;
@@ -66,11 +67,11 @@ export const BrandPage: React.FC = () => {
                     ethicsAvailable={filter.availableEthics}
                 />
 
-                <BrandProducts filter={filter} />
+                <BrandProducts filter={filter} searchQuery={searchQuery} />
             </main>
 
             <AuthPanel />
-            <NavBar />
+            <NavBar searchValue={searchQuery} onSearchChange={setSearchQuery} />
         </div>
     );
 };

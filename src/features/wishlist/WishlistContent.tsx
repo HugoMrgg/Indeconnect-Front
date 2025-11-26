@@ -27,6 +27,15 @@ export function WishlistContent({
 
     const brandNames = Object.keys(groupedByBrand);
 
+    if (brandNames.length === 0) {
+        return (
+            <div className="min-h-72 flex flex-col items-center justify-center bg-white">
+                <h2 className="text-2xl font-semibold mb-4">Aucun article en favoris.</h2>
+                <p className="text-gray-500">Parcourez les produits et ajoutez-en à vos favoris !</p>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-white max-w-6xl mx-auto px-5 py-10">
 
@@ -82,10 +91,12 @@ export function WishlistContent({
                             price: item.price,
                             primaryImageUrl: "../../images/" +  item.primaryImageUrl,
                             primaryColor: item.primaryColor,
+                            brandName: item.brandName,
                         } as any;
 
                         return (
                             <WishlistProductCard
+                                key={item.productId}
                                 product={product}
                                 onRemove={handleRemove}
                             />
