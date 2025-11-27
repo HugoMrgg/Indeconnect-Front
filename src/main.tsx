@@ -1,15 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import AppRouter from "@/routes/AppRouter";
 import { Toaster } from "react-hot-toast";
 import { UIProvider } from "@/context/UIContext";
 import "./App.css";
-import {BrowserRouter} from "react-router-dom";
-import {AuthProvider} from "@/context/AuthContext";
-import {DevResetAuth} from "../tests/resetAuth";
-import {CartUIProvider} from "@/context/CartUIContext";
-import {AppWithCartModal} from "@/features/cart/AppWithCartModal";
-
+import { BrowserRouter } from "react-router-dom";
+import { AuthProvider } from "@/context/AuthContext";
+import { DevResetAuth } from "../tests/resetAuth";
+import { CartUIProvider } from "@/context/provider/CartUIProvider";
+import { AppWithCartModal } from "@/features/cart/AppWithCartModal";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>

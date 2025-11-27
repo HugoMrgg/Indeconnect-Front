@@ -6,12 +6,12 @@ export type CartItemDto = {
     productId: number;
     productName: string;
     brandName: string;
-    primaryImage: string;
+    primaryImageUrl: string;
     color?: { id: number; name: string; hexa: string } | null;
     size?: { id: number; name: string } | null;
     productVariantId: number;
     sku: string;
-    stockCount: number;
+    availableStock: number;
     unitPrice: number;
     quantity: number;
     lineTotal: number;
