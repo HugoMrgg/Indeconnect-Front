@@ -33,12 +33,21 @@ export const BrandPage: React.FC = () => {
     const filter = useProductFilters(products);
     const [searchQuery, setSearchQuery] = useState<string>("");
 
-    if (loading || brandsLoading) return <BrandLoading name={decodedBrand} />;
-    if (error || brandsError) return <BrandError name={decodedBrand} message={error || brandsError || ''} />;
+    if (loading || brandsLoading) {
+        return <BrandLoading name={decodedBrand} bannerUrl={brand?.bannerUrl} />;
+    }
+
+    if (error || brandsError) {
+        return <BrandError
+            name={decodedBrand}
+            message={error || brandsError || ''}
+            bannerUrl={brand?.bannerUrl}
+        />;
+    }
 
     return (
         <div className="min-h-full bg-white">
-            <BannerBrand name={decodedBrand} />
+            <BannerBrand name={decodedBrand} bannerUrl={brand?.bannerUrl} />
 
             <main className="mx-auto max-w-6xl px-4 pb-16">
                 <BrandHeader
@@ -75,3 +84,4 @@ export const BrandPage: React.FC = () => {
         </div>
     );
 };
+
