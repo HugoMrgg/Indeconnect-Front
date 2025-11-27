@@ -8,10 +8,10 @@ export const WishlistService = {
     addToWishlist: async (userId: number, productId: number) => {
         return axiosInstance.post(WISHLIST_ROUTES.add(userId), { productId });
     },
-    removeFromWishlist: async (userId: number, productId: number) => {
+    removeFromWishlist: async (userId: number | undefined, productId: number) => {
         return axiosInstance.delete(WISHLIST_ROUTES.remove(userId, productId));
     },
-    isInWishlist: async (userId: number, productId: number) => {
+    isInWishlist: async (userId: number | undefined, productId: number) => {
         return axiosInstance.get(WISHLIST_ROUTES.isIn(userId, productId));
     }
 };
