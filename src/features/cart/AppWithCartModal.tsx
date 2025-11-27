@@ -1,8 +1,7 @@
-﻿// src/features/cart/AppWithCartModal.tsx
-import AppRouter from "@/routes/AppRouter";
+﻿import AppRouter from "@/routes/AppRouter";
 import { CartModal } from "@/features/cart/CartModal";
-import { useCartUI } from "@/context/CartUIContext";
-import { CartContent } from "@/features/cart/CartContent"; // Ajoute ce composant !
+import { useCartUI } from "@/hooks/useCartUI"; // ← CHANGÉ ICI
+import { CartContent } from "@/features/cart/CartContent";
 
 export function AppWithCartModal() {
     const { cartOpen, closeCart } = useCartUI();

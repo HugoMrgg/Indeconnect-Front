@@ -22,7 +22,6 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     (config) => {
         const token = authStorage.getToken();
-        console.log("Token transmis axios:", token);
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
