@@ -19,8 +19,8 @@ import { ProductSizeSelector } from "@/features/product/ProductSizeSelector";
 import { ProductReviewsSection } from "@/features/product/ProductReviewsSection";
 import { BannerBrand } from "@/features/banners/BannerBrand";
 import { NavBar } from "@/features/navbar/NavBar";
-import { BackLink } from "@/components/ui/BackLink";
-import { ProductLoading } from "@/features/product/ProductLoading";
+import {BackLink} from "@/components/ui/BackLink";
+import {ProductLoading} from "@/features/product/ProductLoading";
 
 import { addVariantToCart } from "@/api/services/cart";
 import { useAuth } from "@/hooks/useAuth";
@@ -103,6 +103,8 @@ export function ProductPage() {
 
             <div className="max-w-6xl mx-auto px-4 py-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+                    {/* IMAGES */}
                     <ProductImageGallery images={product.media} />
 
                     <div>
