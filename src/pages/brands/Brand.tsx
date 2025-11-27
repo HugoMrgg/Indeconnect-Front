@@ -1,4 +1,4 @@
-﻿import React, {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
 import { useUI } from "@/context/UIContext";
 import { BannerBrand } from "@/features/banners/BannerBrand";
@@ -84,4 +84,3 @@ export const BrandPage: React.FC = () => {
         </div>
     );
 };
-
