@@ -12,17 +12,19 @@ interface CartModalProps {
 }
 
 export function AddToCartModal({
-                              open,
-                              product,
-                              brandName,
-                              selectedSize,
-                              quantity,
-                              onQuantityChange,
-                              onClose,
-                              onConfirm
-                          }: CartModalProps) {
+                                   open,
+                                   product,
+                                   brandName,
+                                   selectedSize,
+                                   quantity,
+                                   onQuantityChange,
+                                   onClose,
+                                   onConfirm
+                               }: CartModalProps) {
     if (!open) return null;
-
+    const imageUrl = product.media?.[0]?.url
+        ? `/images/${product.media[0].url}`
+        : "/placeholder.png";
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
             <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md">
@@ -30,7 +32,7 @@ export function AddToCartModal({
 
                 <div className="flex gap-4 mb-4">
                     <img
-                        src={"../../../images/" + product.media[0]?.url || "/placeholder.png"}
+                        src={imageUrl}
                         alt={product.name}
                         className="h-20 w-20 rounded-lg object-cover"
                     />
