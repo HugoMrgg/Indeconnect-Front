@@ -1,16 +1,17 @@
-﻿import React, { useState } from "react";
+﻿import React from "react";
 import { SizeVariant } from "@/types/Product";
+
 
 interface Props {
     variants: SizeVariant[];
+    selected?: SizeVariant;
+    onSelect: (v: SizeVariant) => void;
 }
 
-export function ProductSizeSelector({ variants }: Props) {
-    const [selected, setSelected] = useState<number | null>(null);
-
+export function ProductSizeSelector({ variants, selected, onSelect }: Props) {
     const handleSelect = (v: SizeVariant) => {
         if (!v.isAvailable) return;
-        setSelected(v.id);
+        onSelect(v);
     };
 
     return (
@@ -26,7 +27,7 @@ export function ProductSizeSelector({ variants }: Props) {
                             ${
                             !v.isAvailable
                                 ? "border-gray-300 opacity-40 cursor-not-allowed"
-                                : selected === v.id
+                                : selected?.id === v.id
                                     ? "bg-black text-white border-black"
                                     : "border-gray-600 hover:bg-gray-100"
                         }

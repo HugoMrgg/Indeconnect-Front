@@ -6,7 +6,3 @@ export function useAuthContext() {
     if (!ctx) throw new Error("useAuthContext must be used inside <AuthProvider>");
     return ctx;
 }
-
-
-
-

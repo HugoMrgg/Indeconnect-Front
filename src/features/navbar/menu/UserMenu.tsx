@@ -1,43 +1,38 @@
-﻿    import { useState } from "react";
+﻿import { useState } from "react";
+import { GuestMenu } from "@/features/navbar/menu/user/GuestMenu";
+import { AccountMenu } from "@/features/navbar/menu/user/AccountMenu";
+import { AdminMenu } from "@/features/navbar/menu/user/AdminMenu";
+import { User } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
-    import { GuestMenu } from "@/features/navbar/menu/user/GuestMenu";
-    import { AccountMenu } from "@/features/navbar/menu/user/AccountMenu";
-    import { AdminMenu } from "@/features/navbar/menu/user/AdminMenu";
+export function UserMenu() {
+    const [open, setOpen] = useState(false);
+    const { userRole } = useAuth(); // ← CHANGÉ : lit depuis le Context
 
-    import { User } from "lucide-react";
-    import {userStorage} from "@/context/UserStorage";
+    const closeMenu = () => setOpen(false);
 
-    export function UserMenu() {
-        const [open, setOpen] = useState(false);
-        const user = userStorage.getUser();
+    return (
+        <div className="relative h-12 w-12">
+            <button
+                onClick={() => setOpen(!open)}
+                className="rounded-2xl flex justify-center items-center bg-black text-white h-full w-full"
+            >
+                <User size={24} />
+            </button>
 
-        const roleLogged = user?.role ?? "Guest";
-
-        const closeMenu = () => setOpen(false);
-
-        return (
-            <div className="relative h-12 w-12">
-                <button
-                    onClick={() => setOpen(!open)}
-                    className="rounded-2xl flex justify-center items-center bg-black text-white h-full w-full"
-                >
-                    <User size={24} />
-                </button>
-
-                <div className={`absolute bottom-16 right-0 bg-black text-white rounded-2xl p-3 shadow-lg flex flex-col gap-2 w-48 transition-all duration-300 ease-out ${
-                    open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
-                }`}>
-                    {roleLogged === "Guest" && <GuestMenu />}
-                    {roleLogged === "Client" && <AccountMenu onLogout={closeMenu} />}
-                    {roleLogged === "Admin" && (
-                        <>
-                            <AccountMenu onLogout={closeMenu} />
-                            <div className="border-t border-gray-700 my-1" />
-                            <AdminMenu />
-                        </>
-                    )}
-                </div>
+            <div className={`absolute bottom-16 right-0 bg-black text-white rounded-2xl p-3 shadow-lg flex flex-col gap-2 w-48 transition-all duration-300 ease-out ${
+                open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+            }`}>
+                {userRole === "Guest" && <GuestMenu />}
+                {userRole === "Client" && <AccountMenu onLogout={closeMenu} />}
+                {userRole === "Admin" && (
+                    <>
+                        <AccountMenu onLogout={closeMenu} />
+                        <div className="border-t border-gray-700 my-1" />
+                        <AdminMenu />
+                    </>
+                )}
             </div>
-        );
-    }
-
+        </div>
+    );
+}
