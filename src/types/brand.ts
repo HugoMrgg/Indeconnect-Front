@@ -2,6 +2,7 @@
     id: number;
     name: string;
     logoUrl?: string;
+    bannerUrl?: string;
     description?: string;
     ethicsScoreProduction: number;
     ethicsScoreTransport: number;

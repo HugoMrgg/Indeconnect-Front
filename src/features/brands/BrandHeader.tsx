@@ -1,4 +1,4 @@
-﻿import { Heart, IdCard, MapPin, Truck } from "lucide-react";
+﻿import { Heart, IdCard, MapPin} from "lucide-react";
 import { Brand } from "@/types/brand";
 import React from "react";
 
@@ -24,12 +24,7 @@ export const BrandHeader: React.FC<Props> = ({ brand, subscribed, onToggleSubscr
                 <div className="flex gap-2">
                     <div className="mt-4 inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
                         <MapPin size={16} />
-                        {brand.city}
-                    </div>
-
-                    <div className="mt-4 inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
-                        <Truck size={16} />
-                        {brand.transport}
+                        {brand.address}
                     </div>
                 </div>
             </div>
