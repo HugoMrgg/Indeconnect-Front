@@ -28,7 +28,6 @@ export const BrandPage: React.FC = () => {
     const brand = brands.find(b => b.name === decodedBrand);
 
     const { products, loading, error } = useProducts(brand?.id || null, decodedBrand);
-    const [subscribed, setSubscribed] = useState(false);
 
     const filter = useProductFilters(products);
     const [searchQuery, setSearchQuery] = useState<string>("");
@@ -51,10 +50,7 @@ export const BrandPage: React.FC = () => {
 
             <main className="mx-auto max-w-6xl px-4 pb-16">
                 <BrandHeader
-                    brand={brand}
-                    subscribed={subscribed}
-                    onToggleSubscribe={() => setSubscribed(s => !s)}
-                />
+                    brand={brand}/>
 
                 <BackToBrands />
 

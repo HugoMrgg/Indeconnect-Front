@@ -33,7 +33,7 @@ export function AuthPanel() {
         }
     }, [authOpen]);
 
-    // auto-close on successful login/register
+    // auto-close on successful register/register
     useEffect(() => {
         if (authOpen && user && !loading && !error) {
             closeAuth();
