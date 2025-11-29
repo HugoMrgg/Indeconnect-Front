@@ -46,7 +46,7 @@ export function useAuth() {
                 (async () => {
                     try {
                         const u = await UsersService.getById(userId);
-                        setUser(u); // ← Met à jour le Context
+                        setUser(u); // ← Met à jour le context
                     } catch (err) {
                         console.error("[Auth] Erreur récupération user", err);
                         setUser(null);

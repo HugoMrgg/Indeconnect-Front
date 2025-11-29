@@ -49,6 +49,8 @@ export const BrandPage: React.FC = () => {
             <BannerBrand name={decodedBrand} bannerUrl={brand?.bannerUrl} />
 
             <main className="mx-auto max-w-6xl px-4 pb-16">
+                <BrandHeader
+                    brand={brand}/>
                 <BrandHeader brand={brand} />
 
                 <BackToBrands />

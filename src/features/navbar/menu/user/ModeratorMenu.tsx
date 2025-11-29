@@ -1,15 +1,17 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Package, Boxes, BarChart3 } from "lucide-react";
+import { CheckCircle, MessageSquare, UserPlus, Logs, Package } from "lucide-react";
 
-export function VendorMenu() {
+export function ModeratorMenu() {
     const [, setOpen] = useState(false);
     const navigate = useNavigate();
 
     const menuItems = [
-        { icon: Package, label: "Mes produits", path: "/vendor/products" },
-        { icon: Boxes, label: "Gestion du stock", path: "/vendor/inventory" },
-        { icon: BarChart3, label: "Statistiques", path: "/vendor/stats" }
+        { icon: CheckCircle, label: "Valider les marques", path: "/moderator/brands" },
+        { icon: Package, label: "Modérer les produits", path: "/moderator/products" },
+        { icon: MessageSquare, label: "Modérer les commentaires", path: "/moderator/reviews" },
+        { icon: UserPlus, label: "Créer SuperVendeur", path: "/moderator/create-sv" },
+        { icon: Logs, label: "Consulter les logs", path: "/moderator/logs" }
     ];
 
     return (
