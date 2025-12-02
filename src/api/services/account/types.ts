@@ -1,6 +1,5 @@
-﻿// @/api/services/accounts/types.ts
+﻿import { Role } from "@/types/account";
 
-/** Compte administratif (Admin, Moderator, SuperVendor) */
 export type Account = {
     /** Identifiant unique du compte */
     id: number;
@@ -15,10 +14,13 @@ export type Account = {
     lastName: string;
 
     /** Rôle du compte */
-    role: string;
+    role: Role;
 
     /** Indique si le compte est actif */
     isEnabled: boolean;
+
+    /** Indique si le compte est en attente d'activation */
+    isPendingActivation: boolean;
 
     /** Date de création du compte */
     createdAt: string;
@@ -26,4 +28,8 @@ export type Account = {
 
 export interface ToggleAccountStatusRequest {
     isEnabled: boolean;
+}
+
+export interface ResendInvitationRequest {
+    email: string;
 }

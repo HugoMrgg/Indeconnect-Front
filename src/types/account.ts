@@ -1,5 +1,13 @@
-﻿    export const INVITABLE_ROLES = ["Administrator", "Moderator", "SuperVendor"] as const;
-export type InvitableRole = typeof INVITABLE_ROLES[number];
+﻿// @/types/account.ts
+export enum Role {
+    Administrator = "Administrator",
+    Moderator = "Moderator",
+    SuperVendor = "SuperVendor",
+    Vendor = "Vendor",
+    Client = "Client"
+}
+
+export type InvitableRole = "Administrator" | "Moderator" | "SuperVendor" | "Vendor";
 
 export interface InviteAccountRequest {
     email: string;
@@ -7,5 +15,3 @@ export interface InviteAccountRequest {
     lastName: string;
     targetRole: InvitableRole;
 }
-
-export interface InviteAccountFormData extends InviteAccountRequest {}

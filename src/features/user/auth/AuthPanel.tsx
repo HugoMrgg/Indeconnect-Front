@@ -10,7 +10,7 @@ import { X } from "lucide-react";
 
 export function AuthPanel() {
     const { authOpen, authMode, closeAuth } = useUI();
-    const { login, register, user, loading, error } = useAuth();
+    const { login, register, user, isLoading, error } = useAuth();
 
     // Form state
     const [email, setEmail] = useState("");
@@ -35,10 +35,10 @@ export function AuthPanel() {
 
     // auto-close on successful register/register
     useEffect(() => {
-        if (authOpen && user && !loading && !error) {
+        if (authOpen && user && !isLoading && !error) {
             closeAuth();
         }
-    }, [user]);
+    }, [authOpen, closeAuth, error, isLoading, user]);
 
     // ---------------------
     // LOGIN
@@ -100,7 +100,7 @@ export function AuthPanel() {
                     <LoginForm
                         email={email}
                         password={password}
-                        loading={loading}
+                        loading={isLoading}
                         error={error ?? localError}
                         onEmail={setEmail}
                         onPassword={setPassword}
@@ -113,7 +113,7 @@ export function AuthPanel() {
                         email={email}
                         password={password}
                         confirmPassword={confirmPassword}
-                        loading={loading}
+                        loading={isLoading}
                         error={error ?? localError}
                         onFirstName={setFirstName}
                         onLastName={setLastName}

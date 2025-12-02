@@ -1,18 +1,26 @@
-﻿import { useState } from "react";
+﻿import { useState, useCallback } from "react";
 import { GuestMenu } from "@/features/navbar/menu/user/GuestMenu";
 import { AccountMenu } from "@/features/navbar/menu/user/AccountMenu";
 import { AdminMenu } from "@/features/navbar/menu/user/AdminMenu";
 import { ModeratorMenu } from "@/features/navbar/menu/user/ModeratorMenu";
 import { SuperVendorMenu } from "@/features/navbar/menu/brand/superVendorMenu";
 import { VendorMenu } from "@/features/navbar/menu/brand/VendorMenu";
-import { User } from "lucide-react";
+import { User, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 export function UserMenu() {
     const [open, setOpen] = useState(false);
-    const { userRole } = useAuth();
+    const { userRole, isAuthenticated, logout } = useAuth();
+    const navigate = useNavigate();
 
-    const closeMenu = () => setOpen(false);
+    const closeMenu = useCallback(() => setOpen(false), []);
+
+    const handleLogout = useCallback(() => {
+        logout();
+        closeMenu();
+        navigate("/");
+    }, [logout, closeMenu, navigate]);
 
     const renderMenu = () => {
         switch (userRole) {
@@ -48,6 +56,19 @@ export function UserMenu() {
                 }`}
             >
                 {renderMenu()}
+
+                {isAuthenticated && (
+                    <>
+                        <div className="border-t border-gray-700 my-2" />
+                        <button
+                            onClick={handleLogout}
+                            className="flex items-center gap-2 text-red-500 hover:text-red-400 transition-colors"
+                        >
+                            <LogOut size={18} />
+                            Se déconnecter
+                        </button>
+                    </>
+                )}
             </div>
         </div>
     );

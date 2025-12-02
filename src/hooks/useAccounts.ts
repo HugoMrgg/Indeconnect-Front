@@ -2,6 +2,7 @@
 import { AxiosError } from "axios";
 import { AccountsService } from "@/api/services/account";
 import type { Account } from "@/api/services/account/types";
+import type { InviteAccountRequest } from "@/types/account";
 
 interface UseAccountsReturn {
     accounts: Account[];
@@ -9,6 +10,7 @@ interface UseAccountsReturn {
     error: string | null;
     refetch: () => Promise<void>;
     toggleStatus: (accountId: number, currentStatus: boolean) => Promise<void>;
+    resendInvitation: (data: InviteAccountRequest) => Promise<void>;
 }
 
 export function useAccounts(): UseAccountsReturn {
@@ -19,7 +21,6 @@ export function useAccounts(): UseAccountsReturn {
     const abortControllerRef = useRef<AbortController | null>(null);
 
     const fetchAccounts = useCallback(async () => {
-        // Cancel previous request if still pending
         if (abortControllerRef.current) {
             abortControllerRef.current.abort();
         }
@@ -32,14 +33,12 @@ export function useAccounts(): UseAccountsReturn {
             const data = await AccountsService.getAll(abortControllerRef.current.signal);
             setAccounts(data);
         } catch (err) {
-            // Type guard pour CanceledError
             if (err instanceof Error && err.name === "CanceledError") {
                 return;
             }
 
-            console.error("Erreur chargement comptes:", err);
+            console.error("[useAccounts] Erreur chargement:", err);
 
-            // Gestion des erreurs Axios
             if (err instanceof AxiosError) {
                 setError(err.response?.data?.message || "Impossible de charger les comptes");
             } else if (err instanceof Error) {
@@ -54,32 +53,66 @@ export function useAccounts(): UseAccountsReturn {
         }
     }, []);
 
-    const toggleAccountStatus = useCallback(async (
-        accountId: number,
-        currentStatus: boolean
-    ) => {
-        try {
-            await AccountsService.toggleStatus(accountId, !currentStatus);
-            await fetchAccounts();
-        } catch (err) {
-            const errorMessage = err instanceof AxiosError
-                ? err.response?.data?.message || "Erreur lors de la mise à jour du compte"
-                : err instanceof Error
-                    ? err.message
-                    : "Erreur lors de la mise à jour du compte";
+    const toggleAccountStatus = useCallback(
+        async (accountId: number, currentStatus: boolean) => {
+            try {
+                await AccountsService.toggleStatus(
+                    accountId,
+                    !currentStatus,
+                    abortControllerRef.current?.signal
+                );
+                await fetchAccounts();
+            } catch (err) {
+                if (err instanceof Error && err.name === "CanceledError") {
+                    return;
+                }
 
-            setError(errorMessage);
-            throw err;
-        }
-    }, [fetchAccounts]);
+                const errorMessage =
+                    err instanceof AxiosError
+                        ? err.response?.data?.message || "Erreur lors de la mise à jour du compte"
+                        : err instanceof Error
+                            ? err.message
+                            : "Erreur lors de la mise à jour du compte";
+
+                setError(errorMessage);
+                throw err;
+            }
+        },
+        [fetchAccounts]
+    );
+
+    const resendInvitation = useCallback(
+        async (data: InviteAccountRequest) => {
+            try {
+                await AccountsService.resendInvitation(
+                    data,
+                    abortControllerRef.current?.signal
+                );
+                await fetchAccounts();
+            } catch (err) {
+                if (err instanceof Error && err.name === "CanceledError") {
+                    return;
+                }
+
+                const errorMessage =
+                    err instanceof AxiosError
+                        ? err.response?.data?.message || "Erreur lors de la réinvitation"
+                        : err instanceof Error
+                            ? err.message
+                            : "Erreur lors de la réinvitation";
+
+                setError(errorMessage);
+                throw err;
+            }
+        },
+        [fetchAccounts]
+    );
 
     useEffect(() => {
         fetchAccounts();
 
         return () => {
-            if (abortControllerRef.current) {
-                abortControllerRef.current.abort();
-            }
+            abortControllerRef.current?.abort();
         };
     }, [fetchAccounts]);
 
@@ -88,6 +121,7 @@ export function useAccounts(): UseAccountsReturn {
         loading,
         error,
         refetch: fetchAccounts,
-        toggleStatus: toggleAccountStatus
+        toggleStatus: toggleAccountStatus,
+        resendInvitation,
     };
 }

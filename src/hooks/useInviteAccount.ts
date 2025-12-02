@@ -1,5 +1,4 @@
-﻿// @/hooks/useInviteAccount.ts
-import { useState, useCallback, useEffect } from "react";
+﻿import { useState, useCallback, useEffect } from "react";
 import { AxiosError } from "axios";
 import { AuthService } from "@/api/services/auth";
 import type { InviteAccountRequest } from "@/types/account";
@@ -12,6 +11,7 @@ interface UseInviteAccountReturn {
     error: string | null;
     success: boolean;
     validationErrors: ValidationErrors;
+    formData: InviteAccountRequest | null;
 }
 
 export function useInviteAccount(onSuccess: () => void): UseInviteAccountReturn {
@@ -19,10 +19,12 @@ export function useInviteAccount(onSuccess: () => void): UseInviteAccountReturn 
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
     const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
+    const [formData, setFormData] = useState<InviteAccountRequest | null>(null);
 
     const invite = useCallback(async (data: InviteAccountRequest) => {
         setError(null);
         setValidationErrors({});
+        setFormData(data);
 
         const errors = validateInviteAccountForm(data);
         if (Object.keys(errors).length > 0) {
@@ -53,6 +55,7 @@ export function useInviteAccount(onSuccess: () => void): UseInviteAccountReturn 
 
         const timer = setTimeout(() => {
             onSuccess();
+            reset();
         }, 2000);
 
         return () => clearTimeout(timer);
@@ -63,6 +66,7 @@ export function useInviteAccount(onSuccess: () => void): UseInviteAccountReturn 
         setSuccess(false);
         setValidationErrors({});
         setLoading(false);
+        setFormData(null);
     }, []);
 
     return {
@@ -71,6 +75,7 @@ export function useInviteAccount(onSuccess: () => void): UseInviteAccountReturn 
         loading,
         error,
         success,
-        validationErrors
+        validationErrors,
+        formData
     };
 }

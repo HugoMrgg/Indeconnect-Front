@@ -1,16 +1,17 @@
-﻿import { useState } from "react";
+﻿// @/features/navbar/menu/user/ModeratorMenu.tsx
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CheckCircle, MessageSquare, UserPlus, Logs, Package } from "lucide-react";
+import { CheckCircle, MessageSquare, Users, Logs, Package } from "lucide-react";
 
 export function ModeratorMenu() {
     const [, setOpen] = useState(false);
     const navigate = useNavigate();
 
     const menuItems = [
+        { icon: Users, label: "Gestion des Comptes", path: "/admin/accounts" }, // ✅ Changé
         { icon: CheckCircle, label: "Valider les marques", path: "/moderator/brands" },
         { icon: Package, label: "Modérer les produits", path: "/moderator/products" },
         { icon: MessageSquare, label: "Modérer les commentaires", path: "/moderator/reviews" },
-        { icon: UserPlus, label: "Créer SuperVendeur", path: "/moderator/create-sv" },
         { icon: Logs, label: "Consulter les logs", path: "/moderator/logs" }
     ];
 

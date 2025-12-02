@@ -1,6 +1,5 @@
-﻿// @/api/services/accounts/routes.ts
-
-export const routes = {
+﻿export const routes = {
     list: "/users/accounts",
-    toggleStatus: (accountId: number) => `/admin/accounts/${accountId}/toggle`,
+    toggleStatus: (accountId: number) => `/users/${accountId}/toggle`,
+    resendInvitation: "/auth/invite",
 };

@@ -1,13 +1,15 @@
-﻿// @/features/admin/AccountsTable.tsx
-import { CheckCircle, XCircle, Mail } from "lucide-react";
-import type { Account } from "@/api/services/account/types"; // ✅ Import depuis le service
+﻿import { CheckCircle, XCircle, Mail, Clock, Send } from "lucide-react";
+import type { Account } from "@/api/services/account/types";
+import type { InviteAccountRequest } from "@/types/account";
+import { type InvitableRole } from "@/types/account";
 
 interface AccountsTableProps {
     accounts: Account[];
     onToggleStatus: (accountId: number, currentStatus: boolean) => Promise<void>;
+    onResendInvitation: (data: InviteAccountRequest) => Promise<void>;
 }
 
-export function AccountsTable({ accounts, onToggleStatus }: AccountsTableProps) {
+export function AccountsTable({ accounts, onToggleStatus, onResendInvitation }: AccountsTableProps) {
     if (accounts.length === 0) {
         return (
             <div className="text-center py-16">
@@ -16,6 +18,22 @@ export function AccountsTable({ accounts, onToggleStatus }: AccountsTableProps) 
             </div>
         );
     }
+
+    const handleResend = async (account: Account) => {
+        const invitableRoles: InvitableRole[] = ["Administrator", "Moderator", "SuperVendor"];
+
+        if (!invitableRoles.includes(account.role as InvitableRole)) {
+            console.error(`Invalid role for invitation: ${account.role}`);
+            return;
+        }
+
+        await onResendInvitation({
+            email: account.email,
+            firstName: account.firstName,
+            lastName: account.lastName,
+            targetRole: account.role as InvitableRole,
+        });
+    };
 
     return (
         <div className="overflow-x-auto">
@@ -56,7 +74,12 @@ export function AccountsTable({ accounts, onToggleStatus }: AccountsTableProps) 
                         </td>
                         <td className="px-6 py-4">
                             <div className="flex items-center gap-2">
-                                {account.isEnabled ? (
+                                {account.isPendingActivation ? (
+                                    <>
+                                        <Clock size={16} className="text-orange-600" aria-hidden="true" />
+                                        <span className="text-sm text-orange-600 font-medium">En attente</span>
+                                    </>
+                                ) : account.isEnabled ? (
                                     <>
                                         <CheckCircle size={16} className="text-green-600" aria-hidden="true" />
                                         <span className="text-sm text-green-600 font-medium">Actif</span>
@@ -64,7 +87,7 @@ export function AccountsTable({ accounts, onToggleStatus }: AccountsTableProps) 
                                 ) : (
                                     <>
                                         <XCircle size={16} className="text-red-600" aria-hidden="true" />
-                                        <span className="text-sm text-red-600 font-medium">Inactif</span>
+                                        <span className="text-sm text-red-600 font-medium">Désactivé</span>
                                     </>
                                 )}
                             </div>
@@ -73,13 +96,24 @@ export function AccountsTable({ accounts, onToggleStatus }: AccountsTableProps) 
                             {new Date(account.createdAt).toLocaleDateString("fr-FR")}
                         </td>
                         <td className="px-6 py-4">
-                            <button
-                                onClick={() => onToggleStatus(account.id, account.isEnabled)}
-                                className="text-xs px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 font-medium"
-                                aria-label={`${account.isEnabled ? 'Désactiver' : 'Réactiver'} le compte de ${account.firstName} ${account.lastName}`}
-                            >
-                                {account.isEnabled ? "Désactiver" : "Réactiver"}
-                            </button>
+                            {account.isPendingActivation ? (
+                                <button
+                                    onClick={() => handleResend(account)}
+                                    className="flex items-center gap-2 text-xs px-4 py-2 rounded-lg border border-orange-300 bg-orange-50 text-orange-700 hover:bg-orange-100 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 font-medium"
+                                    aria-label={`Réinviter ${account.firstName} ${account.lastName}`}
+                                >
+                                    <Send size={14} aria-hidden="true" />
+                                    Réinviter
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => onToggleStatus(account.id, account.isEnabled)}
+                                    className="text-xs px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 font-medium"
+                                    aria-label={`${account.isEnabled ? 'Désactiver' : 'Réactiver'} le compte de ${account.firstName} ${account.lastName}`}
+                                >
+                                    {account.isEnabled ? "Désactiver" : "Réactiver"}
+                                </button>
+                            )}
                         </td>
                     </tr>
                 ))}

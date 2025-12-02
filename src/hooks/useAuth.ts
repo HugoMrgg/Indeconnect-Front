@@ -1,129 +1,142 @@
-﻿import { useState, useEffect } from "react";
+﻿import { useState, useCallback, useEffect } from "react";
 import { AuthService } from "@/api/services/auth";
-import { useAuthContext } from "@/hooks/useAuthContext";
-import toast from "react-hot-toast";
 import { UsersService } from "@/api/services/user";
-import {
-    AuthResponse,
-    LoginPayload,
-    RegisterPayload,
-} from "@/api/services/auth/types";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import type { AuthResponse, LoginPayload, RegisterPayload } from "@/api/services/auth/types";
 
-function parseJwt(token: string): any {
+/**
+ * Extrait l'ID utilisateur du JWT
+ */
+function getUserIdFromToken(token: string): number | null {
     try {
-        const base64 = token.split('.')[1];
-        const base64Url = base64.replace(/-/g, '+').replace(/_/g, '/');
+        const base64 = token.split(".")[1];
+        if (!base64) return null;
+
         const jsonPayload = decodeURIComponent(
-            atob(base64Url)
-                .split('')
-                .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-                .join('')
+            atob(base64.replace(/-/g, "+").replace(/_/g, "/"))
+                .split("")
+                .map((c) => `%${c.charCodeAt(0).toString(16).padStart(2, "0")}`)
+                .join("")
         );
-        return JSON.parse(jsonPayload);
-    } catch {
+
+        const payload = JSON.parse(jsonPayload);
+        const id =
+            payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+
+        return Number(id) || null;
+    } catch (error) {
+        console.error("[useAuth] Erreur parsing JWT", error);
         return null;
     }
 }
 
-function getUserIdFromToken(token: string): number | null {
-    if (!token) return null;
-    const payload = parseJwt(token);
-    if (!payload) return null;
-    const id = payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-    return Number(id);
-}
-
+/**
+ * Hook principal pour la gestion de l'authentification
+ */
 export function useAuth() {
-    const { token, setToken, user, setUser, userRole } = useAuthContext(); // ← CHANGÉ
-    const [loading, setLoading] = useState<boolean>(false);
+    const { token, user, userRole, isLoading, login: loginContext, logout: logoutContext, setUser, setLoading } =
+        useAuthContext();
     const [error, setError] = useState<string | null>(null);
+    const navigate = useNavigate();
 
-    // Restore user on mount from token
     useEffect(() => {
-        if (token && !user) {
+        if (token && !user && !isLoading) {
             const userId = getUserIdFromToken(token);
+
             if (userId) {
                 (async () => {
                     try {
-                        const u = await UsersService.getById(userId);
-                        setUser(u); // ← Met à jour le context
+                        setLoading(true);
+                        const fetchedUser = await UsersService.getById(userId);
+                        setUser(fetchedUser);
                     } catch (err) {
-                        console.error("[Auth] Erreur récupération user", err);
-                        setUser(null);
-                        setToken(null);
+                        console.error("[useAuth] Erreur restauration utilisateur", err);
+                        logoutContext();
+                        navigate("/");
+                    } finally {
+                        setLoading(false);
                     }
                 })();
             }
         }
-    }, [token, user, setToken, setUser]);
+    }, [token, user, isLoading, setUser, setLoading, logoutContext, navigate]);
 
-    // LOGIN
-    const login = async (payload: LoginPayload): Promise<AuthResponse> => {
-        setLoading(true);
-        setError(null);
+    const login = useCallback(
+        async (payload: LoginPayload): Promise<AuthResponse> => {
+            setError(null);
+            setLoading(true);
 
-        try {
-            const res: AuthResponse = await AuthService.login(payload);
+            try {
+                const res = await AuthService.login(payload);
 
-            setToken(res.token);
-            setUser(res.user);
+                loginContext(res.user, res.token);
 
-            toast.success(`Bienvenue ${res.user.firstName}`, {
-                icon: "",
-                style: {
-                    borderRadius: "10px",
-                    background: "#000",
-                    color: "#fff",
-                },
-            });
+                toast.success(`Bienvenue ${res.user.firstName}`, {
+                    icon: "👋",
+                    style: {
+                        borderRadius: "10px",
+                        background: "#000",
+                        color: "#fff",
+                    },
+                });
 
-            return res;
-        } catch (err: unknown) {
-            const msg = err instanceof Error ? err.message : "Login error";
-            setError(msg);
-            throw err;
-        } finally {
-            setLoading(false);
-        }
-    };
+                return res;
+            } catch (err) {
+                const msg = err instanceof Error ? err.message : "Erreur de connexion";
+                setError(msg);
+                toast.error(msg);
+                throw err;
+            } finally {
+                setLoading(false);
+            }
+        },
+        [loginContext, setLoading]
+    );
 
-    // REGISTER
-    const register = async (payload: RegisterPayload): Promise<AuthResponse> => {
-        setLoading(true);
-        setError(null);
+    const register = useCallback(
+        async (payload: RegisterPayload): Promise<AuthResponse> => {
+            setError(null);
+            setLoading(true);
 
-        try {
-            const res: AuthResponse = await AuthService.register(payload);
+            try {
+                const res = await AuthService.register(payload);
 
-            setToken(res.token);
-            setUser(res.user); // ← Met à jour le Context
+                loginContext(res.user, res.token);
 
-            toast.success(`Compte créé Bienvenue ${res.user.firstName} !`);
+                toast.success(`Compte créé, bienvenue ${res.user.firstName}!`);
 
-            return res;
-        } catch (err: unknown) {
-            const msg = err instanceof Error ? err.message : "Register error";
-            setError(msg);
-            throw err;
-        } finally {
-            setLoading(false);
-        }
-    };
+                return res;
+            } catch (err) {
+                const msg = err instanceof Error ? err.message : "Erreur lors de l'inscription";
+                setError(msg);
+                toast.error(msg);
+                throw err;
+            } finally {
+                setLoading(false);
+            }
+        },
+        [loginContext, setLoading]
+    );
 
-    const logout = () => {
-        setToken(null);
-        setUser(null);
-        toast.success("Déconnecté avec succès");
-    };
+    const logout = useCallback(() => {
+        logoutContext();
+        toast.success("Déconnexion réussie");
+        navigate("/");
+    }, [logoutContext, navigate]);
 
     return {
         token,
         user,
         userRole,
-        loading,
+        isLoading,
+        isAuthenticated: !!user && !!token,
         error,
+
         login,
         register,
         logout,
+        setError,
     };
 }

@@ -1,13 +1,13 @@
-﻿// @/pages/admin/AccountsManagement.tsx
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Plus } from "lucide-react";
 import { InviteAccountModal } from "@/features/admin/InviteAccountModal";
 import { AccountsTable } from "@/features/admin/AccountsTable";
 import { useAccounts } from "@/hooks/useAccounts";
+import type { InviteAccountRequest } from "@/types/account";
 
 export function AccountsManagement() {
     const [openModal, setOpenModal] = useState(false);
-    const { accounts, loading, error, refetch, toggleStatus } = useAccounts();
+    const { accounts, loading, error, refetch, toggleStatus, resendInvitation } = useAccounts();
 
     const handleInviteSuccess = () => {
         setOpenModal(false);
@@ -18,8 +18,15 @@ export function AccountsManagement() {
         try {
             await toggleStatus(accountId, currentStatus);
         } catch (err) {
-            // Error already handled in hook, just log for debugging
             console.error("Failed to toggle account status:", err);
+        }
+    };
+
+    const handleResendInvitation = async (data: InviteAccountRequest): Promise<void> => {
+        try {
+            await resendInvitation(data);
+        } catch (err) {
+            console.error("Failed to resend invitation:", err);
         }
     };
 
@@ -85,6 +92,7 @@ export function AccountsManagement() {
                             <AccountsTable
                                 accounts={accounts}
                                 onToggleStatus={handleToggleStatus}
+                                onResendInvitation={handleResendInvitation}
                             />
                         </div>
                     )}

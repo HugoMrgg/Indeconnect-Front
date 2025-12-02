@@ -1,6 +1,9 @@
-﻿import { useState, useId } from "react";
+﻿// @/features/admin/InviteAccountForm.tsx
+import { useState, useId, useMemo } from "react";
 import { AlertCircle } from "lucide-react";
-import { INVITABLE_ROLES, type InvitableRole, type InviteAccountRequest } from "@/types/account";
+import { Role } from "@/types/account";
+import { getInvitableRoles } from "@/utils/roleHierarchy";
+import type { InvitableRole, InviteAccountRequest } from "@/types/account";
 
 interface InviteAccountFormProps {
     onSubmit: (data: InviteAccountRequest) => void;
@@ -12,6 +15,7 @@ interface InviteAccountFormProps {
         firstName?: string;
         lastName?: string;
     };
+    currentRole: Role; // ✅ Nouveau prop
 }
 
 export function InviteAccountForm({
@@ -19,13 +23,20 @@ export function InviteAccountForm({
                                       onCancel,
                                       loading,
                                       error,
-                                      validationErrors = {}
+                                      validationErrors = {},
+                                      currentRole // ✅ Récupéré
                                   }: InviteAccountFormProps) {
+    // ✅ Calculer les rôles invitables
+    const invitableRoles = useMemo(() => getInvitableRoles(currentRole), [currentRole]);
+
+    // ✅ Initialiser avec le premier rôle disponible
+    const defaultRole = invitableRoles[0] as InvitableRole;
+
     const [formData, setFormData] = useState<InviteAccountRequest>({
         email: "",
         firstName: "",
         lastName: "",
-        targetRole: "Moderator"
+        targetRole: defaultRole
     });
 
     const formId = useId();
@@ -42,6 +53,19 @@ export function InviteAccountForm({
     ) => {
         setFormData(prev => ({ ...prev, [field]: value }));
     };
+
+    // ✅ Si aucun rôle invitable, afficher message d'erreur
+    if (invitableRoles.length === 0) {
+        return (
+            <div
+                role="alert"
+                className="flex items-center gap-2 bg-red-50 text-red-700 p-4 rounded-lg"
+            >
+                <AlertCircle size={20} aria-hidden="true" />
+                <p>Vous n'avez pas les permissions pour inviter des comptes.</p>
+            </div>
+        );
+    }
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4" aria-labelledby={`${formId}-title`}>
@@ -79,6 +103,7 @@ export function InviteAccountForm({
                     aria-describedby={validationErrors.email ? `${formId}-email-error` : undefined}
                     required
                     autoFocus
+                    disabled={loading}
                 />
                 {validationErrors.email && (
                     <p id={`${formId}-email-error`} className="text-red-600 text-sm mt-1" role="alert">
@@ -107,6 +132,7 @@ export function InviteAccountForm({
                     aria-invalid={!!validationErrors.firstName}
                     aria-describedby={validationErrors.firstName ? `${formId}-firstName-error` : undefined}
                     required
+                    disabled={loading}
                 />
                 {validationErrors.firstName && (
                     <p id={`${formId}-firstName-error`} className="text-red-600 text-sm mt-1" role="alert">
@@ -135,6 +161,7 @@ export function InviteAccountForm({
                     aria-invalid={!!validationErrors.lastName}
                     aria-describedby={validationErrors.lastName ? `${formId}-lastName-error` : undefined}
                     required
+                    disabled={loading}
                 />
                 {validationErrors.lastName && (
                     <p id={`${formId}-lastName-error`} className="text-red-600 text-sm mt-1" role="alert">
@@ -143,7 +170,7 @@ export function InviteAccountForm({
                 )}
             </div>
 
-            {/* Rôle */}
+            {/* Rôle - ✅ Filtré dynamiquement */}
             <div>
                 <label
                     htmlFor={`${formId}-role`}
@@ -157,8 +184,9 @@ export function InviteAccountForm({
                     onChange={(e) => updateField("targetRole", e.target.value as InvitableRole)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black bg-white"
                     required
+                    disabled={loading || invitableRoles.length === 0}
                 >
-                    {INVITABLE_ROLES.map((role) => (
+                    {invitableRoles.map((role) => (
                         <option key={role} value={role}>
                             {role}
                         </option>
@@ -171,7 +199,7 @@ export function InviteAccountForm({
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={loading}
                 >
                     Annuler
