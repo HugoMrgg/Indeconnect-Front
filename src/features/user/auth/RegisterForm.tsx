@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 
 interface RegisterFormProps {
     firstName: string;
@@ -14,6 +15,7 @@ interface RegisterFormProps {
     onPassword: (value: string) => void;
     onConfirmPassword: (value: string) => void;
     onSubmit: (e: React.FormEvent) => void;
+    onGoogleRegister?: (idToken: string) => void;
 }
 
 export function RegisterForm({
@@ -30,7 +32,30 @@ export function RegisterForm({
                                  onPassword,
                                  onConfirmPassword,
                                  onSubmit,
+                                 onGoogleRegister,
                              }: RegisterFormProps) {
+    const [googleLoading, setGoogleLoading] = useState(false);
+
+    const handleGoogleSuccess = (credentialResponse: CredentialResponse) => {
+        if (credentialResponse.credential) {
+            setGoogleLoading(true);
+            console.log("JWT reçu:", credentialResponse.credential);
+
+            try {
+                onGoogleRegister?.(credentialResponse.credential);
+            } finally {
+                setGoogleLoading(false);
+            }
+        } else {
+            console.error("No credential in response");
+        }
+    };
+
+    const handleGoogleError = () => {
+        console.error("Google login failed");
+        setGoogleLoading(false);
+    };
+
     return (
         <form onSubmit={onSubmit} className="space-y-4">
             <h1 className="text-xl font-semibold text-gray-900 text-center">
@@ -56,7 +81,7 @@ export function RegisterForm({
                         type="text"
                         value={firstName}
                         onChange={(e) => onFirstName(e.target.value)}
-                        disabled={loading}
+                        disabled={loading || googleLoading}
                         required
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                         placeholder="Jean"
@@ -71,7 +96,7 @@ export function RegisterForm({
                         type="text"
                         value={lastName}
                         onChange={(e) => onLastName(e.target.value)}
-                        disabled={loading}
+                        disabled={loading || googleLoading}
                         required
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                         placeholder="Dupont"
@@ -88,7 +113,7 @@ export function RegisterForm({
                     type="email"
                     value={email}
                     onChange={(e) => onEmail(e.target.value)}
-                    disabled={loading}
+                    disabled={loading || googleLoading}
                     required
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="exemple@mail.com"
@@ -105,7 +130,7 @@ export function RegisterForm({
                         type="password"
                         value={password}
                         onChange={(e) => onPassword(e.target.value)}
-                        disabled={loading}
+                        disabled={loading || googleLoading}
                         required
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                         placeholder="••••••••"
@@ -120,7 +145,7 @@ export function RegisterForm({
                         type="password"
                         value={confirmPassword}
                         onChange={(e) => onConfirmPassword(e.target.value)}
-                        disabled={loading}
+                        disabled={loading || googleLoading}
                         required
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                         placeholder="••••••••"
@@ -130,12 +155,30 @@ export function RegisterForm({
 
             <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || googleLoading}
                 className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition active:scale-[0.98] font-medium"
                 aria-busy={loading}
             >
                 {loading ? "…" : "Créer mon compte"}
             </button>
+
+            <div className="flex items-center gap-3 my-4">
+                <div className="flex-1 h-px bg-gray-300" />
+                <span className="text-sm text-gray-500">ou</span>
+                <div className="flex-1 h-px bg-gray-300" />
+            </div>
+
+            <div className="flex justify-center">
+                <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={handleGoogleError}
+                    size="large"
+                    text="signup_with"
+                    shape="rectangular"
+                    theme="outline"
+                    locale="fr"
+                />
+            </div>
         </form>
     );
 }

@@ -3,4 +3,5 @@
     register: "/auth/register",
     invite: "/auth/invite",
     setPassword: "/auth/set-password",
+    google: "/auth/google",
 } as const;

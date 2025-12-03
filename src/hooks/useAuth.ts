@@ -120,6 +120,37 @@ export function useAuth() {
         [loginContext, setLoading]
     );
 
+    const googleAuth = useCallback(
+        async (idToken: string): Promise<AuthResponse> => {
+            setError(null);
+            setLoading(true);
+
+            try {
+                const res = await AuthService.googleAuth({ idToken });
+
+                loginContext(res.user, res.token);
+
+                toast.success(`Bienvenue ${res.user.firstName}`, {
+                    style: {
+                        borderRadius: "10px",
+                        background: "#000",
+                        color: "#fff",
+                    },
+                });
+
+                return res;
+            } catch (err) {
+                const msg = err instanceof Error ? err.message : "Erreur d'authentification Google";
+                setError(msg);
+                toast.error(msg);
+                throw err;
+            } finally {
+                setLoading(false);
+            }
+        },
+        [loginContext, setLoading]
+    );
+
     const logout = useCallback(() => {
         logoutContext();
         toast.success("Déconnexion réussie");
@@ -136,6 +167,7 @@ export function useAuth() {
 
         login,
         register,
+        googleAuth,
         logout,
         setError,
     };

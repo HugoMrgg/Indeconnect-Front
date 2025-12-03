@@ -27,6 +27,10 @@ export interface SetPasswordPayload {
     confirmPassword: string;
 }
 
+export interface GoogleAuthPayload {
+    idToken: string;
+}
+
 export interface AuthResponse {
     user: User;
     token: string;

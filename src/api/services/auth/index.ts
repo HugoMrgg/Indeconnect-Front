@@ -6,7 +6,8 @@ import {
     RegisterPayload,
     AuthResponse,
     InviteUserPayload,
-    SetPasswordPayload
+    SetPasswordPayload,
+    GoogleAuthPayload,
 } from "./types";
 
 function mapBackendToAuthResponse(data: any): AuthResponse {
@@ -33,6 +34,11 @@ export const AuthService = {
 
     register: async (payload: RegisterPayload): Promise<AuthResponse> => {
         const res = await axiosInstance.post(AUTH_ROUTES.register, payload);
+        return mapBackendToAuthResponse(res.data);
+    },
+
+    googleAuth: async (payload: GoogleAuthPayload): Promise<AuthResponse> => {
+        const res = await axiosInstance.post(AUTH_ROUTES.google, payload);
         return mapBackendToAuthResponse(res.data);
     },
 
