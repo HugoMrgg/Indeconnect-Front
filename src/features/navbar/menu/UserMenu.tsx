@@ -27,7 +27,7 @@ export function UserMenu() {
             case "Guest":
                 return <GuestMenu />;
             case "Client":
-                return <AccountMenu onLogout={closeMenu} />;
+                return <AccountMenu />;
             case "Administrator":
                 return <AdminMenu />;
             case "Moderator":
