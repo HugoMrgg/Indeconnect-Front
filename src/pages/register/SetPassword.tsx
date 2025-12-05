@@ -43,8 +43,11 @@ export function SetPassword() {
             setSuccess(true);
             setTimeout(() => navigate("/"), 3000);
         } catch (err: any) {
-            setError(err.response?.data?.message || "Erreur lors de l'activation du compte.");
-        } finally {
+            const apiError =
+                err.response?.data?.error ||
+                err.response?.data?.message;
+            setError(apiError || "Erreur lors de l'activation du compte.");
+        }finally {
             setLoading(false);
         }
     };
