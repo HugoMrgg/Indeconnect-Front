@@ -1,19 +1,32 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { Dice2  } from "lucide-react";
+import { Package, Boxes, BarChart3 } from "lucide-react";
 
 export function VendorMenu() {
-    const [ ,setOpen] = useState(false);
+    const [, setOpen] = useState(false);
     const navigate = useNavigate();
+
+    const menuItems = [
+        { icon: Package, label: "Mes produits", path: "/vendor/products" },
+        { icon: Boxes, label: "Gestion du stock", path: "/vendor/inventory" },
+        { icon: BarChart3, label: "Statistiques", path: "/vendor/stats" }
+    ];
 
     return (
         <>
-            <button
-                onClick={() => { setOpen(false); navigate("/login"); }}
-                className="flex items-center gap-2 hover:text-gray-300">
-                <Dice2  size={18}/> Ta marque
-            </button>
+            {menuItems.map((item) => (
+                <button
+                    key={item.path}
+                    onClick={() => {
+                        setOpen(false);
+                        navigate(item.path);
+                    }}
+                    className="flex items-center gap-2 hover:text-gray-300"
+                >
+                    <item.icon size={18} />
+                    {item.label}
+                </button>
+            ))}
         </>
     );
 }

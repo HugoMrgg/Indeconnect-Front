@@ -1,11 +1,13 @@
 ﻿import axiosInstance from "@/api/api";
 import { AUTH_ROUTES } from "./routes";
-import {User} from "../user/types";
-
+import { User } from "../user/types";
 import {
     LoginPayload,
     RegisterPayload,
-    AuthResponse
+    AuthResponse,
+    InviteUserPayload,
+    SetPasswordPayload,
+    GoogleAuthPayload,
 } from "./types";
 
 function mapBackendToAuthResponse(data: any): AuthResponse {
@@ -15,7 +17,7 @@ function mapBackendToAuthResponse(data: any): AuthResponse {
         lastName: data.lastName,
         email: data.email,
         role: data.role,
-        password: "" // le backend doit l'envoyer?
+        password: ""
     };
 
     return {
@@ -35,8 +37,16 @@ export const AuthService = {
         return mapBackendToAuthResponse(res.data);
     },
 
-    me: async (): Promise<AuthResponse> => {
-        const res = await axiosInstance.get(AUTH_ROUTES.me);
+    googleAuth: async (payload: GoogleAuthPayload): Promise<AuthResponse> => {
+        const res = await axiosInstance.post(AUTH_ROUTES.google, payload);
         return mapBackendToAuthResponse(res.data);
+    },
+
+    invite: async (payload: InviteUserPayload): Promise<void> => {
+        await axiosInstance.post(AUTH_ROUTES.invite, payload);
+    },
+
+    setPassword: async (payload: SetPasswordPayload): Promise<void> => {
+        await axiosInstance.post(AUTH_ROUTES.setPassword, payload);
     }
 };

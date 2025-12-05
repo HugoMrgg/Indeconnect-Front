@@ -1,17 +1,10 @@
-import { useAuth } from '@/hooks/useAuth';
-import { Heart, List, Settings, ShoppingCart, LogOut } from "lucide-react";
+import { Heart, List, Settings, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useCartUI } from "@/hooks/useCartUI"; // ← CHANGÉ ICI
+import { useCartUI } from "@/hooks/useCartUI";
 
-export function AccountMenu({ onLogout }: { onLogout: () => void }) {
-    const { logout } = useAuth();
+export function AccountMenu() {
     const { openCart } = useCartUI();
     const navigate = useNavigate();
-
-    const handleLogout = () => {
-        logout();
-        onLogout?.();
-    };
 
     return (
         <>
@@ -28,10 +21,6 @@ export function AccountMenu({ onLogout }: { onLogout: () => void }) {
             </button>
             <button className="flex items-center gap-2 hover:text-gray-300">
                 <Settings size={18}/> Paramètres
-            </button>
-            <button className="flex items-center gap-2 text-red-600 hover:text-gray-300"
-                onClick={handleLogout}>
-                <LogOut size={18}/> Se déconnecter
             </button>
         </>
     );

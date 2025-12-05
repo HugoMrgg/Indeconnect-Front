@@ -49,7 +49,7 @@ async function testConnection(): Promise<void> {
             console.error(`⚠️ Réponse du serveur avec ERREUR HTTP: ${axiosError.response.status}`);
             console.error("   Ce n'est PAS un Network Error. Le backend a répondu.");
             console.error(`   Message du serveur: ${JSON.stringify(axiosError.response.data)}`);
-            console.error("   => Le problème est la logique (login invalide, etc.), PAS la connectivité.");
+            console.error("   => Le problème est la logique (register invalide, etc.), PAS la connectivité.");
         } else {
             console.error("Erreur Inconnue:", axiosError.message);
         }

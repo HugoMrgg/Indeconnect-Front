@@ -8,7 +8,7 @@ import { WishlistContent } from "@/features/wishlist/WishlistContent";
 import { WishlistService } from "@/api/services/wishlist";
 import {useWishlist} from "@/hooks/useWishList";
 import {WishlistResponse} from "@/api/services/wishlist/types";
-import {userStorage} from "@/context/UserStorage";
+import {userStorage} from "@/storage/UserStorage";
 
 export function Wishlist() {
     const navigate = useNavigate();

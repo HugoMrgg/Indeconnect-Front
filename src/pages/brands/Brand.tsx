@@ -1,4 +1,4 @@
-﻿import React, {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
 import { useUI } from "@/context/UIContext";
 import { BannerBrand } from "@/features/banners/BannerBrand";
@@ -28,24 +28,30 @@ export const BrandPage: React.FC = () => {
     const brand = brands.find(b => b.name === decodedBrand);
 
     const { products, loading, error } = useProducts(brand?.id || null, decodedBrand);
-    const [subscribed, setSubscribed] = useState(false);
 
     const filter = useProductFilters(products);
     const [searchQuery, setSearchQuery] = useState<string>("");
 
-    if (loading || brandsLoading) return <BrandLoading name={decodedBrand} />;
-    if (error || brandsError) return <BrandError name={decodedBrand} message={error || brandsError || ''} />;
+    if (loading || brandsLoading) {
+        return <BrandLoading name={decodedBrand} bannerUrl={brand?.bannerUrl} />;
+    }
+
+    if (error || brandsError) {
+        return <BrandError
+            name={decodedBrand}
+            message={error || brandsError || ''}
+            bannerUrl={brand?.bannerUrl}
+        />;
+    }
 
     return (
         <div className="min-h-full bg-white">
-            <BannerBrand name={decodedBrand} />
+            <BannerBrand name={decodedBrand} bannerUrl={brand?.bannerUrl} />
 
             <main className="mx-auto max-w-6xl px-4 pb-16">
                 <BrandHeader
-                    brand={brand}
-                    subscribed={subscribed}
-                    onToggleSubscribe={() => setSubscribed(s => !s)}
-                />
+                    brand={brand}/>
+                <BrandHeader brand={brand} />
 
                 <BackToBrands />
 

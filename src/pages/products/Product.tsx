@@ -24,20 +24,24 @@ import {ProductLoading} from "@/features/product/ProductLoading";
 
 import { addVariantToCart } from "@/api/services/cart";
 import { useAuth } from "@/hooks/useAuth";
-import { useCartUI } from "@/hooks/useCartUI"; // ← AJOUTER
+import { useCartUI } from "@/hooks/useCartUI";
 import { AddToCartModal } from "@/features/cart/AddToCartModal";
 import { AddToCartButton } from "@/features/cart/AddToCartButton";
 import { ProductInfo } from "@/pages/products/ProductInfo";
-import toast from "react-hot-toast"; // ← AJOUTER (si pas déjà importé)
+import toast from "react-hot-toast";
+import {useBrands} from "@/hooks/useBrands"; 
 
 export function ProductPage() {
     const { productId, brandName } = useParams();
     const id = Number(productId);
     const navigate = useNavigate();
     const { user } = useAuth();
-    const { openCart } = useCartUI(); // ← AJOUTER
+    const { openCart } = useCartUI();
 
     const decodedBrand = decodeURIComponent(brandName ?? "");
+
+    const { brands } = useBrands();
+    const brand = brands.find(b => b.name === decodedBrand);
 
     const [product, setProduct] = useState<ProductDetail | null>(null);
     const [colorVariants, setColorVariants] = useState<ColorVariant[]>([]);
@@ -68,22 +72,15 @@ export function ProductPage() {
             if (!user?.id) throw new Error("Non authentifié");
             if (!selectedSize) throw new Error("Sélectionnez une taille");
 
-            // ✅ Ajout au panier
             await addVariantToCart(user.id, selectedSize.id, quantity);
-
-            // ✅ Fermer la modale de confirmation
             setIsCartModalOpen(false);
-
-            // ✅ Reset quantité
             setQuantity(1);
 
-            // ✅ Toast de succès
             toast.success("Produit ajouté au panier !", {
                 icon: "🛒",
                 duration: 2000,
             });
 
-            // ✅ Ouvrir le panier après un court délai (pour voir le toast)
             setTimeout(() => {
                 openCart();
             }, 300);
@@ -95,11 +92,17 @@ export function ProductPage() {
         }
     };
 
-    if (loading || !product) return <ProductLoading name={decodedBrand} />;
+    if (loading || !product) {
+        return <ProductLoading
+            name={decodedBrand}
+            productName={product?.name}
+            bannerUrl={brand?.bannerUrl}
+        />;
+    }
 
     return (
         <div className="min-h-screen bg-white">
-            <BannerBrand name={decodedBrand} />
+            <BannerBrand name={decodedBrand} bannerUrl={brand?.bannerUrl} />
 
             <div className="max-w-6xl mx-auto px-4 py-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -156,3 +159,4 @@ export function ProductPage() {
         </div>
     );
 }
+

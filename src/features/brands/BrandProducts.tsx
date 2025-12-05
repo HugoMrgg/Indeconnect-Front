@@ -2,7 +2,7 @@
 import toast from "react-hot-toast";
 
 import { WishlistService } from "@/api/services/wishlist";
-import { userStorage } from "@/context/UserStorage";
+import { userStorage } from "@/storage/UserStorage";
 import { Product } from "@/types/Product";
 
 import SortBar from "@/features/sorting/SortBar";
