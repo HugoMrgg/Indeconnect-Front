@@ -1,4 +1,5 @@
 ﻿import { User } from "../user/types";
+import {Role} from "@/types/account";
 
 export interface LoginPayload {
     email: string;
@@ -33,5 +34,14 @@ export interface GoogleAuthPayload {
 
 export interface AuthResponse {
     user: User;
+    token: string;
+}
+
+export interface BackendAuthResponse {
+    userId: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: Role;
     token: string;
 }

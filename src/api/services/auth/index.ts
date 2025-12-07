@@ -7,17 +7,16 @@ import {
     AuthResponse,
     InviteUserPayload,
     SetPasswordPayload,
-    GoogleAuthPayload,
+    GoogleAuthPayload, BackendAuthResponse,
 } from "./types";
 
-function mapBackendToAuthResponse(data: any): AuthResponse {
+function mapBackendToAuthResponse(data: BackendAuthResponse): AuthResponse {
     const user: User = {
         id: data.userId,
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
-        role: data.role,
-        password: ""
+        role: data.role
     };
 
     return {
