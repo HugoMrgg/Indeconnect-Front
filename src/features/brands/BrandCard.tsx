@@ -22,7 +22,7 @@ export const BrandCard: React.FC<Brand> = ({
         >
             <div className="flex space-x-3">
                 <img
-                    src={"../../images/"+logoUrl}
+                    src={logoUrl}
                     alt={`${name} logo`}
                     className="h-12 w-12 rounded-xl object-cover"
                 />

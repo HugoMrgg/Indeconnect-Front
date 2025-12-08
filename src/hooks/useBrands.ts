@@ -1,11 +1,11 @@
 ﻿import { useState, useEffect, useRef } from "react";
 import { brandsService } from "@/api/services/brands";
-import { Brand } from "@/types/brand";
+import { BrandSummaryDTO, EthicsSortType } from "@/api/services/brands/types";
 
 interface BrandFilters {
     page?: number;
     pageSize?: number;
-    sortBy?: string;
+    sortBy?: EthicsSortType;
     maxDistanceKm?: number;
     userRatingMin?: number;
     priceRange?: string;
@@ -17,7 +17,7 @@ interface BrandFilters {
 }
 
 export function useBrands(filters: BrandFilters = {}) {
-    const [brands, setBrands] = useState<Brand[]>([]);
+    const [brands, setBrands] = useState<BrandSummaryDTO[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 

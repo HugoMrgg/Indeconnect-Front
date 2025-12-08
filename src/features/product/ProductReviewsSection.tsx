@@ -14,7 +14,7 @@ export function ProductReviewsSection({ productId }: Props) {
         async function load() {
             setLoading(true);
             const res = await fetchProductReviews(productId);
-            setReviews(res.items || []);
+            setReviews(res.reviews || []);
             setLoading(false);
         }
         load();

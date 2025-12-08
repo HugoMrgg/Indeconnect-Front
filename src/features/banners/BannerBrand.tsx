@@ -6,7 +6,7 @@ interface BannerBrandProps {
 export const BannerBrand = ({ name, bannerUrl }: BannerBrandProps) => {
     // Image par défaut si pas de banner
     const fallbackBanner = "/banners/default-brand-banner.png";
-    const img = bannerUrl?"../../../images/"+bannerUrl : fallbackBanner;
+    const img = bannerUrl?bannerUrl : fallbackBanner;
     return (
         <section
             className="relative w-screen h-[20vh] min-h-[100px] md:h-[25vh] overflow-hidden bg-center bg-cover"

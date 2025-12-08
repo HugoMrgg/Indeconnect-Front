@@ -19,7 +19,7 @@ export function ProductImageGallery({ images }: Props) {
                 {images.map(img => (
                     <img
                         key={img.id}
-                        src={"../../../images/"+img.url}
+                        src={img.url}
                         onClick={() => setSelected(img.id)}
                         className={`
                             w-20 h-20 object-cover rounded-lg cursor-pointer border
@@ -34,7 +34,7 @@ export function ProductImageGallery({ images }: Props) {
             <div className="flex-1 flex items-center justify-center">
                 {current ? (
                     <img
-                    src={"../../../images/"+current?.url}
+                    src={current?.url}
                     className="h-[600px] object-contain rounded-xl shadow-lg"
                     alt={current?.url}/>
                 ) : (

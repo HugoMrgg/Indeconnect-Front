@@ -89,7 +89,7 @@ export function WishlistContent({
                             id: item.productId,
                             name: item.productName,
                             price: item.price,
-                            primaryImageUrl: "../../images/" +  item.primaryImageUrl,
+                            primaryImageUrl: item.primaryImageUrl,
                             primaryColor: item.primaryColor,
                             brandName: item.brandName,
                         } as any;
@@ -114,7 +114,7 @@ export function WishlistContent({
                             className="flex items-center border rounded-xl p-4 shadow-sm hover:shadow-md transition cursor-pointer"
                             onClick={() => handleOpenProduct(item.brandName, item.productId)}>
                             <img
-                                src={"../../images/" + item.primaryImageUrl}
+                                src={item.primaryImageUrl}
                             alt={item.productName}
                             className="w-24 h-24 rounded-xl object-cover mr-4"
                             />

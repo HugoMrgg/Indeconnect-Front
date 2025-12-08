@@ -56,7 +56,7 @@ export function CartContent() {
                 <div className="flex flex-col gap-4">
                     {cart.items.map((item) => {
                         const imageUrl = item.primaryImageUrl
-                            ? `/images/${item.primaryImageUrl}`
+                            ? `${item.primaryImageUrl}`
                             : "/placeholder.png";
 
                         return (
