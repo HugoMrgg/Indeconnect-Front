@@ -1,4 +1,4 @@
-﻿import { Heart, IdCard, MapPin } from "lucide-react";
+import { Heart, IdCard, MapPin} from "lucide-react";
 import { Brand } from "@/types/brand";
 import React from "react";
 import { useBrandSubscription } from "@/hooks/useBrandSubscription";
