@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useMemo} from "react";
 import { useParams } from "react-router-dom";
 import { useUI } from "@/context/UIContext";
 import { BannerBrand } from "@/features/banners/BannerBrand";
@@ -25,7 +25,20 @@ export const BrandPage: React.FC = () => {
     }, [setScope, closeFilters]);
 
     const { brands, loading: brandsLoading, error: brandsError } = useBrands();
-    const brand = brands.find(b => b.name === decodedBrand);
+
+    const brand = useMemo(() => {
+        const foundBrand = brands.find(b => b.name === decodedBrand);
+        if (!foundBrand) return undefined;
+
+        return {
+            ...foundBrand,
+            logoUrl: foundBrand.logoUrl ?? undefined,
+            bannerUrl: foundBrand.bannerUrl ?? undefined,
+            description: foundBrand.description ?? undefined,
+            address: foundBrand.address ?? undefined,
+            distanceKm: foundBrand.distanceKm ?? undefined,
+        };
+    }, [brands, decodedBrand]);
 
     const { products, loading, error } = useProducts(brand?.id || null, decodedBrand);
 
@@ -33,24 +46,22 @@ export const BrandPage: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState<string>("");
 
     if (loading || brandsLoading) {
-        return <BrandLoading name={decodedBrand} bannerUrl={brand?.bannerUrl} />;
+        return <BrandLoading name={decodedBrand} bannerUrl={brand?.bannerUrl ?? undefined} />;
     }
 
     if (error || brandsError) {
         return <BrandError
             name={decodedBrand}
             message={error || brandsError || ''}
-            bannerUrl={brand?.bannerUrl}
+            bannerUrl={brand?.bannerUrl ?? undefined}
         />;
     }
 
     return (
         <div className="min-h-full bg-white">
-            <BannerBrand name={decodedBrand} bannerUrl={brand?.bannerUrl} />
+            <BannerBrand name={decodedBrand} bannerUrl={brand?.bannerUrl ?? undefined} />
 
             <main className="mx-auto max-w-6xl px-4 pb-16">
-                <BrandHeader
-                    brand={brand}/>
                 <BrandHeader brand={brand} />
 
                 <BackToBrands />

@@ -3,6 +3,7 @@ import { BrandSection } from "@/features/brands/BrandSection";
 import { useBrands } from "@/hooks/useBrands";
 import { useUI } from "@/context/UIContext";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useGeolocation } from "@/hooks/useGeolocation";
 import { BrandFiltersPanel } from "@/features/filters/BrandFiltersPanel";
 import { BrandPageLayout } from "@/features/brands/BrandPageLayout";
 import { belgianCities } from "@/types/belgianCities";
@@ -30,10 +31,12 @@ export const Home: React.FC = () => {
 
     const [searchQuery, setSearchQuery] = useState<string>("");
 
-    // Attendre 500ms avant d'appeler l'API (évite les spams)
+    const [locationMode, setLocationMode] = useState<"city" | "gps">("city");
+
+    const { position, loading: gpsLoading, error: gpsError, requestLocation, clearLocation } = useGeolocation();
+
     const debouncedFilters = useDebounce(apiFilters, 500);
 
-    // Nettoyer les filtres vides
     const cleanedFilters = useMemo(() => {
         return Object.fromEntries(
             Object.entries(debouncedFilters).filter(([, v]) => {
@@ -46,7 +49,6 @@ export const Home: React.FC = () => {
 
     const { brands = [], loading, error } = useBrands(cleanedFilters);
 
-    // Filtrer les marques par recherche texte
     const filteredBrands = useMemo(() => {
         if (!searchQuery.trim()) return brands;
         const query = searchQuery.toLowerCase();
@@ -57,6 +59,16 @@ export const Home: React.FC = () => {
             return matchName || matchDescription || matchAddress;
         });
     }, [brands, searchQuery]);
+    const convertedBrands = useMemo(() => {
+        return filteredBrands.map(brand => ({
+            ...brand,
+            logoUrl: brand.logoUrl ?? undefined,
+            bannerUrl: brand.bannerUrl ?? undefined,
+            description: brand.description ?? undefined,
+            address: brand.address ?? undefined,
+            distanceKm: brand.distanceKm ?? undefined,
+        }));
+    }, [filteredBrands]);
 
     const { setScope, filtersOpen, closeFilters } = useUI();
 
@@ -65,7 +77,12 @@ export const Home: React.FC = () => {
         return () => closeFilters();
     }, [setScope, closeFilters]);
 
-    // Handlers pour les filtres
+    useEffect(() => {
+        if (locationMode === "gps" && position) {
+            setApiFilters(f => ({ ...f, lat: position.lat, lon: position.lon }));
+        }
+    }, [position, locationMode]);
+
     const handleSort = (sortBy: string) => setApiFilters(f => ({ ...f, sortBy }));
     const handleDistance = (km: number | undefined) => setApiFilters(f => ({ ...f, maxDistanceKm: km }));
     const handleUserRating = (rating: number | undefined) => setApiFilters(f => ({ ...f, userRatingMin: rating }));
@@ -88,9 +105,26 @@ export const Home: React.FC = () => {
         }
     };
 
+    const handleLocationModeChange = (mode: "city" | "gps") => {
+        setLocationMode(mode);
+
+        if (mode === "city") {
+            // Passer en mode ville : clear GPS
+            clearLocation();
+        } else {
+            // Passer en mode GPS : clear ville
+            setApiFilters(f => {
+                const { lat, lon, ...rest } = f;
+                return rest;
+            });
+        }
+    };
+
     const handleReset = () => {
         setApiFilters({ page: 1, pageSize: 10, maxDistanceKm: 80 });
         setSearchQuery("");
+        setLocationMode("city");
+        clearLocation();
     };
 
     const currentCity = belgianCities.find(
@@ -140,10 +174,16 @@ export const Home: React.FC = () => {
                 onChangeCity={handleCityChange}
                 selectedEthicTags={apiFilters.ethicTags ?? []}
                 onChangeEthicTags={handleEthicTags}
+                locationMode={locationMode}
+                onChangeLocationMode={handleLocationModeChange}
+                onRequestGPS={requestLocation}
+                gpsLoading={gpsLoading}
+                gpsError={gpsError}
+                hasGPSPosition={!!position}
             />
 
             <div className="items-center mt-6">
-                <BrandSection title="Toutes les marques :" brands={filteredBrands} />
+                <BrandSection title="Toutes les marques :" brands={convertedBrands} />
             </div>
         </BrandPageLayout>
     );
