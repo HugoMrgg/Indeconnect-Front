@@ -72,15 +72,21 @@ export function AuthPanel() {
         });
     };
 
-    // ✅ NOUVEAU : GOOGLE AUTH
+    // ---------------------
+    // GOOGLE AUTH
+    // ---------------------
     const handleGoogleAuth = async (idToken: string) => {
         setLocalError(null);
 
         try {
             await googleAuth(idToken);
             // Le useEffect ci-dessus fermera automatiquement le panel
-        } catch (err: any) {
-            // L'erreur est déjà gérée dans le hook
+        } catch (err) {
+            const errorMessage = err instanceof Error
+                ? err.message
+                : "Erreur d'authentification Google";
+
+            setLocalError(errorMessage);
             console.error("Google auth failed:", err);
         }
     };

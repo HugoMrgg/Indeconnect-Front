@@ -8,7 +8,7 @@ export function ModeratorMenu() {
     const navigate = useNavigate();
 
     const menuItems = [
-        { icon: Users, label: "Gestion des Comptes", path: "/admin/accounts" }, // ✅ Changé
+        { icon: Users, label: "Gestion des Comptes", path: "/admin/accounts" },
         { icon: CheckCircle, label: "Valider les marques", path: "/moderator/brands" },
         { icon: Package, label: "Modérer les produits", path: "/moderator/products" },
         { icon: MessageSquare, label: "Modérer les commentaires", path: "/moderator/reviews" },

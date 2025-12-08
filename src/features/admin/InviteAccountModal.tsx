@@ -16,7 +16,7 @@ export function InviteAccountModal({ onClose, onSuccess }: InviteAccountModalPro
     const closeButtonRef = useRef<HTMLButtonElement>(null);
 
     const { invite, loading, error, success, validationErrors, formData } = useInviteAccount(onSuccess);
-    const { user } = useAuth(); // ✅ Récupère l'utilisateur connecté
+    const { user } = useAuth();
 
     // Focus trap et gestion du clavier
     useEffect(() => {
@@ -105,7 +105,7 @@ export function InviteAccountModal({ onClose, onSuccess }: InviteAccountModalPro
         );
     }
 
-    // ✅ Si pas d'utilisateur connecté, afficher erreur
+    // Si pas d'utilisateur connecté, afficher erreur
     if (!user) {
         return (
             <div
@@ -158,7 +158,6 @@ export function InviteAccountModal({ onClose, onSuccess }: InviteAccountModalPro
                     </button>
                 </div>
 
-                {/* ✅ Passer currentRole au formulaire */}
                 <InviteAccountForm
                     onSubmit={invite}
                     onCancel={onClose}

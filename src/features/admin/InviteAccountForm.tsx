@@ -1,5 +1,4 @@
-﻿// @/features/admin/InviteAccountForm.tsx
-import { useState, useId, useMemo } from "react";
+﻿import { useState, useId, useMemo } from "react";
 import { AlertCircle } from "lucide-react";
 import { Role } from "@/types/account";
 import { getInvitableRoles } from "@/utils/roleHierarchy";
@@ -15,7 +14,7 @@ interface InviteAccountFormProps {
         firstName?: string;
         lastName?: string;
     };
-    currentRole: Role; // ✅ Nouveau prop
+    currentRole: Role;
 }
 
 export function InviteAccountForm({
@@ -24,12 +23,12 @@ export function InviteAccountForm({
                                       loading,
                                       error,
                                       validationErrors = {},
-                                      currentRole // ✅ Récupéré
+                                      currentRole
                                   }: InviteAccountFormProps) {
-    // ✅ Calculer les rôles invitables
+    // Calculer les rôles invitables
     const invitableRoles = useMemo(() => getInvitableRoles(currentRole), [currentRole]);
 
-    // ✅ Initialiser avec le premier rôle disponible
+    // Initialiser avec le premier rôle disponible
     const defaultRole = invitableRoles[0] as InvitableRole;
 
     const [formData, setFormData] = useState<InviteAccountRequest>({
@@ -54,7 +53,7 @@ export function InviteAccountForm({
         setFormData(prev => ({ ...prev, [field]: value }));
     };
 
-    // ✅ Si aucun rôle invitable, afficher message d'erreur
+    // Si aucun rôle invitable, afficher message d'erreur
     if (invitableRoles.length === 0) {
         return (
             <div
@@ -169,8 +168,6 @@ export function InviteAccountForm({
                     </p>
                 )}
             </div>
-
-            {/* Rôle - ✅ Filtré dynamiquement */}
             <div>
                 <label
                     htmlFor={`${formId}-role`}
