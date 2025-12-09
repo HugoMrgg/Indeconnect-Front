@@ -1,6 +1,6 @@
 interface BannerBrandProps {
     name: string;
-    bannerUrl?: string; // ← NOUVEAU
+    bannerUrl?: string | null;
 }
 
 export const BannerBrand = ({ name, bannerUrl }: BannerBrandProps) => {
