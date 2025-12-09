@@ -8,6 +8,6 @@ export const ethicsService = {
      */
     getEthicTags: async () => {
         const response = await axiosInstance.get(TAGS_ROUTES.tags);
-        return response.data; // EthicTagsListResponse { tags: EthicTag[] }
+        return response.data;
     }
 };

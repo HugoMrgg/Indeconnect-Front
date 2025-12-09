@@ -1,7 +1,7 @@
 ﻿import { X, MapPin, Navigation } from "lucide-react";
 import { StarRating } from "@/features/filters/StarRating";
 import { belgianCities } from "@/types/belgianCities";
-import { useEthicTags } from "@/hooks/useEthicTags";
+import { useEthicTags } from "@/hooks/Brand/useEthicTags";
 
 interface BrandFiltersPanelProps {
     open: boolean;

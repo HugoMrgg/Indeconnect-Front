@@ -2,7 +2,7 @@
 import { Plus } from "lucide-react";
 import { InviteAccountModal } from "@/features/admin/InviteAccountModal";
 import { AccountsTable } from "@/features/admin/AccountsTable";
-import { useAccounts } from "@/hooks/useAccounts";
+import { useAccounts } from "@/hooks/Auth/useAccounts";
 import type { InviteAccountRequest } from "@/types/account";
 
 export function AccountsManagement() {

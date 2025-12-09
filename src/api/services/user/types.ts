@@ -16,4 +16,6 @@ export type User = {
 
     /** Role d'utilisateur */
     role: string,
+
+    brandId?: number,
 };

@@ -1,8 +1,8 @@
 ﻿import { useState, useEffect, useCallback } from "react";
 import { getCart, addVariantToCart, removeVariantFromCart, clearCart } from "@/api/services/cart";
 import { CartDto } from "@/api/services/cart/types";
-import { useAuth } from "@/hooks/useAuth";
-import { useCartUI } from "@/hooks/useCartUI";
+import { useAuth } from "@/hooks/Auth/useAuth";
+import { useCartUI } from "@/hooks/User/useCartUI";
 import toast from "react-hot-toast";
 
 export function useCart(shouldFetch: boolean = true) {

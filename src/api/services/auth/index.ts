@@ -7,7 +7,8 @@ import {
     AuthResponse,
     InviteUserPayload,
     SetPasswordPayload,
-    GoogleAuthPayload, BackendAuthResponse,
+    GoogleAuthPayload,
+    BackendAuthResponse,
 } from "./types";
 
 function mapBackendToAuthResponse(data: BackendAuthResponse): AuthResponse {
@@ -16,7 +17,8 @@ function mapBackendToAuthResponse(data: BackendAuthResponse): AuthResponse {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
-        role: data.role
+        role: data.role,
+        brandId: data.brandId,
     };
 
     return {

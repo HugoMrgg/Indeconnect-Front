@@ -6,7 +6,7 @@ import { WishlistPageLayout } from "@/features/wishlist/WishlistPageLayout";
 import { WishlistContent } from "@/features/wishlist/WishlistContent";
 
 import { WishlistService } from "@/api/services/wishlist";
-import {useWishlist} from "@/hooks/useWishList";
+import {useWishlist} from "@/hooks/User/useWishList";
 import {WishlistResponse} from "@/api/services/wishlist/types";
 import {userStorage} from "@/storage/UserStorage";
 

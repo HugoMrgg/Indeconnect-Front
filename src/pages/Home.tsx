@@ -1,9 +1,9 @@
 ﻿import React, { useEffect, useState, useMemo } from "react";
 import { BrandSection } from "@/features/brands/BrandSection";
-import { useBrands } from "@/hooks/useBrands";
+import { useBrands } from "@/hooks/Brand/useBrands";
 import { useUI } from "@/context/UIContext";
 import { useDebounce } from "@/hooks/useDebounce";
-import { useGeolocation } from "@/hooks/useGeolocation";
+import { useGeolocation } from "@/hooks/User/useGeolocation";
 import { BrandFiltersPanel } from "@/features/filters/BrandFiltersPanel";
 import { BrandPageLayout } from "@/features/brands/BrandPageLayout";
 import { belgianCities } from "@/types/belgianCities";

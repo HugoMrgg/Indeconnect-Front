@@ -1,7 +1,7 @@
 ﻿import React, { useEffect } from "react";
-import { useAuth } from "@/hooks/useAuth";
-import { useCart } from "@/hooks/useCart";
-import { useCartUI } from "@/hooks/useCartUI";
+import { useAuth } from "@/hooks/Auth/useAuth";
+import { useCart } from "@/hooks/User/useCart";
+import { useCartUI } from "@/hooks/User/useCartUI";
 import { Trash2 } from "lucide-react";
 
 export function CartContent() {
