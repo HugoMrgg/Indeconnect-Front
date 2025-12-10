@@ -6,7 +6,7 @@ import { Wishlist } from "@/pages/wishlist/Wishlist";
 import { SetPassword } from "@/pages/register/SetPassword";
 import { AccountsManagement } from "@/pages/admin/AccountsManagement";
 import { ProtectedRoute } from "@/routes/ProtectedRoute";
-import {MyBrandPage} from "@/features/brands/MyBrandPage";
+import {MyBrandPage} from "@/pages/brands/MyBrandPage";
 
 export default function AppRouter() {
     return (
