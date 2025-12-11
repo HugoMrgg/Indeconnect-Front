@@ -7,7 +7,6 @@ interface ImageUploaderProps {
     currentUrl?: string | null;
     onUpload: (url: string | null) => void;
     aspectRatio?: "square" | "banner";
-    folder?: string;
 }
 
 export function ImageUploader({
@@ -15,31 +14,40 @@ export function ImageUploader({
                                   currentUrl,
                                   onUpload,
                                   aspectRatio = "square",
-                                  folder = "brands"
                               }: ImageUploaderProps) {
     const [uploading, setUploading] = useState(false);
-    const [preview, setPreview] = useState<string | null>(currentUrl ?? null);  // ✅ Convertit undefined en null
+    const [preview, setPreview] = useState<string | null>(currentUrl ?? null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        // Preview local
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setPreview(reader.result as string);
-        };
-        reader.readAsDataURL(file);
+        setUploading(true);
 
-        // Upload vers Cloudinary
         try {
-            setUploading(true);
-            const url = await imagesService.uploadImage(file, { folder });
-            onUpload(url);
+            // Preview locale
+            const previewUrl = await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result as string);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+
+            setPreview(previewUrl);
+
+            const cloudinaryUrl = await imagesService.uploadImage(file, {
+                maxSizeMB: 10,
+                allowedFormats: ["image/jpeg", "image/png", "image/webp"]
+            });
+
+            setPreview(cloudinaryUrl);
+            onUpload(cloudinaryUrl);
+
         } catch (err) {
             console.error("Erreur upload:", err);
-            setPreview(currentUrl ?? null);  // ✅ Convertit undefined en null
+            alert("Erreur lors de l'upload de l'image. Vérifiez la console.");
+            setPreview(currentUrl ?? null);
         } finally {
             setUploading(false);
         }
@@ -47,7 +55,7 @@ export function ImageUploader({
 
     const handleRemove = () => {
         setPreview(null);
-        onUpload(null);  // ✅ Envoie null au lieu de ""
+        onUpload(null);
         if (fileInputRef.current) {
             fileInputRef.current.value = "";
         }

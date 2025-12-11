@@ -7,20 +7,22 @@ import { useProducts } from "@/hooks/Product/useProducts";
 import { useBrands } from "@/hooks/Brand/useBrands";
 import { useProductFilters } from "@/hooks/Product/useProductFilters";
 import { BrandHeader } from "@/features/brands/BrandHeader";
-import { BackToBrands } from "@/features/brands/BackToBrands";
 import { BrandProducts } from "@/features/brands/BrandProducts";
 import { BrandLoading } from "@/features/brands/BrandLoading";
 import { BrandError } from "@/features/brands/BrandError";
 import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
 import { Brand, EditableBrandFields } from "@/types/brand";
+import { BrandBreadcrumbs } from "@/features/navigation/BrandBreadcrumbs";
 
 interface BrandPageProps {
-    // Pour MyBrandPage : passer directement le brandId et les données
     brandId?: number;
     brandData?: Brand;
     editMode?: boolean;
-    onUpdateField?: <K extends keyof EditableBrandFields>(field: K, value: EditableBrandFields[K]) => void;  // ✅ CHANGÉ
+    onUpdateField?: <K extends keyof EditableBrandFields>(
+        field: K,
+        value: EditableBrandFields[K]
+    ) => void;
 }
 
 export const BrandPage: React.FC<BrandPageProps> = ({
@@ -40,12 +42,10 @@ export const BrandPage: React.FC<BrandPageProps> = ({
 
     const { brands, loading: brandsLoading, error: brandsError } = useBrands();
 
-    // Si brandData est fourni en prop, on l'utilise (mode édition)
-    // Sinon on le cherche dans la liste (mode public)
     const brand = useMemo(() => {
         if (propBrandData) return propBrandData;
 
-        const foundBrand = brands.find(b => b.name === decodedBrand);
+        const foundBrand = brands.find((b) => b.name === decodedBrand);
         if (!foundBrand) return undefined;
 
         return {
@@ -65,7 +65,12 @@ export const BrandPage: React.FC<BrandPageProps> = ({
     const [searchQuery, setSearchQuery] = useState<string>("");
 
     if (loading || brandsLoading) {
-        return <BrandLoading name={brand?.name || decodedBrand} bannerUrl={brand?.bannerUrl} />;
+        return (
+            <BrandLoading
+                name={brand?.name || decodedBrand}
+                bannerUrl={brand?.bannerUrl}
+            />
+        );
     }
 
     if (error || brandsError) {
@@ -79,42 +84,54 @@ export const BrandPage: React.FC<BrandPageProps> = ({
     }
 
     return (
-        <div className="min-h-full bg-white">
+        <div className="min-h-full bg-gradient-to-b from-gray-50 to-white">
             <BannerBrand
                 name={brand?.name || decodedBrand}
                 bannerUrl={brand?.bannerUrl}
                 editMode={editMode}
-                onUpdate={onUpdateField ? (url) => onUpdateField("bannerUrl", url) : undefined}
+                onUpdate={
+                    onUpdateField ? (url) => onUpdateField("bannerUrl", url) : undefined
+                }
             />
 
-            <main className="mx-auto max-w-6xl px-4 pb-16">
-                <BrandHeader
-                    brand={brand}
-                    editMode={editMode}
-                    onUpdateField={onUpdateField}
-                />
+            <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-16 -mt-10 relative">
+                {!editMode && <BrandBreadcrumbs />}
 
-                {!editMode && <BackToBrands />}
+                {/* On garde l’ordre: BrandHeader, puis FiltersPanel, puis BrandProducts */}
+                <section className="space-y-6">
+                    {/* Header dans une carte propre */}
+                    <div className="bg-white rounded-2xl shadow-xl border border-gray-100 px-6 py-5 sm:px-8 sm:py-6">
+                        <BrandHeader
+                            brand={brand}
+                            editMode={editMode}
+                            onUpdateField={onUpdateField}
+                        />
+                    </div>
 
-                <FiltersPanel
-                    open={filtersOpen}
-                    onClose={closeFilters}
-                    onReset={filter.resetAll}
-                    resetKey={filter.resetKey}
-                    onChangePrice={filter.handlePrice}
-                    onChangeCategories={filter.handleCategories}
-                    onChangeSizes={filter.handleSizes}
-                    onChangeColors={filter.handleColors}
-                    onChangeEthics={filter.handleEthics}
-                    selectedCategories={filter.categories}
-                    selectedSizes={filter.sizes}
-                    selectedColors={filter.colors}
-                    selectedEthics={filter.ethics}
-                    colorsAvailable={filter.availableColors}
-                    ethicsAvailable={filter.availableEthics}
-                />
+                    {/* Panneau de filtres (même place) */}
+                    <FiltersPanel
+                        open={filtersOpen}
+                        onClose={closeFilters}
+                        onReset={filter.resetAll}
+                        resetKey={filter.resetKey}
+                        onChangePrice={filter.handlePrice}
+                        onChangeCategories={filter.handleCategories}
+                        onChangeSizes={filter.handleSizes}
+                        onChangeColors={filter.handleColors}
+                        onChangeEthics={filter.handleEthics}
+                        selectedCategories={filter.categories}
+                        selectedSizes={filter.sizes}
+                        selectedColors={filter.colors}
+                        selectedEthics={filter.ethics}
+                        colorsAvailable={filter.availableColors}
+                        ethicsAvailable={filter.availableEthics}
+                    />
 
-                <BrandProducts filter={filter} searchQuery={searchQuery} />
+                    {/* Grille produits dans une carte */}
+                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6">
+                        <BrandProducts filter={filter} searchQuery={searchQuery} />
+                    </div>
+                </section>
             </main>
 
             <AuthPanel />

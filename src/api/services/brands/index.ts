@@ -4,7 +4,7 @@ import {
     BrandsListResponse,
     BrandDetailDTO,
     BrandsQueryParams,
-    UpdateBrandRequest
+    UpdateBrandRequest, UpsertBrandDepositRequest, DepositDTO
 } from "@/api/services/brands/types";
 
 export const brandsService = {
@@ -42,5 +42,15 @@ export const brandsService = {
         data: UpdateBrandRequest
     ): Promise<void> => {
         await axiosInstance.put(BRANDS_ROUTES.update(brandId), data);
-    }
+    },
+
+    upsertMyBrandDeposit: async (
+        data: UpsertBrandDepositRequest
+    ): Promise<DepositDTO> => {
+        const response = await axiosInstance.put<DepositDTO>(
+            "/brands/my-brand/deposit",
+            data
+        );
+        return response.data;
+    },
 };

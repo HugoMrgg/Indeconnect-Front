@@ -68,7 +68,6 @@ export const BannerBrand = ({ name, bannerUrl, editMode = false, onUpdate }: Ban
                                 setIsEditing(false);
                             }}
                             aspectRatio="banner"
-                            folder="brands/banners"
                         />
 
                         <div className="flex gap-3 mt-6">

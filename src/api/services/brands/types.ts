@@ -11,6 +11,7 @@ export interface DepositDTO {
     id: string;
     fullAddress: string;
     distanceKm: number | null;
+    city: string;
 }
 
 // DTO résumé d'une marque (pour la liste)
@@ -100,4 +101,13 @@ export interface UpdateBrandRequest {
     contact: string | null;
     priceRange: string | null;
     accentColor: string | null;
+}
+export interface UpsertBrandDepositRequest {
+    number: number;
+    street: string;
+    postalCode: string;
+    city: string;
+    country: string;
+    latitude: number;
+    longitude: number;
 }

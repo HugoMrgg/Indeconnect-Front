@@ -3,14 +3,20 @@ import { useMyBrand } from "@/hooks/BrandEdit/useMyBrand";
 import { useBrandEditing } from "@/hooks/BrandEdit/useBrandEditing";
 import { BrandPage } from "@/pages/brands/Brand";
 import { Brand } from "@/types/brand";
-import { Save, Eye, Loader2, X } from "lucide-react";
+import { Save, Loader2, X } from "lucide-react";
 import { PreviewModal } from "@/features/brands/PreviewModal";
+import { BrandInfoContent } from "@/features/brands/BrandInfoContent";
+import { BannerBrand } from "@/features/banners/BannerBrand";
+import { DepositModal } from "@/features/brands/DepositModal";
+import { NavBar } from "@/features/navbar/NavBar";
 
 export function MyBrandPage() {
     const { brand, loading, error, refetch } = useMyBrand();
     const [showPreview, setShowPreview] = useState(false);
+    const [activeTab, setActiveTab] = useState<"products" | "about">("products");
+    const [depositModalOpen, setDepositModalOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
 
-    // Convertir BrandDetailDTO en UpdateBrandRequest
     const initialData = useMemo(() => {
         if (!brand) return null;
         return {
@@ -23,7 +29,7 @@ export function MyBrandPage() {
             otherInfo: brand.otherInfo,
             contact: brand.contact,
             priceRange: brand.priceRange,
-            accentColor: brand.accentColor
+            accentColor: brand.accentColor,
         };
     }, [brand]);
 
@@ -39,7 +45,7 @@ export function MyBrandPage() {
             otherInfo: null,
             contact: null,
             priceRange: null,
-            accentColor: null
+            accentColor: null,
         }
     );
 
@@ -50,9 +56,9 @@ export function MyBrandPage() {
         }
     };
 
-    // Données combinées pour l'affichage
     const displayBrand: Brand | undefined = useMemo(() => {
         if (!brand) return undefined;
+        const mainDeposit = brand.deposits[0];
 
         return {
             id: brand.id,
@@ -70,7 +76,8 @@ export function MyBrandPage() {
             otherInfo: editing.formData.otherInfo,
             contact: editing.formData.contact,
             priceRange: editing.formData.priceRange,
-            accentColor: editing.formData.accentColor
+            accentColor: editing.formData.accentColor,
+            mainCity: mainDeposit?.city ?? null,
         };
     }, [brand, editing.formData]);
 
@@ -82,14 +89,18 @@ export function MyBrandPage() {
         );
     }
 
-    if (error || !brand) {
+    if (error || !brand || !displayBrand) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen gap-4">
                 <X size={48} className="text-red-500" />
-                <p className="text-gray-600">{error || "Aucune marque associée à votre compte"}</p>
+                <p className="text-gray-600">
+                    {error || "Aucune marque associée à votre compte"}
+                </p>
             </div>
         );
     }
+
+    const mainDeposit = brand.deposits[0] ?? null;
 
     return (
         <>
@@ -127,36 +138,105 @@ export function MyBrandPage() {
                 </div>
             )}
 
-            {/* Bouton Preview */}
-            <button
-                onClick={() => {
-                    console.log('🔴 Aperçu cliqué !'); // ✅ Pour vérifier
-                    setShowPreview(true);
-                }}
-                className="fixed bottom-6 right-6 z-[60] flex items-center gap-2 px-6 py-3 bg-gray-900 text-white font-semibold rounded-full shadow-lg hover:bg-gray-800 transition"
-                //                              ^^^^^^^^ Changé de z-40 à z-[60]
-            >
-                <Eye size={20} />
-                Aperçu client
-            </button>
-
-            {/* Page d'édition */}
+            {/* Contenu avec onglets */}
             <div className={editing.hasChanges ? "pt-16" : ""}>
-                <BrandPage
-                    brandId={brand.id}
-                    brandData={displayBrand}
-                    editMode={true}
-                    onUpdateField={editing.updateField}
-                />
+                {/* Onglets - Style segmented control iOS */}
+                <div className="bg-gradient-to-b from-gray-50 to-white py-4">
+                    <div className="mx-auto max-w-md px-4">
+                        <div className="bg-gray-100 rounded-2xl p-1.5 shadow-inner">
+                            <div className="flex gap-1.5">
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveTab("products")}
+                                    className={`flex-1 px-6 py-3 text-sm font-semibold rounded-xl transition-all ${
+                                        activeTab === "products"
+                                            ? "bg-white text-gray-900 shadow-sm"
+                                            : "text-gray-600 hover:text-gray-900"
+                                    }`}
+                                >
+                                    Produits
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveTab("about")}
+                                    className={`flex-1 px-6 py-3 text-sm font-semibold rounded-xl transition-all ${
+                                        activeTab === "about"
+                                            ? "bg-white text-gray-900 shadow-sm"
+                                            : "text-gray-600 hover:text-gray-900"
+                                    }`}
+                                >
+                                    Présentation
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Onglet Produits : BrandPage en mode édition */}
+                {activeTab === "products" && (
+                    <BrandPage
+                        brandId={brand.id}
+                        brandData={displayBrand}
+                        editMode={true}
+                        onUpdateField={editing.updateField}
+                    />
+                )}
+
+                {/* Onglet Présentation : même layout que BrandInfoPage mais éditable */}
+                {activeTab === "about" && (
+                    <div className="min-h-full bg-gradient-to-b from-gray-50 to-white">
+                        <BannerBrand
+                            name={displayBrand.name}
+                            bannerUrl={displayBrand.bannerUrl ?? null}
+                            editMode={true}
+                            onUpdate={(url) => editing.updateField("bannerUrl", url)}
+                        />
+
+                        <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-16 -mt-10 relative">
+                            <BrandInfoContent
+                                brand={{
+                                    name: displayBrand.name,
+                                    logoUrl: displayBrand.logoUrl ?? null,
+                                    bannerUrl: displayBrand.bannerUrl ?? null,
+                                    description: displayBrand.description ?? null,
+                                    aboutUs: displayBrand.aboutUs ?? null,
+                                    whereAreWe: displayBrand.whereAreWe ?? null,
+                                    otherInfo: displayBrand.otherInfo ?? null,
+                                    contact: displayBrand.contact ?? null,
+                                    priceRange: displayBrand.priceRange ?? null,
+                                }}
+                                editMode={true}
+                                onUpdateField={editing.updateField}
+                                mainDeposit={mainDeposit}
+                                onEditDeposit={() => setDepositModalOpen(true)}
+                            />
+                        </main>
+                    </div>
+                )}
             </div>
 
-            {/* Modal Preview */}
+            {/* Modal dépôt principal */}
+            <DepositModal
+                open={depositModalOpen}
+                onClose={() => setDepositModalOpen(false)}
+                initialDeposit={mainDeposit}
+                onSaved={async () => {
+                    if (!editing.hasChanges) {
+                        await refetch();
+                    }
+                }}
+            />
+
+            {/* Modal Preview client */}
             {showPreview && displayBrand && (
                 <PreviewModal
                     brand={displayBrand}
                     onClose={() => setShowPreview(false)}
                 />
             )}
+
+            {/* NavBar ajoutée */}
+            <NavBar searchValue={searchQuery} onSearchChange={setSearchQuery} />
         </>
     );
 }

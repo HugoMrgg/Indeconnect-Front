@@ -1,7 +1,6 @@
 ﻿import axiosInstance from "@/api/api";
 import { IMAGES_ROUTES } from "@/api/services/image/routes";
 import {
-    SignatureRequest,
     UploadSignature,
     CloudinaryUploadResponse,
     UploadOptions
@@ -9,12 +8,10 @@ import {
 
 export const imagesService = {
     // Obtenir une signature d'upload du backend
-    getUploadSignature: async (
-        folder: string = "products"
-    ): Promise<UploadSignature> => {
+    getUploadSignature: async (): Promise<UploadSignature> => {
         const response = await axiosInstance.post<UploadSignature>(
             IMAGES_ROUTES.signature,
-            { folder } as SignatureRequest
+            {}
         );
         return response.data;
     },
@@ -26,10 +23,7 @@ export const imagesService = {
     ): Promise<CloudinaryUploadResponse> => {
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("signature", signature.signature);
-        formData.append("timestamp", signature.timestamp.toString());
-        formData.append("api_key", signature.apiKey);
-        formData.append("folder", signature.folder);
+        formData.append("upload_preset", signature.uploadPreset);
 
         const url = IMAGES_ROUTES.cloudinaryUpload(signature.cloudName);
 
@@ -52,8 +46,7 @@ export const imagesService = {
         options: UploadOptions = {}
     ): Promise<string> => {
         const {
-            folder = "products",
-            maxSizeMB = 5,
+            maxSizeMB = 5,  // ✅ Plus de folder
             allowedFormats = ["image/jpeg", "image/png", "image/webp"]
         } = options;
 
@@ -71,7 +64,7 @@ export const imagesService = {
         }
 
         // 1. Obtenir la signature
-        const signature = await imagesService.getUploadSignature(folder);
+        const signature = await imagesService.getUploadSignature();
 
         // 2. Upload vers Cloudinary
         const result = await imagesService.uploadToCloudinary(file, signature);
@@ -84,4 +77,4 @@ export const imagesService = {
     deleteImage: async (publicId: string): Promise<void> => {
         await axiosInstance.delete(IMAGES_ROUTES.delete(publicId));
     }
-};
+}

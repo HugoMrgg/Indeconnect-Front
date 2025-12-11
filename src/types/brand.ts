@@ -16,6 +16,7 @@
     contact?: string | null;
     priceRange?: string | null;
     accentColor?: string | null;
+    mainCity?: string | null;
 }
 export type EditableBrandFields = Pick<Brand,
     | "name"

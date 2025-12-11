@@ -1,15 +1,10 @@
-﻿// Requête pour obtenir une signature
-export interface SignatureRequest {
-    folder?: string;
-}
-
-// Réponse du backend avec la signature
+﻿// Réponse du backend avec la signature
 export interface UploadSignature {
     signature: string;
     timestamp: number;
     apiKey: string;
     cloudName: string;
-    folder: string;
+    uploadPreset: string;
 }
 
 // Réponse de Cloudinary après upload
@@ -24,7 +19,6 @@ export interface CloudinaryUploadResponse {
 
 // Options pour l'upload
 export interface UploadOptions {
-    folder?: string;
     maxSizeMB?: number;
     allowedFormats?: string[];
 }
