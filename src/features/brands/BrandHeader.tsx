@@ -1,14 +1,15 @@
-﻿import { Heart, IdCard, MapPin} from "lucide-react";
+import { Heart, IdCard, MapPin} from "lucide-react";
 import { Brand } from "@/types/brand";
 import React from "react";
+import { useBrandSubscription } from "@/hooks/useBrandSubscription";
 
 interface Props {
     brand?: Brand;
-    subscribed: boolean;
-    onToggleSubscribe: () => void;
 }
 
-export const BrandHeader: React.FC<Props> = ({ brand, subscribed, onToggleSubscribe }) => {
+export const BrandHeader: React.FC<Props> = ({ brand }) => {
+    const { isSubscribed, loading, toggleSubscription } = useBrandSubscription(brand?.id);
+
     if (!brand) return null;
 
     return (
@@ -32,14 +33,17 @@ export const BrandHeader: React.FC<Props> = ({ brand, subscribed, onToggleSubscr
             {/* Boutons */}
             <div className="flex flex-col gap-3 text-base">
                 <button
-                    onClick={onToggleSubscribe}
-                    className="inline-flex gap-3 px-3 py-2 rounded-xl hover:bg-gray-100 transition active:scale-[0.97]"
+                    onClick={toggleSubscription}
+                    disabled={loading}
+                    className="inline-flex gap-3 px-3 py-2 rounded-xl hover:bg-gray-100 transition active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <Heart
-                        className={`w-6 h-6 transition-all ${subscribed ? "text-red-500 scale-110" : "text-gray-700"}`}
-                        fill={subscribed ? "currentColor" : "none"}
+                        className={`w-6 h-6 transition-all ${
+                            isSubscribed ? "text-red-500 scale-110" : "text-gray-700"
+                        }`}
+                        fill={isSubscribed ? "currentColor" : "none"}
                     />
-                    <span>{subscribed ? "Abonné ✓" : "S'abonner"}</span>
+                    <span>{loading ? "..." : isSubscribed ? "Abonné ✓" : "S'abonner"}</span>
                 </button>
 
                 <button className="inline-flex gap-3 px-3 py-2 rounded-xl hover:bg-gray-100 transition active:scale-[0.97]">

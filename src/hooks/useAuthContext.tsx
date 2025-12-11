@@ -1,8 +1,16 @@
 ﻿import { useContext } from "react";
-import {AuthContext} from "@/context/AuthContext";
+import { AuthContext, type AuthContextType } from "@/context/AuthContext";
 
-export function useAuthContext() {
-    const ctx = useContext(AuthContext);
-    if (!ctx) throw new Error("useAuthContext must be used inside <AuthProvider>");
-    return ctx;
+/**
+ * Hook pour accéder au contexte d'authentification
+ * @throws Error si utilisé en dehors de AuthProvider
+ */
+export function useAuthContext(): AuthContextType {
+    const context = useContext(AuthContext);
+
+    if (!context) {
+        throw new Error("[useAuthContext] Doit être utilisé dans <AuthProvider>");
+    }
+
+    return context;
 }

@@ -1,5 +1,7 @@
 ﻿export const AUTH_ROUTES = {
     login: "/auth/login",
     register: "/auth/register",
-    me: "/auth/me"
+    invite: "/auth/invite",
+    setPassword: "/auth/set-password",
+    google: "/auth/google",
 } as const;

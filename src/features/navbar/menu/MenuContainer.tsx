@@ -5,7 +5,7 @@ import { VendorMenu } from "@/features/navbar/menu/brand/VendorMenu";
 import { SuperVendorMenu } from "@/features/navbar/menu/brand/superVendorMenu";
 
 import { Menu } from "lucide-react";
-    import {userStorage} from "@/context/UserStorage";
+    import {userStorage} from "@/storage/UserStorage";
 
 export function MenuContainer() {
     const [open, setOpen] = useState(false);

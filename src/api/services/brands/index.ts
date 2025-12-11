@@ -1,14 +1,31 @@
 ﻿import axiosInstance from "@/api/api";
-import {BRANDS_ROUTES} from "@/api/services/brands/routes";
+import { BRANDS_ROUTES } from "@/api/services/brands/routes";
+import {
+    BrandsListResponse,
+    BrandDetailDTO,
+    BrandsQueryParams
+} from "@/api/services/brands/types";
 
 export const brandsService = {
-    getBrands: async (params?: any) => {
-        // params peut contenir des filtres (tri, pagination, etc)
-        const response = await axiosInstance.get(BRANDS_ROUTES.all, { params });
-        return response.data; // c'est la BrandsListResponse
+    getBrands: async (params?: BrandsQueryParams): Promise<BrandsListResponse> => {
+        const response = await axiosInstance.get<BrandsListResponse>(
+            BRANDS_ROUTES.all,
+            { params }
+        );
+        return response.data;
     },
-    getBrandById: async (brandId: number) => {
-        const response = await axiosInstance.get(BRANDS_ROUTES.byId(brandId));
-        return response.data; // c'est le BrandDetailDto
+
+    getBrandById: async (
+        brandId: number,
+        lat?: number,
+        lon?: number
+    ): Promise<BrandDetailDTO> => {
+        const response = await axiosInstance.get<BrandDetailDTO>(
+            BRANDS_ROUTES.byId(brandId),
+            {
+                params: { lat, lon }
+            }
+        );
+        return response.data;
     }
 };

@@ -3,10 +3,10 @@
 /**
  * useDebounce hook
  *
- * Fonction : Retourne la même valeur qu’en entrée MAIS seulement
+ * Fonction: Retourne la même valeur qu’en entrée MAIS seulement
  * après un certain délai (delay, en ms) d’inactivité.
  *
- * À quoi ça sert ?
+ * À quoi ça sert?
  * - Empêche de lancer une opération coûteuse (API, filtre, calcul) à CHAQUE frappe de l’utilisateur.
  * - On attend que la personne arrête d’interagir avant de déclencher l’action.
  * - Typique pour : search input, sliders, filtres, resize.
@@ -33,7 +33,7 @@ export function useDebounce<T>(value: T, delay: number = 500): T {
         }, delay);
 
         /**
-         * Fonction de cleanup :
+         * Fonction de cleanup:
          * - Si value/delay change OU si le composant est démonté,
          *   on annule le timeout en cours (clearTimeout)
          * Cela évite déclencher setDebouncedValue alors que la valeur a changé à nouveau ou que le composant est démonté (= bugs/perte de perf).

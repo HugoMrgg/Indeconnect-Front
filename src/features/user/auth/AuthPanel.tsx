@@ -10,7 +10,7 @@ import { X } from "lucide-react";
 
 export function AuthPanel() {
     const { authOpen, authMode, closeAuth } = useUI();
-    const { login, register, user, loading, error } = useAuth();
+    const { login, register, googleAuth, user, isLoading, error } = useAuth();
 
     // Form state
     const [email, setEmail] = useState("");
@@ -33,12 +33,12 @@ export function AuthPanel() {
         }
     }, [authOpen]);
 
-    // auto-close on successful login/register
+    // auto-close on successful register/login
     useEffect(() => {
-        if (authOpen && user && !loading && !error) {
+        if (authOpen && user && !isLoading && !error) {
             closeAuth();
         }
-    }, [user]);
+    }, [authOpen, closeAuth, error, isLoading, user]);
 
     // ---------------------
     // LOGIN
@@ -64,12 +64,31 @@ export function AuthPanel() {
 
         await register({
             email,
-            firstName: firstName,
-            lastName: lastName,
+            firstName,
+            lastName,
             password,
             confirmPassword,
             targetRole: "client",
         });
+    };
+
+    // ---------------------
+    // GOOGLE AUTH
+    // ---------------------
+    const handleGoogleAuth = async (idToken: string) => {
+        setLocalError(null);
+
+        try {
+            await googleAuth(idToken);
+            // Le useEffect ci-dessus fermera automatiquement le panel
+        } catch (err) {
+            const errorMessage = err instanceof Error
+                ? err.message
+                : "Erreur d'authentification Google";
+
+            setLocalError(errorMessage);
+            console.error("Google auth failed:", err);
+        }
     };
 
     if (!authOpen) return null;
@@ -83,9 +102,9 @@ export function AuthPanel() {
 
             <div
                 className="
-        absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
-        w-[420px] max-w-[92vw] bg-white rounded-2xl shadow-2xl p-5
-      "
+                    absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
+                    w-[420px] max-w-[92vw] bg-white rounded-2xl shadow-2xl p-5
+                "
             >
                 <div className="flex justify-end">
                     <button
@@ -100,11 +119,12 @@ export function AuthPanel() {
                     <LoginForm
                         email={email}
                         password={password}
-                        loading={loading}
+                        loading={isLoading}
                         error={error ?? localError}
                         onEmail={setEmail}
                         onPassword={setPassword}
                         onSubmit={submitLogin}
+                        onGoogleLogin={handleGoogleAuth}
                     />
                 ) : (
                     <RegisterForm
@@ -113,7 +133,7 @@ export function AuthPanel() {
                         email={email}
                         password={password}
                         confirmPassword={confirmPassword}
-                        loading={loading}
+                        loading={isLoading}
                         error={error ?? localError}
                         onFirstName={setFirstName}
                         onLastName={setLastName}
@@ -121,6 +141,7 @@ export function AuthPanel() {
                         onPassword={setPassword}
                         onConfirmPassword={setConfirmPassword}
                         onSubmit={submitRegister}
+                        onGoogleRegister={handleGoogleAuth}
                     />
                 )}
             </div>

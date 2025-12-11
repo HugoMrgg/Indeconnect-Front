@@ -12,7 +12,7 @@ export type User = {
     email: string,
 
     /** Mot de passe de l'utilisateur */
-    password: string,
+    password?: string,
 
     /** Role d'utilisateur */
     role: string,
