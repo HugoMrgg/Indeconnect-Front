@@ -5,4 +5,5 @@
     colors: (productId: number) => `/products/${productId}/colors`,
     stock: (productId: number) => `/products/${productId}/stock`,
     reviews: (productId: number) => `/products/${productId}/reviews`,
+    create: () => `/products/create`,
 };

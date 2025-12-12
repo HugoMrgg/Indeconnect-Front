@@ -8,6 +8,7 @@ import { AccountsManagement } from "@/pages/admin/AccountsManagement";
 import { ProtectedRoute } from "@/routes/ProtectedRoute";
 import {MyBrandPage} from "@/pages/brands/MyBrandPage";
 import {BrandInfoPageWrapper} from "@/pages/brands/BrandInfoPageWrapper";
+import { ProductCreatePage } from "@/pages/products/ProductCreatePage";
 
 export default function AppRouter() {
     return (
@@ -38,6 +39,9 @@ export default function AppRouter() {
                     </ProtectedRoute>
                 }
             />
+
+
+            {/* Routes protégées - SuperVendor/Vendor */}
             <Route
                 path="/my-brand"
                 element={
@@ -46,6 +50,15 @@ export default function AppRouter() {
                     </ProtectedRoute>
                 }
             />
+            <Route
+                path="/products/create"
+                element={
+                    <ProtectedRoute requiredRoles={["SuperVendor", "Vendor"]}>
+                        <ProductCreatePage />
+                    </ProtectedRoute>
+                }
+            />
+
 
             {/* 404 */}
             <Route path="*" element={<Navigate to="/" />} />

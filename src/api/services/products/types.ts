@@ -71,3 +71,28 @@ export interface ProductReviewsResponse {
     pageSize: number;
     averageRating: number;
 }
+
+// Type d'envoie pour les créations
+export interface CreateProductPayload {
+    name: string;
+    description: string;
+    price: number;
+    brandId: number;
+    categoryId: number;
+    primaryColorId: number | null;
+    media: unknown[];
+    sizeVariants: unknown[];
+    details: unknown[];
+    keywords: string[];
+    status?: "Draft" | "Published" | "Archived";
+}
+
+// Type de réponse pour les créations
+export interface CreateProductResponse {
+    id: number;
+    name: string;
+    brandId: number;
+    categoryId: number;
+    status: string;
+    createdAt: string;
+}

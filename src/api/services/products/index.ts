@@ -7,7 +7,9 @@ import {
     SizeVariantResponse,
     ColorVariantResponse,
     ProductStockResponse,
-    ProductReviewsResponse
+    ProductReviewsResponse,
+    CreateProductPayload,
+    CreateProductResponse
 } from "@/api/services/products/types";
 
 /**
@@ -152,3 +154,19 @@ export async function fetchProductReviews(
         throw error;
     }
 }
+
+export async function createProduct(
+    payload: CreateProductPayload
+): Promise<CreateProductResponse> {
+    try {
+        const response = await axiosInstance.post<CreateProductResponse>(
+            PRODUCTS_ROUTES.create(),
+            payload
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error creating product:", error);
+        throw error;
+    }
+}
+

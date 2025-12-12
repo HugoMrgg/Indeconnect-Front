@@ -6,6 +6,7 @@ import { userStorage } from "@/storage/UserStorage";
 import { Product } from "@/types/Product";
 
 import SortBar from "@/features/sorting/SortBar";
+import { AddProduct } from "@/features/product/AddProduct";
 import { ProductGrid } from "@/features/brands/ProductGrid";
 import { ProductList } from "@/features/brands/ProductList";
 
@@ -109,6 +110,8 @@ export const BrandProducts: React.FC<Props> = ({ filter, searchQuery }) => {
     if (filteredByText.length === 0) {
         return (
             <section className="space-y-4 py-10 text-center text-gray-500">
+                <AddProduct />
+
                 <p className="text-lg">Votre recherche n’a rien donné...</p>
                 <p className="text-sm opacity-70">Essayez d’autres mots-clés</p>
             </section>
