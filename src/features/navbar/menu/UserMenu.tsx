@@ -6,7 +6,7 @@ import { ModeratorMenu } from "@/features/navbar/menu/user/ModeratorMenu";
 import { SuperVendorMenu } from "@/features/navbar/menu/brand/superVendorMenu";
 import { VendorMenu } from "@/features/navbar/menu/brand/VendorMenu";
 import { User, LogOut } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/Auth/useAuth";
 import { useNavigate } from "react-router-dom";
 
 export function UserMenu() {

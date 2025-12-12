@@ -1,7 +1,6 @@
-﻿import { useState, useCallback, useEffect } from "react";
+﻿import { useState, useCallback } from "react";
 import { AuthService } from "@/api/services/auth";
-import { UsersService } from "@/api/services/user";
-import { useAuthContext } from "@/hooks/useAuthContext";
+import { useAuthContext } from "@/hooks/Auth/useAuthContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import type { AuthResponse, LoginPayload, RegisterPayload } from "@/api/services/auth/types";
@@ -36,32 +35,10 @@ function getUserIdFromToken(token: string): number | null {
  * Hook principal pour la gestion de l'authentification
  */
 export function useAuth() {
-    const { token, user, userRole, isLoading, login: loginContext, logout: logoutContext, setUser, setLoading } =
+    const { token, user, userRole, isLoading, login: loginContext, logout: logoutContext, setLoading } =
         useAuthContext();
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (token && !user && !isLoading) {
-            const userId = getUserIdFromToken(token);
-
-            if (userId) {
-                (async () => {
-                    try {
-                        setLoading(true);
-                        const fetchedUser = await UsersService.getById(userId);
-                        setUser(fetchedUser);
-                    } catch (err) {
-                        console.error("[useAuth] Erreur restauration utilisateur", err);
-                        logoutContext();
-                        navigate("/");
-                    } finally {
-                        setLoading(false);
-                    }
-                })();
-            }
-        }
-    }, [token, user, isLoading, setUser, setLoading, logoutContext, navigate]);
 
     const login = useCallback(
         async (payload: LoginPayload): Promise<AuthResponse> => {

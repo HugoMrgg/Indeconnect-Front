@@ -44,4 +44,5 @@ export interface BackendAuthResponse {
     email: string;
     role: Role;
     token: string;
+    brandId?: number;
 }

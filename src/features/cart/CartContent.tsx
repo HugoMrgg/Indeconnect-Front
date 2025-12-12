@@ -1,12 +1,13 @@
 ﻿import React, { useEffect } from "react";
-import { useAuth } from "@/hooks/useAuth";
-import { useCart } from "@/hooks/useCart";
-import { useCartUI } from "@/hooks/useCartUI";
+import { useAuth } from "@/hooks/Auth/useAuth";
+import { useCart } from "@/hooks/User/useCart";
+import { useCartUI } from "@/hooks/User/useCartUI";
+import { Trash2 } from "lucide-react";
 
 export function CartContent() {
     const { user } = useAuth();
     const { cartOpen } = useCartUI();
-    const { cart, loading, error, refetch } = useCart();
+    const { cart, loading, error, refetch, removeFromCart, removingFromCart } = useCart();
 
     useEffect(() => {
         if (cartOpen && user?.id) {
@@ -56,7 +57,7 @@ export function CartContent() {
                 <div className="flex flex-col gap-4">
                     {cart.items.map((item) => {
                         const imageUrl = item.primaryImageUrl
-                            ? `/images/${item.primaryImageUrl}`
+                            ? `${item.primaryImageUrl}`
                             : "/placeholder.png";
 
                         return (
@@ -113,14 +114,22 @@ export function CartContent() {
                                     </div>
                                 </div>
 
-                                {/* Prix */}
+                                {/* Prix + Bouton supprimer */}
                                 <div className="flex flex-col items-end justify-between flex-shrink-0">
                                     <span className="text-base font-bold">
                                         {item.lineTotal.toFixed(2)} €
                                     </span>
-                                    <span className="text-xs text-gray-500">
+                                    <span className="text-xs text-gray-500 mb-2">
                                         Stock : {item.availableStock}
                                     </span>
+                                    <button
+                                        onClick={() => removeFromCart(item.productVariantId)}
+                                        disabled={removingFromCart}
+                                        className="text-red-500 hover:text-red-700 transition p-1 disabled:opacity-50"
+                                        title="Retirer du panier"
+                                    >
+                                        <Trash2 size={18} />
+                                    </button>
                                 </div>
                             </div>
                         );

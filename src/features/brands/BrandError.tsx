@@ -8,7 +8,7 @@ export const BrandError = ({
                            }: {
     name: string;
     message: string;
-    bannerUrl?: string;
+    bannerUrl?: string | null;
 }) => (
     <div className="min-h-full bg-white">
         <BannerBrand name={name} bannerUrl={bannerUrl} />

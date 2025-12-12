@@ -7,7 +7,7 @@ export function SuperVendorMenu() {
     const navigate = useNavigate();
 
     const menuItems = [
-        { icon: Store, label: "Ma marque", path: "/supervendor/brand" },
+        { icon: Store, label: "Ma marque", path: "/my-brand" },
         { icon: Users, label: "Gestion vendeurs", path: "/supervendor/vendors" },
         { icon: Package, label: "Gérer les produits", path: "/supervendor/products" },
         { icon: BarChart3, label: "Statistiques", path: "/supervendor/stats" },

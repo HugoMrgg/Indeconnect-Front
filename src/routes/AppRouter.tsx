@@ -6,6 +6,8 @@ import { Wishlist } from "@/pages/wishlist/Wishlist";
 import { SetPassword } from "@/pages/register/SetPassword";
 import { AccountsManagement } from "@/pages/admin/AccountsManagement";
 import { ProtectedRoute } from "@/routes/ProtectedRoute";
+import {MyBrandPage} from "@/pages/brands/MyBrandPage";
+import {BrandInfoPageWrapper} from "@/pages/brands/BrandInfoPageWrapper";
 
 export default function AppRouter() {
     return (
@@ -14,6 +16,7 @@ export default function AppRouter() {
             <Route path="/" element={<Home />} />
             <Route path="/brand/:brandName" element={<BrandPageWrapper />} />
             <Route path="/brand/:brandName/product/:productId" element={<ProductPage />} />
+            <Route path="/brand/:brandName/info" element={<BrandInfoPageWrapper />} />
             <Route path="/set-password" element={<SetPassword />} />
 
             {/* Routes protégées - Client */}
@@ -32,6 +35,14 @@ export default function AppRouter() {
                 element={
                     <ProtectedRoute requiredRoles={["Administrator", "Moderator"]}>
                         <AccountsManagement />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/my-brand"
+                element={
+                    <ProtectedRoute requiredRoles={["SuperVendor"]}>
+                        <MyBrandPage />
                     </ProtectedRoute>
                 }
             />

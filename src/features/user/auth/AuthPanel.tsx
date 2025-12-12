@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useUI } from "@/context/UIContext";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/Auth/useAuth";
 
 import { LoginForm } from "@/features/user/auth/LoginForm";
 import { RegisterForm } from "@/features/user/auth/RegisterForm";

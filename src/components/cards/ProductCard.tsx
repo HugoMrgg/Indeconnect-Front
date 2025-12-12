@@ -26,7 +26,7 @@ export default function ProductCard({
             <div className="relative w-full aspect-[4/5] bg-gray-100 overflow-hidden">
                 {product.primaryImageUrl || product.image ? (
                     <img
-                        src={"../../images/" + product.primaryImageUrl || "../../images/" + product.image}
+                        src={product.primaryImageUrl || product.image}
                         alt={product.name}
                         className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                     />

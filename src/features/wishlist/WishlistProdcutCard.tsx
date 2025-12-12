@@ -33,9 +33,9 @@ export function WishlistProductCard({ product, onRemove }: WishlistProductCardPr
             <div
                 onClick={openProduct}
                 className="relative w-full h-40 bg-gray-100 overflow-hidden sm:h-44 md:h-48">
-                {"../../images/" + product.primaryImageUrl ? (
+                {product.primaryImageUrl ? (
                     <img
-                        src={"../../images/" + product.primaryImageUrl}
+                        src={product.primaryImageUrl}
                         alt={product.name}
                         className="h-full w-full object-cover object-center
                                    transition-transform duration-500 group-hover:scale-105"

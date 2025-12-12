@@ -1,6 +1,6 @@
 ﻿import { useState, useEffect } from "react";
 import { BrandSubscriptionService } from "@/api/services/subscriptions";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/Auth/useAuth";
 import toast from "react-hot-toast";
 
 export function useBrandSubscription(brandId: number | undefined) {

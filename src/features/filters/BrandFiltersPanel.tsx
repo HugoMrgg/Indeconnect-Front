@@ -1,12 +1,8 @@
-﻿import React from "react";
-import { X } from "lucide-react";
+﻿import { X, MapPin, Navigation } from "lucide-react";
 import { StarRating } from "@/features/filters/StarRating";
 import { belgianCities } from "@/types/belgianCities";
-import { useEthicTags } from "@/hooks/useEthicTags";
+import { useEthicTags } from "@/hooks/Brand/useEthicTags";
 
-/**
- * Interface TypeScript qui définit TOUTES les props du composant
- */
 interface BrandFiltersPanelProps {
     open: boolean;
     onClose: () => void;
@@ -26,8 +22,15 @@ interface BrandFiltersPanelProps {
     onChangeEthicsTransport?: (value: number | undefined) => void;
     selectedCity?: string;
     onChangeCity?: (cityName: string) => void;
-    selectedEthicTags?: string[]; // ← NOUVEAU
-    onChangeEthicTags?: (tags: string[]) => void; // ← NOUVEAU
+    selectedEthicTags?: string[];
+    onChangeEthicTags?: (tags: string[]) => void;
+    // ✅ NOUVELLES PROPS
+    locationMode?: "city" | "gps";
+    onChangeLocationMode?: (mode: "city" | "gps") => void;
+    onRequestGPS?: () => void;
+    gpsLoading?: boolean;
+    gpsError?: string | null;
+    hasGPSPosition?: boolean;
 }
 
 export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
@@ -50,17 +53,15 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                                                                         selectedCity,
                                                                         onChangeCity,
                                                                         selectedEthicTags = [],
-                                                                        onChangeEthicTags
+                                                                        onChangeEthicTags,
+                                                                        // ✅ NOUVELLES PROPS PAR DÉFAUT
+                                                                        locationMode = "city",
+                                                                        onChangeLocationMode,
+                                                                        onRequestGPS,
+                                                                        gpsLoading = false,
+                                                                        gpsError = null,
+                                                                        hasGPSPosition = false,
                                                                     }) => {
-    /**
-     * ===== HOOK POUR RÉCUPÉRER LES TAGS ÉTHIQUES =====
-     *
-     * Appelle l'API /ethics/tags au montage du composant
-     * Retourne :
-     * - tags : liste des tags disponibles avec label et nombre de marques
-     * - loading : true pendant le chargement
-     * - error : message d'erreur si l'appel échoue
-     */
     const { tags, loading, error } = useEthicTags();
 
     return (
@@ -92,25 +93,107 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                 </div>
 
                 <div className="overflow-y-auto flex-1 p-5 space-y-6" key={resetKey}>
-                    {onChangeCity && (
-                        <div>
-                            <label className="font-medium mb-2 block">Ville de référence :</label>
-                            <select
-                                value={selectedCity ?? ""}
-                                onChange={e => onChangeCity(e.target.value)}
-                                className="rounded-lg border px-3 py-2 w-full"
-                            >
-                                <option value="">Aucune ville</option>
-                                {belgianCities.map(city => (
-                                    <option key={city.name} value={city.name}>
-                                        {city.name} {city.province ? `(${city.province})` : ''}
-                                    </option>
-                                ))}
-                            </select>
-                            {selectedCity && (
-                                <p className="text-xs text-gray-500 mt-1">
-                                    Position simulée à {selectedCity}
-                                </p>
+                    {onChangeCity && onChangeLocationMode && onRequestGPS && (
+                        <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200">
+                            <label className="font-semibold mb-3 block text-gray-800 text-sm">
+                                Localisation
+                            </label>
+
+                            {/* Toggle City vs GPS */}
+                            <div className="flex gap-2 mb-4">
+                                <button
+                                    type="button"
+                                    onClick={() => onChangeLocationMode("city")}
+                                    className={`
+                    flex-1 px-4 py-2.5 rounded-xl border transition-all font-medium text-sm
+                    ${locationMode === "city"
+                                        ? 'border-gray-400 bg-white text-gray-800 shadow-sm'
+                                        : 'border-gray-200 bg-gray-50 text-gray-500 hover:bg-white hover:border-gray-300'
+                                    }
+                `}
+                                >
+                                    Ville de référence
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => onChangeLocationMode("gps")}
+                                    className={`
+                    flex-1 px-4 py-2.5 rounded-xl border transition-all font-medium text-sm
+                    ${locationMode === "gps"
+                                        ? 'border-gray-400 bg-white text-gray-800 shadow-sm'
+                                        : 'border-gray-200 bg-gray-50 text-gray-500 hover:bg-white hover:border-gray-300'
+                                    }
+                `}
+                                >
+                                    Ma localisation
+                                </button>
+                            </div>
+
+                            {locationMode === "city" && (
+                                <div>
+                                    <select
+                                        value={selectedCity ?? ""}
+                                        onChange={e => onChangeCity(e.target.value)}
+                                        className="rounded-xl border border-gray-300 px-3 py-2.5 w-full text-sm bg-white focus:outline-none focus:border-gray-400 transition"
+                                    >
+                                        <option value="">Choisir une ville...</option>
+                                        {belgianCities.map(city => (
+                                            <option key={city.name} value={city.name}>
+                                                {city.name} {city.province ? `(${city.province})` : ''}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {selectedCity && (
+                                        <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
+                                            <MapPin className="w-3 h-3" />
+                                            Position simulée à {selectedCity}
+                                        </p>
+                                    )}
+                                </div>
+                            )}
+
+                            {locationMode === "gps" && (
+                                <div className="space-y-2">
+                                    {!hasGPSPosition && (
+                                        <button
+                                            onClick={onRequestGPS}
+                                            disabled={gpsLoading}
+                                            className="w-full py-2.5 rounded-xl bg-gray-800 text-white text-sm font-medium hover:bg-gray-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                        >
+                                            {gpsLoading ? (
+                                                <>
+                                                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                                    Localisation en cours...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Navigation className="w-4 h-4" />
+                                                    Activer ma position
+                                                </>
+                                            )}
+                                        </button>
+                                    )}
+
+                                    {hasGPSPosition && (
+                                        <div className="bg-white border border-gray-300 px-3 py-2.5 rounded-xl text-sm flex items-center gap-2 text-gray-700">
+                                            <Navigation className="w-4 h-4 text-gray-600" />
+                                            <span className="font-medium">Position GPS activée</span>
+                                            <span className="ml-auto text-xl">✓</span>
+                                        </div>
+                                    )}
+
+                                    {gpsError && (
+                                        <div className="bg-gray-100 border border-gray-300 px-3 py-2.5 rounded-xl text-xs text-gray-600">
+                                            {gpsError}
+                                        </div>
+                                    )}
+
+                                    {!hasGPSPosition && !gpsError && (
+                                        <p className="text-xs text-gray-500 leading-relaxed">
+                                            Utilisez votre position réelle pour trouver les marques les plus proches de vous.
+                                        </p>
+                                    )}
+                                </div>
                             )}
                         </div>
                     )}
@@ -226,24 +309,6 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                         </div>
                     </div>
 
-                    {/**
-                     * ===== NOUVEAU FILTRE : TAGS ÉTHIQUES =====
-                     *
-                     * Affiché seulement si onChangeEthicTags existe
-                     *
-                     * États possibles :
-                     * - loading : affiche "Chargement des tags..."
-                     * - error : affiche le message d'erreur en rouge
-                     * - tags chargés : affiche les checkboxes
-                     *
-                     * Logique ET :
-                     * - Les marques doivent avoir TOUS les tags cochés
-                     * - Chaque checkbox ajoute/retire un tag de selectedEthicTags
-                     *
-                     * UI :
-                     * - Label avec le nom du tag
-                     * - Compteur du nombre de marques ayant ce tag
-                     */}
                     {onChangeEthicTags && (
                         <div>
                             <label className="font-medium mb-2 block">Tags éthiques :</label>

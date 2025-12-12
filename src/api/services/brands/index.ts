@@ -3,7 +3,8 @@ import { BRANDS_ROUTES } from "@/api/services/brands/routes";
 import {
     BrandsListResponse,
     BrandDetailDTO,
-    BrandsQueryParams
+    BrandsQueryParams,
+    UpdateBrandRequest, UpsertBrandDepositRequest, DepositDTO
 } from "@/api/services/brands/types";
 
 export const brandsService = {
@@ -27,5 +28,29 @@ export const brandsService = {
             }
         );
         return response.data;
-    }
+    },
+
+    getMyBrand: async (): Promise<BrandDetailDTO> => {
+        const response = await axiosInstance.get<BrandDetailDTO>(
+            BRANDS_ROUTES.myBrand
+        );
+        return response.data;
+    },
+
+    updateBrand: async (
+        brandId: number,
+        data: UpdateBrandRequest
+    ): Promise<void> => {
+        await axiosInstance.put(BRANDS_ROUTES.update(brandId), data);
+    },
+
+    upsertMyBrandDeposit: async (
+        data: UpsertBrandDepositRequest
+    ): Promise<DepositDTO> => {
+        const response = await axiosInstance.put<DepositDTO>(
+            "/brands/my-brand/deposit",
+            data
+        );
+        return response.data;
+    },
 };

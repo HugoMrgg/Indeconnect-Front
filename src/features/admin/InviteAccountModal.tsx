@@ -1,9 +1,9 @@
 ﻿// @/features/admin/InviteAccountModal.tsx
 import { useEffect, useRef } from "react";
 import { X, CheckCircle, AlertCircle } from "lucide-react";
-import { useInviteAccount } from "@/hooks/useInviteAccount";
+import { useInviteAccount } from "@/hooks/Auth/useInviteAccount";
 import { InviteAccountForm } from "./InviteAccountForm";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/Auth/useAuth";
 import { Role } from "@/types/account";
 
 interface InviteAccountModalProps {

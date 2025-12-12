@@ -1,6 +1,6 @@
 import { Heart, List, Settings, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useCartUI } from "@/hooks/useCartUI";
+import { useCartUI } from "@/hooks/User/useCartUI";
 
 export function AccountMenu() {
     const { openCart } = useCartUI();

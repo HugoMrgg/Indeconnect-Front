@@ -1,6 +1,6 @@
 ﻿import AppRouter from "@/routes/AppRouter";
 import { CartModal } from "@/features/cart/CartModal";
-import { useCartUI } from "@/hooks/useCartUI"; // ← CHANGÉ ICI
+import { useCartUI } from "@/hooks/User/useCartUI";
 import { CartContent } from "@/features/cart/CartContent";
 
 export function AppWithCartModal() {

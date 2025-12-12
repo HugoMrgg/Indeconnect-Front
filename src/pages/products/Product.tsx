@@ -23,13 +23,13 @@ import {BackLink} from "@/components/ui/BackLink";
 import {ProductLoading} from "@/features/product/ProductLoading";
 
 import { addVariantToCart } from "@/api/services/cart";
-import { useAuth } from "@/hooks/useAuth";
-import { useCartUI } from "@/hooks/useCartUI";
+import { useAuth } from "@/hooks/Auth/useAuth";
+import { useCartUI } from "@/hooks/User/useCartUI";
 import { AddToCartModal } from "@/features/cart/AddToCartModal";
 import { AddToCartButton } from "@/features/cart/AddToCartButton";
 import { ProductInfo } from "@/pages/products/ProductInfo";
 import toast from "react-hot-toast";
-import {useBrands} from "@/hooks/useBrands"; 
+import {useBrands} from "@/hooks/Brand/useBrands";
 
 export function ProductPage() {
     const { productId, brandName } = useParams();
