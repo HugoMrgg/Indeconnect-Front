@@ -155,7 +155,7 @@ export function ProductPage() {
                 onConfirm={handleAddToCart}
             />
 
-            <NavBar />
+            <NavBar/>
         </div>
     );
 }

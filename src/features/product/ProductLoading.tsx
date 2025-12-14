@@ -17,6 +17,6 @@ export const ProductLoading = ({
                 Chargement de la page du produit {productName}...
             </p>
         </main>
-        <NavBar />
+        <NavBar scope={"products"} />
     </div>
 );

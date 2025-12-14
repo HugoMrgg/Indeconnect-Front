@@ -15,6 +15,6 @@ export const BrandPageLayout: React.FC<Props> = ({ children, searchQuery, onSear
         <Banner />
         {children}
         <AuthPanel />
-        <NavBar searchValue={searchQuery} onSearchChange={onSearchChange} />
+        <NavBar scope={"products"} searchValue={searchQuery} onSearchChange={onSearchChange} />
     </main>
 );

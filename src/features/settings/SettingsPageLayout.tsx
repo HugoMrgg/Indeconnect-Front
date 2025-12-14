@@ -15,6 +15,6 @@ export const SettingsPageLayout: React.FC<Props> = ({children, searchQuery, onSe
         <Banner />
         {children}
         <AuthPanel />
-        <NavBar searchValue={searchQuery} onSearchChange={onSearchChange} />
+        <NavBar scope={"settings"} searchValue={searchQuery} onSearchChange={onSearchChange} />
     </main>
 );

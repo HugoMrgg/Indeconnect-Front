@@ -3,25 +3,41 @@ import { SlidersHorizontal, Search } from "lucide-react";
 import { useUI } from "@/context/UIContext";
 
 type Props = {
-    scope?: "brands" | "products";
+    scope?: string;
     enabled?: boolean;
     onToggleFilters?: () => void;
     value?: string;
     onChange?: (value: string) => void;
 };
 
+// create a method to handle all scenarios of scope
+function handleScopes(scope?: string) {
+    switch (scope) {
+        case "brands":
+            return "Rechercher parmi les marques...";
+        case "products":
+            return "Rechercher parmi les produits...";
+        case "wishlist":
+            return "Rechercher dans votre liste de souhaits...";
+        case "settings":
+            return "Rechercher dans les paramètres...";
+        case "accounts":
+            return "Rechercher parmi les comptes...";
+        default:
+            return "Rechercher sur cet page...";
+    }
+}
 export function SearchBar({
-                              scope: scopeProp,
+                              scope,
                               enabled = true,
                               onToggleFilters,
                               value = "",
                               onChange
                           }: Props) {
     const [open, setOpen] = useState(false);
-    const { scope: scopeCtx, toggleFilters } = useUI();
-    const scope = scopeProp ?? scopeCtx;
+    const { toggleFilters } = useUI();
 
-    const placeholder = scope === "brands" ? "Rechercher une marque…" : "Rechercher un vêtement…";
+    const placeholder = handleScopes(scope);
     const disabledClasses = enabled ? "opacity-100" : "opacity-50 pointer-events-none select-none";
 
     return (

@@ -9,6 +9,8 @@ import { BrandInfoContent } from "@/features/brands/BrandInfoContent";
 import { BannerBrand } from "@/features/banners/BannerBrand";
 import { DepositModal } from "@/features/brands/DepositModal";
 import { NavBar } from "@/features/navbar/NavBar";
+import { BrandEthicsCallout } from "@/features/brands/BrandEthicsCallout";
+import { BrandEthicsQuestionnaireModal } from "@/features/brands/BrandEthicsQuestionnaireModal";
 
 export function MyBrandPage() {
     const { brand, loading, error, refetch } = useMyBrand();
@@ -16,6 +18,9 @@ export function MyBrandPage() {
     const [activeTab, setActiveTab] = useState<"products" | "about">("products");
     const [depositModalOpen, setDepositModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+
+    // pour gérer l'ouverture du modal d'éthique (à implémenter plus tard)
+    const [ethicsModalOpen, setEthicsModalOpen] = useState(false);
 
     const initialData = useMemo(() => {
         if (!brand) return null;
@@ -209,6 +214,21 @@ export function MyBrandPage() {
                                 onUpdateField={editing.updateField}
                                 mainDeposit={mainDeposit}
                                 onEditDeposit={() => setDepositModalOpen(true)}
+                                rightBottomAddon={
+                                    /*<BrandEthicsCallout
+                                        ethicsScoreProduction={brand.ethicsScoreProduction}
+                                        ethicsScoreTransport={brand.ethicsScoreTransport}
+                                        ethicTags={brand.ethicTags}
+                                        onOpen={() => setEthicsModalOpen(true)}
+                                    />*/
+                                    <BrandEthicsCallout
+                                        brandId={brand.id}
+                                        ethicsScoreProduction={brand.ethicsScoreProduction}
+                                        ethicsScoreTransport={brand.ethicsScoreTransport}
+                                        ethicTags={brand.ethicTags}
+                                        onOpen={() => setEthicsModalOpen(true)}
+                                    />
+                                }
                             />
                         </main>
                     </div>
@@ -234,6 +254,17 @@ export function MyBrandPage() {
                     onClose={() => setShowPreview(false)}
                 />
             )}
+
+            <BrandEthicsQuestionnaireModal
+                brandId={brand.id}
+                open={ethicsModalOpen}
+                onClose={() => setEthicsModalOpen(false)}
+                searchQuery={searchQuery}
+                onSubmitted={() => {
+                    // optionnel : ici tu peux forcer un refresh visuel si besoin
+                    // ex: setSearchQuery(s => s) ou autre
+                }}
+            />
 
             {/* NavBar ajoutée */}
             <NavBar searchValue={searchQuery} onSearchChange={setSearchQuery} />
