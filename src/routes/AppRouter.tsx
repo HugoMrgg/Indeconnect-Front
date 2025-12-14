@@ -8,6 +8,7 @@ import { AccountsManagement } from "@/pages/admin/AccountsManagement";
 import { ProtectedRoute } from "@/routes/ProtectedRoute";
 import {MyBrandPage} from "@/pages/brands/MyBrandPage";
 import {BrandInfoPageWrapper} from "@/pages/brands/BrandInfoPageWrapper";
+import {SettingsPage} from "@/pages/settings/Settings";
 
 export default function AppRouter() {
     return (
@@ -25,6 +26,23 @@ export default function AppRouter() {
                 element={
                     <ProtectedRoute>
                         <Wishlist />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="/settings"
+                element={
+                    <ProtectedRoute>
+                        <SettingsPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/settings/:tab"
+                element={
+                    <ProtectedRoute>
+                        <SettingsPage />
                     </ProtectedRoute>
                 }
             />

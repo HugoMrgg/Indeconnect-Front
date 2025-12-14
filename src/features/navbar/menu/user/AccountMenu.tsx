@@ -19,7 +19,9 @@ export function AccountMenu() {
             <button className="flex items-center gap-2 hover:text-gray-300">
                 <List size={18}/>  Commandes
             </button>
-            <button className="flex items-center gap-2 hover:text-gray-300">
+            <button
+                onClick={() => navigate(`/settings`)}
+                className="flex items-center gap-2 hover:text-gray-300">
                 <Settings size={18}/> Paramètres
             </button>
         </>

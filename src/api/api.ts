@@ -5,6 +5,7 @@ import { userStorage } from "@/storage/UserStorage";
 import { ApiError, BackendErrorResponse } from "@/api/errors";
 
 const API_BASE_URL = "https://" + import.meta.env.VITE_API_HOST + "/indeconnect";
+//const API_BASE_URL_LOCAL = "http://localhost:5237/indeconnect";
 const REQUEST_TIMEOUT = 10000;
 
 const axiosInstance = axios.create({
