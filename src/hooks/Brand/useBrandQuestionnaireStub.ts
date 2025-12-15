@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useRef, useState } from "react";
+﻿import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {EthicsCategory, EthicsQuestionDTO, stubEthicsQuestions} from "@/features/brands/ethics/stubEthicsData";
 
 
@@ -81,6 +81,7 @@ function computeOverallStars(questions: EthicsQuestionDTO[], answers: Record<num
     return round1((t + p) / 2);
 }
 
+/*
 export function useBrandQuestionnaireStub(brandId: number) {
     const questions = useMemo(() => {
         // on garde l'ordre stable comme côté admin
@@ -270,4 +271,212 @@ export function useBrandQuestionnaireStub(brandId: number) {
         approve, // optionnel
         reset,
     };
+}
+*/
+export function useBrandQuestionnaireStub(brandId: number) {
+    // 1. Questions stables
+    const questions = useMemo(() => {
+        const copy = [...stubEthicsQuestions];
+        copy.sort((a, b) => {
+            if (a.category !== b.category) return a.category.localeCompare(b.category);
+            return a.order - b.order;
+        });
+        return copy;
+    }, []);
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    // 2. Initialisation Lazy du state (ne s'exécute qu'une fois au montage)
+    const [questionnaire, setQuestionnaire] = useState<BrandQuestionnaireDTO>(() => {
+        if (!brandId) return {} as any; // Securité
+        const key = mkKey(brandId);
+        const existing = safeParse<BrandQuestionnaireDTO>(localStorage.getItem(key));
+        if (existing && existing.brandId === brandId) return existing;
+
+        return {
+            id: Date.now(),
+            brandId,
+            submittedAt: null,
+            isApproved: false,
+            approvedAt: null,
+            responses: [],
+        };
+    });
+
+    const [answers, setAnswers] = useState<Record<number, number>>(() =>
+        questionnaire.responses ? toAnswersMap(questionnaire.responses) : {}
+    );
+
+    // ✅ FIX 1: Utilisation de useCallback pour que la fonction ne change pas à chaque render
+    const persist = useCallback((qcm: BrandQuestionnaireDTO) => {
+        try {
+            localStorage.setItem(mkKey(brandId), JSON.stringify(qcm));
+        } catch (e) {
+            console.error("Storage error", e);
+        }
+    }, [brandId]);
+
+    // ✅ FIX 2: useEffect de chargement propre
+    // Il ne dépend QUE de brandId. Il met à jour le state si l'ID change.
+    useEffect(() => {
+        setLoading(true);
+        setError(null);
+
+        const t = window.setTimeout(() => {
+            const key = mkKey(brandId);
+            const existing = safeParse<BrandQuestionnaireDTO>(localStorage.getItem(key));
+
+            if (existing && existing.brandId === brandId) {
+                setQuestionnaire(existing);
+                setAnswers(toAnswersMap(existing.responses));
+            } else {
+                // Reset si changement de marque et rien en stockage
+                const fresh: BrandQuestionnaireDTO = {
+                    id: Date.now(),
+                    brandId,
+                    submittedAt: null,
+                    isApproved: false,
+                    approvedAt: null,
+                    responses: [],
+                };
+                setQuestionnaire(fresh);
+                setAnswers({});
+                // On ne persiste pas tout de suite pour éviter effets de bord, sauf si nécessaire
+            }
+            setLoading(false);
+        }, 300); // Petit délai pour simuler réseau
+
+        return () => window.clearTimeout(t);
+    }, [brandId]); // ⚠️ Plus de 'persist' ici
+
+    // 3. Gestionnaire de sauvegarde automatique (Debounce)
+    const saveTimer = useRef<number | null>(null);
+
+    useEffect(() => {
+        // On ne déclenche la sauvegarde que si on a des réponses ou si le questionnaire existe
+        if (!questionnaire || loading) return;
+
+        const updated: BrandQuestionnaireDTO = {
+            ...questionnaire,
+            responses: toResponsesArray(answers),
+        };
+
+        // Mise à jour locale (ne déclenche pas le useEffect[brandId] du haut)
+        setQuestionnaire(updated);
+
+        if (saveTimer.current) window.clearTimeout(saveTimer.current);
+        saveTimer.current = window.setTimeout(() => {
+            persist(updated);
+        }, 500);
+
+        return () => {
+            if (saveTimer.current) window.clearTimeout(saveTimer.current);
+        };
+    }, [answers, persist]); // Ici persist est stable grâce au useCallback, donc pas de boucle.
+
+    // --- ACTIONS ---
+
+    const setAnswer = useCallback((questionId: number, optionId: number) => {
+        setAnswers((prev) => ({ ...prev, [questionId]: optionId }));
+    }, []);
+
+    const reset = useCallback(() => {
+        const fresh: BrandQuestionnaireDTO = {
+            id: Date.now(),
+            brandId,
+            submittedAt: null,
+            isApproved: false,
+            approvedAt: null,
+            responses: [],
+        };
+        setQuestionnaire(fresh);
+        setAnswers({});
+        persist(fresh);
+    }, [brandId, persist]);
+
+    const submit = useCallback(async () => {
+        // Recalculer isComplete ici pour être sûr (éviter dépendances circulaires)
+        const isComp = questions.every((q) => !!answers[q.id]);
+
+        if (!isComp) {
+            setError("Merci de répondre à toutes les questions avant de soumettre.");
+            return false;
+        }
+
+        const updated: BrandQuestionnaireDTO = {
+            ...questionnaire,
+            submittedAt: nowIso(),
+            responses: toResponsesArray(answers),
+        };
+
+        setQuestionnaire(updated);
+        persist(updated);
+        setError(null);
+        return true;
+    }, [answers, questionnaire, persist, questions]);
+
+    const approve = useCallback(async () => {
+        const updated: BrandQuestionnaireDTO = {
+            ...questionnaire,
+            isApproved: true,
+            approvedAt: nowIso(),
+            submittedAt: questionnaire.submittedAt ?? nowIso(),
+        };
+        setQuestionnaire(updated);
+        persist(updated);
+        return true;
+    }, [questionnaire, persist]);
+
+    // --- CALCULS MEMOISÉS ---
+
+    const isFilled = useMemo(() => Object.keys(answers).length > 0, [answers]);
+
+    const isComplete = useMemo(() => {
+        return questions.every((q) => !!answers[q.id]);
+    }, [questions, answers]);
+
+    const scores = useMemo(() => {
+        const transport = computeStarsForCategory(questions, answers, EthicsCategory.Transport);
+        const production = computeStarsForCategory(questions, answers, EthicsCategory.MaterialsManufacturing);
+        const overall = computeOverallStars(questions, answers);
+        return {
+            transport,
+            production,
+            overall,
+            transportLabel: transport.toFixed(1).replace(".", ","),
+            productionLabel: production.toFixed(1).replace(".", ","),
+            overallLabel: overall.toFixed(1).replace(".", ","),
+        };
+    }, [questions, answers]);
+
+    // ✅ FIX 3: Le return final est memoïsé
+    // Cela empêche le composant parent (la Modal) de re-render en boucle
+    return useMemo(() => ({
+        loading,
+        error,
+        questions,
+        questionnaire,
+        answers,
+        setAnswer,
+        isFilled,
+        isComplete,
+        scores,
+        submit,
+        approve,
+        reset,
+    }), [
+        loading,
+        error,
+        questions,
+        questionnaire,
+        answers,
+        setAnswer,
+        isFilled,
+        isComplete,
+        scores,
+        submit,
+        approve,
+        reset
+    ]);
 }
