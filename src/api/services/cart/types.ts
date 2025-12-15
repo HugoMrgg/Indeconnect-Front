@@ -6,6 +6,7 @@ export type CartItemDto = {
     productId: number;
     productName: string;
     brandName: string;
+    brandId: number;
     primaryImageUrl: string;
     color?: { id: number; name: string; hexa: string } | null;
     size?: { id: number; name: string } | null;

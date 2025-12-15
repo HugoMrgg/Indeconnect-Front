@@ -3,17 +3,24 @@ import { useAuth } from "@/hooks/Auth/useAuth";
 import { useCart } from "@/hooks/User/useCart";
 import { useCartUI } from "@/hooks/User/useCartUI";
 import { Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export function CartContent() {
     const { user } = useAuth();
-    const { cartOpen } = useCartUI();
+    const { cartOpen, closeCart } = useCartUI();
     const { cart, loading, error, refetch, removeFromCart, removingFromCart } = useCart();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (cartOpen && user?.id) {
             refetch();
         }
     }, [cartOpen, user?.id, refetch]);
+
+    const handleCheckout = () => {
+        closeCart();
+        navigate("/checkout");
+    };
 
     if (!user?.id) {
         return (
@@ -147,7 +154,10 @@ export function CartContent() {
                         {cart.totalAmount.toFixed(2)} €
                     </span>
                 </div>
-                <button className="w-full py-3 rounded-xl bg-black text-white text-lg font-semibold hover:bg-gray-900 transition">
+                <button
+                    onClick={handleCheckout}
+                    className="w-full py-3 rounded-xl bg-black text-white text-lg font-semibold hover:bg-gray-900 transition"
+                >
                     Passer commande
                 </button>
             </div>

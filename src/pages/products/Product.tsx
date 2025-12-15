@@ -126,7 +126,10 @@ export function ProductPage() {
                         />
 
                         <AddToCartButton
-                            isAvailable={product.isAvailable}
+                            isAvailable={
+                                selectedSize?.isAvailable === true &&
+                                selectedSize.stockCount > 0
+                            }
                             onClick={() => setIsCartModalOpen(true)}
                         />
 
