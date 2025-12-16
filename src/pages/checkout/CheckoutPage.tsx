@@ -88,11 +88,12 @@ export function CheckoutPage() {
                                 <h2 className="text-xl font-semibold">Modes de livraison</h2>
                                 {Array.from(itemsByBrand.entries()).map(([brandId, items]) => (
                                     <ShippingMethodSelector
-                                        key={brandId}
+                                        key={`${brandId}-${selectedAddressId}`}
                                         brandId={brandId}
                                         brandName={items[0].brandName}
                                         items={items}
                                         selectedMethodId={shippingChoices.get(brandId)?.methodId}
+                                        addressId={selectedAddressId}
                                         onSelectMethod={(methodId, price, displayName) => {
                                             selectShippingMethod(brandId, methodId, price, displayName);
                                         }}

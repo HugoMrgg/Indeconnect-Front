@@ -53,7 +53,6 @@ export function useShipping() {
             try {
                 const newAddress = await createShippingAddress(userId, data);
                 setAddresses((prev) => [...prev, newAddress]);
-                toast.success("Adresse ajoutée !");
                 return newAddress;
             } catch (err: unknown) {
                 const message = extractErrorMessage(err);
@@ -69,12 +68,12 @@ export function useShipping() {
     );
 
     // Récupérer les méthodes de livraison d'une marque
-    const fetchBrandMethods = useCallback(async (brandId: number): Promise<ShippingMethodDto[] | null> => {
+    const fetchBrandMethods = useCallback(async (brandId: number, addressId?: number): Promise<ShippingMethodDto[] | null> => {
         setLoading(true);
         setError(null);
 
         try {
-            const brandMethods = await getBrandShippingMethods(brandId);
+            const brandMethods = await getBrandShippingMethods(brandId, addressId);
             setMethods(brandMethods);
             return brandMethods;
         } catch (err: unknown) {
@@ -116,7 +115,6 @@ export function useShipping() {
 
             try {
                 const newMethod = await createBrandShippingMethod(brandId, data);
-                toast.success("Méthode de livraison ajoutée");
                 return newMethod;
             } catch (err: unknown) {
                 const message = extractErrorMessage(err);

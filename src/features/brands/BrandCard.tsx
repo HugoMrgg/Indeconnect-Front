@@ -1,7 +1,54 @@
-﻿import React from "react";
+﻿import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Brand } from "@/types/brand";
-import { Star, MapPin } from "lucide-react";
+import { MapPin, Star } from "lucide-react";
+
+function clamp(n: number, min: number, max: number) {
+    return Math.min(max, Math.max(min, n));
+}
+
+/**
+ * Stars with partial fill (0..100%) per star.
+ * Works with lucide Star by overlaying a clipped filled star on top of the outline.
+ */
+const StarRating: React.FC<{ value?: number; size?: number }> = ({ value, size = 16 }) => {
+    const rating = value === undefined || value === null ? null : clamp(value, 0, 5);
+
+    const percents = useMemo(() => {
+        if (rating === null) return Array(5).fill(0);
+        return Array.from({ length: 5 }, (_, i) => {
+            const raw = rating - i;            // ex: 4.6 - 4 = 0.6 for 5th star
+            const pct = clamp(raw, 0, 1) * 100;
+            return pct;
+        });
+    }, [rating]);
+
+    return (
+        <div className="flex items-center gap-1 text-yellow-500">
+            {percents.map((pct, i) => (
+                <div key={i} className="relative" style={{ width: size, height: size }}>
+                    {/* outline star */}
+                    <Star
+                        size={size}
+                        className="absolute inset-0"
+                        fill="none"
+                    />
+                    {/* clipped fill */}
+                    <div
+                        className="absolute inset-0 overflow-hidden"
+                        style={{ width: `${pct}%` }}
+                    >
+                        <Star
+                            size={size}
+                            className="absolute inset-0"
+                            fill="currentColor"
+                        />
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+};
 
 export const BrandCard: React.FC<Brand> = ({
                                                name,
@@ -15,52 +62,95 @@ export const BrandCard: React.FC<Brand> = ({
                                            }) => {
     const navigate = useNavigate();
 
+    const prod = useMemo(() => clamp((ethicsScoreProduction ?? 0) / 60, 0, 5), [ethicsScoreProduction]);
+    const transp = useMemo(() => clamp((ethicsScoreTransport ?? 0) / 60, 0, 5), [ethicsScoreTransport]);
+
+    const initials = useMemo(() => {
+        const parts = (name ?? "").trim().split(/\s+/);
+        const a = parts[0]?.[0] ?? "";
+        const b = parts[1]?.[0] ?? "";
+        return (a + b).toUpperCase() || "B";
+    }, [name]);
+
+    const onOpen = () => navigate(`/brand/${encodeURIComponent(name)}`);
+
     return (
         <div
-            onClick={() => navigate(`/brand/${encodeURIComponent(name)}`)}
-            className="flex flex-col cursor-pointer min-w-96 max-w-96 min-h-56 p-4 border rounded-2xl shadow-sm hover:shadow-md transition bg-white hover:-translate-y-1"
+            role="button"
+            tabIndex={0}
+            onClick={onOpen}
+            onKeyDown={(e) => (e.key === "Enter" || e.key === " " ? onOpen() : null)}
+            className="group cursor-pointer min-w-96 max-w-96 min-h-56 p-4 rounded-3xl border border-gray-100 bg-white shadow-sm
+                 transition hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-black/10"
         >
-            <div className="flex space-x-3">
-                <img
-                    src={logoUrl}
-                    alt={`${name} logo`}
-                    className="h-12 w-12 rounded-xl object-cover"
-                />
-                <div className="flex flex-col">
-                    <h3 className="text-lg font-semibold mb-1">{name}</h3>
-                    <div className="flex items-center text-yellow-500 text-sm">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                            <Star
-                                key={i}
-                                size={16}
-                                fill={i < Math.floor(userRating ?? 0) ? "currentColor" : "none"}
-                            />
-                        ))}
-                        <span className="ml-1 text-gray-600">{userRating !== undefined ? userRating.toFixed(1) : "N/A"}</span>
+            {/* TOP: logo + name + rating + distance */}
+            <div className="flex items-start gap-3">
+                {/* Logo always readable */}
+                <div className="h-14 w-14 shrink-0 rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden grid place-items-center">
+                    {logoUrl ? (
+                        <img
+                            src={logoUrl}
+                            alt={`${name} logo`}
+                            className="h-full w-full object-contain p-2"
+                            loading="lazy"
+                        />
+                    ) : (
+                        <span className="text-sm font-semibold text-gray-700">{initials}</span>
+                    )}
+                </div>
+
+                <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-3">
+                        <h3 className="text-lg font-semibold tracking-tight truncate">{name}</h3>
+
+                        <span className="inline-flex items-center gap-1 rounded-full bg-gray-50 px-3 py-1 text-xs text-gray-700 border border-gray-100">
+              <MapPin size={14} />
+                            {distanceKm !== undefined ? `${Math.round(distanceKm as number)} km` : "?"}
+            </span>
+                    </div>
+
+                    <div className="mt-1 flex items-center gap-2">
+                        <StarRating value={userRating} size={16} />
+                        <span className="text-sm text-gray-600">
+              {userRating !== undefined && userRating !== null ? userRating.toFixed(1) : "N/A"}
+            </span>
                     </div>
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-2 text-sm mt-3">
-                <div className="bg-gray-50 p-2 rounded-xl">
-                    <p className="text-gray-500 text-xs">Éthique (production)</p>
-                    <p className="font-semibold">{(ethicsScoreProduction/60).toFixed(1)} / 5</p>
+            {/* ETHICS blocks (cleaner) */}
+            <div className="mt-4 grid grid-cols-2 gap-3">
+                <div className="rounded-2xl bg-gray-50 border border-gray-100 p-3">
+                    <p className="text-xs text-gray-500">Éthique (production)</p>
+                    <div className="mt-2 h-2 w-full rounded-full bg-white border border-gray-100 overflow-hidden">
+                        <div className="h-full bg-gray-900/70 rounded-full" style={{ width: `${(prod / 5) * 100}%` }} />
+                    </div>
+                    <p className="mt-1 text-sm font-semibold text-gray-800">{prod.toFixed(1)} / 5</p>
                 </div>
-                <div className="bg-gray-50 p-2 rounded-xl">
-                    <p className="text-gray-500 text-xs">Éthique (transport)</p>
-                    <p className="font-semibold">{(ethicsScoreTransport/60).toFixed(1)} / 5</p>
+
+                <div className="rounded-2xl bg-gray-50 border border-gray-100 p-3">
+                    <p className="text-xs text-gray-500">Éthique (transport)</p>
+                    <div className="mt-2 h-2 w-full rounded-full bg-white border border-gray-100 overflow-hidden">
+                        <div className="h-full bg-gray-900/70 rounded-full" style={{ width: `${(transp / 5) * 100}%` }} />
+                    </div>
+                    <p className="mt-1 text-sm font-semibold text-gray-800">{transp.toFixed(1)} / 5</p>
                 </div>
             </div>
 
-            <p className="text-sm my-2 text-gray-700 line-clamp-3">{description}</p>
+            {/* Description */}
+            {description && (
+                <p className="mt-3 text-sm text-gray-700 line-clamp-3 leading-relaxed">
+                    {description}
+                </p>
+            )}
 
-            <div className="flex flex-wrap mt-auto gap-2 text-xs">
-                <span className="flex items-center gap-1 bg-gray-100 px-3 py-1 rounded-full">
-                  {address}
-                </span>
-                <span className="flex items-center gap-1 bg-gray-100 px-3 py-1 rounded-full">
-                    <MapPin size={16}/> {distanceKm !== undefined ? Math.round(distanceKm) : "?"} km
-                </span>
+            {/* Footer chips */}
+            <div className="mt-4 flex flex-wrap gap-2">
+                {address && (
+                    <span className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700">
+            {address}
+          </span>
+                )}
             </div>
         </div>
     );

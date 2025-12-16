@@ -1,5 +1,5 @@
 ﻿import api from "@/api/api";
-import { CreateOrderDto, OrderDto } from "./types";
+import { CreateOrderDto, OrderDto, OrderTrackingDto } from "./types";
 import { ORDER_ROUTES } from "./routes";
 
 /**
@@ -23,5 +23,13 @@ export async function getOrder(orderId: number): Promise<OrderDto> {
  */
 export async function getUserOrders(userId: number): Promise<OrderDto[]> {
     const response = await api.get(ORDER_ROUTES.getUserOrders(userId));
+    return response.data;
+}
+
+/**
+ * Récupère le suivi détaillé d'une commande
+ */
+export async function getOrderTracking(orderId: number): Promise<OrderTrackingDto> {
+    const response = await api.get(ORDER_ROUTES.getTracking(orderId));
     return response.data;
 }

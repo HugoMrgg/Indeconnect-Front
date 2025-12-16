@@ -57,7 +57,6 @@ export function ShippingAddressSelector({ userId, selectedAddressId, onSelectAdd
                         onSuccess={(newAddress) => {
                             onSelectAddress(newAddress.id);
                             setShowAddForm(false);
-                            toast.success("Adresse ajoutée et sélectionnée !");
                             fetchAddresses(userId); // Recharger la liste
                         }}
                         onCancel={() => setShowAddForm(false)}

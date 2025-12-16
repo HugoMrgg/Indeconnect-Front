@@ -1,6 +1,6 @@
 ﻿import { OrderDto } from "@/api/services/orders/types";
 import { OrderStatusBadge } from "./OrderStatusBadge";
-import { Package, Calendar, CreditCard, ChevronRight, Receipt } from "lucide-react";
+import { Package, Calendar, CreditCard, ChevronRight, Receipt, Store } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
@@ -15,6 +15,8 @@ export function OrderCard({ order }: Props) {
         month: "long",
         year: "numeric",
     });
+
+    const uniqueBrands = new Set(order.invoices.map(inv => inv.brandId)).size;
 
     return (
         <div className="bg-white rounded-lg shadow hover:shadow-md transition-shadow border border-gray-200">
@@ -56,6 +58,19 @@ export function OrderCard({ order }: Props) {
                         </span>
                     </div>
 
+                    {/* Nombre de marques */}
+                    {uniqueBrands > 1 && (
+                        <div className="flex items-center gap-2">
+                            <Store className="text-gray-400" size={18} />
+                            <span className="text-sm text-gray-600">
+                                {uniqueBrands} marques
+                            </span>
+                            <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full font-medium">
+                                Livraisons séparées
+                            </span>
+                        </div>
+                    )}
+
                     {/* Factures par marque */}
                     {order.invoices.length > 0 && (
                         <div className="flex items-center gap-2">
@@ -72,7 +87,7 @@ export function OrderCard({ order }: Props) {
                     onClick={() => navigate(`/orders/${order.id}`)}
                     className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
                 >
-                    Voir les détails
+                    Suivre ma commande
                     <ChevronRight size={18} />
                 </button>
             </div>

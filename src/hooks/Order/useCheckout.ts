@@ -34,6 +34,8 @@ export function useCheckout() {
     // Sélectionner une adresse
     const selectAddress = useCallback((addressId: number | null) => {
         setSelectedAddressId(addressId);
+        // Réinitialiser les choix de livraison car les temps estimés changent avec l'adresse
+        setShippingChoices(new Map());
     }, []);
 
     // Sélectionner une méthode de livraison pour une marque
@@ -86,7 +88,6 @@ export function useCheckout() {
     const handlePaymentSuccess = useCallback(() => {
         if (!orderId) return;
 
-        toast.success("Paiement confirmé ! 🎉");
         navigate(`/orders/${orderId}`);
     }, [orderId, navigate]);
 

@@ -18,6 +18,7 @@ import { ProductColorSelector } from "@/features/product/ProductColorSelector";
 import { ProductSizeSelector } from "@/features/product/ProductSizeSelector";
 import { ProductReviewsSection } from "@/features/product/ProductReviewsSection";
 import { BannerBrand } from "@/features/banners/BannerBrand";
+import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
 import {BackLink} from "@/components/ui/BackLink";
 import {ProductLoading} from "@/features/product/ProductLoading";
@@ -158,6 +159,7 @@ export function ProductPage() {
                 onConfirm={handleAddToCart}
             />
 
+            <AuthPanel />
             <NavBar />
         </div>
     );

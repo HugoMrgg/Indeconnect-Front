@@ -24,9 +24,11 @@ export async function createShippingAddress(
 /**
  * Récupère les méthodes de livraison disponibles pour une marque
  * Utilisé dans le checkout côté client
+ * @param brandId - ID de la marque
+ * @param addressId - ID de l'adresse de livraison (optionnel, utilisé pour calculer le temps estimé)
  */
-export async function getBrandShippingMethods(brandId: number): Promise<ShippingMethodDto[]> {
-    const response = await api.get(SHIPPING_ROUTES.getBrandMethods(brandId));
+export async function getBrandShippingMethods(brandId: number, addressId?: number): Promise<ShippingMethodDto[]> {
+    const response = await api.get(SHIPPING_ROUTES.getBrandMethods(brandId, addressId));
     return response.data;
 }
 

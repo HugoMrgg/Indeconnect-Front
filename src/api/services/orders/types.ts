@@ -1,4 +1,6 @@
-﻿export type CreateOrderDto = {
+﻿// src/api/services/orders/types.ts
+
+export type CreateOrderDto = {
     shippingAddressId: number;
     deliveryChoices: DeliveryChoiceDto[];
 };
@@ -8,7 +10,13 @@ export type DeliveryChoiceDto = {
     shippingMethodId: number;
 };
 
-// ORDRE COMPLET (matche OrderDto du backend)
+export type OrderStatus =
+    | "Pending"
+    | "Paid"
+    | "Processing"
+    | "Delivered"
+    | "Cancelled";
+
 export type OrderDto = {
     id: number;
     userId: number;
@@ -21,7 +29,6 @@ export type OrderDto = {
     invoices: InvoiceDto[];
 };
 
-// ITEM D'UNE COMMANDE
 export type OrderItemDto = {
     id: number;
     productId: number;
@@ -31,7 +38,6 @@ export type OrderItemDto = {
     unitPrice: number;
 };
 
-// FACTURE PAR MARQUE
 export type InvoiceDto = {
     id: number;
     brandId: number;
@@ -40,9 +46,49 @@ export type InvoiceDto = {
     issuedAt: string;
 };
 
-// STATUTS (matche OrderStatus enum du backend)
-export type OrderStatus =
+export type DeliveryStatus =
     | "Pending"
-    | "Paid"
+    | "Preparing"
+    | "Shipped"
+    | "InTransit"
+    | "OutForDelivery"
     | "Delivered"
+    | "Failed"
+    | "Returned"
     | "Cancelled";
+
+// 🆕 NOUVEAU : Structure multi-marques
+export type OrderTrackingDto = {
+    orderId: number;
+    globalStatus: OrderStatus; // ⚠️ CHANGÉ : orderStatus → globalStatus
+    placedAt: string;
+    totalAmount: number;
+    deliveriesByBrand: BrandDeliveryTrackingDto[]; // 🆕 NOUVEAU
+    latestEstimatedDelivery: string | null; // 🆕 NOUVEAU
+};
+
+// 🆕 NOUVEAU DTO
+export type BrandDeliveryTrackingDto = {
+    brandDeliveryId: number;
+    brandId: number;
+    brandName: string;
+    brandLogoUrl: string | null;
+    status: DeliveryStatus;
+    trackingNumber: string | null;
+    items: OrderItemDto[];
+    totalAmount: number;
+    createdAt: string;
+    shippedAt: string | null;
+    deliveredAt: string | null;
+    estimatedDelivery: string | null;
+    timeline: TrackingStepDto[];
+};
+
+export type TrackingStepDto = {
+    status: string;
+    label: string;
+    description: string;
+    completedAt: string | null;
+    isCompleted: boolean;
+    isCurrent: boolean;
+};

@@ -22,6 +22,10 @@ export type ShippingMethodDto = {
     estimatedMaxDays: number;
     maxWeight?: number;
     isEnabled: boolean;
+
+    totalEstimatedMinDays?: number;
+    totalEstimatedMaxDays?: number;
+    estimatedDeliveryDate?: string;
 };
 
 export type CreateShippingMethodDto = {

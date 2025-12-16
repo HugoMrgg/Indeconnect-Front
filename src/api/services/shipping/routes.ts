@@ -4,7 +4,10 @@
     createAddress: (userId: number) => `/users/${userId}/shipping-addresses`,
 
     // Méthodes de livraison
-    getBrandMethods: (brandId: number) => `/shipping/brands/${brandId}/methods`,
+    getBrandMethods: (brandId: number, addressId?: number) =>
+        addressId
+            ? `/shipping/brands/${brandId}/methods?addressId=${addressId}`
+            : `/shipping/brands/${brandId}/methods`,
     getMultipleBrandsMethods: () => `/shipping/brands/methods`,
 
     // Gestion par SuperVendor

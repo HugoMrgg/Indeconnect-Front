@@ -1,6 +1,6 @@
 ﻿import { useState, useCallback } from "react";
-import { createOrder, getOrder, getUserOrders } from "@/api/services/orders";
-import { CreateOrderDto, OrderDto } from "@/api/services/orders/types";
+import { createOrder, getOrder, getUserOrders, getOrderTracking } from "@/api/services/orders";
+import { CreateOrderDto, OrderDto, OrderTrackingDto } from "@/api/services/orders/types";
 import { extractErrorMessage } from "@/utils/errorHandling";
 import toast from "react-hot-toast";
 
@@ -9,6 +9,7 @@ export function useOrder() {
     const [error, setError] = useState<string | null>(null);
     const [order, setOrder] = useState<OrderDto | null>(null);
     const [orders, setOrders] = useState<OrderDto[]>([]);
+    const [tracking, setTracking] = useState<OrderTrackingDto | null>(null);
 
     // Créer une commande
     const create = useCallback(async (data: CreateOrderDto): Promise<OrderDto | null> => {
@@ -69,13 +70,34 @@ export function useOrder() {
         }
     }, []);
 
+    // Récupérer le suivi détaillé d'une commande
+    const fetchTracking = useCallback(async (orderId: number): Promise<OrderTrackingDto | null> => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const trackingData = await getOrderTracking(orderId);
+            setTracking(trackingData);
+            return trackingData;
+        } catch (err: unknown) {
+            const message = extractErrorMessage(err);
+            setError(message);
+            console.error("[useOrder] fetchTracking error:", err);
+            return null;
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
     return {
         loading,
         error,
         order,
         orders,
+        tracking,
         create,
         fetchById,
         fetchUserOrders,
+        fetchTracking,
     };
 }

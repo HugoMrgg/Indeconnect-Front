@@ -9,6 +9,7 @@ import { BrandInfoContent } from "@/features/brands/BrandInfoContent";
 import { BannerBrand } from "@/features/banners/BannerBrand";
 import { DepositModal } from "@/features/brands/DepositModal";
 import { ShippingMethodsManager } from "@/features/checkout/ShippingMethodsManager";
+import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
 
 export function MyBrandPage() {
@@ -257,7 +258,8 @@ export function MyBrandPage() {
                 />
             )}
 
-            {/* NavBar ajoutée */}
+            {/* AuthPanel et NavBar */}
+            <AuthPanel />
             <NavBar searchValue={searchQuery} onSearchChange={setSearchQuery} />
         </>
     );

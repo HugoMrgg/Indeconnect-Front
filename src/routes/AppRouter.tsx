@@ -11,6 +11,7 @@ import {BrandInfoPageWrapper} from "@/pages/brands/BrandInfoPageWrapper";
 import {CheckoutPage} from "@/pages/checkout/CheckoutPage";
 import {OrderConfirmation} from "@/pages/checkout/OrderConfirmation";
 import {OrdersPage} from "@/pages/order/OrdersPage";
+import {OrderDetailsPage} from "@/pages/order/OrderDetailsPage";
 
 export default function AppRouter() {
     return (
@@ -24,6 +25,7 @@ export default function AppRouter() {
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/orders/:orderId/confirmation" element={<OrderConfirmation />} />
             <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/orders/:orderId" element={<OrderDetailsPage />} />
 
             {/* Routes protégées - Client */}
             <Route
