@@ -5,6 +5,7 @@ import { ProductPage } from "@/pages/products/Product";
 import { Wishlist } from "@/pages/wishlist/Wishlist";
 import { SetPassword } from "@/pages/register/SetPassword";
 import { AccountsManagement } from "@/pages/admin/AccountsManagement";
+import { AdminEthicsManagement } from "@/pages/admin/AdminEthicsManagement";
 import { ProtectedRoute } from "@/routes/ProtectedRoute";
 import {MyBrandPage} from "@/pages/brands/MyBrandPage";
 import {BrandInfoPageWrapper} from "@/pages/brands/BrandInfoPageWrapper";
@@ -53,6 +54,15 @@ export default function AppRouter() {
                 element={
                     <ProtectedRoute requiredRoles={["Administrator", "Moderator"]}>
                         <AccountsManagement />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/ethics"
+                element={
+                    <ProtectedRoute requiredRoles={["Administrator"]}>
+                        {/* Placeholder for Ethics Management Page */}
+                        <AdminEthicsManagement />
                     </ProtectedRoute>
                 }
             />

@@ -1,5 +1,5 @@
 ﻿import axiosInstance from "@/api/api";
-import {TAGS_ROUTES} from "./routes";
+import {ETHICS_ROUTES} from "./routes";
 
 export const ethicsService = {
     /**
@@ -7,7 +7,7 @@ export const ethicsService = {
      * Endpoint : GET /ethics/tags
      */
     getEthicTags: async () => {
-        const response = await axiosInstance.get(TAGS_ROUTES.tags);
+        const response = await axiosInstance.get(ETHICS_ROUTES.tags);
         return response.data;
     }
 };

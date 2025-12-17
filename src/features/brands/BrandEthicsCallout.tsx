@@ -1,11 +1,13 @@
 ﻿import React, { useMemo } from "react";
-import { AlertTriangle, Leaf, Star } from "lucide-react";
-import {useBrandQuestionnaireStub} from "@/hooks/Brand/useBrandQuestionnaireStub";
+import { AlertTriangle, Leaf, Star, CheckCircle2, Clock, XCircle } from "lucide-react";
+
+type QuestionnaireStatus = "Draft" | "Submitted" | "Approved" | "Rejected" | string;
 
 type Props = {
-    brandId: number;                 // 👈 AJOUT
-    ethicsScoreProduction: number;    // 0..5
-    ethicsScoreTransport: number;     // 0..5
+    brandId: number; // tu peux le garder si tu en as besoin ailleurs
+    questionnaireStatus?: QuestionnaireStatus; // 👈 vient du back (EthicsFormDto.status)
+    ethicsScoreProduction: number; // 0..5 (officiel si Approved, sinon potentiellement 0)
+    ethicsScoreTransport: number;  // 0..5
     ethicTags?: string[];
     onOpen: () => void;
 };
@@ -14,86 +16,75 @@ const round1 = (n: number) => Math.round(n * 10) / 10;
 const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
 
 export const BrandEthicsCallout: React.FC<Props> = ({
-                                                        brandId,
+                                                        questionnaireStatus,
                                                         ethicsScoreProduction,
                                                         ethicsScoreTransport,
                                                         ethicTags,
                                                         onOpen,
                                                     }) => {
-    // ✅ On lit le stub (localStorage) : permet au callout de se mettre à jour après "Soumettre"
-    const qcm = useBrandQuestionnaireStub(brandId);
+    const status = (questionnaireStatus ?? "Draft") as QuestionnaireStatus;
 
-    // ✅ On décide quelle source utiliser :
-    // - si questionnaire stub soumis -> on affiche les scores stub
-    // - sinon -> on affiche les scores backend
-    const useStub = useMemo(() => {
-        return !!qcm.questionnaire?.submittedAt; // le plus fiable en stub
-    }, [qcm.questionnaire?.submittedAt]);
+    const production = useMemo(
+        () => round1(clamp(ethicsScoreProduction ?? 0, 0, 5)),
+        [ethicsScoreProduction]
+    );
 
-    const production = useMemo(() => {
-        const v = useStub ? qcm.scores.production : ethicsScoreProduction;
-        return round1(clamp(v ?? 0, 0, 5));
-    }, [useStub, qcm.scores.production, ethicsScoreProduction]);
+    const transport = useMemo(
+        () => round1(clamp(ethicsScoreTransport ?? 0, 0, 5)),
+        [ethicsScoreTransport]
+    );
 
-    const transport = useMemo(() => {
-        const v = useStub ? qcm.scores.transport : ethicsScoreTransport;
-        return round1(clamp(v ?? 0, 0, 5));
-    }, [useStub, qcm.scores.transport, ethicsScoreTransport]);
+    const overall = useMemo(() => round1(clamp((production + transport) / 2, 0, 5)), [production, transport]);
 
-    const overall = useMemo(() => {
-        return round1(clamp((production + transport) / 2, 0, 5));
-    }, [production, transport]);
-    useMemo(() => `${(overall / 5) * 100}%`, [overall]);
+    // ✅ Règle simple:
+    // - Draft => pas complété (notification)
+    // - Submitted => complété mais en vérification (notification)
+    // - Approved/Rejected => questionnaire traité
+    const isCompleted = status !== "Draft";
+    const isUnderReview = status === "Submitted";
+    const isApproved = status === "Approved";
+    const isRejected = status === "Rejected";
 
-    // - stub: rempli si soumis
-    // - backend fallback: tags ou scores > 0
-    const isFilled = useMemo(() => {
-        if (useStub) return true;
+    const title = useMemo(() => {
+        if (!isCompleted) return "Questionnaire éthique à compléter";
+        if (isUnderReview) return "Questionnaire envoyé (en cours de vérification)";
+        if (isApproved) return "Questionnaire validé";
+        if (isRejected) return "Questionnaire refusé (à corriger)";
+        return "Questionnaire éthique";
+    }, [isCompleted, isUnderReview, isApproved, isRejected]);
 
-        const hasTags = (ethicTags?.length ?? 0) > 0;
-        const hasScores = (ethicsScoreProduction ?? 0) > 0 || (ethicsScoreTransport ?? 0) > 0;
-        return hasTags || hasScores;
-    }, [useStub, ethicTags, ethicsScoreProduction, ethicsScoreTransport]);
+    const subtitle = useMemo(() => {
+        if (!isCompleted) return "Remplis le questionnaire pour afficher ton score et tes labels sur ta page.";
+        if (isUnderReview) return "Tes réponses ont été envoyées. Un administrateur va les vérifier.";
+        if (isApproved) return "Ton score officiel est publié sur ta page marque.";
+        if (isRejected) return "Corrige tes réponses puis renvoie le questionnaire.";
+        return "Gère tes informations éthiques.";
+    }, [isCompleted, isUnderReview, isApproved, isRejected]);
+
+    const Icon = useMemo(() => {
+        if (!isCompleted) return AlertTriangle;
+        if (isUnderReview) return Clock;
+        if (isApproved) return CheckCircle2;
+        if (isRejected) return XCircle;
+        return Leaf;
+    }, [isCompleted, isUnderReview, isApproved, isRejected]);
 
     return (
         <div className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl p-4">
-            {!isFilled ? (
-                <div className="space-y-3">
-                    <div className="flex items-start gap-3">
-                        <div className="mt-0.5 text-amber-600">
-                            <AlertTriangle size={18} />
-                        </div>
-                        <div className="flex-1">
-                            <div className="font-semibold text-gray-900">
-                                Questionnaire éthique non complété
-                            </div>
-                            <div className="text-sm text-gray-600 mt-1">
-                                Pour afficher ton score éthique (0 à 5⭐) et tes labels, remplis le questionnaire.
-                            </div>
-                        </div>
-                    </div>
-
-                    <button
-                        type="button"
-                        onClick={onOpen}
-                        className="text-sm text-gray-600 hover:text-gray-900 underline underline-offset-4"
-                    >
-                        Remplir le questionnaire éthique →
-                    </button>
+            <div className="flex items-start gap-3">
+                <div className={(!isCompleted || isRejected) ? "mt-0.5 text-amber-600" : "mt-0.5 text-gray-900"}>
+                    <Icon size={18} />
                 </div>
-            ) : (
-                <div className="space-y-3">
-                    <div className="flex items-start gap-3">
-                        <div className="mt-0.5 text-gray-900">
-                            <Leaf size={18} />
-                        </div>
 
-                        <div className="flex-1">
-                            <div className="font-semibold text-gray-900">Score éthique</div>
+                <div className="flex-1">
+                    <div className="font-semibold text-gray-900">{title}</div>
+                    <div className="text-sm text-gray-600 mt-1">{subtitle}</div>
 
-                            <div className="mt-2 flex items-center gap-3">
+                    {/* Affichage score uniquement si Approved (score officiel) */}
+                    {isApproved ? (
+                        <>
+                            <div className="mt-3 flex items-center gap-3">
                                 <StarRating value={overall} />
-
                                 <div className="text-sm text-gray-700">
                                     <span className="font-semibold text-gray-900">{overall.toFixed(1)}</span>/5
                                 </div>
@@ -115,18 +106,18 @@ export const BrandEthicsCallout: React.FC<Props> = ({
                                     ))}
                                 </div>
                             ) : null}
-                        </div>
-                    </div>
+                        </>
+                    ) : null}
 
                     <button
                         type="button"
                         onClick={onOpen}
-                        className="text-sm text-gray-600 hover:text-gray-900 underline underline-offset-4"
+                        className="mt-3 text-sm text-gray-600 hover:text-gray-900 underline underline-offset-4"
                     >
-                        Voir / modifier le questionnaire →
+                        {isCompleted ? "Voir / modifier le questionnaire →" : "Remplir le questionnaire éthique →"}
                     </button>
                 </div>
-            )}
+            </div>
         </div>
     );
 };
@@ -137,24 +128,14 @@ const StarRating: React.FC<{ value: number }> = ({ value }) => {
     return (
         <div className="flex items-center gap-1" aria-label={`Note ${v.toFixed(1)} sur 5`}>
             {Array.from({ length: 5 }).map((_, i) => {
-                const fill = clamp(v - i, 0, 1); // 0..1
+                const fill = clamp(v - i, 0, 1);
                 const pct = `${fill * 100}%`;
 
                 return (
                     <span key={i} className="relative inline-block w-[18px] h-[18px]">
-            {/* étoile grise (fond) */}
-                        <Star
-                            size={18}
-                            className="absolute inset-0 text-gray-300"
-                            fill="currentColor"
-                        />
-                        {/* étoile remplie (avant), coupée selon pct */}
-                        <span className="absolute inset-0 overflow-hidden" style={{ width: pct }}>
-              <Star
-                  size={18}
-                  className="text-gray-900"
-                  fill="currentColor"
-              />
+            <Star size={18} className="absolute inset-0 text-gray-300" fill="currentColor" />
+            <span className="absolute inset-0 overflow-hidden" style={{ width: pct }}>
+              <Star size={18} className="text-gray-900" fill="currentColor" />
             </span>
           </span>
                 );

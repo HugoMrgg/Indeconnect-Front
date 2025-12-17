@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Logs, Users, CreditCard, Truck, Zap } from "lucide-react";
+import { Logs, Users, CreditCard, Truck, ListChecks } from "lucide-react";
 
 export function AdminMenu() {
     const [, setOpen] = useState(false);
@@ -11,7 +11,7 @@ export function AdminMenu() {
         { icon: Users, label: "Gérer les comptes", path: "/admin/accounts" },
         { icon: CreditCard, label: "Moyens de paiement", path: "/admin/payments" },
         { icon: Truck, label: "Moyens de livraison", path: "/admin/delivery" },
-        { icon: Zap, label: "Paramètres éthique", path: "/admin/ethics" }
+        { icon: ListChecks, label: "Gérer questionnaire éthique", path: "/admin/ethics" },
     ];
 
     return (

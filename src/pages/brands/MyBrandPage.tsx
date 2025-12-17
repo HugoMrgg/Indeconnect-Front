@@ -215,12 +215,6 @@ export function MyBrandPage() {
                                 mainDeposit={mainDeposit}
                                 onEditDeposit={() => setDepositModalOpen(true)}
                                 rightBottomAddon={
-                                    /*<BrandEthicsCallout
-                                        ethicsScoreProduction={brand.ethicsScoreProduction}
-                                        ethicsScoreTransport={brand.ethicsScoreTransport}
-                                        ethicTags={brand.ethicTags}
-                                        onOpen={() => setEthicsModalOpen(true)}
-                                    />*/
                                     <BrandEthicsCallout
                                         brandId={brand.id}
                                         ethicsScoreProduction={brand.ethicsScoreProduction}

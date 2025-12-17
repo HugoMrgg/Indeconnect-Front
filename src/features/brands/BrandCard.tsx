@@ -59,7 +59,7 @@ export const BrandCard: React.FC<Brand> = ({
                   {address}
                 </span>
                 <span className="flex items-center gap-1 bg-gray-100 px-3 py-1 rounded-full">
-                    <MapPin size={16}/> {distanceKm !== undefined ? Math.round(distanceKm) : "?"} km
+                    <MapPin size={16}/> {distanceKm !== undefined ? Math.round(distanceKm as number) : "?"} km
                 </span>
             </div>
         </div>
