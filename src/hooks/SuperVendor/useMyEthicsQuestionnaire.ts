@@ -2,10 +2,6 @@
 import { ApiError } from "@/api/errors";
 import {EthicsFormDto, EthicsQuestionDto} from "@/api/services/ethics/superVendor/types";
 
-// ✅ utilise TES types déjà existants (adapter le chemin si besoin)
-
-
-// ✅ utilise TON service déjà codé (adapter le chemin si besoin)
 import { EthicsSuperVendorQuestionnaireService } from "@/api/services/ethics/superVendor";
 
 /** DTO de requête attendu par ton back (d’après ton code) */
