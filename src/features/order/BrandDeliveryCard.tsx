@@ -7,6 +7,11 @@ type Props = {
 };
 
 export function BrandDeliveryCard({ delivery }: Props) {
+    // ✅ PROTECTION SI DELIVERY EST UNDEFINED
+    if (!delivery) {
+        return null;
+    }
+
     const estimatedDate = delivery.estimatedDelivery
         ? new Date(delivery.estimatedDelivery).toLocaleDateString("fr-FR", {
             day: "2-digit",
@@ -46,6 +51,9 @@ export function BrandDeliveryCard({ delivery }: Props) {
             </span>
         );
     };
+
+    // ✅ PROTECTION ITEMS
+    const safeItems = delivery.items ?? [];
 
     return (
         <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
@@ -89,12 +97,14 @@ export function BrandDeliveryCard({ delivery }: Props) {
                 <div className="mb-6">
                     <div className="flex items-center gap-2 mb-3">
                         <ShoppingBag className="text-gray-700" size={20} />
+                        {/* ✅ PROTECTION AVEC ?? 0 */}
                         <h4 className="font-bold text-gray-900">
-                            Articles ({delivery.items.length})
+                            Articles ({safeItems.length})
                         </h4>
                     </div>
                     <div className="space-y-2">
-                        {delivery.items.map((item) => (
+                        {/* ✅ UTILISE safeItems AU LIEU DE delivery.items */}
+                        {safeItems.map((item) => (
                             <div
                                 key={item.id}
                                 className="flex justify-between items-center p-3 bg-gray-50 rounded-lg"

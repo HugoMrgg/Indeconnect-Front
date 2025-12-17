@@ -62,8 +62,8 @@ export const BrandCard: React.FC<Brand> = ({
                                            }) => {
     const navigate = useNavigate();
 
-    const prod = useMemo(() => clamp((ethicsScoreProduction ?? 0) / 60, 0, 5), [ethicsScoreProduction]);
-    const transp = useMemo(() => clamp((ethicsScoreTransport ?? 0) / 60, 0, 5), [ethicsScoreTransport]);
+    const prod = useMemo(() => clamp((ethicsScoreProduction ?? 0) / 20, 0, 5), [ethicsScoreProduction]);
+    const transp = useMemo(() => clamp((ethicsScoreTransport ?? 0) / 20, 0, 5), [ethicsScoreTransport]);
 
     const initials = useMemo(() => {
         const parts = (name ?? "").trim().split(/\s+/);

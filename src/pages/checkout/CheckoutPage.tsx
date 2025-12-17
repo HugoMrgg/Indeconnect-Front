@@ -32,14 +32,18 @@ export function CheckoutPage() {
             return;
         }
 
-        if (!cartLoading && (!cart || cart.items.length === 0)) {
+        // ✅ PROTECTION RENFORCÉE
+        if (!cartLoading && (!cart || !cart.items || cart.items.length === 0)) {
             navigate("/cart");
         }
     }, [user, cart, cartLoading, navigate]);
 
     // Grouper les articles par marque
     const itemsByBrand = useMemo(() => {
-        if (!cart) return new Map<number, CartItemDto[]>();
+        // ✅ VÉRIFICATION COMPLÈTE
+        if (!cart || !cart.items || !Array.isArray(cart.items)) {
+            return new Map<number, CartItemDto[]>();
+        }
 
         const grouped = new Map<number, CartItemDto[]>();
         cart.items.forEach((item) => {
