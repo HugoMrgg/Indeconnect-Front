@@ -193,15 +193,23 @@ export async function createProductReview(
 
 /**
  * Vérifie si l'utilisateur connecté a le droit de noter ce produit
- * (Appelle GET /indeconnect/products/{id}/can-review)
  */
 export async function checkCanUserReview(productId: number): Promise<boolean> {
     try {
         const response = await axiosInstance.get<boolean>(
-            PRODUCTS_ROUTES.byId(productId) + "/can-review"
+            PRODUCTS_ROUTES.canReview(productId)
         );
         return response.data;
     } catch (error) {
         return false;
     }
+}
+
+/**
+ * Désactive un avis d'un produit
+ */
+export async function disableProductReview(reviewId: number): Promise<void> {
+    await axiosInstance.post(
+        PRODUCTS_ROUTES.disableReview(reviewId)
+    );
 }

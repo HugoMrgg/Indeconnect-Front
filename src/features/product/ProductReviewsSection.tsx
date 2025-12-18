@@ -1,8 +1,10 @@
 ﻿import { useEffect, useState, useMemo } from "react";
-import { Star, MessageSquarePlus } from "lucide-react";
-import { fetchProductReviews } from "@/api/services/products";
+import { Star, MessageSquarePlus, Trash2 } from "lucide-react";
+import { fetchProductReviews, disableProductReview } from "@/api/services/products";
 import { ProductReview } from "@/types/Product";
-import { ReviewModal } from "./ReviewModal"; // Import de ta nouvelle modale
+import { ReviewModal } from "./ReviewModal";
+import { useAuth } from "@/hooks/Auth/useAuth";
+import toast from "react-hot-toast";
 
 interface Props {
     productId: number;
@@ -14,7 +16,9 @@ export function ProductReviewsSection({ productId, canReview = false }: Props) {
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Chargement initial
+    const { user } = useAuth();
+    const canModerate = user?.role === "Vendor";
+
     useEffect(() => {
         async function load() {
             setLoading(true);
@@ -29,6 +33,22 @@ export function ProductReviewsSection({ productId, canReview = false }: Props) {
         }
         load();
     }, [productId]);
+
+    // Desactivation des reviews
+    const handleDisableReview = async (reviewId: number) => {
+        if (!confirm("Voulez-vous vraiment masquer cet avis ?")) return;
+
+        try {
+            await disableProductReview(reviewId);
+            toast.success("Avis désactivé avec succès");
+
+            // On met à jour la liste localement en supprimant l'avis masqué
+            setReviews((prev) => prev.filter((r) => r.id !== reviewId));
+        } catch (error) {
+            console.error(error);
+            toast.error("Impossible de désactiver cet avis.");
+        }
+    };
 
     // Moyenne de avis
     const averageRating = useMemo(() => {
@@ -54,6 +74,7 @@ export function ProductReviewsSection({ productId, canReview = false }: Props) {
                     </p>
                 </div>
 
+                {/* Bouton "Écrire un avis" (Visible si on a acheté et pas encore noté) */}
                 {canReview && (
                     <button
                         onClick={() => setIsModalOpen(true)}
@@ -75,7 +96,7 @@ export function ProductReviewsSection({ productId, canReview = false }: Props) {
                     </div>
                 ) : (
                     reviews.map((r) => (
-                        <div key={r.id} className="border-b border-gray-100 pb-6 last:border-0">
+                        <div key={r.id} className="border-b border-gray-100 pb-6 last:border-0 group relative">
                             <div className="flex justify-between items-start mb-2">
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 font-medium">
@@ -88,10 +109,24 @@ export function ProductReviewsSection({ productId, canReview = false }: Props) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex gap-0.5">
-                                    {[1, 2, 3, 4, 5].map(s => (
-                                        <Star key={s} size={14} className={s <= r.rating ? "fill-yellow-400 text-yellow-400" : "fill-gray-100 text-gray-200"} />
-                                    ))}
+
+                                <div className="flex items-center gap-4">
+                                    <div className="flex gap-0.5">
+                                        {[1, 2, 3, 4, 5].map(s => (
+                                            <Star key={s} size={14} className={s <= r.rating ? "fill-yellow-400 text-yellow-400" : "fill-gray-100 text-gray-200"} />
+                                        ))}
+                                    </div>
+
+                                    {/* 4. Bouton de modération (Visible uniquement si autorisé) */}
+                                    {canModerate && (
+                                        <button
+                                            onClick={() => handleDisableReview(r.id)}
+                                            title="Désactiver cet avis (Modérateur)"
+                                            className="text-gray-400 hover:text-red-600 transition-colors p-1"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                             <p className="text-gray-600 mt-2 pl-[52px]">{r.comment}</p>
