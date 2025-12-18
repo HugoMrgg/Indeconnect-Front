@@ -8,6 +8,10 @@ import { AccountsManagement } from "@/pages/admin/AccountsManagement";
 import { ProtectedRoute } from "@/routes/ProtectedRoute";
 import {MyBrandPage} from "@/pages/brands/MyBrandPage";
 import {BrandInfoPageWrapper} from "@/pages/brands/BrandInfoPageWrapper";
+import {CheckoutPage} from "@/pages/checkout/CheckoutPage";
+import {OrderConfirmation} from "@/pages/checkout/OrderConfirmation";
+import {OrdersPage} from "@/pages/order/OrdersPage";
+import {OrderDetailsPage} from "@/pages/order/OrderDetailsPage";
 
 export default function AppRouter() {
     return (
@@ -18,6 +22,10 @@ export default function AppRouter() {
             <Route path="/brand/:brandName/product/:productId" element={<ProductPage />} />
             <Route path="/brand/:brandName/info" element={<BrandInfoPageWrapper />} />
             <Route path="/set-password" element={<SetPassword />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/orders/:orderId/confirmation" element={<OrderConfirmation />} />
+            <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/orders/:orderId" element={<OrderDetailsPage />} />
 
             {/* Routes protégées - Client */}
             <Route

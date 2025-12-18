@@ -8,18 +8,18 @@ import toast from "react-hot-toast";
 export function useCart(shouldFetch: boolean = true) {
     const { user } = useAuth();
     const { openCart } = useCartUI();
+
     const [cart, setCart] = useState<CartDto | null>(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(shouldFetch && !!user?.id);
     const [addingToCart, setAddingToCart] = useState(false);
     const [removingFromCart, setRemovingFromCart] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    /**
-     * Fetch le panier depuis l'API
-     */
     const fetchCart = useCallback(async () => {
+
         if (!user?.id) {
             setCart(null);
+            setLoading(false);
             return;
         }
 
@@ -31,15 +31,11 @@ export function useCart(shouldFetch: boolean = true) {
             setCart(data);
         } catch (e) {
             setError("Erreur lors du chargement du panier.");
-            console.error("[PANIER] Erreur getCart:", e);
         } finally {
             setLoading(false);
         }
     }, [user?.id]);
 
-    /**
-     * Ajoute un produit au panier
-     */
     const addToCart = useCallback(async (variantId: number, quantity: number) => {
         if (!user?.id) {
             toast.error("Veuillez vous connecter");
@@ -72,9 +68,6 @@ export function useCart(shouldFetch: boolean = true) {
         }
     }, [user?.id, fetchCart, openCart]);
 
-    /**
-     * Retire un produit du panier
-     */
     const removeFromCart = useCallback(async (variantId: number, quantity?: number) => {
         if (!user?.id) {
             toast.error("Veuillez vous connecter");
@@ -101,9 +94,6 @@ export function useCart(shouldFetch: boolean = true) {
         }
     }, [user?.id, fetchCart]);
 
-    /**
-     * Vide le panier
-     */
     const clearUserCart = useCallback(async () => {
         if (!user?.id) {
             toast.error("Veuillez vous connecter");
@@ -126,12 +116,14 @@ export function useCart(shouldFetch: boolean = true) {
         }
     }, [user?.id, fetchCart]);
 
-    // Auto-fetch au montage et quand user change
     useEffect(() => {
-        if (shouldFetch) {
+        if (shouldFetch && user?.id) {
             fetchCart();
+        } else if (!user?.id) {
+            setCart(null);
+            setLoading(false);
         }
-    }, [fetchCart, shouldFetch]);
+    }, [user?.id, shouldFetch, fetchCart]);
 
     return {
         cart,
