@@ -5,6 +5,7 @@ import {
     fetchProductById,
     fetchProductVariants,
     fetchProductColorVariants,
+    checkCanUserReview
 } from "@/api/services/products";
 
 import {
@@ -50,6 +51,7 @@ export function ProductPage() {
     const [isCartModalOpen, setIsCartModalOpen] = useState(false);
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState<SizeVariant | undefined>();
+    const [canReview, setCanReview] = useState(false);
 
     useEffect(() => {
         setSelectedSize(sizeVariants[0]);
@@ -66,6 +68,16 @@ export function ProductPage() {
         }
         void load();
     }, [id]);
+
+    useEffect(() => {
+        if (user && id) {
+            checkCanUserReview(id).then((allowed) => {
+                setCanReview(allowed);
+            });
+        } else {
+            setCanReview(false);
+        }
+    }, [user, id]);
 
     const handleAddToCart = async () => {
         try {
@@ -141,7 +153,10 @@ export function ProductPage() {
                     </div>
                 </div>
 
-                <ProductReviewsSection productId={id} />
+                <ProductReviewsSection
+                    productId={id}
+                    canReview={canReview}
+                />
             </div>
 
             <AddToCartModal
