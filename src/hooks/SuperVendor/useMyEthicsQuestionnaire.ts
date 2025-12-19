@@ -224,7 +224,7 @@ export function useMyEthicsQuestionnaire(open: boolean) {
         pickAnswer,
         reset,
 
-        saveDraft, // ✅ pratique si tu veux autosave
-        submit,    // ✅ utilisé par ton modal
+        saveDraft,
+        submit,
     };
 }
