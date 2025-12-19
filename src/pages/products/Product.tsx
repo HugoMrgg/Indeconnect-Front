@@ -55,7 +55,9 @@ export function ProductPage() {
     const [canReview, setCanReview] = useState(false);
 
     useEffect(() => {
-        setSelectedSize(sizeVariants[0]);
+        if (sizeVariants.length > 0) {
+            setSelectedSize(sizeVariants[0]);
+        }
     }, [sizeVariants]);
 
     useEffect(() => {
@@ -104,6 +106,21 @@ export function ProductPage() {
             }
         }
     };
+    if (error) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                    <p className="text-red-600 text-lg mb-4">{error}</p>
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700"
+                    >
+                        Retour
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     if (loading || !product) {
         return <ProductLoading

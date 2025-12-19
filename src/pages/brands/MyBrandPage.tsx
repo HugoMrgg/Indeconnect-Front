@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo, useCallback } from "react";
+﻿import React, { useState, useMemo } from "react";
 import { useMyBrand } from "@/hooks/BrandEdit/useMyBrand";
 import { useBrandEditing } from "@/hooks/BrandEdit/useBrandEditing";
 import { BrandPage } from "@/pages/brands/Brand";
@@ -17,6 +17,11 @@ import { BrandEthicsQuestionnaireModal } from "@/features/brands/BrandEthicsQues
 import { AddProductForm } from "@/features/product/AddProductForm";
 import { createProduct } from "@/api/services/products";
 import { CreateProductRequest } from "@/api/services/products/types";
+
+// Onglets
+import { MyBrandProductsTab } from "@/features/brands/MyBrandProductsTab";
+import { MyBrandAboutTab } from "@/features/brands/MyBrandAboutTab";
+import { MyBrandShippingTab } from "@/features/brands/MyBrandShippingTab";
 
 export function MyBrandPage() {
     const { brand, loading, error, refetch } = useMyBrand();

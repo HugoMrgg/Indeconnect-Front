@@ -1,9 +1,8 @@
-﻿import React, {useEffect, useMemo, useState} from "react";
-import toast from "react-hot-toast";
+﻿import React, {useMemo} from "react";
 
-import { WishlistService } from "@/api/services/wishlist";
 import { userStorage } from "@/storage/UserStorage";
 import { Product } from "@/types/Product";
+import { useWishlistUI } from "@/hooks/User/useWishlistUI";
 
 import SortBar from "@/features/sorting/SortBar";
 import { ProductGrid } from "@/features/brands/ProductGrid";
@@ -52,69 +51,8 @@ export const BrandProducts: React.FC<Props> = ({
         });
     }, [filtered, searchQuery]);
 
-    /** Map dynamique des likes */
-    const [likedMap, setLikedMap] = useState<Record<number, boolean>>({});
-
-    useEffect(() => {
-        if (!user?.id) return;
-
-        async function load() {
-            const map: Record<number, boolean> = {};
-
-            await Promise.all(
-                filteredByText.map(async (p) => {
-                    try {
-                        const res = await WishlistService.isInWishlist(user?.id, p.id);
-                        map[p.id] = res.data.exists === true;
-                    } catch {
-                        map[p.id] = false;
-                    }
-                })
-            );
-
-            setLikedMap(map);
-        }
-
-        void load();
-    }, [filteredByText, user?.id]);
-
-    // 🔥 Gestion centralisée du like / unlike
-    const toggleLike = async (productId: number) => {
-        if (!user?.id) {
-            toast.error("Connecte-toi pour ajouter aux favoris ❤️");
-            return;
-        }
-
-        const current = likedMap[productId] ?? false;
-
-        // Optimistic update
-        setLikedMap((prev) => ({ ...prev, [productId]: !current }));
-
-        try {
-            if (!current) {
-                await WishlistService.addToWishlist(user.id, productId);
-                toast.success("Ajouté à vos favoris ❤️", {
-                    style: {
-                        background: "#000",
-                        color: "#fff",
-                        borderRadius: "10px",
-                    },
-                });
-            } else {
-                await WishlistService.removeFromWishlist(user.id, productId);
-                toast.success("Retiré de vos favoris 💔", {
-                    style: {
-                        background: "#000",
-                        color: "#fff",
-                        borderRadius: "10px",
-                    },
-                });
-            }
-        } catch (err) {
-            console.error("Wishlist error", err);
-            setLikedMap((prev) => ({ ...prev, [productId]: current }));
-        }
-    };
+    // Gestion de la wishlist via le hook dédié
+    const { likedMap, toggleLike } = useWishlistUI(user?.id, filteredByText);
 
     // Cas spécial : mode édition sans produits
     if (editMode && filteredByText.length === 0 && onAddProduct) {
