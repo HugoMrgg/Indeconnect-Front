@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from "react";
+﻿import React, { useState, useMemo, useCallback } from "react";
 import { useMyBrand } from "@/hooks/BrandEdit/useMyBrand";
 import { useBrandEditing } from "@/hooks/BrandEdit/useBrandEditing";
 import { BrandPage } from "@/pages/brands/Brand";
@@ -11,6 +11,9 @@ import { DepositModal } from "@/features/brands/DepositModal";
 import { ShippingMethodsManager } from "@/features/checkout/ShippingMethodsManager";
 import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
+import { AddProductForm } from "@/features/product/AddProductForm";
+import { createProduct } from "@/api/services/products";
+import { CreateProductRequest } from "@/api/services/products/types";
 
 export function MyBrandPage() {
     const { brand, loading, error, refetch } = useMyBrand();
@@ -18,6 +21,7 @@ export function MyBrandPage() {
     const [activeTab, setActiveTab] = useState<"products" | "about" | "shipping">("products");
     const [depositModalOpen, setDepositModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [showAddProduct, setShowAddProduct] = useState(false); // NOUVEAU
 
     const initialData = useMemo(() => {
         if (!brand) return null;
@@ -57,6 +61,21 @@ export function MyBrandPage() {
             await refetch();
         }
     };
+
+    // NOUVEAU : Gestion de l'ajout de produit
+    const handleCreateProduct = useCallback(async (data: CreateProductRequest) => {
+        try {
+            await createProduct(data);
+            setShowAddProduct(false);
+            // Petit délai pour une meilleure UX avant le refresh
+            setTimeout(() => {
+                refetch();
+            }, 300);
+        } catch (error) {
+            console.error("Error creating product:", error);
+            throw error;
+        }
+    }, [refetch]);
 
     const displayBrand: Brand | undefined = useMemo(() => {
         if (!brand) return undefined;
@@ -187,12 +206,27 @@ export function MyBrandPage() {
 
                 {/* Onglet Produits */}
                 {activeTab === "products" && (
-                    <BrandPage
-                        brandId={brand.id}
-                        brandData={displayBrand}
-                        editMode={true}
-                        onUpdateField={editing.updateField}
-                    />
+                    <>
+                        <BrandPage
+                            brandId={brand.id}
+                            brandData={displayBrand}
+                            editMode={true}
+                            onUpdateField={editing.updateField}
+                            onAddProduct={() => setShowAddProduct(true)} // NOUVEAU
+                        />
+
+                        {/* Modal d'ajout de produit */}
+                        {showAddProduct && (
+                            <AddProductForm
+                                brandId={brand.id}
+                                onSuccess={() => {
+                                    // La fermeture est gérée dans handleCreateProduct
+                                }}
+                                onCancel={() => setShowAddProduct(false)}
+                                onSubmit={handleCreateProduct}
+                            />
+                        )}
+                    </>
                 )}
 
                 {/* Onglet Présentation */}
