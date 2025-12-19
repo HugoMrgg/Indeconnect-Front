@@ -1,19 +1,17 @@
-﻿import React, { useState, useMemo, useCallback } from "react";
+﻿import React, { useState, useMemo } from "react";
 import { useMyBrand } from "@/hooks/BrandEdit/useMyBrand";
 import { useBrandEditing } from "@/hooks/BrandEdit/useBrandEditing";
-import { BrandPage } from "@/pages/brands/Brand";
 import { Brand } from "@/types/brand";
 import { Save, Loader2, X } from "lucide-react";
 import { PreviewModal } from "@/features/brands/PreviewModal";
-import { BrandInfoContent } from "@/features/brands/BrandInfoContent";
-import { BannerBrand } from "@/features/banners/BannerBrand";
 import { DepositModal } from "@/features/brands/DepositModal";
-import { ShippingMethodsManager } from "@/features/checkout/ShippingMethodsManager";
 import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
-import { AddProductForm } from "@/features/product/AddProductForm";
-import { createProduct } from "@/api/services/products";
-import { CreateProductRequest } from "@/api/services/products/types";
+
+// Onglets
+import { MyBrandProductsTab } from "@/features/brands/MyBrandProductsTab";
+import { MyBrandAboutTab } from "@/features/brands/MyBrandAboutTab";
+import { MyBrandShippingTab } from "@/features/brands/MyBrandShippingTab";
 
 export function MyBrandPage() {
     const { brand, loading, error, refetch } = useMyBrand();
@@ -21,7 +19,6 @@ export function MyBrandPage() {
     const [activeTab, setActiveTab] = useState<"products" | "about" | "shipping">("products");
     const [depositModalOpen, setDepositModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const [showAddProduct, setShowAddProduct] = useState(false); // NOUVEAU
 
     const initialData = useMemo(() => {
         if (!brand) return null;
@@ -61,21 +58,6 @@ export function MyBrandPage() {
             await refetch();
         }
     };
-
-    // NOUVEAU : Gestion de l'ajout de produit
-    const handleCreateProduct = useCallback(async (data: CreateProductRequest) => {
-        try {
-            await createProduct(data);
-            setShowAddProduct(false);
-            // Petit délai pour une meilleure UX avant le refresh
-            setTimeout(() => {
-                refetch();
-            }, 300);
-        } catch (error) {
-            console.error("Error creating product:", error);
-            throw error;
-        }
-    }, [refetch]);
 
     const displayBrand: Brand | undefined = useMemo(() => {
         if (!brand) return undefined;
@@ -206,69 +188,26 @@ export function MyBrandPage() {
 
                 {/* Onglet Produits */}
                 {activeTab === "products" && (
-                    <>
-                        <BrandPage
-                            brandId={brand.id}
-                            brandData={displayBrand}
-                            editMode={true}
-                            onUpdateField={editing.updateField}
-                            onAddProduct={() => setShowAddProduct(true)} // NOUVEAU
-                        />
-
-                        {/* Modal d'ajout de produit */}
-                        {showAddProduct && (
-                            <AddProductForm
-                                brandId={brand.id}
-                                onSuccess={() => {
-                                    // La fermeture est gérée dans handleCreateProduct
-                                }}
-                                onCancel={() => setShowAddProduct(false)}
-                                onSubmit={handleCreateProduct}
-                            />
-                        )}
-                    </>
+                    <MyBrandProductsTab
+                        brand={displayBrand}
+                        onUpdateField={editing.updateField}
+                        onRefetch={refetch}
+                    />
                 )}
 
                 {/* Onglet Présentation */}
                 {activeTab === "about" && (
-                    <div className="min-h-full bg-gradient-to-b from-gray-50 to-white">
-                        <BannerBrand
-                            name={displayBrand.name}
-                            bannerUrl={displayBrand.bannerUrl ?? null}
-                            editMode={true}
-                            onUpdate={(url) => editing.updateField("bannerUrl", url)}
-                        />
-
-                        <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-16 -mt-10 relative">
-                            <BrandInfoContent
-                                brand={{
-                                    name: displayBrand.name,
-                                    logoUrl: displayBrand.logoUrl ?? null,
-                                    bannerUrl: displayBrand.bannerUrl ?? null,
-                                    description: displayBrand.description ?? null,
-                                    aboutUs: displayBrand.aboutUs ?? null,
-                                    whereAreWe: displayBrand.whereAreWe ?? null,
-                                    otherInfo: displayBrand.otherInfo ?? null,
-                                    contact: displayBrand.contact ?? null,
-                                    priceRange: displayBrand.priceRange ?? null,
-                                }}
-                                editMode={true}
-                                onUpdateField={editing.updateField}
-                                mainDeposit={mainDeposit}
-                                onEditDeposit={() => setDepositModalOpen(true)}
-                            />
-                        </main>
-                    </div>
+                    <MyBrandAboutTab
+                        brand={displayBrand}
+                        mainDeposit={mainDeposit}
+                        onUpdateField={editing.updateField}
+                        onEditDeposit={() => setDepositModalOpen(true)}
+                    />
                 )}
 
+                {/* Onglet Livraison */}
                 {activeTab === "shipping" && (
-                    <div className="min-h-full bg-gradient-to-b from-gray-50 to-white py-8">
-                        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-                            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
-                                <ShippingMethodsManager brandId={brand.id} editMode={true} />
-                            </div>
-                        </div>
-                    </div>
+                    <MyBrandShippingTab brandId={brand.id} />
                 )}
             </div>
 

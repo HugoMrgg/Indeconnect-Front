@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import {
-    fetchProductById,
-    fetchProductVariants,
-    fetchProductColorVariants,
-} from "@/api/services/products";
-
-import {
-    ProductDetail,
-    ColorVariant,
-    SizeVariant,
-} from "@/types/Product";
+import { SizeVariant } from "@/types/Product";
+import { useProductDetail } from "@/hooks/Product/useProductDetail";
 
 import { ProductImageGallery } from "@/features/product/ProductImageGallery";
 import { ProductColorSelector } from "@/features/product/ProductColorSelector";
@@ -44,40 +35,32 @@ export function ProductPage() {
     const { brands } = useBrands();
     const brand = brands.find(b => b.name === decodedBrand);
 
-    const [product, setProduct] = useState<ProductDetail | null>(null);
-    const [colorVariants, setColorVariants] = useState<ColorVariant[]>([]);
-    const [sizeVariants, setSizeVariants] = useState<SizeVariant[]>([]);
-    const [loading, setLoading] = useState(true);
+    // Charger les détails du produit via le hook
+    const { product, colorVariants, sizeVariants, loading, error } = useProductDetail(id);
+
     const [isCartModalOpen, setIsCartModalOpen] = useState(false);
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState<SizeVariant | undefined>();
 
     useEffect(() => {
-        setSelectedSize(sizeVariants[0]);
-    }, [sizeVariants]);
-
-    useEffect(() => {
-        async function load() {
-            setLoading(true);
-            const prod = await fetchProductById(id);
-            setProduct(prod);
-            setColorVariants(await fetchProductColorVariants(id));
-            setSizeVariants(await fetchProductVariants(id));
-            setLoading(false);
+        if (sizeVariants.length > 0) {
+            setSelectedSize(sizeVariants[0]);
         }
-        void load();
-    }, [id]);
+    }, [sizeVariants]);
 
     const handleAddToCart = async () => {
         try {
             if (!user?.id) throw new Error("Non authentifié");
             if (!selectedSize) throw new Error("Sélectionnez une taille");
 
-            await addVariantToCart(user.id, selectedSize.id, quantity);
+            console.log("🔍 selectedSize:", selectedSize);
+            console.log("🔍 selectedSize.id:", selectedSize.id);
+
+            await addVariantToCart(user.id, selectedSize.id, quantity);  // ❌ 1er toast ici
             setIsCartModalOpen(false);
             setQuantity(1);
 
-            toast.success("Produit ajouté au panier !", {
+            toast.success("Produit ajouté au panier !", {  // ❌ 2ème toast ici
                 icon: "🛒",
                 duration: 2000,
             });
@@ -92,6 +75,21 @@ export function ProductPage() {
             }
         }
     };
+    if (error) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                    <p className="text-red-600 text-lg mb-4">{error}</p>
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700"
+                    >
+                        Retour
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     if (loading || !product) {
         return <ProductLoading
