@@ -8,20 +8,45 @@ import { Heart } from "lucide-react";
 export default function ProductCard({
                                         product,
                                         liked,
-                                        onToggleLike
+                                        onToggleLike,
+                                        showStatus = false
                                     }: {
     product: Product;
     liked: boolean;
     onToggleLike: () => void;
+    showStatus?: boolean;
 }) {
     const navigate = useNavigate();
     const { brandName } = useParams();
     const encodedBrand = encodeURIComponent(brandName ?? "");
 
+    // Configuration des couleurs selon le statut
+    const statusConfig = {
+        Draft: {
+            bg: "bg-amber-500",
+            border: "border-amber-500",
+            text: "Brouillon"
+        },
+        Online: {
+            bg: "bg-green-500",
+            border: "border-green-500",
+            text: "En ligne"
+        },
+        Offline: {
+            bg: "bg-gray-500",
+            border: "border-gray-500",
+            text: "Hors ligne"
+        }
+    };
+
+    const status = product.status && showStatus ? statusConfig[product.status] : null;
+
     return (
         <div
             onClick={() => navigate(`/brand/${encodeURIComponent(encodedBrand)}/product/${product.id}`)}
-            className="group relative flex flex-col rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg overflow-hidden font-poppins cursor-pointer"
+            className={`group relative flex flex-col rounded-2xl border-2 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg overflow-hidden font-poppins cursor-pointer ${
+                status ? status.border : "border-gray-200"
+            }`}
         >
             <div className="relative w-full aspect-[4/5] bg-gray-100 overflow-hidden">
                 {product.primaryImageUrl || product.image ? (
@@ -33,6 +58,13 @@ export default function ProductCard({
                 ) : (
                     <div className="flex h-full items-center justify-center text-gray-400 text-sm">
                         Image non disponible
+                    </div>
+                )}
+
+                {/* Badge de statut (supervendeur uniquement) */}
+                {status && (
+                    <div className={`absolute left-3 top-3 flex items-center gap-2 ${status.bg} text-white rounded-lg px-3 py-1.5 shadow-md z-20 font-semibold text-xs`}>
+                        {status.text}
                     </div>
                 )}
 
@@ -53,7 +85,7 @@ export default function ProductCard({
                 </button>
 
                 {/* Badge couleur */}
-                {product.primaryColor && (
+                {product.primaryColor && !status && (
                     <div className="absolute left-3 top-3 flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1.5 shadow-sm">
                         <div
                             className="w-4 h-4 rounded-full border border-gray-300"

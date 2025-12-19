@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from "react";
+﻿import React, { useState, useMemo, useCallback } from "react";
 import { useMyBrand } from "@/hooks/BrandEdit/useMyBrand";
 import { useBrandEditing } from "@/hooks/BrandEdit/useBrandEditing";
 import { BrandPage } from "@/pages/brands/Brand";
@@ -14,16 +14,18 @@ import { NavBar } from "@/features/navbar/NavBar";
 import { BrandEthicsCallout } from "@/features/brands/BrandEthicsCallout";
 
 import { BrandEthicsQuestionnaireModal } from "@/features/brands/BrandEthicsQuestionnaireModal";
+import { AddProductForm } from "@/features/product/AddProductForm";
+import { createProduct } from "@/api/services/products";
+import { CreateProductRequest } from "@/api/services/products/types";
 
 export function MyBrandPage() {
     const { brand, loading, error, refetch } = useMyBrand();
     const [showPreview, setShowPreview] = useState(false);
     const [activeTab, setActiveTab] = useState<"products" | "about" | "shipping">("products");
     const [depositModalOpen, setDepositModalOpen] = useState(false);
-
     const [searchQuery, setSearchQuery] = useState("");
+    const [showAddProduct, setShowAddProduct] = useState(false); // NOUVEAU
 
-    // ✅ modal questionnaire éthique (MARQUE)
     const [ethicsModalOpen, setEthicsModalOpen] = useState(false);
 
     const initialData = useMemo(() => {
@@ -62,6 +64,20 @@ export function MyBrandPage() {
         const success = await editing.save();
         if (success) await refetch();
     };
+
+    const handleCreateProduct = useCallback(async (data: CreateProductRequest) => {
+        try {
+            await createProduct(data);
+            setShowAddProduct(false);
+            // Petit délai pour une meilleure UX avant le refresh
+            setTimeout(() => {
+                refetch();
+            }, 300);
+        } catch (error) {
+            console.error("Error creating product:", error);
+            throw error;
+        }
+    }, [refetch]);
 
     const displayBrand: Brand | undefined = useMemo(() => {
         if (!brand) return undefined;
@@ -190,12 +206,27 @@ export function MyBrandPage() {
 
                 {/* Onglet Produits */}
                 {activeTab === "products" && (
-                    <BrandPage
-                        brandId={brand.id}
-                        brandData={displayBrand}
-                        editMode={true}
-                        onUpdateField={editing.updateField}
-                    />
+                    <>
+                        <BrandPage
+                            brandId={brand.id}
+                            brandData={displayBrand}
+                            editMode={true}
+                            onUpdateField={editing.updateField}
+                            onAddProduct={() => setShowAddProduct(true)} // NOUVEAU
+                        />
+
+                        {/* Modal d'ajout de produit */}
+                        {showAddProduct && (
+                            <AddProductForm
+                                brandId={brand.id}
+                                onSuccess={() => {
+                                    // La fermeture est gérée dans handleCreateProduct
+                                }}
+                                onCancel={() => setShowAddProduct(false)}
+                                onSubmit={handleCreateProduct}
+                            />
+                        )}
+                    </>
                 )}
 
                 {/* Onglet Présentation */}

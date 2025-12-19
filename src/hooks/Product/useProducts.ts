@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+﻿import { useEffect, useState, useCallback } from "react";
 import { Product } from "@/types/Product";
 import { fetchProductsByBrand } from "@/api/services/products";
 
@@ -6,6 +6,7 @@ export function useProducts(brandId: number | null, brandName: string) {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [refreshTrigger, setRefreshTrigger] = useState(0); // NOUVEAU
 
     useEffect(() => {
         if (!brandId) {
@@ -30,7 +31,12 @@ export function useProducts(brandId: number | null, brandName: string) {
         };
 
         load();
-    }, [brandId, brandName]);
+    }, [brandId, brandName, refreshTrigger]); // MODIFIÉ: ajout de refreshTrigger
 
-    return { products, loading, error };
+    // NOUVEAU: Fonction pour forcer le refresh
+    const refresh = useCallback(() => {
+        setRefreshTrigger(prev => prev + 1);
+    }, []);
+
+    return { products, loading, error, refresh }; // MODIFIÉ: expose refresh
 }
