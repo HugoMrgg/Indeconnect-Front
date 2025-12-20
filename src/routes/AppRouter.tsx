@@ -10,6 +10,7 @@ import { ProtectedRoute } from "@/routes/ProtectedRoute";
 import {MyBrandPage} from "@/pages/brands/MyBrandPage";
 import {BrandInfoPageWrapper} from "@/pages/brands/BrandInfoPageWrapper";
 import {SettingsPage} from "@/pages/settings/Settings";
+import {ModeratorProductReviewsPage} from "@/pages/admin/AdminProductReviewsPage";
 
 export default function AppRouter() {
     return (
@@ -66,6 +67,16 @@ export default function AppRouter() {
                     </ProtectedRoute>
                 }
             />
+            {/* Moderator Routes */}
+            <Route
+                path="/moderator/reviews"
+                element={
+                    <ProtectedRoute requiredRoles={["Moderator"]}>
+                        <ModeratorProductReviewsPage />
+                    </ProtectedRoute>
+                }
+            />
+            {/* SuperVendor Routes */}
             <Route
                 path="/my-brand"
                 element={
