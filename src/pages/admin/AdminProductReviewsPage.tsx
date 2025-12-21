@@ -5,7 +5,20 @@ import { ReviewStatus } from "@/api/services/reviews/moderator/type";
 import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
 
-const statusOptions: ReviewStatus[] = ["Pending", "Approved", "Rejected"];
+// ✅ nouveaux statuts
+const statusOptions: Array<ReviewStatus | "All"> = ["All", "Enabled", "Disabled"];
+
+const statusLabel = (s: string) => {
+    if (s === "Enabled") return "Publié";
+    if (s === "Disabled") return "Masqué";
+    return s;
+};
+
+const statusBadgeClass = (s: string) => {
+    if (s === "Enabled") return "border-emerald-200 bg-emerald-50 text-emerald-700";
+    if (s === "Disabled") return "border-rose-200 bg-rose-50 text-rose-700";
+    return "border-gray-200 bg-white text-gray-700";
+};
 
 export const ModeratorProductReviewsPage: React.FC = () => {
     const {
@@ -17,8 +30,8 @@ export const ModeratorProductReviewsPage: React.FC = () => {
         error,
         totalPages,
         refetch,
-        approve,
-        reject,
+        approve, // => met en Enabled
+        reject,  // => met en Disabled
     } = useModeratorReviews();
 
     const [productIdInput, setProductIdInput] = useState(
@@ -63,20 +76,21 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                                 </h1>
                                 <div className="w-24 h-1 bg-gray-900 mb-6" aria-hidden="true"></div>
                                 <p className="text-gray-700 text-lg">
-                                    Filtre, approuve ou rejette les commentaires des utilisateurs sur les produits.
+                                    Les commentaires sont publiés automatiquement. Ici, tu peux les masquer ou les réactiver.
                                 </p>
                             </div>
                         </div>
                     </div>
                 </section>
+
                 <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <div>
-                            <h1 className="text-2xl font-semibold text-gray-900">
+                            <h2 className="text-2xl font-semibold text-gray-900">
                                 Modération • Reviews produits
-                            </h1>
+                            </h2>
                             <p className="text-sm text-gray-600 mt-1">
-                                Filtre, approuve ou rejette les commentaires. (Pending = file d’attente)
+                                Enabled = visible sur le site • Disabled = masqué (mais conservé)
                             </p>
                         </div>
 
@@ -97,18 +111,19 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                                 <label className="text-xs text-gray-500">Statut</label>
                                 <select
                                     className="mt-1 w-full px-3 py-2 rounded-xl border border-gray-200"
-                                    value={filters.status}
+                                    value={(filters.status as any) ?? "All"}
                                     onChange={(e) =>
                                         setFilters((p) => ({
                                             ...p,
-                                            status: e.target.value as ReviewStatus,
+                                            // "All" => null côté back (tu dis gérer ça dans le hook)
+                                            status: e.target.value as any,
                                             page: 1,
                                         }))
                                     }
                                 >
                                     {statusOptions.map((s) => (
                                         <option key={s} value={s}>
-                                            {s}
+                                            {s === "All" ? "All (tous)" : s}
                                         </option>
                                     ))}
                                 </select>
@@ -162,7 +177,7 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                                 </select>
                             </div>
 
-                            {/* ✅ recherche commentaire */}
+                            {/* ✅ recherche locale */}
                             <div className="md:col-span-2">
                                 <label className="text-xs text-gray-500">Recherche</label>
                                 <div className="relative mt-1">
@@ -213,66 +228,82 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                             <div className="p-10 text-center text-gray-600">Aucun résultat trouvé.</div>
                         ) : (
                             <div className="divide-y divide-gray-100">
-                                {filteredRows.map((r) => (
-                                    <div key={r.id} className="p-4">
-                                        <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
-                                            <div className="min-w-0">
-                                                <div className="flex flex-wrap items-center gap-2">
-                                                    <span className="font-semibold text-gray-900">#{r.id}</span>
-                                                    <span className="text-xs px-2 py-1 rounded-full border border-gray-200 text-gray-700">
-                            {r.status}
-                          </span>
-                                                    <span className="text-sm text-gray-600">
-                            {r.userName} • {r.rating}/5
-                          </span>
-                                                    {typeof r.productId === "number" ? (
-                                                        <span className="text-sm text-gray-500">• Produit {r.productId}</span>
-                                                    ) : null}
-                                                    {r.productName ? (
-                                                        <span className="text-sm text-gray-500">({r.productName})</span>
-                                                    ) : null}
-                                                </div>
+                                {filteredRows.map((r) => {
+                                    const currentStatus = String(r.status); // "Enabled" | "Disabled"
+                                    const isEnabled = currentStatus === "Enabled";
+                                    const isDisabled = currentStatus === "Disabled";
 
-                                                <div className="mt-2 text-sm text-gray-800 whitespace-pre-wrap break-words">
-                                                    {r.comment ?? (
-                                                        <span className="text-gray-400 italic">Pas de commentaire</span>
-                                                    )}
-                                                </div>
+                                    return (
+                                        <div key={r.id} className="p-4">
+                                            <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+                                                <div className="min-w-0">
+                                                    <div className="flex flex-wrap items-center gap-2">
+                                                        <span className="font-semibold text-gray-900">#{r.id}</span>
 
-                                                <div className="mt-2 text-xs text-gray-500">
-                                                    Créé: {new Date(r.createdAt).toLocaleString()}
-                                                </div>
-                                            </div>
-
-                                            {/* Actions */}
-                                            <div className="flex items-center gap-2 md:ml-4">
-                                                {r.status === "Pending" ? (
-                                                    <>
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => approve(r.id)}
-                                                            disabled={actingId === r.id}
-                                                            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50"
+                                                        <span
+                                                            className={[
+                                                                "text-xs px-2 py-1 rounded-full border",
+                                                                statusBadgeClass(currentStatus),
+                                                            ].join(" ")}
+                                                            title={currentStatus}
                                                         >
-                                                            <Check size={16} /> Approuver
-                                                        </button>
+                              {statusLabel(currentStatus)}
+                            </span>
 
+                                                        <span className="text-sm text-gray-600">
+                              {r.userName} • {r.rating}/5
+                            </span>
+
+                                                        {typeof r.productId === "number" ? (
+                                                            <span className="text-sm text-gray-500">• Produit {r.productId}</span>
+                                                        ) : null}
+
+                                                        {r.productName ? (
+                                                            <span className="text-sm text-gray-500">({r.productName})</span>
+                                                        ) : null}
+                                                    </div>
+
+                                                    <div className="mt-2 text-sm text-gray-800 whitespace-pre-wrap break-words">
+                                                        {r.comment ?? (
+                                                            <span className="text-gray-400 italic">Pas de commentaire</span>
+                                                        )}
+                                                    </div>
+
+                                                    <div className="mt-2 text-xs text-gray-500">
+                                                        Créé: {new Date(r.createdAt).toLocaleString()}
+                                                    </div>
+                                                </div>
+
+                                                {/* Actions */}
+                                                <div className="flex items-center gap-2 md:ml-4">
+                                                    {isEnabled ? (
                                                         <button
                                                             type="button"
-                                                            onClick={() => reject(r.id)}
+                                                            onClick={() => reject(r.id)} // => passe en Disabled
                                                             disabled={actingId === r.id}
                                                             className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-rose-600 text-white hover:bg-rose-700 disabled:opacity-50"
+                                                            title="Masquer ce commentaire"
                                                         >
-                                                            <X size={16} /> Rejeter
+                                                            <X size={16} /> Désactiver
                                                         </button>
-                                                    </>
-                                                ) : (
-                                                    <span className="text-sm text-gray-500">Aucune action</span>
-                                                )}
+                                                    ) : isDisabled ? (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => approve(r.id)} // => repasse en Enabled
+                                                            disabled={actingId === r.id}
+                                                            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50"
+                                                            title="Rendre ce commentaire visible"
+                                                        >
+                                                            <Check size={16} /> Réactiver
+                                                        </button>
+                                                    ) : (
+                                                        <span className="text-sm text-gray-500">Aucune action</span>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         )}
 

@@ -1,4 +1,4 @@
-﻿export type ReviewStatus = "Pending" | "Approved" | "Rejected";
+﻿export type ReviewStatus = "Disabled" | "Enabled" | "All";
 
 export type ProductReviewDto = {
     id: number;
