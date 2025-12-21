@@ -1,14 +1,5 @@
 import React from "react";
-
-// Liste des couleurs disponibles (pourrait être déplacé dans un fichier de constants)
-const AVAILABLE_COLORS = [
-    { id: 1, name: "Noir", hexa: "#000000" },
-    { id: 2, name: "Blanc", hexa: "#FFFFFF" },
-    { id: 3, name: "Rouge", hexa: "#FF0000" },
-    { id: 4, name: "Bleu", hexa: "#0000FF" },
-    { id: 5, name: "Vert", hexa: "#00FF00" },
-    { id: 6, name: "Jaune", hexa: "#FFFF00" },
-];
+import { useColors } from "@/hooks/Color/useColors";
 
 interface AddProductColorSelectorProps {
     selectedColorId: number | null;
@@ -16,14 +7,34 @@ interface AddProductColorSelectorProps {
 }
 
 export function AddProductColorSelector({
-    selectedColorId,
-    onSelectColor,
-}: AddProductColorSelectorProps) {
+                                            selectedColorId,
+                                            onSelectColor,
+                                        }: AddProductColorSelectorProps) {
+    const { colors, loading, error } = useColors();
+
+    if (loading) {
+        return (
+            <div className="space-y-4">
+                <h3 className="font-semibold text-lg">Couleur de cette variante</h3>
+                <div className="text-gray-500">Chargement des couleurs...</div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="space-y-4">
+                <h3 className="font-semibold text-lg">Couleur de cette variante</h3>
+                <div className="text-red-500">{error}</div>
+            </div>
+        );
+    }
+
     return (
         <div className="space-y-4">
             <h3 className="font-semibold text-lg">Couleur de cette variante</h3>
             <div className="grid grid-cols-3 gap-3">
-                {AVAILABLE_COLORS.map((color) => (
+                {colors.map((color) => (
                     <button
                         key={color.id}
                         type="button"
