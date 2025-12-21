@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import { WishlistPageLayout } from "@/features/wishlist/WishlistPageLayout";
 import { WishlistContent } from "@/features/wishlist/WishlistContent";
 
-import { WishlistService } from "@/api/services/wishlist";
 import {useWishlist} from "@/hooks/User/useWishList";
 import {WishlistResponse} from "@/api/services/wishlist/types";
 import {userStorage} from "@/storage/UserStorage";
@@ -25,7 +24,7 @@ export function Wishlist() {
     }
 
     // 🔥 HOOK API WISHLIST
-    const { wishlist, loading, error, retry } = useWishlist(user?.id);
+    const { wishlist, loading, error, removeFromWishlist } = useWishlist(user?.id);
 
     // MODE GRILLE / LISTE
     const [view, setView] = useState<"grid" | "list">("grid");
@@ -47,16 +46,7 @@ export function Wishlist() {
     }, [wishlist, searchQuery]);
 
     const handleRemove = async (productId: number) => {
-        await WishlistService.removeFromWishlist(user?.id, productId);
-        toast.success("Produit supprimé de vos favoris ❤️", {
-            icon: "🗑️",
-            style: {
-                borderRadius: "10px",
-                background: "#000",
-                color: "#fff",
-            },
-        });
-        await retry();
+        await removeFromWishlist(productId);
     };
 
     const handleOpenProduct = (brand: string, productId: number) => {

@@ -95,14 +95,21 @@ export function WishlistContent({
                         <div
                             className="grid grid-cols-[repeat(auto-fill,minmax(160px,max-content))] gap-3">
                             {groupedByBrand[brand].map((item) => {
-                                const product = {
+                                const product: {
+                                    id: number;
+                                    name: string;
+                                    price: number;
+                                    primaryImageUrl: string;
+                                    primaryColor?: { name: string; hexa: string };
+                                    brandName: string;
+                                } = {
                                     id: item.productId,
                                     name: item.productName,
                                     price: item.price,
                                     primaryImageUrl: item.primaryImageUrl,
                                     primaryColor: item.primaryColor,
                                     brandName: item.brandName,
-                                } as any;
+                                };
 
                                 return (
                                     <WishlistProductCard

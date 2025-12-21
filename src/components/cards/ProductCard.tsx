@@ -1,21 +1,24 @@
-﻿import { useParams, useNavigate } from "react-router-dom";
+﻿import React, { useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { Tag } from "@/components/cards/Tag";
 import { Product } from "@/types/Product";
 
 import { Heart } from "lucide-react";
 
-export default function ProductCard({
-                                        product,
-                                        liked,
-                                        onToggleLike,
-                                        showStatus = false
-                                    }: {
+interface ProductCardProps {
     product: Product;
     liked: boolean;
     onToggleLike: () => void;
     showStatus?: boolean;
-}) {
+}
+
+function ProductCard({
+    product,
+    liked,
+    onToggleLike,
+    showStatus = false
+}: ProductCardProps) {
     const navigate = useNavigate();
     const { brandName } = useParams();
     const encodedBrand = encodeURIComponent(brandName ?? "");
@@ -41,9 +44,18 @@ export default function ProductCard({
 
     const status = product.status && showStatus ? statusConfig[product.status] : null;
 
+    const handleCardClick = useCallback(() => {
+        navigate(`/brand/${encodeURIComponent(encodedBrand)}/product/${product.id}`);
+    }, [navigate, encodedBrand, product.id]);
+
+    const handleLikeClick = useCallback((e: React.MouseEvent) => {
+        e.stopPropagation();
+        onToggleLike();
+    }, [onToggleLike]);
+
     return (
         <div
-            onClick={() => navigate(`/brand/${encodeURIComponent(encodedBrand)}/product/${product.id}`)}
+            onClick={handleCardClick}
             className={`group relative flex flex-col rounded-2xl border-2 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg overflow-hidden font-poppins cursor-pointer ${
                 status ? status.border : "border-gray-200"
             }`}
@@ -70,10 +82,7 @@ export default function ProductCard({
 
                 {/* Bouton favoris */}
                 <button
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onToggleLike();
-                    }}
+                    onClick={handleLikeClick}
                     aria-label="Ajouter aux favoris"
                     className="absolute right-3 top-3 flex items-center justify-center rounded-full bg-white/80 p-2 shadow-sm backdrop-blur-sm transition hover:bg-white z-10"
                 >
@@ -132,3 +141,19 @@ export default function ProductCard({
         </div>
     );
 }
+
+// Custom comparison function for React.memo
+function arePropsEqual(prevProps: ProductCardProps, nextProps: ProductCardProps): boolean {
+    return (
+        prevProps.product.id === nextProps.product.id &&
+        prevProps.liked === nextProps.liked &&
+        prevProps.showStatus === nextProps.showStatus &&
+        prevProps.product.primaryImageUrl === nextProps.product.primaryImageUrl &&
+        prevProps.product.name === nextProps.product.name &&
+        prevProps.product.price === nextProps.product.price &&
+        prevProps.product.averageRating === nextProps.product.averageRating &&
+        prevProps.product.reviewCount === nextProps.product.reviewCount
+    );
+}
+
+export default React.memo(ProductCard, arePropsEqual);

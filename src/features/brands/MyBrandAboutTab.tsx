@@ -1,17 +1,13 @@
 import React from "react";
 import { BannerBrand } from "@/features/banners/BannerBrand";
 import { BrandInfoContent } from "@/features/brands/BrandInfoContent";
-import { Brand } from "@/types/brand";
-
-interface Deposit {
-    city: string | null;
-    // autres propriétés du deposit
-}
+import { Brand, EditableBrandFields } from "@/types/brand";
+import { DepositDTO } from "@/api/services/brands/types";
 
 interface MyBrandAboutTabProps {
     brand: Brand;
-    mainDeposit: Deposit | null;
-    onUpdateField: any;
+    mainDeposit: DepositDTO | null;
+    onUpdateField: <K extends keyof EditableBrandFields>(field: K, value: EditableBrandFields[K]) => void;
     onEditDeposit: () => void;
 }
 

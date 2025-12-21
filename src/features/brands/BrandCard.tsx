@@ -1,4 +1,4 @@
-﻿import React, { useMemo } from "react";
+﻿import React, { useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Brand } from "@/types/brand";
 import { MapPin, Star } from "lucide-react";
@@ -50,16 +50,16 @@ const StarRating: React.FC<{ value?: number; size?: number }> = ({ value, size =
     );
 };
 
-export const BrandCard: React.FC<Brand> = ({
-                                               name,
-                                               logoUrl,
-                                               description,
-                                               ethicsScoreProduction,
-                                               ethicsScoreTransport,
-                                               address,
-                                               distanceKm,
-                                               userRating,
-                                           }) => {
+const BrandCard: React.FC<Brand> = ({
+                                        name,
+                                        logoUrl,
+                                        description,
+                                        ethicsScoreProduction,
+                                        ethicsScoreTransport,
+                                        address,
+                                        distanceKm,
+                                        userRating,
+                                    }) => {
     const navigate = useNavigate();
 
     const prod = useMemo(() => clamp((ethicsScoreProduction ?? 0) / 20, 0, 5), [ethicsScoreProduction]);
@@ -72,14 +72,22 @@ export const BrandCard: React.FC<Brand> = ({
         return (a + b).toUpperCase() || "B";
     }, [name]);
 
-    const onOpen = () => navigate(`/brand/${encodeURIComponent(name)}`);
+    const onOpen = useCallback(() => {
+        navigate(`/brand/${encodeURIComponent(name)}`);
+    }, [navigate, name]);
+
+    const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+        if (e.key === "Enter" || e.key === " ") {
+            onOpen();
+        }
+    }, [onOpen]);
 
     return (
         <div
             role="button"
             tabIndex={0}
             onClick={onOpen}
-            onKeyDown={(e) => (e.key === "Enter" || e.key === " " ? onOpen() : null)}
+            onKeyDown={handleKeyDown}
             className="group cursor-pointer min-w-96 max-w-96 min-h-56 p-4 rounded-3xl border border-gray-100 bg-white shadow-sm
                  transition hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-black/10"
         >
@@ -155,3 +163,20 @@ export const BrandCard: React.FC<Brand> = ({
         </div>
     );
 };
+
+// Custom comparison function for React.memo
+function arePropsEqual(prevProps: Brand, nextProps: Brand): boolean {
+    return (
+        prevProps.name === nextProps.name &&
+        prevProps.logoUrl === nextProps.logoUrl &&
+        prevProps.ethicsScoreProduction === nextProps.ethicsScoreProduction &&
+        prevProps.ethicsScoreTransport === nextProps.ethicsScoreTransport &&
+        prevProps.distanceKm === nextProps.distanceKm &&
+        prevProps.userRating === nextProps.userRating &&
+        prevProps.description === nextProps.description &&
+        prevProps.address === nextProps.address
+    );
+}
+
+export default React.memo(BrandCard, arePropsEqual);
+export { BrandCard };

@@ -2,6 +2,7 @@
 import { AxiosError } from "axios";
 import { WishlistService } from "@/api/services/wishlist";
 import type { WishlistResponse } from "@/api/services/wishlist/types";
+import toast from "react-hot-toast";
 
 interface UseWishlistState {
     wishlist: WishlistResponse | null;
@@ -11,6 +12,7 @@ interface UseWishlistState {
 
 interface UseWishlistReturn extends UseWishlistState {
     retry: () => Promise<void>;
+    removeFromWishlist: (productId: number) => Promise<void>;
 }
 
 export function useWishlist(userId: number | undefined): UseWishlistReturn {
@@ -75,6 +77,32 @@ export function useWishlist(userId: number | undefined): UseWishlistReturn {
         }
     }, [userId]);
 
+    const removeFromWishlist = useCallback(async (productId: number) => {
+        if (!userId) {
+            toast.error("Veuillez vous connecter");
+            throw new Error("Non authentifié");
+        }
+
+        try {
+            await WishlistService.removeFromWishlist(userId, productId);
+
+            toast.success("Produit supprimé de vos favoris ❤️", {
+                icon: "🗑️",
+                style: {
+                    borderRadius: "10px",
+                    background: "#000",
+                    color: "#fff",
+                },
+            });
+
+            await load();
+        } catch (e: unknown) {
+            const message = e instanceof Error ? e.message : "Erreur lors de la suppression";
+            toast.error(message);
+            throw e;
+        }
+    }, [userId, load]);
+
     useEffect(() => {
         load();
 
@@ -86,5 +114,6 @@ export function useWishlist(userId: number | undefined): UseWishlistReturn {
     return {
         ...state,
         retry: load,
+        removeFromWishlist,
     };
 }

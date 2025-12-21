@@ -55,7 +55,7 @@ export function AddProductImageUpload({
                 {media.length > 0 && (
                     <div className="grid grid-cols-3 gap-4">
                         {media.map((item, index) => (
-                            <div key={index} className="relative group">
+                            <div key={`${item.url}-${index}`} className="relative group">
                                 <img
                                     src={item.url}
                                     alt={`Image ${index + 1}`}

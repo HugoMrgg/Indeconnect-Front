@@ -1,6 +1,7 @@
 ﻿import { useState, useRef } from "react";
 import { Upload, X, Loader2 } from "lucide-react";
 import { imagesService } from "@/api/services/image";
+import toast from "react-hot-toast";
 
 interface ImageUploaderProps {
     label: string;
@@ -46,7 +47,7 @@ export function ImageUploader({
 
         } catch (err) {
             console.error("Erreur upload:", err);
-            alert("Erreur lors de l'upload de l'image. Vérifiez la console.");
+            toast.error("Erreur lors de l'upload de l'image. Vérifiez la console.");
             setPreview(currentUrl ?? null);
         } finally {
             setUploading(false);

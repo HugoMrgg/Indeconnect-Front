@@ -36,8 +36,7 @@ export function PaymentSection({ orderId, onPaymentSuccess }: PaymentSectionProp
                 setError(message);
                 hasCalledRef.current = false;
             });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [orderId]);
+    }, [orderId, createIntent]);
 
     if (error) {
         return (

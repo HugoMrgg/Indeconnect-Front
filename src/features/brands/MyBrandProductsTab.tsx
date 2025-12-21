@@ -3,11 +3,11 @@ import { BrandPage } from "@/pages/brands/Brand";
 import { AddProductForm } from "@/features/product/AddProductForm";
 import { createProduct } from "@/api/services/products";
 import { CreateProductRequest } from "@/api/services/products/types";
-import { Brand } from "@/types/brand";
+import { Brand, EditableBrandFields } from "@/types/brand";
 
 interface MyBrandProductsTabProps {
     brand: Brand;
-    onUpdateField: any;
+    onUpdateField: <K extends keyof EditableBrandFields>(field: K, value: EditableBrandFields[K]) => void;
     onRefetch: () => void;
 }
 

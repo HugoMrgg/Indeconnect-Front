@@ -37,7 +37,6 @@ export function useAccounts(): UseAccountsReturn {
         } catch (err) {
             // ✅ Vérifie AVANT de logger
             if (err instanceof Error && err.name === "CanceledError") {
-                console.log("[useAccounts] Requête annulée (normal)");
                 return;
             }
 

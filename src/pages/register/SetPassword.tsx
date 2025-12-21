@@ -1,6 +1,6 @@
 ﻿import { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { AuthService } from "@/api/services/auth";
+import { useSetPassword } from "@/hooks/Auth/useSetPassword";
 import { AlertCircle, CheckCircle } from "lucide-react";
 
 export function SetPassword() {
@@ -10,45 +10,37 @@ export function SetPassword() {
 
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState(false);
+    const [validationError, setValidationError] = useState<string | null>(null);
+
+    const { setPassword: setPasswordMutation, loading, error, success } = useSetPassword();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError(null);
+        setValidationError(null);
 
         if (!token) {
-            setError("Token manquant. Vérifiez votre lien d'activation.");
+            setValidationError("Token manquant. Vérifiez votre lien d'activation.");
             return;
         }
 
         if (password !== confirmPassword) {
-            setError("Les mots de passe ne correspondent pas.");
+            setValidationError("Les mots de passe ne correspondent pas.");
             return;
         }
 
         if (password.length < 6) {
-            setError("Le mot de passe doit contenir au moins 6 caractères.");
+            setValidationError("Le mot de passe doit contenir au moins 6 caractères.");
             return;
         }
 
-        setLoading(true);
-        try {
-            await AuthService.setPassword({
-                token,
-                password,
-                confirmPassword
-            });
-            setSuccess(true);
+        const result = await setPasswordMutation({
+            token,
+            password,
+            confirmPassword
+        });
+
+        if (result) {
             setTimeout(() => navigate("/"), 3000);
-        } catch (err: any) {
-            const apiError =
-                err.response?.data?.error ||
-                err.response?.data?.message;
-            setError(apiError || "Erreur lors de l'activation du compte.");
-        }finally {
-            setLoading(false);
         }
     };
 
@@ -89,10 +81,10 @@ export function SetPassword() {
             <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
                 <h1 className="text-2xl font-bold mb-6 text-center">Activation du compte</h1>
 
-                {error && (
+                {(error || validationError) && (
                     <div className="flex items-center gap-2 bg-red-50 text-red-700 p-4 rounded-lg mb-6">
                         <AlertCircle size={20} />
-                        <p>{error}</p>
+                        <p>{error || validationError}</p>
                     </div>
                 )}
 

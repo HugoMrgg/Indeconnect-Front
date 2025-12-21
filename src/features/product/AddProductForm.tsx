@@ -4,6 +4,7 @@ import { ProductGroupSummaryDto } from "@/api/services/products/types";
 import { fetchProductGroupsByBrand } from "@/api/services/products";
 import { imagesService } from "@/api/services/image";
 import { useProductCreation } from "@/hooks/Product/useProductCreation";
+import toast from "react-hot-toast";
 
 // Sous-composants
 import { AddProductModeSelection } from "./AddProductModeSelection";
@@ -71,12 +72,12 @@ export function AddProductForm({ brandId, onSuccess, onCancel }: AddProductFormP
             const groups = await fetchProductGroupsByBrand(brandId);
             setProductGroups(groups);
             if (groups.length === 0) {
-                alert("Aucun groupe de produit existant. Créez d'abord un nouveau produit.");
+                toast.error("Aucun groupe de produit existant. Créez d'abord un nouveau produit.");
                 setMode("select");
             }
         } catch (error) {
             console.error("Error loading product groups:", error);
-            alert("Erreur lors du chargement des groupes de produits");
+            toast.error("Erreur lors du chargement des groupes de produits");
             setMode("select");
         } finally {
             setLoadingGroups(false);
@@ -139,7 +140,7 @@ export function AddProductForm({ brandId, onSuccess, onCancel }: AddProductFormP
             });
         } catch (err) {
             console.error("Erreur upload:", err);
-            alert("Erreur lors de l'upload de l'image");
+            toast.error("Erreur lors de l'upload de l'image");
         } finally {
             setUploadingImage(false);
         }
@@ -169,7 +170,7 @@ export function AddProductForm({ brandId, onSuccess, onCancel }: AddProductFormP
             onSuccess();
         } catch (error) {
             console.error("Error creating product:", error);
-            alert(error instanceof Error ? error.message : "Erreur lors de la création du produit");
+            toast.error(error instanceof Error ? error.message : "Erreur lors de la création du produit");
         }
     };
 

@@ -53,17 +53,30 @@ export const EditableField: React.FC<EditableFieldProps> = ({
     }
 
     if (isEditing) {
-        const Component = multiline ? "textarea" : "input";
+        if (multiline) {
+            return (
+                <textarea
+                    ref={inputRef as React.RefObject<HTMLTextAreaElement>}
+                    value={localValue}
+                    onChange={(e) => setLocalValue(e.target.value)}
+                    onBlur={handleBlur}
+                    onKeyDown={handleKeyDown}
+                    className={`${className} border-2 border-blue-500 rounded px-2 py-1 outline-none w-full`}
+                    placeholder={placeholder}
+                    rows={3}
+                />
+            );
+        }
+
         return (
-            <Component
-                ref={inputRef as any}
+            <input
+                ref={inputRef as React.RefObject<HTMLInputElement>}
                 value={localValue}
                 onChange={(e) => setLocalValue(e.target.value)}
                 onBlur={handleBlur}
                 onKeyDown={handleKeyDown}
                 className={`${className} border-2 border-blue-500 rounded px-2 py-1 outline-none w-full`}
                 placeholder={placeholder}
-                rows={multiline ? 3 : undefined}
             />
         );
     }

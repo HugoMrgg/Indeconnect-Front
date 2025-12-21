@@ -9,13 +9,22 @@ interface Props {
 export function ProductReviewsSection({ productId }: Props) {
     const [reviews, setReviews] = useState<ProductReview[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         async function load() {
             setLoading(true);
-            const res = await fetchProductReviews(productId);
-            setReviews(res.reviews || []);
-            setLoading(false);
+            setError(null);
+            try {
+                const res = await fetchProductReviews(productId);
+                setReviews(res.reviews || []);
+            } catch (e) {
+                const errorMessage = e instanceof Error ? e.message : "Erreur lors du chargement des avis";
+                setError(errorMessage);
+                console.error("Error loading reviews:", e);
+            } finally {
+                setLoading(false);
+            }
         }
         load();
     }, [productId]);
@@ -26,11 +35,17 @@ export function ProductReviewsSection({ productId }: Props) {
 
             {loading && <div>Chargement des avis...</div>}
 
-            {reviews.length === 0 && !loading && (
-                <div className="text-gray-500">Pas encore d’avis.</div>
+            {error && !loading && (
+                <div className="text-red-600 bg-red-50 p-4 rounded-lg">
+                    {error}
+                </div>
             )}
 
-            {reviews.map(r => (
+            {!error && reviews.length === 0 && !loading && (
+                <div className="text-gray-500">Pas encore d'avis.</div>
+            )}
+
+            {!error && reviews.map(r => (
                 <div key={r.id} className="border-b py-4">
                     <div className="font-semibold">{r.userName}</div>
                     <div className="text-yellow-500">{"★".repeat(r.rating)}</div>

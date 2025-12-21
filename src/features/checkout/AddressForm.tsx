@@ -1,7 +1,6 @@
 ﻿import { useState, useMemo } from "react";
-import { createShippingAddress } from "@/api/services/shipping";
 import { ShippingAddressDto } from "@/api/services/shipping/types";
-import { extractErrorMessage } from "@/utils/errorHandling";
+import { useShipping } from "@/hooks/Order/useShipping";
 import toast from "react-hot-toast";
 
 type Props = {
@@ -18,7 +17,7 @@ type FormErrors = {
 };
 
 export function AddressForm({ userId, onSuccess, onCancel }: Props) {
-    const [loading, setLoading] = useState(false);
+    const { createAddress, loading } = useShipping();
     const [formData, setFormData] = useState({
         street: "",
         number: "",
@@ -78,17 +77,10 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
             return;
         }
 
-        setLoading(true);
-
-        try {
-            const newAddress = await createShippingAddress(userId, formData);
+        const newAddress = await createAddress(userId, formData);
+        if (newAddress) {
             toast.success("Adresse ajoutée !");
             onSuccess(newAddress);
-        } catch (error: unknown) {
-            console.error("Erreur création adresse:", error);
-            toast.error(extractErrorMessage(error));
-        } finally {
-            setLoading(false);
         }
     };
 

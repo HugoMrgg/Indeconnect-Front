@@ -14,9 +14,8 @@ import { NavBar } from "@/features/navbar/NavBar";
 import {BackLink} from "@/components/ui/BackLink";
 import {ProductLoading} from "@/features/product/ProductLoading";
 
-import { addVariantToCart } from "@/api/services/cart";
 import { useAuth } from "@/hooks/Auth/useAuth";
-import { useCartUI } from "@/hooks/User/useCartUI";
+import { useCart } from "@/hooks/User/useCart";
 import { AddToCartModal } from "@/features/cart/AddToCartModal";
 import { AddToCartButton } from "@/features/cart/AddToCartButton";
 import { ProductInfo } from "@/pages/products/ProductInfo";
@@ -28,7 +27,7 @@ export function ProductPage() {
     const id = Number(productId);
     const navigate = useNavigate();
     const { user } = useAuth();
-    const { openCart } = useCartUI();
+    const { addToCart, addingToCart } = useCart();
 
     const decodedBrand = decodeURIComponent(brandName ?? "");
 
@@ -50,24 +49,11 @@ export function ProductPage() {
 
     const handleAddToCart = async () => {
         try {
-            if (!user?.id) throw new Error("Non authentifié");
             if (!selectedSize) throw new Error("Sélectionnez une taille");
 
-            console.log("🔍 selectedSize:", selectedSize);
-            console.log("🔍 selectedSize.id:", selectedSize.id);
-
-            await addVariantToCart(user.id, selectedSize.id, quantity);  // ❌ 1er toast ici
+            await addToCart(selectedSize.id, quantity);
             setIsCartModalOpen(false);
             setQuantity(1);
-
-            toast.success("Produit ajouté au panier !", {  // ❌ 2ème toast ici
-                icon: "🛒",
-                duration: 2000,
-            });
-
-            setTimeout(() => {
-                openCart();
-            }, 300);
 
         } catch (e: unknown) {
             if (e instanceof Error) {

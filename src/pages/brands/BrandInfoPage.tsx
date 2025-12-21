@@ -1,11 +1,10 @@
-﻿import React, { useEffect, useMemo, useState } from "react";
+﻿import React, { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useBrands } from "@/hooks/Brand/useBrands";
+import { useBrandDetail } from "@/hooks/Brand/useBrandDetail";
 import { BannerBrand } from "@/features/banners/BannerBrand";
 import { BrandLoading } from "@/features/brands/BrandLoading";
 import { BrandError } from "@/features/brands/BrandError";
-import { BrandDetailDTO } from "@/api/services/brands/types";
-import { brandsService } from "@/api/services/brands";
 import { BrandInfoContent } from "@/features/brands/BrandInfoContent";
 
 export const BrandInfoPage: React.FC = () => {
@@ -14,38 +13,12 @@ export const BrandInfoPage: React.FC = () => {
 
     const { brands, loading: listLoading, error: listError } = useBrands();
 
-    const [brand, setBrand] = useState<BrandDetailDTO | null>(null);
-    const [loadingDetail, setLoadingDetail] = useState(false);
-    const [detailError, setDetailError] = useState<string | null>(null);
-
     const summary = useMemo(
         () => brands.find((b) => b.name === decodedBrand),
         [brands, decodedBrand]
     );
 
-    useEffect(() => {
-        const fetchDetail = async () => {
-            if (!summary) return;
-            try {
-                setLoadingDetail(true);
-                setDetailError(null);
-                const detail = await brandsService.getBrandById(
-                    summary.id,
-                    undefined,
-                    undefined
-                );
-                setBrand(detail);
-            } catch (e) {
-                setDetailError(
-                    "Impossible de charger les informations détaillées de la marque." + e
-                );
-            } finally {
-                setLoadingDetail(false);
-            }
-        };
-
-        fetchDetail();
-    }, [summary]);
+    const { brand, loading: loadingDetail, error: detailError } = useBrandDetail(summary?.id ?? null);
 
     if (listLoading || loadingDetail) {
         return (

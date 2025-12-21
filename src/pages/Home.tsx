@@ -1,39 +1,18 @@
-﻿import React, { useEffect, useState, useMemo } from "react";
+﻿import React, { useEffect, useMemo } from "react";
 import { BrandSection } from "@/features/brands/BrandSection";
 import { useBrands } from "@/hooks/Brand/useBrands";
 import { useUI } from "@/context/UIContext";
 import { useDebounce } from "@/hooks/useDebounce";
-import { useGeolocation } from "@/hooks/User/useGeolocation";
 import { BrandFiltersPanel } from "@/features/filters/BrandFiltersPanel";
 import { BrandPageLayout } from "@/features/brands/BrandPageLayout";
-import { belgianCities } from "@/types/belgianCities";
+import { FiltersProvider, useFilters } from "@/context/FiltersContext";
 
-interface ApiFilters {
-    page: number;
-    pageSize: number;
-    sortBy?: string;
-    maxDistanceKm?: number;
-    userRatingMin?: number;
-    priceRange?: string;
-    minEthicsProduction?: number;
-    minEthicsTransport?: number;
-    lat?: number;
-    lon?: number;
-    ethicTags?: string[];
-}
-
-export const Home: React.FC = () => {
-    const [apiFilters, setApiFilters] = useState<ApiFilters>({
-        page: 1,
-        pageSize: 10,
-        maxDistanceKm: 80,
-    });
-
-    const [searchQuery, setSearchQuery] = useState<string>("");
-
-    const [locationMode, setLocationMode] = useState<"city" | "gps">("city");
-
-    const { position, loading: gpsLoading, error: gpsError, requestLocation, clearLocation } = useGeolocation();
+const HomeContent: React.FC = () => {
+    const {
+        apiFilters,
+        searchQuery,
+        setSearchQuery,
+    } = useFilters();
 
     const debouncedFilters = useDebounce(apiFilters, 500);
 
@@ -59,6 +38,7 @@ export const Home: React.FC = () => {
             return matchName || matchDescription || matchAddress;
         });
     }, [brands, searchQuery]);
+
     const convertedBrands = useMemo(() => {
         return filteredBrands.map(brand => ({
             ...brand,
@@ -76,60 +56,6 @@ export const Home: React.FC = () => {
         setScope("brands");
         return () => closeFilters();
     }, [setScope, closeFilters]);
-
-    useEffect(() => {
-        if (locationMode === "gps" && position) {
-            setApiFilters(f => ({ ...f, lat: position.lat, lon: position.lon }));
-        }
-    }, [position, locationMode]);
-
-    const handleSort = (sortBy: string) => setApiFilters(f => ({ ...f, sortBy }));
-    const handleDistance = (km: number | undefined) => setApiFilters(f => ({ ...f, maxDistanceKm: km }));
-    const handleUserRating = (rating: number | undefined) => setApiFilters(f => ({ ...f, userRatingMin: rating }));
-    const handlePriceRange = (range: string) => setApiFilters(f => ({ ...f, priceRange: range }));
-    const handleEthicsProduction = (score: number | undefined) => setApiFilters(f => ({ ...f, minEthicsProduction: score }));
-    const handleEthicsTransport = (score: number | undefined) => setApiFilters(f => ({ ...f, minEthicsTransport: score }));
-    const handleEthicTags = (tags: string[]) => setApiFilters(f => ({ ...f, ethicTags: tags.length > 0 ? tags : undefined }));
-
-    const handleCityChange = (cityName: string) => {
-        if (!cityName) {
-            setApiFilters(f => {
-                const { lat, lon, ...rest } = f;
-                return rest;
-            });
-            return;
-        }
-        const city = belgianCities.find(c => c.name === cityName);
-        if (city) {
-            setApiFilters(f => ({ ...f, lat: city.latitude, lon: city.longitude }));
-        }
-    };
-
-    const handleLocationModeChange = (mode: "city" | "gps") => {
-        setLocationMode(mode);
-
-        if (mode === "city") {
-            // Passer en mode ville : clear GPS
-            clearLocation();
-        } else {
-            // Passer en mode GPS : clear ville
-            setApiFilters(f => {
-                const { lat, lon, ...rest } = f;
-                return rest;
-            });
-        }
-    };
-
-    const handleReset = () => {
-        setApiFilters({ page: 1, pageSize: 10, maxDistanceKm: 80 });
-        setSearchQuery("");
-        setLocationMode("city");
-        clearLocation();
-    };
-
-    const currentCity = belgianCities.find(
-        c => c.latitude === apiFilters.lat && c.longitude === apiFilters.lon
-    );
 
     if (loading) {
         return (
@@ -156,35 +82,19 @@ export const Home: React.FC = () => {
             <BrandFiltersPanel
                 open={filtersOpen}
                 onClose={closeFilters}
-                onReset={handleReset}
-                resetKey={apiFilters.page}
-                sortBy={apiFilters.sortBy ?? ""}
-                onChangeSort={handleSort}
-                distance={apiFilters.maxDistanceKm}
-                onChangeDistance={handleDistance}
-                minRating={apiFilters.userRatingMin}
-                onChangeRating={handleUserRating}
-                priceRange={apiFilters.priceRange ?? ""}
-                onChangePriceRange={handlePriceRange}
-                minEthicsProduction={apiFilters.minEthicsProduction}
-                onChangeEthicsProduction={handleEthicsProduction}
-                minEthicsTransport={apiFilters.minEthicsTransport}
-                onChangeEthicsTransport={handleEthicsTransport}
-                selectedCity={currentCity?.name ?? ""}
-                onChangeCity={handleCityChange}
-                selectedEthicTags={apiFilters.ethicTags ?? []}
-                onChangeEthicTags={handleEthicTags}
-                locationMode={locationMode}
-                onChangeLocationMode={handleLocationModeChange}
-                onRequestGPS={requestLocation}
-                gpsLoading={gpsLoading}
-                gpsError={gpsError}
-                hasGPSPosition={!!position}
             />
 
             <div className="items-center mt-6">
                 <BrandSection title="Toutes les marques :" brands={convertedBrands} />
             </div>
         </BrandPageLayout>
+    );
+};
+
+export const Home: React.FC = () => {
+    return (
+        <FiltersProvider>
+            <HomeContent />
+        </FiltersProvider>
     );
 };

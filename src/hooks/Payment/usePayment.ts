@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import { useState, useCallback } from "react";
 import { createPaymentIntent, confirmPayment } from "@/api/services/payment";
 import {
     CreatePaymentIntentDto,
@@ -12,7 +12,7 @@ export function usePayment() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const createIntent = async (
+    const createIntent = useCallback(async (
         data: CreatePaymentIntentDto
     ): Promise<PaymentIntentDto | null> => {
         setLoading(true);
@@ -29,9 +29,9 @@ export function usePayment() {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
-    const confirm = async (
+    const confirm = useCallback(async (
         data: ConfirmPaymentDto
     ): Promise<PaymentConfirmationDto | null> => {
         setLoading(true);
@@ -48,7 +48,7 @@ export function usePayment() {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
     return {
         loading,
