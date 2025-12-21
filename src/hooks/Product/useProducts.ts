@@ -6,7 +6,7 @@ export function useProducts(brandId: number | null, brandName: string) {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [refreshTrigger, setRefreshTrigger] = useState(0); // NOUVEAU
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
 
     useEffect(() => {
         if (!brandId) {
@@ -31,12 +31,11 @@ export function useProducts(brandId: number | null, brandName: string) {
         };
 
         load();
-    }, [brandId, brandName, refreshTrigger]); // MODIFIÉ: ajout de refreshTrigger
+    }, [brandId, brandName, refreshTrigger]);
 
-    // NOUVEAU: Fonction pour forcer le refresh
     const refresh = useCallback(() => {
         setRefreshTrigger(prev => prev + 1);
     }, []);
 
-    return { products, loading, error, refresh }; // MODIFIÉ: expose refresh
+    return { products, loading, error, refresh };
 }

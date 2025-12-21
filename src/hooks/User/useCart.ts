@@ -47,7 +47,7 @@ export function useCart(shouldFetch: boolean = true) {
         try {
             await addVariantToCart(user.id, variantId, quantity);
 
-            toast.success("Produit ajouté au panier !", {  // ❌ 3ème toast ici !
+            toast.success("Produit ajouté au panier !", {
                 icon: "🛒",
                 duration: 2000,
             });

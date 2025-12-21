@@ -35,7 +35,6 @@ export function useAccounts(): UseAccountsReturn {
             const data = await AccountsService.getAll(abortControllerRef.current.signal);
             setAccounts(data);
         } catch (err) {
-            // ✅ Vérifie AVANT de logger
             if (err instanceof Error && err.name === "CanceledError") {
                 console.log("[useAccounts] Requête annulée (normal)");
                 return;
@@ -55,7 +54,7 @@ export function useAccounts(): UseAccountsReturn {
         } finally {
             setLoading(false);
         }
-    }, []); // ✅ VIDE pour éviter les re-créations
+    }, []);
 
     const toggleAccountStatus = useCallback(
         async (accountId: number, currentStatus: boolean) => {

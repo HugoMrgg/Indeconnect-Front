@@ -11,7 +11,7 @@
     update: (productId: number) => `/products/${productId}`,
 
     // Product Groups routes
-    createGroup: () => `/product-groups`,  // ✅ Sans /create
+    createGroup: () => `/product-groups`,
     getGroup: (groupId: number) => `/product-groups/${groupId}`,
     groupsByBrand: (brandId: number) => `/product-groups/brand/${brandId}`,
     updateGroup: (groupId: number) => `/product-groups/${groupId}`,
