@@ -46,7 +46,6 @@ export function useProductDetail(productId: number): UseProductDetailReturn {
                 setColorVariants(colors);
                 setSizeVariants(sizes);
             } catch (err) {
-                console.error("Error loading product details:", err);
                 setError(err instanceof Error ? err.message : "Erreur lors du chargement du produit");
             } finally {
                 setLoading(false);

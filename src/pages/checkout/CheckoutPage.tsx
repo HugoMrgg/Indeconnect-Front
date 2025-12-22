@@ -32,15 +32,12 @@ export function CheckoutPage() {
             return;
         }
 
-        // ✅ PROTECTION RENFORCÉE
         if (!cartLoading && (!cart || !cart.items || cart.items.length === 0)) {
             navigate("/cart");
         }
     }, [user, cart, cartLoading, navigate]);
 
-    // Grouper les articles par marque
     const itemsByBrand = useMemo(() => {
-        // ✅ VÉRIFICATION COMPLÈTE
         if (!cart || !cart.items || !Array.isArray(cart.items)) {
             return new Map<number, CartItemDto[]>();
         }

@@ -27,7 +27,6 @@ export function LoginForm({
     const handleGoogleSuccess = (credentialResponse: CredentialResponse) => {
         if (credentialResponse.credential) {
             setGoogleLoading(true);
-            console.log("JWT reçu:", credentialResponse.credential);
 
             try {
                 onGoogleLogin?.(credentialResponse.credential);

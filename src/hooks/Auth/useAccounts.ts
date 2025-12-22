@@ -36,11 +36,8 @@ export function useAccounts(): UseAccountsReturn {
             setAccounts(data);
         } catch (err) {
             if (err instanceof Error && err.name === "CanceledError") {
-                console.log("[useAccounts] Requête annulée (normal)");
                 return;
             }
-
-            console.error("[useAccounts] Erreur chargement:", err);
 
             if (err instanceof AxiosError) {
                 setError(err.response?.data?.message || "Impossible de charger les comptes");

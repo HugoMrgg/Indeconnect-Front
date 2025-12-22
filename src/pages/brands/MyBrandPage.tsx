@@ -23,7 +23,7 @@ export function MyBrandPage() {
     const [activeTab, setActiveTab] = useState<"products" | "about" | "shipping">("products");
     const [depositModalOpen, setDepositModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const [showAddProduct, setShowAddProduct] = useState(false); // NOUVEAU
+    const [showAddProduct, setShowAddProduct] = useState(false);
 
     const [ethicsModalOpen, setEthicsModalOpen] = useState(false);
 

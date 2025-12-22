@@ -12,7 +12,6 @@ import {
     CreateProductResponse,
     CreateProductGroupRequest,
     ProductGroupDto,
-    ProductGroupsResponse,
     ProductGroupSummaryDto,
     ProductReviewDTO,
     CreateProductReviewDTO
@@ -227,9 +226,6 @@ export async function createProductGroup(data: CreateProductGroupRequest): Promi
     }
 }
 
-/**
- * ✅ CORRIGER : Backend renvoie directement ProductGroupSummaryDto[]
- */
 export async function fetchProductGroupsByBrand(brandId: number): Promise<ProductGroupSummaryDto[]> {
     try {
         const response = await axiosInstance.get<ProductGroupSummaryDto[]>(
@@ -247,14 +243,12 @@ export async function fetchProductGroupsByBrand(brandId: number): Promise<Produc
 export async function checkCanUserReview(productId: number): Promise<boolean> {
     try {
         const url = PRODUCTS_ROUTES.canReview(productId);
-        console.log("🔍 checkCanUserReview call:", url);
 
         const response = await axiosInstance.get<boolean>(url);
-        console.log("🔍 checkCanUserReview response:", response.status, response.data);
 
         return response.data;
-    } catch (error: any) {
-        console.error("❌ checkCanUserReview error:", error.response?.status, error.response?.data);
+    } catch (error) {
+        console.error("checkCanUserReview error:", error);
         return false;
     }
 }

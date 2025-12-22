@@ -65,8 +65,6 @@ export function useWishlist(userId: number | undefined): UseWishlistReturn {
                         ? err.message
                         : "Impossible de charger vos favoris";
 
-            console.error("[useWishlist] Erreur:", errorMsg);
-
             setState({
                 wishlist: null,
                 loading: false,

@@ -12,7 +12,6 @@ interface Props {
 }
 
 export function ProductReviewsSection({ productId, canReview = false }: Props) {
-    console.log("🔍 ProductReviewsSection props:", { productId, canReview });
     const [reviews, setReviews] = useState<ProductReview[]>([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);

@@ -103,7 +103,7 @@ export interface ProductReviewsResponse {
     pageSize: number;
     averageRating: number;
 }
-// ✅ Types pour les product groups
+
 export interface CreateProductGroupRequest {
     name: string;
     baseDescription: string;
@@ -119,7 +119,6 @@ export interface ProductGroupDto {
     createdAt: string;
 }
 
-// ✅ CORRIGER : Backend renvoie ProductGroupSummaryDto
 export interface ProductGroupSummaryDto {
     id: number;
     name: string;
@@ -130,11 +129,10 @@ export interface ProductGroupSummaryDto {
 }
 
 export interface ProductGroupsResponse {
-    groups: ProductGroupSummaryDto[];  // ✅ Utilise ProductGroupSummaryDto
+    groups: ProductGroupSummaryDto[];
     totalCount: number;
 }
 
-// ✅ Types pour création de produit
 export interface SizeDto {
     id: number;
     name: string;
@@ -154,7 +152,7 @@ export interface CreateProductRequest {
     price: number;
     brandId: number;
     categoryId: number;
-    productGroupId: number;  // ✅ Obligatoire
+    productGroupId: number;
     primaryColorId: number | null;
     media: Array<{
         url: string;
@@ -162,7 +160,7 @@ export interface CreateProductRequest {
         displayOrder: number;
         isPrimary: boolean;
     }>;
-    sizeVariants: CreateVariantDto[];  // ✅ Utilise CreateVariantDto
+    sizeVariants: CreateVariantDto[];
     details: Array<{
         value: string;
         displayOrder: number;
