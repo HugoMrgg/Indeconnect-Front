@@ -5,9 +5,12 @@ import { ProductPage } from "@/pages/products/Product";
 import { Wishlist } from "@/pages/wishlist/Wishlist";
 import { SetPassword } from "@/pages/register/SetPassword";
 import { AccountsManagement } from "@/pages/admin/AccountsManagement";
+import { AdminEthicsManagement } from "@/pages/admin/AdminEthicsManagement";
 import { ProtectedRoute } from "@/routes/ProtectedRoute";
 import {MyBrandPage} from "@/pages/brands/MyBrandPage";
 import {BrandInfoPageWrapper} from "@/pages/brands/BrandInfoPageWrapper";
+import {SettingsPage} from "@/pages/settings/Settings";
+import {ModeratorProductReviewsPage} from "@/pages/admin/AdminProductReviewsPage";
 import {CheckoutPage} from "@/pages/checkout/CheckoutPage";
 import {OrderConfirmation} from "@/pages/checkout/OrderConfirmation";
 import {OrdersPage} from "@/pages/order/OrdersPage";
@@ -37,6 +40,23 @@ export default function AppRouter() {
                 }
             />
 
+            <Route
+                path="/settings"
+                element={
+                    <ProtectedRoute>
+                        <SettingsPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/settings/:tab"
+                element={
+                    <ProtectedRoute>
+                        <SettingsPage />
+                    </ProtectedRoute>
+                }
+            />
+
             {/* Routes protégées - Admin/Moderator */}
             <Route
                 path="/admin/accounts"
@@ -46,6 +66,25 @@ export default function AppRouter() {
                     </ProtectedRoute>
                 }
             />
+            <Route
+                path="/admin/ethics"
+                element={
+                    <ProtectedRoute requiredRoles={["Administrator"]}>
+                        {/* Placeholder for Ethics Management Page */}
+                        <AdminEthicsManagement />
+                    </ProtectedRoute>
+                }
+            />
+            {/* Moderator Routes */}
+            <Route
+                path="/moderator/reviews"
+                element={
+                    <ProtectedRoute requiredRoles={["Moderator"]}>
+                        <ModeratorProductReviewsPage />
+                    </ProtectedRoute>
+                }
+            />
+            {/* SuperVendor Routes */}
             <Route
                 path="/my-brand"
                 element={

@@ -15,6 +15,6 @@ export const WishlistPageLayout: React.FC<Props> = ({ children, searchQuery, onS
         <Banner />
         {children}
         <AuthPanel />
-        <NavBar searchValue={searchQuery} onSearchChange={onSearchChange} />
+        <NavBar scope={"wishlist"} searchValue={searchQuery} onSearchChange={onSearchChange} />
     </main>
 );

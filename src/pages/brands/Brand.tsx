@@ -135,7 +135,7 @@ export const BrandPage: React.FC<BrandPageProps> = ({
             </main>
 
             <AuthPanel />
-            <NavBar searchValue={searchQuery} onSearchChange={setSearchQuery} />
+            <NavBar scope={"products"} searchValue={searchQuery} onSearchChange={setSearchQuery} />
         </div>
     );
 };

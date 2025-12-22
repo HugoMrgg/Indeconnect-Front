@@ -11,13 +11,20 @@ import { DepositModal } from "@/features/brands/DepositModal";
 import { ShippingMethodsManager } from "@/features/checkout/ShippingMethodsManager";
 import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
+import { BrandEthicsCallout } from "@/features/brands/BrandEthicsCallout";
+
+import { BrandEthicsQuestionnaireModal } from "@/features/brands/BrandEthicsQuestionnaireModal";
 
 export function MyBrandPage() {
     const { brand, loading, error, refetch } = useMyBrand();
     const [showPreview, setShowPreview] = useState(false);
     const [activeTab, setActiveTab] = useState<"products" | "about" | "shipping">("products");
     const [depositModalOpen, setDepositModalOpen] = useState(false);
+
     const [searchQuery, setSearchQuery] = useState("");
+
+    // ✅ modal questionnaire éthique (MARQUE)
+    const [ethicsModalOpen, setEthicsModalOpen] = useState(false);
 
     const initialData = useMemo(() => {
         if (!brand) return null;
@@ -53,9 +60,7 @@ export function MyBrandPage() {
 
     const handleSave = async () => {
         const success = await editing.save();
-        if (success) {
-            await refetch();
-        }
+        if (success) await refetch();
     };
 
     const displayBrand: Brand | undefined = useMemo(() => {
@@ -95,9 +100,7 @@ export function MyBrandPage() {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen gap-4">
                 <X size={48} className="text-red-500" />
-                <p className="text-gray-600">
-                    {error || "Aucune marque associée à votre compte"}
-                </p>
+                <p className="text-gray-600">{error || "Aucune marque associée à votre compte"}</p>
             </div>
         );
     }
@@ -142,7 +145,7 @@ export function MyBrandPage() {
 
             {/* Contenu avec onglets */}
             <div className={editing.hasChanges ? "pt-16" : ""}>
-                {/* Onglets - Style segmented control iOS */}
+                {/* Tabs */}
                 <div className="bg-gradient-to-b from-gray-50 to-white py-4">
                     <div className="mx-auto max-w-3xl px-4">
                         <div className="bg-gray-100 rounded-2xl p-1.5 shadow-inner">
@@ -222,6 +225,15 @@ export function MyBrandPage() {
                                 onUpdateField={editing.updateField}
                                 mainDeposit={mainDeposit}
                                 onEditDeposit={() => setDepositModalOpen(true)}
+                                rightBottomAddon={
+                                    <BrandEthicsCallout
+                                        brandId={brand.id}
+                                        ethicsScoreProduction={brand.ethicsScoreProduction}
+                                        ethicsScoreTransport={brand.ethicsScoreTransport}
+                                        ethicTags={brand.ethicTags}
+                                        onOpen={() => setEthicsModalOpen(true)}
+                                    />
+                                }
                             />
                         </main>
                     </div>
@@ -244,18 +256,13 @@ export function MyBrandPage() {
                 onClose={() => setDepositModalOpen(false)}
                 initialDeposit={mainDeposit}
                 onSaved={async () => {
-                    if (!editing.hasChanges) {
-                        await refetch();
-                    }
+                    if (!editing.hasChanges) await refetch();
                 }}
             />
 
             {/* Modal Preview client */}
             {showPreview && displayBrand && (
-                <PreviewModal
-                    brand={displayBrand}
-                    onClose={() => setShowPreview(false)}
-                />
+                <PreviewModal brand={displayBrand} onClose={() => setShowPreview(false)} />
             )}
 
             {/* AuthPanel et NavBar */}

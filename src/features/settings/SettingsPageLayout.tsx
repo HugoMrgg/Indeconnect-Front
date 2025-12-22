@@ -10,11 +10,11 @@ interface Props {
 }
 
 // Wrapper qui fournit la structure commune (Banner, AuthPanel, NavBar)
-export const BrandPageLayout: React.FC<Props> = ({ children, searchQuery, onSearchChange }) => (
+export const SettingsPageLayout: React.FC<Props> = ({children, searchQuery, onSearchChange,}) => (
     <main className="relative bg-white min-h-screen mx-auto pb-16">
         <Banner />
         {children}
         <AuthPanel />
-        <NavBar scope={"products"} searchValue={searchQuery} onSearchChange={onSearchChange} />
+        <NavBar scope={"settings"} searchValue={searchQuery} onSearchChange={onSearchChange} />
     </main>
 );

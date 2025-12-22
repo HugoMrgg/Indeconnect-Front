@@ -30,6 +30,7 @@ interface BrandInfoContentProps {
     ) => void;
     mainDeposit?: DepositDTO | null;
     onEditDeposit?: () => void;
+    rightBottomAddon?: React.ReactNode;
 }
 
 export const BrandInfoContent: React.FC<BrandInfoContentProps> = ({
@@ -38,6 +39,7 @@ export const BrandInfoContent: React.FC<BrandInfoContentProps> = ({
                                                                       onUpdateField,
                                                                       mainDeposit,
                                                                       onEditDeposit,
+                                                                      rightBottomAddon,
                                                                   }) => {
     const canEdit = editMode && !!onUpdateField;
 
@@ -250,9 +252,11 @@ export const BrandInfoContent: React.FC<BrandInfoContentProps> = ({
                         </dl>
                     </div>
 
-                    <div className="bg-gray-50 rounded-2xl border border-dashed border-gray-200 p-5 text-sm text-gray-500">
-                        Bloc à venir : score éthique, labels, liens vers la boutique, etc.
-                    </div>
+                    {rightBottomAddon ? rightBottomAddon : (
+                        <div className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl p-4 text-sm text-gray-600">
+                            Bloc à venir : score éthique, labels, liens vers la boutique, etc.
+                        </div>
+                    )}
                 </aside>
             </section>
         </>
