@@ -10,7 +10,8 @@ import { ProtectedRoute } from "@/routes/ProtectedRoute";
 import {MyBrandPage} from "@/pages/brands/MyBrandPage";
 import {BrandInfoPageWrapper} from "@/pages/brands/BrandInfoPageWrapper";
 import {SettingsPage} from "@/pages/settings/Settings";
-import {ModeratorProductReviewsPage} from "@/pages/admin/AdminProductReviewsPage";
+import {ModeratorProductReviewsPage} from "@/pages/moderator/ModeratorProductReviewsPage";
+import {PaymentMethodsManagement} from "@/pages/admin/PaymentMethodsManagement";
 
 export default function AppRouter() {
     return (
@@ -62,8 +63,15 @@ export default function AppRouter() {
                 path="/admin/ethics"
                 element={
                     <ProtectedRoute requiredRoles={["Administrator"]}>
-                        {/* Placeholder for Ethics Management Page */}
                         <AdminEthicsManagement />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/payments"
+                element={
+                    <ProtectedRoute requiredRoles={["Administrator"]}>
+                        <PaymentMethodsManagement />
                     </ProtectedRoute>
                 }
             />
