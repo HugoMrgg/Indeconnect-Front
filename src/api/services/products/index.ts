@@ -13,8 +13,7 @@ import {
     CreateProductGroupRequest,
     ProductGroupDto,
     ProductGroupsResponse,
-    ProductGroupSummaryDto  // ✅ AJOUTER
-    ProductReviewsResponse,
+    ProductGroupSummaryDto,
     ProductReviewDTO,
     CreateProductReviewDTO
 } from "@/api/services/products/types";
@@ -247,14 +246,19 @@ export async function fetchProductGroupsByBrand(brandId: number): Promise<Produc
  */
 export async function checkCanUserReview(productId: number): Promise<boolean> {
     try {
-        const response = await axiosInstance.get<boolean>(
-            PRODUCTS_ROUTES.canReview(productId)
-        );
+        const url = PRODUCTS_ROUTES.canReview(productId);
+        console.log("🔍 checkCanUserReview call:", url);
+
+        const response = await axiosInstance.get<boolean>(url);
+        console.log("🔍 checkCanUserReview response:", response.status, response.data);
+
         return response.data;
-    } catch (error) {
+    } catch (error: any) {
+        console.error("❌ checkCanUserReview error:", error.response?.status, error.response?.data);
         return false;
     }
 }
+
 
 /**
  * Désactive un avis d'un produit

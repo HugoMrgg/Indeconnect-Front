@@ -6,7 +6,7 @@
     stock: (productId: number) => `/products/${productId}/stock`,
     reviews: (productId: number) => `/products/${productId}/reviews`,
     canReview: (productId: number) => `/products/${productId}/can-review`,
-    disableReview: (productId: number) => `/products/reviews/${productId}/disable`
+    disableReview: (productId: number) => `/products/reviews/${productId}/disable`,
     create: () => `/products/create`,
     update: (productId: number) => `/products/${productId}`,
 

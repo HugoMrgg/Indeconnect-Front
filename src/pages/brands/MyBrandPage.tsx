@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from "react";
+﻿import React, { useState, useMemo, useCallback } from "react";
 import { useMyBrand } from "@/hooks/BrandEdit/useMyBrand";
 import { useBrandEditing } from "@/hooks/BrandEdit/useBrandEditing";
 import { BrandPage } from "@/pages/brands/Brand";
@@ -12,16 +12,10 @@ import { ShippingMethodsManager } from "@/features/checkout/ShippingMethodsManag
 import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
 import { BrandEthicsCallout } from "@/features/brands/BrandEthicsCallout";
-
-import { BrandEthicsQuestionnaireModal } from "@/features/brands/BrandEthicsQuestionnaireModal";
 import { AddProductForm } from "@/features/product/AddProductForm";
 import { createProduct } from "@/api/services/products";
 import { CreateProductRequest } from "@/api/services/products/types";
 
-// Onglets
-import { MyBrandProductsTab } from "@/features/brands/MyBrandProductsTab";
-import { MyBrandAboutTab } from "@/features/brands/MyBrandAboutTab";
-import { MyBrandShippingTab } from "@/features/brands/MyBrandShippingTab";
 
 export function MyBrandPage() {
     const { brand, loading, error, refetch } = useMyBrand();
@@ -70,19 +64,22 @@ export function MyBrandPage() {
         if (success) await refetch();
     };
 
-    const handleCreateProduct = useCallback(async (data: CreateProductRequest) => {
-        try {
-            await createProduct(data);
-            setShowAddProduct(false);
-            // Petit délai pour une meilleure UX avant le refresh
-            setTimeout(() => {
-                refetch();
-            }, 300);
-        } catch (error) {
-            console.error("Error creating product:", error);
-            throw error;
-        }
-    }, [refetch]);
+    const handleCreateProduct = useCallback(
+        async (data: CreateProductRequest) => {
+            try {
+                await createProduct(data);
+                setShowAddProduct(false);
+                // Petit délai pour une meilleure UX avant le refresh
+                setTimeout(() => {
+                    refetch();
+                }, 300);
+            } catch (error) {
+                console.error("Error creating product:", error);
+                throw error;
+            }
+        },
+        [refetch]
+    );
 
     const displayBrand: Brand | undefined = useMemo(() => {
         if (!brand) return undefined;
@@ -121,7 +118,9 @@ export function MyBrandPage() {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen gap-4">
                 <X size={48} className="text-red-500" />
-                <p className="text-gray-600">{error || "Aucune marque associée à votre compte"}</p>
+                <p className="text-gray-600">
+                    {error || "Aucune marque associée à votre compte"}
+                </p>
             </div>
         );
     }
@@ -225,7 +224,8 @@ export function MyBrandPage() {
                             <AddProductForm
                                 brandId={brand.id}
                                 onSuccess={() => {
-                                    // La fermeture est gérée dans handleCreateProduct
+                                    setShowAddProduct(false);
+                                    setTimeout(() => refetch(), 300);
                                 }}
                                 onCancel={() => setShowAddProduct(false)}
                                 onSubmit={handleCreateProduct}

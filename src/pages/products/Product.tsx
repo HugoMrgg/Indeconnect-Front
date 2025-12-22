@@ -49,6 +49,7 @@ export function ProductPage() {
     const [colorVariants, setColorVariants] = useState<ColorVariant[]>([]);
     const [sizeVariants, setSizeVariants] = useState<SizeVariant[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [isCartModalOpen, setIsCartModalOpen] = useState(false);
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState<SizeVariant | undefined>();
@@ -63,11 +64,17 @@ export function ProductPage() {
     useEffect(() => {
         async function load() {
             setLoading(true);
-            const prod = await fetchProductById(id);
-            setProduct(prod);
-            setColorVariants(await fetchProductColorVariants(id));
-            setSizeVariants(await fetchProductVariants(id));
-            setLoading(false);
+            setError(null);
+            try {
+                const prod = await fetchProductById(id);
+                setProduct(prod);
+                setColorVariants(await fetchProductColorVariants(id));
+                setSizeVariants(await fetchProductVariants(id));
+            } catch (e) {
+                setError(e instanceof Error ? e.message : "Erreur lors du chargement du produit");
+            } finally {
+                setLoading(false);
+            }
         }
         void load();
     }, [id]);
