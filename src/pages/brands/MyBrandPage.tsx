@@ -8,6 +8,8 @@ import { PreviewModal } from "@/features/brands/PreviewModal";
 import { BrandInfoContent } from "@/features/brands/BrandInfoContent";
 import { BannerBrand } from "@/features/banners/BannerBrand";
 import { DepositModal } from "@/features/brands/DepositModal";
+import { ShippingMethodsManager } from "@/features/checkout/ShippingMethodsManager";
+import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
 import { BrandEthicsCallout } from "@/features/brands/BrandEthicsCallout";
 
@@ -16,7 +18,7 @@ import { BrandEthicsQuestionnaireModal } from "@/features/brands/BrandEthicsQues
 export function MyBrandPage() {
     const { brand, loading, error, refetch } = useMyBrand();
     const [showPreview, setShowPreview] = useState(false);
-    const [activeTab, setActiveTab] = useState<"products" | "about">("products");
+    const [activeTab, setActiveTab] = useState<"products" | "about" | "shipping">("products");
     const [depositModalOpen, setDepositModalOpen] = useState(false);
 
     const [searchQuery, setSearchQuery] = useState("");
@@ -145,13 +147,13 @@ export function MyBrandPage() {
             <div className={editing.hasChanges ? "pt-16" : ""}>
                 {/* Tabs */}
                 <div className="bg-gradient-to-b from-gray-50 to-white py-4">
-                    <div className="mx-auto max-w-md px-4">
+                    <div className="mx-auto max-w-3xl px-4">
                         <div className="bg-gray-100 rounded-2xl p-1.5 shadow-inner">
                             <div className="flex gap-1.5">
                                 <button
                                     type="button"
                                     onClick={() => setActiveTab("products")}
-                                    className={`flex-1 px-6 py-3 text-sm font-semibold rounded-xl transition-all ${
+                                    className={`flex-1 px-4 py-3 text-sm font-semibold rounded-xl transition-all ${
                                         activeTab === "products"
                                             ? "bg-white text-gray-900 shadow-sm"
                                             : "text-gray-600 hover:text-gray-900"
@@ -162,7 +164,7 @@ export function MyBrandPage() {
                                 <button
                                     type="button"
                                     onClick={() => setActiveTab("about")}
-                                    className={`flex-1 px-6 py-3 text-sm font-semibold rounded-xl transition-all ${
+                                    className={`flex-1 px-4 py-3 text-sm font-semibold rounded-xl transition-all ${
                                         activeTab === "about"
                                             ? "bg-white text-gray-900 shadow-sm"
                                             : "text-gray-600 hover:text-gray-900"
@@ -170,11 +172,23 @@ export function MyBrandPage() {
                                 >
                                     Présentation
                                 </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setActiveTab("shipping")}
+                                    className={`flex-1 px-4 py-3 text-sm font-semibold rounded-xl transition-all ${
+                                        activeTab === "shipping"
+                                            ? "bg-white text-gray-900 shadow-sm"
+                                            : "text-gray-600 hover:text-gray-900"
+                                    }`}
+                                >
+                                    Livraison
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                {/* Onglet Produits */}
                 {activeTab === "products" && (
                     <BrandPage
                         brandId={brand.id}
@@ -184,6 +198,7 @@ export function MyBrandPage() {
                     />
                 )}
 
+                {/* Onglet Présentation */}
                 {activeTab === "about" && (
                     <div className="min-h-full bg-gradient-to-b from-gray-50 to-white">
                         <BannerBrand
@@ -223,6 +238,16 @@ export function MyBrandPage() {
                         </main>
                     </div>
                 )}
+
+                {activeTab === "shipping" && (
+                    <div className="min-h-full bg-gradient-to-b from-gray-50 to-white py-8">
+                        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+                            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
+                                <ShippingMethodsManager brandId={brand.id} editMode={true} />
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Modal dépôt principal */}
@@ -240,20 +265,9 @@ export function MyBrandPage() {
                 <PreviewModal brand={displayBrand} onClose={() => setShowPreview(false)} />
             )}
 
-            {/* Modal Questionnaire éthique (MARQUE / SuperVendor) */}
-            <BrandEthicsQuestionnaireModal
-                open={ethicsModalOpen}
-                onClose={() => setEthicsModalOpen(false)}
-                searchQuery={searchQuery}
-                onSubmitted={async () => {
-                    // Important si tu veux rafraîchir les scores / tags affichés sur la marque
-                    await refetch();
-                }}
-            />
-
-            {/* NavBar */}
+            {/* AuthPanel et NavBar */}
+            <AuthPanel />
             <NavBar searchValue={searchQuery} onSearchChange={setSearchQuery} />
         </>
     );
 }
-

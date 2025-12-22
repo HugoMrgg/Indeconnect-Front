@@ -3,18 +3,28 @@ import React from "react";
 import {WishlistProductCard} from "@/features/wishlist/WishlistProdcutCard";
 
 export function WishlistContent({
-                             wishlist,
-                             view,
-                             setView,
-                             handleOpenProduct,
-                             handleRemove
-                         }: {
+                                    wishlist,
+                                    view,
+                                    setView,
+                                    handleOpenProduct,
+                                    handleRemove
+                                }: {
     wishlist: WishlistResponse;
     view: "grid" | "list";
     setView: (v: "grid" | "list") => void;
     handleOpenProduct: (brand: string, productId: number) => void;
     handleRemove: (productId: number) => void;
 }) {
+
+    // ✅ PROTECTION SI WISHLIST EST UNDEFINED
+    if (!wishlist) {
+        return (
+            <div className="min-h-72 flex flex-col items-center justify-center bg-white">
+                <h2 className="text-2xl font-semibold mb-4">Chargement...</h2>
+                <p className="text-gray-500">Veuillez patienter</p>
+            </div>
+        );
+    }
 
     const items = wishlist.items ?? [];
 
@@ -67,78 +77,78 @@ export function WishlistContent({
                 </div>
             </div>
 
-    {/* AUCUN FAVORI */}
-    {items.length === 0 && (
-        <div className="text-gray-500 text-lg text-center py-20">
-            Aucun article en favoris.
-    </div>
-    )}
-
-    {/* LISTE GROUPÉE PAR MARQUE */}
-    {brandNames.map((brand) => (
-        <div key={brand} className="mb-12">
-
-    <h2 className="text-2xl font-bold mb-5">{brand}</h2>
-
-        {/* --- MODE GRILLE --- */}
-        {view === "grid" && (
-            <div
-                className="grid grid-cols-[repeat(auto-fill,minmax(160px,max-content))] gap-3">
-                {groupedByBrand[brand].map((item) => {
-                        const product = {
-                            id: item.productId,
-                            name: item.productName,
-                            price: item.price,
-                            primaryImageUrl: item.primaryImageUrl,
-                            primaryColor: item.primaryColor,
-                            brandName: item.brandName,
-                        } as any;
-
-                        return (
-                            <WishlistProductCard
-                                key={item.productId}
-                                product={product}
-                                onRemove={handleRemove}
-                            />
-                        );
-                    })}
+            {/* AUCUN FAVORI */}
+            {items.length === 0 && (
+                <div className="text-gray-500 text-lg text-center py-20">
+                    Aucun article en favoris.
                 </div>
             )}
 
-        {/* --- MODE LISTE --- */}
-        {view === "list" && (
-            <div className="space-y-4">
-                {groupedByBrand[brand].map((item) => (
+            {/* LISTE GROUPÉE PAR MARQUE */}
+            {brandNames.map((brand) => (
+                <div key={brand} className="mb-12">
+
+                    <h2 className="text-2xl font-bold mb-5">{brand}</h2>
+
+                    {/* --- MODE GRILLE --- */}
+                    {view === "grid" && (
                         <div
-                            key={item.productId}
-                            className="flex items-center border rounded-xl p-4 shadow-sm hover:shadow-md transition cursor-pointer"
-                            onClick={() => handleOpenProduct(item.brandName, item.productId)}>
-                            <img
-                                src={item.primaryImageUrl}
-                            alt={item.productName}
-                            className="w-24 h-24 rounded-xl object-cover mr-4"
-                            />
+                            className="grid grid-cols-[repeat(auto-fill,minmax(160px,max-content))] gap-3">
+                            {groupedByBrand[brand].map((item) => {
+                                const product = {
+                                    id: item.productId,
+                                    name: item.productName,
+                                    price: item.price,
+                                    primaryImageUrl: item.primaryImageUrl,
+                                    primaryColor: item.primaryColor,
+                                    brandName: item.brandName,
+                                } as any;
 
-                            <div className="flex flex-col flex-grow">
-                                <p className="text-lg font-semibold">{item.productName}</p>
-                                <p className="text-gray-500 text-sm">{item.description}</p>
-                                <p className="mt-1 font-bold">{item.price} €</p>
-                            </div>
-
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleRemove(item.productId);
-                                }}
-                                className="text-red-500 font-semibold ml-5">
-                                    Supprimer
-                            </button>
+                                return (
+                                    <WishlistProductCard
+                                        key={item.productId}
+                                        product={product}
+                                        onRemove={handleRemove}
+                                    />
+                                );
+                            })}
                         </div>
-                    ))}
+                    )}
+
+                    {/* --- MODE LISTE --- */}
+                    {view === "list" && (
+                        <div className="space-y-4">
+                            {groupedByBrand[brand].map((item) => (
+                                <div
+                                    key={item.productId}
+                                    className="flex items-center border rounded-xl p-4 shadow-sm hover:shadow-md transition cursor-pointer"
+                                    onClick={() => handleOpenProduct(item.brandName, item.productId)}>
+                                    <img
+                                        src={item.primaryImageUrl}
+                                        alt={item.productName}
+                                        className="w-24 h-24 rounded-xl object-cover mr-4"
+                                    />
+
+                                    <div className="flex flex-col flex-grow">
+                                        <p className="text-lg font-semibold">{item.productName}</p>
+                                        <p className="text-gray-500 text-sm">{item.description}</p>
+                                        <p className="mt-1 font-bold">{item.price} €</p>
+                                    </div>
+
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleRemove(item.productId);
+                                        }}
+                                        className="text-red-500 font-semibold ml-5">
+                                        Supprimer
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
-            )}
+            ))}
         </div>
-    ))}
-    </div>
-);
+    );
 }

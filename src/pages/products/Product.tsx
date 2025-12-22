@@ -5,6 +5,7 @@ import {
     fetchProductById,
     fetchProductVariants,
     fetchProductColorVariants,
+    checkCanUserReview
 } from "@/api/services/products";
 
 import {
@@ -18,6 +19,7 @@ import { ProductColorSelector } from "@/features/product/ProductColorSelector";
 import { ProductSizeSelector } from "@/features/product/ProductSizeSelector";
 import { ProductReviewsSection } from "@/features/product/ProductReviewsSection";
 import { BannerBrand } from "@/features/banners/BannerBrand";
+import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
 import {BackLink} from "@/components/ui/BackLink";
 import {ProductLoading} from "@/features/product/ProductLoading";
@@ -50,6 +52,7 @@ export function ProductPage() {
     const [isCartModalOpen, setIsCartModalOpen] = useState(false);
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState<SizeVariant | undefined>();
+    const [canReview, setCanReview] = useState(false);
 
     useEffect(() => {
         setSelectedSize(sizeVariants[0]);
@@ -66,6 +69,16 @@ export function ProductPage() {
         }
         void load();
     }, [id]);
+
+    useEffect(() => {
+        if (user && id) {
+            checkCanUserReview(id).then((allowed) => {
+                setCanReview(allowed);
+            });
+        } else {
+            setCanReview(false);
+        }
+    }, [user, id]);
 
     const handleAddToCart = async () => {
         try {
@@ -126,7 +139,10 @@ export function ProductPage() {
                         />
 
                         <AddToCartButton
-                            isAvailable={product.isAvailable}
+                            isAvailable={
+                                selectedSize?.isAvailable === true &&
+                                selectedSize.stockCount > 0
+                            }
                             onClick={() => setIsCartModalOpen(true)}
                         />
 
@@ -141,7 +157,10 @@ export function ProductPage() {
                     </div>
                 </div>
 
-                <ProductReviewsSection productId={id} />
+                <ProductReviewsSection
+                    productId={id}
+                    canReview={canReview}
+                />
             </div>
 
             <AddToCartModal
@@ -155,7 +174,8 @@ export function ProductPage() {
                 onConfirm={handleAddToCart}
             />
 
-            <NavBar/>
+            <AuthPanel />
+            <NavBar />
         </div>
     );
 }
