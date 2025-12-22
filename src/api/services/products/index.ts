@@ -7,7 +7,9 @@ import {
     SizeVariantResponse,
     ColorVariantResponse,
     ProductStockResponse,
-    ProductReviewsResponse
+    ProductReviewsResponse,
+    ProductReviewDTO,
+    CreateProductReviewDTO
 } from "@/api/services/products/types";
 
 /**
@@ -134,21 +136,80 @@ export async function fetchProductStock(productId: number): Promise<ProductStock
 /**
  * Récupère les avis d'un produit
  */
+/**
+ * Récupère les avis d'un produit
+ */
 export async function fetchProductReviews(
     productId: number,
     page = 1,
     pageSize = 20
 ): Promise<ProductReviewsResponse> {
     try {
-        const response = await axiosInstance.get<ProductReviewsResponse>(
+        const response = await axiosInstance.get<ProductReviewDTO[]>(
             PRODUCTS_ROUTES.reviews(productId),
             {
                 params: { page, pageSize }
             }
         );
-        return response.data;
+
+        return {
+            reviews: response.data, // On met le tableau reçu ici
+            totalCount: response.data.length,
+            page: page,
+            pageSize: pageSize,
+            averageRating: 0 // On pourra le calculer si besoin, ou le laisser à 0 pour l'instant
+        };
+
     } catch (error) {
         console.error("Error fetching product reviews:", error);
+        return {
+            reviews: [],
+            totalCount: 0,
+            page: 1,
+            pageSize: pageSize,
+            averageRating: 0
+        };
+    }
+}
+
+/**
+ * Crée un nouvel avis
+ */
+export async function createProductReview(
+    productId: number,
+    payload: CreateProductReviewDTO
+): Promise<ProductReviewDTO> {
+    try {
+        const response = await axiosInstance.post<ProductReviewDTO>(
+            PRODUCTS_ROUTES.reviews(productId),
+            payload
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error creating product review:", error);
         throw error;
     }
+}
+
+/**
+ * Vérifie si l'utilisateur connecté a le droit de noter ce produit
+ */
+export async function checkCanUserReview(productId: number): Promise<boolean> {
+    try {
+        const response = await axiosInstance.get<boolean>(
+            PRODUCTS_ROUTES.canReview(productId)
+        );
+        return response.data;
+    } catch (error) {
+        return false;
+    }
+}
+
+/**
+ * Désactive un avis d'un produit
+ */
+export async function disableProductReview(reviewId: number): Promise<void> {
+    await axiosInstance.post(
+        PRODUCTS_ROUTES.disableReview(reviewId)
+    );
 }
