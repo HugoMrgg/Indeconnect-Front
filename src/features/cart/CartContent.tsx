@@ -3,17 +3,24 @@ import { useAuth } from "@/hooks/Auth/useAuth";
 import { useCart } from "@/hooks/User/useCart";
 import { useCartUI } from "@/hooks/User/useCartUI";
 import { Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export function CartContent() {
     const { user } = useAuth();
-    const { cartOpen } = useCartUI();
+    const { cartOpen, closeCart } = useCartUI();
     const { cart, loading, error, refetch, removeFromCart, removingFromCart } = useCart();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (cartOpen && user?.id) {
             refetch();
         }
     }, [cartOpen, user?.id, refetch]);
+
+    const handleCheckout = () => {
+        closeCart();
+        navigate("/checkout");
+    };
 
     if (!user?.id) {
         return (
@@ -43,7 +50,8 @@ export function CartContent() {
         );
     }
 
-    if (!cart || cart.items.length === 0) {
+    // ✅ PROTECTION RENFORCÉE
+    if (!cart || !cart.items || cart.items.length === 0) {
         return (
             <div className="flex items-center justify-center h-full">
                 <p className="text-gray-500">Votre panier est vide.</p>
@@ -55,7 +63,8 @@ export function CartContent() {
         <div className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto px-5 py-4">
                 <div className="flex flex-col gap-4">
-                    {cart.items.map((item) => {
+                    {/* ✅ PROTECTION AVEC OPTIONAL CHAINING */}
+                    {cart?.items?.map((item) => {
                         const imageUrl = item.primaryImageUrl
                             ? `${item.primaryImageUrl}`
                             : "/placeholder.png";
@@ -147,7 +156,10 @@ export function CartContent() {
                         {cart.totalAmount.toFixed(2)} €
                     </span>
                 </div>
-                <button className="w-full py-3 rounded-xl bg-black text-white text-lg font-semibold hover:bg-gray-900 transition">
+                <button
+                    onClick={handleCheckout}
+                    className="w-full py-3 rounded-xl bg-black text-white text-lg font-semibold hover:bg-gray-900 transition"
+                >
                     Passer commande
                 </button>
             </div>

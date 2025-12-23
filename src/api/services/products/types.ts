@@ -71,3 +71,34 @@ export interface ProductReviewsResponse {
     pageSize: number;
     averageRating: number;
 }
+
+// --- AJOUTE CECI AU DÉBUT DU FICHIER ---
+
+// 1. On définit ce qu'est un "Avis" unique (DTO)
+export interface ProductReviewDTO {
+    id: number;
+    userId: number;
+    userName: string;
+    rating: number;
+    comment: string;
+    createdAt: string; // C'est une string car JSON renvoie des dates en string
+    status: string;
+}
+
+// 2. On définit ce qu'on envoie pour CRÉER un avis
+export interface CreateProductReviewDTO {
+    rating: number;
+    comment: string;
+}
+
+// --- MODIFIE L'EXISTANT COMME CECI ---
+
+// Type pour la réponse (liste d'avis)
+export interface ProductReviewsResponse {
+    // Ici, on réutilise le type qu'on vient de créer au-dessus
+    reviews: ProductReviewDTO[];
+    totalCount: number;
+    page: number;
+    pageSize: number;
+    averageRating: number;
+}
