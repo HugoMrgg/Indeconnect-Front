@@ -37,7 +37,6 @@ export function useShipping() {
             const message = extractErrorMessage(err);
             setError(message);
             toast.error(message);
-            console.error("[useShipping] fetchAddresses error:", err);
             return null;
         } finally {
             setLoading(false);
@@ -58,7 +57,6 @@ export function useShipping() {
                 const message = extractErrorMessage(err);
                 setError(message);
                 toast.error(message);
-                console.error("[useShipping] createAddress error:", err);
                 return null;
             } finally {
                 setLoading(false);
@@ -79,7 +77,6 @@ export function useShipping() {
         } catch (err: unknown) {
             const message = extractErrorMessage(err);
             setError(message);
-            console.error("[useShipping] fetchBrandMethods error:", err);
             return null;
         } finally {
             setLoading(false);
@@ -98,7 +95,6 @@ export function useShipping() {
             } catch (err: unknown) {
                 const message = extractErrorMessage(err);
                 setError(message);
-                console.error("[useShipping] fetchMultipleBrandsMethods error:", err);
                 return null;
             } finally {
                 setLoading(false);
@@ -120,7 +116,6 @@ export function useShipping() {
                 const message = extractErrorMessage(err);
                 setError(message);
                 toast.error(message);
-                console.error("[useShipping] createMethod error:", err);
                 return null;
             } finally {
                 setLoading(false);
@@ -143,7 +138,6 @@ export function useShipping() {
                 const message = extractErrorMessage(err);
                 setError(message);
                 toast.error(message);
-                console.error("[useShipping] updateMethod error:", err);
                 return null;
             } finally {
                 setLoading(false);
@@ -166,7 +160,6 @@ export function useShipping() {
                 const message = extractErrorMessage(err);
                 setError(message);
                 toast.error(message);
-                console.error("[useShipping] deleteMethod error:", err);
                 return false;
             } finally {
                 setLoading(false);

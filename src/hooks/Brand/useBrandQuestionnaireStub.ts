@@ -81,198 +81,6 @@ function computeOverallStars(questions: EthicsQuestionDTO[], answers: Record<num
     return round1((t + p) / 2);
 }
 
-/*
-export function useBrandQuestionnaireStub(brandId: number) {
-    const questions = useMemo(() => {
-        // on garde l'ordre stable comme côté admin
-        const copy = [...stubEthicsQuestions];
-        copy.sort((a, b) => {
-            if (a.category !== b.category) return a.category.localeCompare(b.category);
-            return a.order - b.order;
-        });
-        return copy;
-    }, []);
-
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    const [questionnaire, setQuestionnaire] = useState<BrandQuestionnaireDTO>(() => {
-        const key = mkKey(brandId);
-        const existing = safeParse<BrandQuestionnaireDTO>(localStorage.getItem(key));
-        if (existing && existing.brandId === brandId) return existing;
-
-        // questionnaire "vide"
-        return {
-            id: Date.now(), // stub id
-            brandId,
-            submittedAt: null,
-            isApproved: false,
-            approvedAt: null,
-            responses: [],
-        };
-    });
-
-    const [answers, setAnswers] = useState<Record<number, number>>(() =>
-        toAnswersMap(questionnaire.responses)
-    );
-
-    // ✅ auto-save draft (debounce)
-    const saveTimer = useRef<number | null>(null);
-
-    const persist = (qcm: BrandQuestionnaireDTO) => {
-        try {
-            localStorage.setItem(mkKey(brandId), JSON.stringify(qcm));
-        } catch {
-            // ignore
-        }
-    };
-
-    useEffect(() => {
-        // simule un chargement
-        setLoading(true);
-        setError(null);
-
-        const key = mkKey(brandId);
-        const existing = safeParse<BrandQuestionnaireDTO>(localStorage.getItem(key));
-
-        if (existing && existing.brandId === brandId) {
-            setQuestionnaire(existing);
-            setAnswers(toAnswersMap(existing.responses));
-        } else {
-            const fresh: BrandQuestionnaireDTO = {
-                id: Date.now(),
-                brandId,
-                submittedAt: null,
-                isApproved: false,
-                approvedAt: null,
-                responses: [],
-            };
-            setQuestionnaire(fresh);
-            setAnswers({});
-            persist(fresh);
-        }
-
-        const t = window.setTimeout(() => setLoading(false), 120);
-        return () => window.clearTimeout(t);
-    }, [brandId, persist]);
-
-    // persiste les changements d'answers -> questionnaire.responses
-    useEffect(() => {
-        // on rebuild responses
-        const updated: BrandQuestionnaireDTO = {
-            ...questionnaire,
-            responses: toResponsesArray(answers),
-        };
-        setQuestionnaire(updated);
-
-        if (saveTimer.current) window.clearTimeout(saveTimer.current);
-        saveTimer.current = window.setTimeout(() => {
-            persist(updated);
-        }, 250);
-
-        return () => {
-            if (saveTimer.current) window.clearTimeout(saveTimer.current);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [answers]);
-
-    const setAnswer = (questionId: number, optionId: number) => {
-        setAnswers(prev => ({ ...prev, [questionId]: optionId }));
-    };
-
-    const isComplete = useMemo(() => {
-        return questions.every(q => !!answers[q.id]);
-    }, [questions, answers]);
-
-    const isFilled = useMemo(() => {
-        return Object.keys(answers).length > 0;
-    }, [answers]);
-
-    const scores = useMemo(() => {
-        const transport = computeStarsForCategory(questions, answers, EthicsCategory.Transport);
-        const production = computeStarsForCategory(questions, answers, EthicsCategory.MaterialsManufacturing);
-        const overall = computeOverallStars(questions, answers);
-        return {
-            transport,
-            production,
-            overall,
-            // affichage FR avec virgule si tu veux :
-            transportLabel: transport.toFixed(1).replace(".", ","),
-            productionLabel: production.toFixed(1).replace(".", ","),
-            overallLabel: overall.toFixed(1).replace(".", ","),
-        };
-    }, [questions, answers]);
-
-    const submit = async () => {
-        setError(null);
-
-        if (!isComplete) {
-            setError("Merci de répondre à toutes les questions avant de soumettre.");
-            return false;
-        }
-
-        const updated: BrandQuestionnaireDTO = {
-            ...questionnaire,
-            submittedAt: nowIso(),
-            isApproved: false,
-            approvedAt: null,
-            responses: toResponsesArray(answers),
-        };
-
-        setQuestionnaire(updated);
-        persist(updated);
-        return true;
-    };
-
-    // helper DEV : simuler validation modérateur
-    const approve = async () => {
-        const updated: BrandQuestionnaireDTO = {
-            ...questionnaire,
-            isApproved: true,
-            approvedAt: nowIso(),
-            // on laisse submittedAt tel quel (ou on le set si nul)
-            submittedAt: questionnaire.submittedAt ?? nowIso(),
-        };
-        setQuestionnaire(updated);
-        persist(updated);
-        return true;
-    };
-
-    const reset = () => {
-        const fresh: BrandQuestionnaireDTO = {
-            id: Date.now(),
-            brandId,
-            submittedAt: null,
-            isApproved: false,
-            approvedAt: null,
-            responses: [],
-        };
-        setQuestionnaire(fresh);
-        setAnswers({});
-        persist(fresh);
-    };
-
-    return {
-        loading,
-        error,
-
-        questions,
-        questionnaire,
-
-        answers,
-        setAnswer,
-
-        isFilled,
-        isComplete,
-
-        scores, // ⭐ 0..5 avec 1 décimale + labels virgule
-
-        submit,
-        approve, // optionnel
-        reset,
-    };
-}
-*/
 export function useBrandQuestionnaireStub(brandId: number) {
     // 1. Questions stables
     const questions = useMemo(() => {
@@ -308,7 +116,6 @@ export function useBrandQuestionnaireStub(brandId: number) {
         questionnaire.responses ? toAnswersMap(questionnaire.responses) : {}
     );
 
-    // ✅ FIX 1: Utilisation de useCallback pour que la fonction ne change pas à chaque render
     const persist = useCallback((qcm: BrandQuestionnaireDTO) => {
         try {
             localStorage.setItem(mkKey(brandId), JSON.stringify(qcm));
@@ -317,8 +124,6 @@ export function useBrandQuestionnaireStub(brandId: number) {
         }
     }, [brandId]);
 
-    // ✅ FIX 2: useEffect de chargement propre
-    // Il ne dépend QUE de brandId. Il met à jour le state si l'ID change.
     useEffect(() => {
         setLoading(true);
         setError(null);
@@ -348,7 +153,7 @@ export function useBrandQuestionnaireStub(brandId: number) {
         }, 300); // Petit délai pour simuler réseau
 
         return () => window.clearTimeout(t);
-    }, [brandId]); // ⚠️ Plus de 'persist' ici
+    }, [brandId]);
 
     // 3. Gestionnaire de sauvegarde automatique (Debounce)
     const saveTimer = useRef<number | null>(null);
@@ -450,8 +255,6 @@ export function useBrandQuestionnaireStub(brandId: number) {
         };
     }, [questions, answers]);
 
-    // ✅ FIX 3: Le return final est memoïsé
-    // Cela empêche le composant parent (la Modal) de re-render en boucle
     return useMemo(() => ({
         loading,
         error,

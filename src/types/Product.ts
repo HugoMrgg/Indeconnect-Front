@@ -24,6 +24,7 @@ export interface Product {
     averageRating: number;
     reviewCount: number;
     primaryColor: Color | null;
+    status?: "Draft" | "Online" | "Offline";
 
     // Pour compatibilité avec ton code existant
     brand: string;

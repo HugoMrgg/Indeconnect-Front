@@ -21,7 +21,7 @@ export function useOrder() {
             setOrder(newOrder);
             toast.success("Commande créée avec succès !");
             return newOrder;
-        } catch (err: unknown) {
+        } catch (err) {
             const message = extractErrorMessage(err);
             setError(message);
             toast.error(message);
@@ -41,7 +41,7 @@ export function useOrder() {
             const fetchedOrder = await getOrder(orderId);
             setOrder(fetchedOrder);
             return fetchedOrder;
-        } catch (err: unknown) {
+        } catch (err) {
             const message = extractErrorMessage(err);
             setError(message);
             console.error("[useOrder] fetchById error:", err);
@@ -60,7 +60,7 @@ export function useOrder() {
             const userOrders = await getUserOrders(userId);
             setOrders(userOrders);
             return userOrders;
-        } catch (err: unknown) {
+        } catch (err) {
             const message = extractErrorMessage(err);
             setError(message);
             console.error("[useOrder] fetchUserOrders error:", err);
@@ -79,7 +79,7 @@ export function useOrder() {
             const trackingData = await getOrderTracking(orderId);
             setTracking(trackingData);
             return trackingData;
-        } catch (err: unknown) {
+        } catch (err) {
             const message = extractErrorMessage(err);
             setError(message);
             console.error("[useOrder] fetchTracking error:", err);

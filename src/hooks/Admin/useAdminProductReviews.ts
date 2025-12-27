@@ -26,7 +26,7 @@ const normalize = (data: PagedResult<ProductReviewDto> | ProductReviewDto[], fal
 
 export function useModeratorReviews() {
     const [filters, setFilters] = useState<Filters>({
-        status: "Pending",
+        status: "Enabled",
         productId: null,
         page: 1,
         pageSize: 20,
@@ -78,10 +78,10 @@ export function useModeratorReviews() {
             // update local optimiste
             setData(prev => ({
                 ...prev,
-                items: prev.items.map(r => (r.id === reviewId ? { ...r, status: "Approved" } : r)),
+                items: prev.items.map(r => (r.id === reviewId ? { ...r, status: "Enabled" } : r)),
             }));
-            // si tu es en filtre Pending, tu peux la retirer visuellement :
-            if (filters.status === "Pending") {
+            // si tu es en filtre Disabled, tu peux la retirer visuellement :
+            if (filters.status === "Disabled") {
                 setData(prev => ({ ...prev, items: prev.items.filter(r => r.id !== reviewId) }));
             }
         } catch (e) {
@@ -98,9 +98,9 @@ export function useModeratorReviews() {
             toast.success("Review rejetée ❌");
             setData(prev => ({
                 ...prev,
-                items: prev.items.map(r => (r.id === reviewId ? { ...r, status: "Rejected" } : r)),
+                items: prev.items.map(r => (r.id === reviewId ? { ...r, status: "Disabled" } : r)),
             }));
-            if (filters.status === "Pending") {
+            if (filters.status === "Enabled") {
                 setData(prev => ({ ...prev, items: prev.items.filter(r => r.id !== reviewId) }));
             }
         } catch (e) {

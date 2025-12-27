@@ -16,9 +16,9 @@ export function ProductImageGallery({ images }: Props) {
         <div className="flex gap-4">
             {/* MINIATURES VERTICALES */}
             <div className="flex flex-col gap-3">
-                {images.map(img => (
+                {images.map((img, index) => (
                     <img
-                        key={img.id}
+                        key={img.id || index}
                         src={img.url}
                         onClick={() => setSelected(img.id)}
                         className={`

@@ -8,6 +8,11 @@ import {
     ColorVariantResponse,
     ProductStockResponse,
     ProductReviewsResponse,
+    CreateProductRequest,
+    CreateProductResponse,
+    CreateProductGroupRequest,
+    ProductGroupDto,
+    ProductGroupSummaryDto,
     ProductReviewDTO,
     CreateProductReviewDTO
 } from "@/api/services/products/types";
@@ -25,6 +30,7 @@ function mapProductDTO(dto: ProductDTO, brandName: string): Product {
         averageRating: dto.averageRating || 0,
         reviewCount: dto.reviewCount || 0,
         primaryColor: dto.primaryColor || null,
+        status: dto.status,
 
         brand: brandName,
         category: dto.category || undefined,
@@ -136,9 +142,6 @@ export async function fetchProductStock(productId: number): Promise<ProductStock
 /**
  * Récupère les avis d'un produit
  */
-/**
- * Récupère les avis d'un produit
- */
 export async function fetchProductReviews(
     productId: number,
     page = 1,
@@ -192,18 +195,64 @@ export async function createProductReview(
 }
 
 /**
+ * Créer un nouveau produit
+ */
+export async function createProduct(data: CreateProductRequest): Promise<CreateProductResponse> {
+    try {
+        const response = await axiosInstance.post<CreateProductResponse>(
+            PRODUCTS_ROUTES.create(),
+            data
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error creating product:", error);
+        throw error;
+    }
+}
+
+/**
+ * Créer un nouveau product group
+ */
+export async function createProductGroup(data: CreateProductGroupRequest): Promise<ProductGroupDto> {
+    try {
+        const response = await axiosInstance.post<ProductGroupDto>(
+            PRODUCTS_ROUTES.createGroup(),
+            data
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error creating product group:", error);
+        throw error;
+    }
+}
+
+export async function fetchProductGroupsByBrand(brandId: number): Promise<ProductGroupSummaryDto[]> {
+    try {
+        const response = await axiosInstance.get<ProductGroupSummaryDto[]>(
+            PRODUCTS_ROUTES.groupsByBrand(brandId)
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching product groups:", error);
+        throw error;
+    }
+}
+/**
  * Vérifie si l'utilisateur connecté a le droit de noter ce produit
  */
 export async function checkCanUserReview(productId: number): Promise<boolean> {
     try {
-        const response = await axiosInstance.get<boolean>(
-            PRODUCTS_ROUTES.canReview(productId)
-        );
+        const url = PRODUCTS_ROUTES.canReview(productId);
+
+        const response = await axiosInstance.get<boolean>(url);
+
         return response.data;
     } catch (error) {
+        console.error("checkCanUserReview error:", error);
         return false;
     }
 }
+
 
 /**
  * Désactive un avis d'un produit

@@ -3,8 +3,6 @@ import { useLocation } from "react-router-dom";
 
 import { BrandEthicsQuestionnaireModal } from "@/features/brands/BrandEthicsQuestionnaireModal";
 
-// ⚠️ adapte selon TON AuthContext
-
 import {SuperVendorEthicsStickyNotice} from "@/pages/brands/SuperVendorEthicsStickyNotice";
 import {useAuth} from "@/hooks/Auth/useAuth";
 
@@ -13,7 +11,6 @@ export function SuperVendorEthicsGlobal() {
     const { pathname } = useLocation();
     const [open, setOpen] = useState(false);
 
-    // ✅ 1) check rôle
     const isSuperVendor = useMemo(() => {
         if (!isAuthenticated || !user) return false;
 
@@ -49,7 +46,6 @@ export function SuperVendorEthicsGlobal() {
                 open={open}
                 onClose={() => setOpen(false)}
                 onSubmitted={async () => {
-                    // 🔥 fait bouger TOUT ce qui écoute (callout, sticky, etc.)
                     window.dispatchEvent(new Event("ethics:updated"));
                 }}
             />

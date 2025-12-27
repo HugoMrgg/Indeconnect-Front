@@ -24,7 +24,6 @@ interface BrandFiltersPanelProps {
     onChangeCity?: (cityName: string) => void;
     selectedEthicTags?: string[];
     onChangeEthicTags?: (tags: string[]) => void;
-    // ✅ NOUVELLES PROPS
     locationMode?: "city" | "gps";
     onChangeLocationMode?: (mode: "city" | "gps") => void;
     onRequestGPS?: () => void;
@@ -54,7 +53,6 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                                                                         onChangeCity,
                                                                         selectedEthicTags = [],
                                                                         onChangeEthicTags,
-                                                                        // ✅ NOUVELLES PROPS PAR DÉFAUT
                                                                         locationMode = "city",
                                                                         onChangeLocationMode,
                                                                         onRequestGPS,

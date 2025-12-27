@@ -40,7 +40,7 @@ export function usePayment() {
         try {
             const response = await confirmPayment(data);
             return response;
-        } catch (err: unknown) {
+        } catch (err) {
             const message = extractErrorMessage(err);
             setError(message);
             console.error("[usePayment] confirm error:", err);

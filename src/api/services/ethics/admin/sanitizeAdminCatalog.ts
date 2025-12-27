@@ -44,8 +44,6 @@ const num = (v: any, fallback = 0) => {
 };
 const bool = (v: any, fallback = true) => (typeof v === "boolean" ? v : fallback);
 
-// ⚠️ IMPORTANT: on garde les Id tels quels (null / positifs / négatifs temp ids)
-// Le back décidera comment gérer les ids négatifs.
 export const sanitizeAdminCatalog = (
     catalog: AdminUpsertCatalogRequest
 ): AdminUpsertCatalogRequest => {

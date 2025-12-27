@@ -83,10 +83,8 @@ export function SettingsPage() {
     const navigate = useNavigate();
     const { tab } = useParams<{ tab?: string }>();
 
-    // 🔥 BARRE DE RECHERCHE (même structure que Wishlist)
     const [searchQuery, setSearchQuery] = useState<string>("");
 
-    // 🔥 User
     const user = userStorage.getUser();
     if (user === null) {
         toast.error("Connecte-toi pour accéder aux paramètres 🔧");

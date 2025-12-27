@@ -44,6 +44,10 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error: AxiosError<BackendErrorResponse>) => {
+        if (error.code === "ERR_CANCELED" || error.name === "CanceledError") {
+            return Promise.reject(error);
+        }
+
         if (!error.response) {
             return Promise.reject(
                 new ApiError(
@@ -58,7 +62,6 @@ axiosInstance.interceptors.response.use(
 
         if (status === 401) {
             console.warn("[API] 401 - Session expirée ou token invalide");
-
             authStorage.clearToken();
             userStorage.clear();
 

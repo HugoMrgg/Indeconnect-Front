@@ -16,7 +16,6 @@ export function WishlistContent({
     handleRemove: (productId: number) => void;
 }) {
 
-    // ✅ PROTECTION SI WISHLIST EST UNDEFINED
     if (!wishlist) {
         return (
             <div className="min-h-72 flex flex-col items-center justify-center bg-white">

@@ -23,6 +23,7 @@ interface BrandPageProps {
         field: K,
         value: EditableBrandFields[K]
     ) => void;
+    onAddProduct?: () => void; // NOUVEAU
 }
 
 export const BrandPage: React.FC<BrandPageProps> = ({
@@ -30,6 +31,7 @@ export const BrandPage: React.FC<BrandPageProps> = ({
                                                         brandData: propBrandData,
                                                         editMode = false,
                                                         onUpdateField,
+                                                        onAddProduct, // NOUVEAU
                                                     }) => {
     const { brandName } = useParams();
     const decodedBrand = brandName ? decodeURIComponent(brandName) : "";
@@ -97,7 +99,6 @@ export const BrandPage: React.FC<BrandPageProps> = ({
             <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-16 -mt-10 relative">
                 {!editMode && <BrandBreadcrumbs />}
 
-                {/* On garde l’ordre: BrandHeader, puis FiltersPanel, puis BrandProducts */}
                 <section className="space-y-6">
                     {/* Header dans une carte propre */}
                     <div className="bg-white rounded-2xl shadow-xl border border-gray-100 px-6 py-5 sm:px-8 sm:py-6">
@@ -108,7 +109,7 @@ export const BrandPage: React.FC<BrandPageProps> = ({
                         />
                     </div>
 
-                    {/* Panneau de filtres (même place) */}
+                    {/* Panneau de filtres */}
                     <FiltersPanel
                         open={filtersOpen}
                         onClose={closeFilters}
@@ -129,7 +130,12 @@ export const BrandPage: React.FC<BrandPageProps> = ({
 
                     {/* Grille produits dans une carte */}
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6">
-                        <BrandProducts filter={filter} searchQuery={searchQuery} />
+                        <BrandProducts
+                            filter={filter}
+                            searchQuery={searchQuery}
+                            editMode={editMode}
+                            onAddProduct={onAddProduct} // NOUVEAU
+                        />
                     </div>
                 </section>
             </main>

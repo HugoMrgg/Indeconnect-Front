@@ -50,7 +50,6 @@ export function CartContent() {
         );
     }
 
-    // ✅ PROTECTION RENFORCÉE
     if (!cart || !cart.items || cart.items.length === 0) {
         return (
             <div className="flex items-center justify-center h-full">
@@ -63,7 +62,6 @@ export function CartContent() {
         <div className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto px-5 py-4">
                 <div className="flex flex-col gap-4">
-                    {/* ✅ PROTECTION AVEC OPTIONAL CHAINING */}
                     {cart?.items?.map((item) => {
                         const imageUrl = item.primaryImageUrl
                             ? `${item.primaryImageUrl}`

@@ -14,7 +14,6 @@ export const ProductList = ({
     const navigate = useNavigate();
     const { brandName } = useParams();
     const encodedBrand = encodeURIComponent(brandName ?? "");
-    console.log(likedMap);
     return (
         <div className="space-y-3">
             {items.map((p) => (

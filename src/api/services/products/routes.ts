@@ -6,5 +6,14 @@
     stock: (productId: number) => `/products/${productId}/stock`,
     reviews: (productId: number) => `/products/${productId}/reviews`,
     canReview: (productId: number) => `/products/${productId}/can-review`,
-    disableReview: (productId: number) => `/products/reviews/${productId}/disable`
+    disableReview: (productId: number) => `/products/reviews/${productId}/disable`,
+    create: () => `/products/create`,
+    update: (productId: number) => `/products/${productId}`,
+
+    // Product Groups routes
+    createGroup: () => `/product-groups`,
+    getGroup: (groupId: number) => `/product-groups/${groupId}`,
+    groupsByBrand: (brandId: number) => `/product-groups/brand/${brandId}`,
+    updateGroup: (groupId: number) => `/product-groups/${groupId}`,
+    deleteGroup: (groupId: number) => `/product-groups/${groupId}`,
 };

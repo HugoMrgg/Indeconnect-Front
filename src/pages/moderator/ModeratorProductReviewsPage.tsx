@@ -5,7 +5,6 @@ import { ReviewStatus } from "@/api/services/reviews/moderator/type";
 import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
 
-// ✅ nouveaux statuts
 const statusOptions: Array<ReviewStatus | "All"> = ["All", "Enabled", "Disabled"];
 
 const statusLabel = (s: string) => {
@@ -38,7 +37,6 @@ export const ModeratorProductReviewsPage: React.FC = () => {
         filters.productId ? String(filters.productId) : ""
     );
 
-    // ✅ recherche locale sur commentaire (et bonus: user/product)
     const [searchQuery, setSearchQuery] = useState("");
     const query = searchQuery.trim().toLowerCase();
 
@@ -177,7 +175,6 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                                 </select>
                             </div>
 
-                            {/* ✅ recherche locale */}
                             <div className="md:col-span-2">
                                 <label className="text-xs text-gray-500">Recherche</label>
                                 <div className="relative mt-1">
