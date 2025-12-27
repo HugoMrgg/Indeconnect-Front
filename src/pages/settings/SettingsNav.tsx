@@ -1,6 +1,6 @@
 ﻿import React from "react";
 
-export type TabKey = "profile" | "payments" | "security" | "notifications";
+export type TabKey = "profile" | "payments" | "notifications";
 
 export type TabItem = {
     key: TabKey;

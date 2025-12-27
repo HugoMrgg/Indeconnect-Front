@@ -1,37 +1,72 @@
-﻿import React, { useState } from 'react';
-import { usePaymentMethods } from '@/api/services/payments-methods';
-import { CardForm } from './CardForm';
-import {PaymentCardFormData, PaymentMethod} from "@/api/services/payments-methods/types";
+﻿import React, { useState } from "react";
+import toast from "react-hot-toast";
 
-// (Le composant BrandIcon reste identique à la version précédente, je l'omets ici pour la clarté)
-const BrandIcon = ({ brand }: { brand: string }) => { /* ... voir réponse précédente ... */ return <span className="font-bold uppercase text-xs text-gray-600">{brand}</span> };
+import { PaymentMethodDto } from "@/api/services/payments-methods/types";
+import { usePaymentMethods } from "@/hooks/Settings/usePaymentsMethods";
+import {AddPaymentMethodModal} from "@/features/settings/Payment-Settings/AddPaymentMethodModal";
+import {ConfirmDialog} from "@/components/ui/ConfirmDialog";
+
+const BrandBadge = ({ brand }: { brand: string }) => {
+    const label = (brand || "card").toUpperCase();
+
+    return (
+        <span className="inline-flex items-center justify-center px-2 py-1 rounded-md bg-gray-100 text-gray-700 text-[11px] font-semibold tracking-wide max-w-[96px] truncate">
+      {label}
+    </span>
+    );
+};
 
 
 export const PaymentMethodsPage: React.FC = () => {
-    const { data, isLoading, isAdding, error, addPaymentMethod, removePaymentMethod, setDefaultMethod } = usePaymentMethods();
+    const { data, isLoading, actingId, error, removePaymentMethod, setDefaultMethod, refetch } = usePaymentMethods();
+    const [openAdd, setOpenAdd] = useState(false);
+    const [confirmOpen, setConfirmOpen] = useState(false);
+    const [toDelete, setToDelete] = useState<PaymentMethodDto | null>(null);
+    const [deleting, setDeleting] = useState(false);
 
-    // État local pour gérer l'affichage du formulaire
-    const [isShowingAddForm, setIsShowingAddForm] = useState(false);
+    const askDelete = (m: PaymentMethodDto) => {
+        setToDelete(m);
+        setConfirmOpen(true);
+    };
 
-    // Gestion de la soumission du formulaire
-    const handleAddCardSubmit = async (formData: PaymentCardFormData) => {
-        const success = await addPaymentMethod(formData);
-        if (success) {
-            // Si l'ajout a réussi, on cache le formulaire
-            setIsShowingAddForm(false);
+    const confirmDelete = async () => {
+        if (!toDelete) return;
+
+        setDeleting(true);
+        try {
+            await removePaymentMethod(toDelete.id);
+            toast.success("Moyen de paiement supprimé ✅");
+            setConfirmOpen(false);
+            setToDelete(null);
+        } finally {
+            setDeleting(false);
         }
-        // Si échec, l'erreur est gérée par le hook et affichée plus bas
+    };
+
+    const makeDefault = async (m: PaymentMethodDto) => {
+        await setDefaultMethod(m.id);
+        toast.success("Moyen de paiement défini par défaut ✅");
     };
 
     if (isLoading) {
-        return <div className="p-8 text-center text-gray-500 animate-pulse">Chargement de vos moyens de paiement...</div>;
+        return <div className="p-8 text-center text-gray-500 animate-pulse">Chargement de tes moyens de paiement…</div>;
     }
 
     return (
-        <div className="max-w-2xl mx-auto p-6 space-y-8">
-            <header>
-                <h1 className="text-2xl font-bold text-gray-900">Moyens de paiement</h1>
-                <p className="text-gray-500 mt-1">Gérez vos cartes bancaires pour vos futurs achats.</p>
+        <div className="p-6 space-y-6">
+            <header id="payments-default" className="flex items-start justify-between gap-4">
+                <div>
+                    <h2 className="text-2xl font-bold text-gray-900">Moyens de paiement</h2>
+                    <p className="text-gray-600 mt-1">Gère tes cartes : défaut, suppression, ajout via Stripe.</p>
+                </div>
+
+                <button
+                    type="button"
+                    onClick={() => setOpenAdd(true)}
+                    className="shrink-0 px-4 py-2 rounded-lg text-white bg-gray-900 hover:bg-gray-800 transition"
+                >
+                    + Ajouter
+                </button>
             </header>
 
             {error && (
@@ -40,74 +75,117 @@ export const PaymentMethodsPage: React.FC = () => {
                 </div>
             )}
 
-            {/* --- Zone de contenu principal : Soit la liste, soit le formulaire --- */}
+            <div className="space-y-4">
+                {data.map((m) => (
+                    <div
+                        key={m.id}
+                        className={`flex items-start justify-between p-4 border rounded-lg bg-white ${
+                            m.isDefault ? "border-blue-500 ring-1 ring-blue-500 shadow-sm" : "border-gray-200"
+                        }`}
+                    >
+                        <div className="flex gap-4">
+                            <div className="w-20 shrink-0 flex items-center">
+                                <BrandBadge brand={m.brand} />
+                            </div>
 
-            {isShowingAddForm ? (
-                // 1. Affichage du formulaire d'ajout
-                <CardForm
-                    onSubmit={handleAddCardSubmit}
-                    onCancel={() => setIsShowingAddForm(false)}
-                    isSubmitting={isAdding}
-                />
-            ) : (
-                // 2. Affichage de la liste et du bouton "Ajouter"
-                <>
-                    <div className="space-y-4">
-                        {data.map((method: PaymentMethod) => (
-                            <div
-                                key={method.id}
-                                className={`flex items-start justify-between p-4 border rounded-lg transition-colors bg-white ${
-                                    method.isDefault ? 'border-blue-500 ring-1 ring-blue-500 shadow-sm' : 'border-gray-200'
-                                }`}
-                            >
-                                <div className="flex gap-4">
-                                    {/* Icône générique de carte */}
-                                    <div className={`w-12 h-8 rounded flex items-center justify-center ${method.brand === 'visa' ? 'bg-blue-100' : method.brand === 'mastercard' ? 'bg-red-100' : 'bg-gray-200'}`}>
-                                        <BrandIcon brand={method.brand} />
-                                    </div>
+                            <div>
+                                <div className="flex items-center gap-3">
+                  <span className="font-semibold text-gray-900 font-mono">
+                    {m.type === "card" ? `•••• ${m.last4 ?? "----"}` : m.type.toUpperCase()}
+                  </span>
 
-                                    <div>
-                                        <div className="flex items-center gap-3">
-                                            <span className="font-semibold text-gray-900 font-mono">•••• {method.last4}</span>
-                                            {method.isDefault && <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">Par défaut</span>}
-                                        </div>
-                                        <div className="text-sm text-gray-500 mt-1">
-                                            Expire le {method.expiryMonth.toString().padStart(2, '0')}/{method.expiryYear} • {method.holderName}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-start gap-2 ml-4">
-                                    {!method.isDefault && (
-                                        <button onClick={() => setDefaultMethod(method.id)} className="text-sm text-gray-600 hover:text-blue-600 px-2 py-1">
-                                            Par défaut
-                                        </button>
+                                    {m.isDefault && (
+                                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                      Par défaut
+                    </span>
                                     )}
-                                    <button onClick={() => removePaymentMethod(method.id)} className="text-sm text-red-600 hover:text-red-800 px-2 py-1 hover:bg-red-50 rounded">
-                                        Supprimer
-                                    </button>
+                                </div>
+
+                                <div className="text-sm text-gray-500 mt-1">
+                                    {m.type === "card" ? (
+                                        <>
+                                            Expire le {(m.expiryMonth ?? 0).toString().padStart(2, "0")}/{m.expiryYear ?? "--"}
+                                        </>
+                                    ) : (
+                                        <>Méthode {m.type}</>
+                                    )}
                                 </div>
                             </div>
-                        ))}
+                        </div>
 
-                        {data.length === 0 && !isLoading && (
-                            <div className="text-center py-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                                <p className="text-gray-500">Vous n'avez pas encore enregistré de carte.</p>
-                            </div>
-                        )}
+                        <div className="flex items-start gap-2 ml-4">
+                            {!m.isDefault && (
+                                <button
+                                    onClick={() => makeDefault(m)}
+                                    disabled={actingId === m.id}
+                                    className="text-sm text-gray-600 hover:text-blue-600 px-2 py-1 disabled:opacity-50"
+                                >
+                                    Par défaut
+                                </button>
+                            )}
+
+                            <button
+                                onClick={() => askDelete(m)}
+                                disabled={actingId === m.id}
+                                className="text-sm text-red-600 hover:text-red-800 px-2 py-1 hover:bg-red-50 rounded disabled:opacity-50"
+                            >
+                                Supprimer
+                            </button>
+                        </div>
                     </div>
+                ))}
 
-                    {/* Bouton principal pour afficher le formulaire */}
-                    <div className="pt-6">
+                {data.length === 0 && (
+                    <div className="text-center py-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                        <p className="text-gray-500">Tu n’as pas encore enregistré de moyen de paiement.</p>
                         <button
-                            onClick={() => setIsShowingAddForm(true)}
-                            className="w-full sm:w-auto flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors shadow-sm"
+                            type="button"
+                            onClick={() => setOpenAdd(true)}
+                            className="mt-4 px-5 py-2 rounded-lg text-white bg-gray-900 hover:bg-gray-800 transition"
                         >
-                            + Ajouter une nouvelle carte
+                            Ajouter une carte
                         </button>
                     </div>
-                </>
-            )}
+                )}
+            </div>
+
+            <AddPaymentMethodModal
+                open={openAdd}
+                onClose={() => setOpenAdd(false)}
+                onAdded={refetch}
+            />
+
+            <ConfirmDialog
+                open={confirmOpen}
+                title="Supprimer ce moyen de paiement ?"
+                message={
+                    <div className="space-y-2">
+                        <p>
+                            Tu es sur le point de supprimer{" "}
+                            <span className="font-mono font-semibold text-gray-900">
+                                {toDelete?.type === "card" ? `•••• ${toDelete?.last4 ?? "----"}` : (toDelete?.type ?? "").toUpperCase()}
+                            </span>.
+                        </p>
+
+                        {toDelete?.isDefault && (
+                            <p className="text-red-700 bg-red-50 border border-red-100 rounded-lg p-2">
+                                ⚠️ C’est ta méthode par défaut. Après suppression, il faudra en choisir une autre.
+                            </p>
+                        )}
+                    </div>
+                }
+                confirmLabel="Supprimer"
+                cancelLabel="Annuler"
+                danger
+                loading={deleting}
+                onCancel={() => {
+                    if (deleting) return;
+                    setConfirmOpen(false);
+                    setToDelete(null);
+                }}
+                onConfirm={confirmDelete}
+            />
+
         </div>
     );
 };

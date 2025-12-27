@@ -70,8 +70,15 @@ export default function AppRouter() {
                 path="/admin/ethics"
                 element={
                     <ProtectedRoute requiredRoles={["Administrator"]}>
-                        {/* Placeholder for Ethics Management Page */}
                         <AdminEthicsManagement />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/payments"
+                element={
+                    <ProtectedRoute requiredRoles={["Administrator"]}>
+                        <PaymentMethodsManagement />
                     </ProtectedRoute>
                 }
             />

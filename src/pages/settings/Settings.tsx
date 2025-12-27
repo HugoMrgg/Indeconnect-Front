@@ -75,7 +75,6 @@ import { userStorage } from "@/storage/UserStorage";
 import React, { useMemo, useState } from "react";
 import {ProfileTab} from "@/pages/settings/ProfileTab";
 import {PaymentMethodsTab} from "@/pages/settings/PaymentMethodsTab";
-import {SecurityTab} from "@/pages/settings/SecurityTab";
 import {NotificationsTab} from "@/pages/settings/NotificationsTab";
 import {TabItem, TabKey} from "@/pages/settings/SettingsNav";
 import {SettingsContent, SettingsSearchItem} from "@/features/settings/SettingsContent";
@@ -98,24 +97,21 @@ export function SettingsPage() {
         () => [
             { key: "profile", label: "Mes informations", description: "Profil, identité, facturation", element: <ProfileTab /> },
             { key: "payments", label: "Moyens de paiement", description: "Cartes, défaut, suppression", element: <PaymentMethodsTab /> },
-            { key: "security", label: "Sécurité", description: "Mot de passe, 2FA, sessions", element: <SecurityTab /> },
             { key: "notifications", label: "Notifications", description: "Emails, préférences", element: <NotificationsTab /> },
         ],
         []
     );
 
     const safeTab = (value?: string): TabKey => {
-        const allowed: TabKey[] = ["profile", "payments", "security", "notifications"];
+        const allowed: TabKey[] = ["profile", "payments", "notifications"];
         return allowed.includes(value as TabKey) ? (value as TabKey) : "profile";
     };
 
     const [active, setActive] = useState<TabKey>(() => safeTab(tab));
 
-    // ✅ keep-alive (les tabs restent montées après 1ère visite)
     const [mounted, setMounted] = useState<Record<TabKey, boolean>>({
         profile: true,
         payments: false,
-        security: false,
         notifications: false,
     });
 
@@ -134,7 +130,6 @@ export function SettingsPage() {
         navigate(key === "profile" ? "/settings" : `/settings/${key}`);
     };
 
-    // ✅ index de recherche (moteur simple, efficace, extensible)
     const searchIndex: SettingsSearchItem[] = useMemo(
         () => [
             {
@@ -157,20 +152,6 @@ export function SettingsPage() {
                 title: "Carte par défaut",
                 description: "Définir une carte pour les futurs achats",
                 keywords: ["paiement", "par défaut", "default", "carte", "checkout"],
-            },
-            {
-                id: "security-password",
-                tab: "security",
-                title: "Changer de mot de passe",
-                description: "Mettre à jour ton mot de passe",
-                keywords: ["sécurité", "mot de passe", "password", "reset"],
-            },
-            {
-                id: "security-2fa",
-                tab: "security",
-                title: "Activer le 2FA",
-                description: "Sécuriser le compte avec double authentification",
-                keywords: ["2fa", "double authentification", "otp", "sécurité", "auth"],
             },
             {
                 id: "notifications-email",
