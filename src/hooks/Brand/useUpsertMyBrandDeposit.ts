@@ -22,7 +22,7 @@ export function useUpsertMyBrandDeposit(): UseUpsertMyBrandDepositResult {
             try {
                 const result = await brandsService.upsertMyBrandDeposit(data);
                 return result;
-            } catch (e: unknown) {
+            } catch (e) {
                 console.error("Erreur dépôt", e);
 
                 if (e instanceof Error) {

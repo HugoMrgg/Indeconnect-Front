@@ -13,10 +13,8 @@ import {userStorage} from "@/storage/UserStorage";
 export function Wishlist() {
     const navigate = useNavigate();
 
-    // 🔥 BARRE DE RECHERCHE (même structure que la page brands)
     const [searchQuery, setSearchQuery] = useState<string>("");
 
-    // 🔥 User ID → à adapter (token / context)
     const user = userStorage.getUser();
 
     if (user === null) {
@@ -24,13 +22,10 @@ export function Wishlist() {
         navigate("/");
     }
 
-    // 🔥 HOOK API WISHLIST
     const { wishlist, loading, error, retry } = useWishlist(user?.id);
 
-    // MODE GRILLE / LISTE
     const [view, setView] = useState<"grid" | "list">("grid");
 
-    // 🔥 FILTRAGE TEXTE (comme pour les marques)
     const filteredWishlist = useMemo(() => {
         if (!wishlist) return [];
 

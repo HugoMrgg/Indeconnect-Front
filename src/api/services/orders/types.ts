@@ -1,6 +1,4 @@
-﻿// src/api/services/orders/types.ts
-
-export type CreateOrderDto = {
+﻿export type CreateOrderDto = {
     shippingAddressId: number;
     deliveryChoices: DeliveryChoiceDto[];
 };
@@ -57,17 +55,15 @@ export type DeliveryStatus =
     | "Returned"
     | "Cancelled";
 
-// 🆕 NOUVEAU : Structure multi-marques
 export type OrderTrackingDto = {
     orderId: number;
-    globalStatus: OrderStatus; // ⚠️ CHANGÉ : orderStatus → globalStatus
+    globalStatus: OrderStatus;
     placedAt: string;
     totalAmount: number;
-    deliveriesByBrand: BrandDeliveryTrackingDto[]; // 🆕 NOUVEAU
-    latestEstimatedDelivery: string | null; // 🆕 NOUVEAU
+    deliveriesByBrand: BrandDeliveryTrackingDto[];
+    latestEstimatedDelivery: string | null;
 };
 
-// 🆕 NOUVEAU DTO
 export type BrandDeliveryTrackingDto = {
     brandDeliveryId: number;
     brandId: number;

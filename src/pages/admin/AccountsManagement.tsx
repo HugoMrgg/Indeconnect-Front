@@ -8,7 +8,6 @@ import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
 
 export function AccountsManagement() {
-    // 🔥 BARRE DE RECHERCHE (comme Wishlist)
     const [searchQuery, setSearchQuery] = useState<string>("");
 
     const [openModal, setOpenModal] = useState(false);
@@ -128,7 +127,6 @@ export function AccountsManagement() {
                         </div>
                     ) : (
                         <>
-                            {/* ✅ No results */}
                             {filteredAccounts.length === 0 ? (
                                 <div className="text-center py-10 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
                                     <p className="text-gray-700 font-semibold">Aucun compte ne correspond.</p>

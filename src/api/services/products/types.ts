@@ -11,6 +11,7 @@ export interface ProductDTO {
     reviewCount?: number;
     primaryColor?: Color | null;
     category?: string;
+    status?: "Draft" | "Online" | "Offline";
 }
 
 export interface ProductsResponse {
@@ -101,4 +102,79 @@ export interface ProductReviewsResponse {
     page: number;
     pageSize: number;
     averageRating: number;
+}
+
+export interface CreateProductGroupRequest {
+    name: string;
+    baseDescription: string;
+    categoryId: number;
+}
+
+export interface ProductGroupDto {
+    id: number;
+    name: string;
+    baseDescription: string;
+    categoryId: number;
+    brandId: number;
+    createdAt: string;
+}
+
+export interface ProductGroupSummaryDto {
+    id: number;
+    name: string;
+    baseDescription: string;
+    categoryId: number;
+    categoryName: string;
+    productCount: number;
+}
+
+export interface ProductGroupsResponse {
+    groups: ProductGroupSummaryDto[];
+    totalCount: number;
+}
+
+export interface SizeDto {
+    id: number;
+    name: string;
+}
+
+export interface CreateVariantDto {
+    sku: string;
+    size: SizeDto | null;
+    stockCount: number;
+    price: number;
+    isAvailable: boolean;
+}
+
+export interface CreateProductRequest {
+    name: string;
+    description: string;
+    price: number;
+    brandId: number;
+    categoryId: number;
+    productGroupId: number;
+    primaryColorId: number | null;
+    media: Array<{
+        url: string;
+        type: "Image" | "Video";
+        displayOrder: number;
+        isPrimary: boolean;
+    }>;
+    sizeVariants: CreateVariantDto[];
+    details: Array<{
+        value: string;
+        displayOrder: number;
+    }>;
+    keywords: string[];
+    status: "Draft" | "Online" | "Offline";
+}
+
+export interface CreateProductResponse {
+    id: number;
+    name: string;
+    brandName: string;
+    categoryName: string;
+    price: number;
+    status: string;
+    createdAt: string;
 }

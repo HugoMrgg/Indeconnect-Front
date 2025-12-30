@@ -1,8 +1,9 @@
-﻿import { useState, useEffect, useRef, useCallback } from "react";
-import { AxiosError } from "axios";
-import { AccountsService } from "@/api/services/account";
-import type { Account } from "@/api/services/account/types";
-import type { InviteAccountRequest } from "@/types/account";
+﻿// useAccounts.ts
+import {useCallback, useEffect, useRef, useState} from "react";
+import {AxiosError} from "axios";
+import {AccountsService} from "@/api/services/account";
+import {InviteAccountRequest} from "@/types/account";
+import {Account} from "@/api/services/account/types";
 
 interface UseAccountsReturn {
     accounts: Account[];
@@ -21,6 +22,7 @@ export function useAccounts(): UseAccountsReturn {
     const abortControllerRef = useRef<AbortController | null>(null);
 
     const fetchAccounts = useCallback(async () => {
+        // Annule la requête précédente si elle existe
         if (abortControllerRef.current) {
             abortControllerRef.current.abort();
         }
@@ -36,8 +38,6 @@ export function useAccounts(): UseAccountsReturn {
             if (err instanceof Error && err.name === "CanceledError") {
                 return;
             }
-
-            console.error("[useAccounts] Erreur chargement:", err);
 
             if (err instanceof AxiosError) {
                 setError(err.response?.data?.message || "Impossible de charger les comptes");
@@ -114,7 +114,7 @@ export function useAccounts(): UseAccountsReturn {
         return () => {
             abortControllerRef.current?.abort();
         };
-    }, [fetchAccounts]);
+    }, []);
 
     return {
         accounts,

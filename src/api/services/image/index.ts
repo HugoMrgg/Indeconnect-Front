@@ -46,7 +46,7 @@ export const imagesService = {
         options: UploadOptions = {}
     ): Promise<string> => {
         const {
-            maxSizeMB = 5,  // ✅ Plus de folder
+            maxSizeMB = 5,
             allowedFormats = ["image/jpeg", "image/png", "image/webp"]
         } = options;
 
