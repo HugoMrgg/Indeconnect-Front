@@ -29,7 +29,7 @@ export function useCart(shouldFetch: boolean = true) {
         try {
             const data = await getCart(user.id);
             setCart(data);
-        } catch (e) {
+        } catch (_e) {
             setError("Erreur lors du chargement du panier.");
         } finally {
             setLoading(false);

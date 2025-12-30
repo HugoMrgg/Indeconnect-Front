@@ -56,7 +56,7 @@ export const EditableField: React.FC<EditableFieldProps> = ({
         const Component = multiline ? "textarea" : "input";
         return (
             <Component
-                ref={inputRef as any}
+                ref={inputRef as React.Ref<HTMLInputElement & HTMLTextAreaElement>}
                 value={localValue}
                 onChange={(e) => setLocalValue(e.target.value)}
                 onBlur={handleBlur}

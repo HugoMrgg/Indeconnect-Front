@@ -222,7 +222,7 @@ const mapStatus = (s: string) => {
                 label: "Brouillon",
                 icon: FileEdit,
                 tone: "bg-white border-gray-200 text-gray-900",
-                desc: "Éditable. Quand tu publies, ce catalogue devient la référence.",
+                desc: "Editable. Publishing this catalog makes it the production reference.",
             };
         case "Published":
             return {

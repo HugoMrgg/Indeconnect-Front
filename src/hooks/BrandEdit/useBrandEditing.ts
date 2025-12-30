@@ -23,7 +23,7 @@ export function useBrandEditing(brandId: number, initialData: UpdateBrandRequest
             field: K,
             value: EditableBrandFields[K]
         ) => {
-            setFormData((prev) => ({ ...prev, [field]: value as any }));
+            setFormData((prev) => ({ ...prev, [field]: value }));
             setHasChanges(true);
         },
         []

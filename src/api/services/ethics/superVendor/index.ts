@@ -1,6 +1,6 @@
 ﻿import axiosInstance from "@/api/api";
-import {ETHICS_ROUTES} from "../routes";
-import {EthicsFormDto, UpsertQuestionnaireRequest} from "@/api/services/ethics/superVendor/types";
+import { ETHICS_ROUTES } from "../routes";
+import type { EthicsFormDto, UpsertQuestionnaireRequest } from "./types";
 
 export const EthicsSuperVendorQuestionnaireService = {
     getMyForm: async () => {
@@ -11,5 +11,9 @@ export const EthicsSuperVendorQuestionnaireService = {
     upsertMyForm: async (payload: UpsertQuestionnaireRequest) => {
         const { data } = await axiosInstance.put<EthicsFormDto>(ETHICS_ROUTES.saveMyForm, payload);
         return data;
+    },
+
+    markAsReviewed: async () => {
+        await axiosInstance.post(ETHICS_ROUTES.markReviewed);
     },
 };

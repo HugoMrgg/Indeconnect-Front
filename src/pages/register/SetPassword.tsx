@@ -42,10 +42,10 @@ export function SetPassword() {
             });
             setSuccess(true);
             setTimeout(() => navigate("/"), 3000);
-        } catch (err: any) {
+        } catch (err: unknown) {
             const apiError =
-                err.response?.data?.error ||
-                err.response?.data?.message;
+                (err as { response?: { data?: { error?: string; message?: string } } }).response?.data?.error ||
+                (err as { response?: { data?: { error?: string; message?: string } } }).response?.data?.message;
             setError(apiError || "Erreur lors de l'activation du compte.");
         }finally {
             setLoading(false);

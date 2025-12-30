@@ -5,10 +5,10 @@ import { EthicsSuperVendorQuestionnaireService } from "@/api/services/ethics/sup
 type QuestionnaireStatus = "Draft" | "Submitted" | "Approved" | "Rejected" | string;
 
 type Props = {
-    brandId: number; // ok à garder
-    questionnaireStatus?: QuestionnaireStatus; // si tu le passes, on le prend direct
-    ethicsScoreProduction: number; // 0..5
-    ethicsScoreTransport: number;  // 0..5
+    brandId: number;
+    questionnaireStatus?: QuestionnaireStatus; // Optional: overrides fetched status if provided
+    ethicsScoreProduction: number; // Score range: 0 to 5
+    ethicsScoreTransport: number;  // Score range: 0 to 5
     ethicTags?: string[];
     onOpen: () => void;
 };
@@ -72,19 +72,19 @@ export const BrandEthicsCallout: React.FC<Props> = ({
         try {
             const form = await EthicsSuperVendorQuestionnaireService.getMyForm();
             setFetchedStatus(form.status as QuestionnaireStatus);
-        } catch (e: any) {
-            setStatusError(e?.message ?? "Impossible de récupérer le statut du questionnaire.");
+        } catch (e: unknown) {
+            setStatusError((e as Error)?.message ?? "Impossible de récupérer le statut du questionnaire.");
         } finally {
             setStatusLoading(false);
         }
     }, [questionnaireStatus]);
 
-    // fetch au mount (si pas de status en props)
+    // Fetch status on component mount if not provided via props
     useEffect(() => {
         fetchStatus();
     }, [fetchStatus]);
 
-    // 🔔 écoute un event global pour refresh après save/submit du modal
+    // Listen to global event to refresh status after modal save/submit
     useEffect(() => {
         const handler = () => fetchStatus();
         window.addEventListener("ethics:updated", handler);
@@ -116,7 +116,7 @@ export const BrandEthicsCallout: React.FC<Props> = ({
     }, [isCompleted, isUnderReview, isApproved, isRejected]);
 
     const tone = useMemo(() => {
-        // juste pour une UI qui “réagit”
+        // UI color scheme based on questionnaire status
         if (!isCompleted) return { wrap: "bg-amber-50 border-amber-200", icon: "text-amber-700", badge: "bg-amber-100 text-amber-900" };
         if (isUnderReview) return { wrap: "bg-blue-50 border-blue-200", icon: "text-blue-700", badge: "bg-blue-100 text-blue-900" };
         if (isApproved) return { wrap: "bg-emerald-50 border-emerald-200", icon: "text-emerald-700", badge: "bg-emerald-100 text-emerald-900" };

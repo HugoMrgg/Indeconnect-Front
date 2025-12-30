@@ -74,7 +74,7 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                                 </h1>
                                 <div className="w-24 h-1 bg-gray-900 mb-6" aria-hidden="true"></div>
                                 <p className="text-gray-700 text-lg">
-                                    Les commentaires sont publiés automatiquement. Ici, tu peux les masquer ou les réactiver.
+                                    Comments are automatically published. This interface allows you to hide or reactivate them.
                                 </p>
                             </div>
                         </div>
@@ -109,12 +109,12 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                                 <label className="text-xs text-gray-500">Statut</label>
                                 <select
                                     className="mt-1 w-full px-3 py-2 rounded-xl border border-gray-200"
-                                    value={(filters.status as any) ?? "All"}
+                                    value={filters.status ?? "All"}
                                     onChange={(e) =>
                                         setFilters((p) => ({
                                             ...p,
-                                            // "All" => null côté back (tu dis gérer ça dans le hook)
-                                            status: e.target.value as any,
+                                            // "All" value is converted to null on backend side (handled in hook)
+                                            status: e.target.value as ReviewStatus,
                                             page: 1,
                                         }))
                                     }

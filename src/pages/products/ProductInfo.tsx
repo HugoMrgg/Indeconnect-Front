@@ -5,7 +5,7 @@ interface ProductInfoProps {
     brandName: string;
 }
 
-export function ProductInfo({ product, brandName }: ProductInfoProps) {
+export function ProductInfo({ product, brandName: _brandName }: ProductInfoProps) {
     return (
         <div>
             <h1 className="text-3xl font-semibold">{product.name}</h1>

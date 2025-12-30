@@ -10,11 +10,12 @@ import { ProtectedRoute } from "@/routes/ProtectedRoute";
 import {MyBrandPage} from "@/pages/brands/MyBrandPage";
 import {BrandInfoPageWrapper} from "@/pages/brands/BrandInfoPageWrapper";
 import {SettingsPage} from "@/pages/settings/Settings";
-import {ModeratorProductReviewsPage} from "@/pages/admin/AdminProductReviewsPage";
+import { ModeratorProductReviewsPage } from "@/pages/moderator/ModeratorProductReviewsPage";
 import {CheckoutPage} from "@/pages/checkout/CheckoutPage";
 import {OrderConfirmation} from "@/pages/checkout/OrderConfirmation";
 import {OrdersPage} from "@/pages/order/OrdersPage";
 import {OrderDetailsPage} from "@/pages/order/OrderDetailsPage";
+import {PaymentMethodsManagement} from "@/pages/admin/PaymentMethodsManagement";
 
 export default function AppRouter() {
     return (
@@ -97,6 +98,14 @@ export default function AppRouter() {
                 element={
                     <ProtectedRoute requiredRoles={["SuperVendor"]}>
                         <MyBrandPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/my-brand/product/:productId"
+                element={
+                    <ProtectedRoute requiredRoles={["SuperVendor"]}>
+                        <ProductPage editMode={true} />
                     </ProtectedRoute>
                 }
             />

@@ -14,7 +14,9 @@ import {
     ProductGroupDto,
     ProductGroupSummaryDto,
     ProductReviewDTO,
-    CreateProductReviewDTO
+    CreateProductReviewDTO,
+    UpdateProductRequest,
+    UpdateProductResponse,
 } from "@/api/services/products/types";
 
 /**
@@ -31,6 +33,7 @@ function mapProductDTO(dto: ProductDTO, brandName: string): Product {
         reviewCount: dto.reviewCount || 0,
         primaryColor: dto.primaryColor || null,
         status: dto.status,
+        sale: dto.sale || undefined,
 
         brand: brandName,
         category: dto.category || undefined,
@@ -261,4 +264,23 @@ export async function disableProductReview(reviewId: number): Promise<void> {
     await axiosInstance.post(
         PRODUCTS_ROUTES.disableReview(reviewId)
     );
+}
+
+/**
+ * Met à jour un produit existant (SuperVendor uniquement)
+ */
+export async function updateProduct(
+    productId: number,
+    data: UpdateProductRequest
+): Promise<UpdateProductResponse> {
+    try {
+        const response = await axiosInstance.put<UpdateProductResponse>(
+            PRODUCTS_ROUTES.update(productId),
+            data
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error updating product:", error);
+        throw error;
+    }
 }

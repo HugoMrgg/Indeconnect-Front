@@ -4,7 +4,7 @@ import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-
 import { usePayment } from "@/hooks/Payment/usePayment";
 import { Loader2, AlertCircle, CreditCard, ShieldCheck } from "lucide-react";
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || "");
 
 type PaymentSectionProps = {
     orderId: number;

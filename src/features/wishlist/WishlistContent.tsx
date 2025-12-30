@@ -101,7 +101,7 @@ export function WishlistContent({
                                     primaryImageUrl: item.primaryImageUrl,
                                     primaryColor: item.primaryColor,
                                     brandName: item.brandName,
-                                } as any;
+                                } as unknown as ProductDetail;
 
                                 return (
                                     <WishlistProductCard

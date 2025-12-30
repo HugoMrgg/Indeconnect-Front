@@ -94,7 +94,7 @@ export const Home: React.FC = () => {
     const handleCityChange = (cityName: string) => {
         if (!cityName) {
             setApiFilters(f => {
-                const { lat, lon, ...rest } = f;
+                const { lat: _lat, lon: _lon, ...rest } = f;
                 return rest;
             });
             return;
@@ -114,7 +114,7 @@ export const Home: React.FC = () => {
         } else {
             // Passer en mode GPS : clear ville
             setApiFilters(f => {
-                const { lat, lon, ...rest } = f;
+                const { lat: _lat, lon: _lon, ...rest } = f;
                 return rest;
             });
         }

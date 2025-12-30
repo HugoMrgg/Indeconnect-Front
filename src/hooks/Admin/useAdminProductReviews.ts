@@ -75,12 +75,12 @@ export function useModeratorReviews() {
         try {
             await ModeratorReviewsService.approve(reviewId);
             toast.success("Review approuvée ✅");
-            // update local optimiste
+            // Optimistic local update
             setData(prev => ({
                 ...prev,
                 items: prev.items.map(r => (r.id === reviewId ? { ...r, status: "Enabled" } : r)),
             }));
-            // si tu es en filtre Disabled, tu peux la retirer visuellement :
+            // Remove from list if currently filtering by Disabled status
             if (filters.status === "Disabled") {
                 setData(prev => ({ ...prev, items: prev.items.filter(r => r.id !== reviewId) }));
             }

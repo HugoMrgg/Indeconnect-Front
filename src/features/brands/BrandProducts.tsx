@@ -100,7 +100,8 @@ export const BrandProducts: React.FC<Props> = ({
                                 product={p}
                                 liked={likedMap[p.id] ?? false}
                                 onToggleLike={() => toggleLike(p.id)}
-                                showStatus={true}
+                                showStatus={editMode}
+                                editMode={editMode}
                             />
                         ))}
                     </div>

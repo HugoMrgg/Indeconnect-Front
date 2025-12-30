@@ -22,8 +22,8 @@ export function usePaymentMethods() {
         try {
             const data = await paymentMethodsService.getMine();
             setState((p) => ({ ...p, data, isLoading: false }));
-        } catch (e: any) {
-            setState((p) => ({ ...p, isLoading: false, error: e?.message ?? "Erreur de chargement" }));
+        } catch (e: unknown) {
+            setState((p) => ({ ...p, isLoading: false, error: (e as Error)?.message ?? "Erreur de chargement" }));
         }
     }, []);
 
@@ -46,13 +46,13 @@ export function usePaymentMethods() {
             try {
                 await paymentMethodsService.remove(id);
                 setState((p) => ({ ...p, actingId: null }));
-            } catch (e: any) {
+            } catch (e: unknown) {
                 // rollback
                 setState((p) => ({
                     ...p,
                     data: previous,
                     actingId: null,
-                    error: e?.message ?? "Erreur lors de la suppression",
+                    error: (e as Error)?.message ?? "Erreur lors de la suppression",
                 }));
             }
         },
@@ -74,13 +74,13 @@ export function usePaymentMethods() {
             try {
                 await paymentMethodsService.setDefault(id);
                 setState((p) => ({ ...p, actingId: null }));
-            } catch (e: any) {
+            } catch (e: unknown) {
                 // rollback
                 setState((p) => ({
                     ...p,
                     data: previous,
                     actingId: null,
-                    error: e?.message ?? "Impossible de définir par défaut",
+                    error: (e as Error)?.message ?? "Impossible de définir par défaut",
                 }));
             }
         },

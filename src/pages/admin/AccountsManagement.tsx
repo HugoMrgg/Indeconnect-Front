@@ -4,6 +4,7 @@ import { InviteAccountModal } from "@/features/admin/InviteAccountModal";
 import { AccountsTable } from "@/features/admin/AccountsTable";
 import { useAccounts } from "@/hooks/Auth/useAccounts";
 import type { InviteAccountRequest } from "@/types/account";
+import type { Account } from "@/api/services/account/types";
 import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
 
@@ -41,8 +42,8 @@ export function AccountsManagement() {
         const q = searchQuery.trim().toLowerCase();
         if (!q) return accounts;
 
-        return accounts.filter((a: any) => {
-            // adapte si tes props sont typées différemment
+        return accounts.filter((a: Account) => {
+            // Filter accounts based on search query
             const fullName =
                 `${a.firstName ?? ""} ${a.lastName ?? ""}`.trim() ||
                 a.name ||

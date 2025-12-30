@@ -25,8 +25,8 @@ export const DepositModal: React.FC<DepositModalProps> = ({
         postalCode: "",
         city: "",
         country: "Belgique",
-        // latitude / longitude ne sont plus demandés au user ;
-        // soit tu les retires du type, soit tu laisses 0 et le backend les recalculera.
+        // Latitude/longitude are no longer user-provided fields
+        // Either remove from type or set to 0 for backend recalculation
         latitude: 0,
         longitude: 0,
     });
@@ -37,7 +37,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
         if (!open) return;
 
         if (!initialDeposit) {
-            // reset pour un nouveau dépôt
+            // Reset form fields for creating a new deposit
             setForm((f) => ({
                 ...f,
                 number: 0,
@@ -49,13 +49,13 @@ export const DepositModal: React.FC<DepositModalProps> = ({
             return;
         }
 
-        // Option simple : pré-remplir juste la ville (tu l’as dans initialDeposit.city)
+        // Prefill form with city from existing deposit
         setForm((f) => ({
             ...f,
             city: initialDeposit.city ?? "",
             country: "Belgique",
         }));
-        // Si tu veux, tu peux parser initialDeposit.fullAddress pour remplir number/street/CP.
+        // Optional: parse initialDeposit.fullAddress to populate number/street/postalCode
     }, [open, initialDeposit]);
 
     const handleChange =

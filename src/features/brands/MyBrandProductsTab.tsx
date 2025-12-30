@@ -7,7 +7,7 @@ import { Brand } from "@/types/brand";
 
 interface MyBrandProductsTabProps {
     brand: Brand;
-    onUpdateField: any;
+    onUpdateField: <K extends keyof Brand>(field: K, value: Brand[K]) => void;
     onRefetch: () => void;
 }
 

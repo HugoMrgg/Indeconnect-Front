@@ -36,7 +36,7 @@ export function ReviewModal({ isOpen, onClose, productId, onReviewSuccess }: Pro
             setComment("");
             setRating(5);
             onClose();
-        } catch (error) {
+        } catch (_error) {
             toast.error("Erreur lors de l'envoi de l'avis.");
         } finally {
             setSubmitting(false);

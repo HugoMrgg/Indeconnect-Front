@@ -3,7 +3,6 @@ import React from "react";
 interface ProductFormData {
     name: string;
     description: string;
-    categoryId: number;
 }
 
 interface AddProductBasicInfoProps {
@@ -45,22 +44,6 @@ export function AddProductBasicInfo({ formData, onUpdateField }: AddProductBasic
                     placeholder="Décrivez votre produit..."
                     required
                 />
-            </div>
-
-            <div>
-                <label className="block text-sm font-medium mb-2">
-                    Catégorie <span className="text-red-500">*</span>
-                </label>
-                <select
-                    value={formData.categoryId}
-                    onChange={(e) => onUpdateField("categoryId", parseInt(e.target.value))}
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                    required
-                >
-                    <option value={100}>Vêtements</option>
-                    <option value={101}>Accessoires</option>
-                    <option value={102}>Chaussures</option>
-                </select>
             </div>
         </div>
     );

@@ -35,8 +35,8 @@ export const AddPaymentMethodModal: React.FC<Props> = ({ open, onClose, onAdded 
             try {
                 const secret = await paymentMethodsService.createSetupIntent();
                 setClientSecret(secret);
-            } catch (e: any) {
-                toast.error(e?.message ?? "Impossible de démarrer l’ajout de carte");
+            } catch (e: unknown) {
+                toast.error((e as Error)?.message ?? "Impossible de démarrer l'ajout de carte");
                 onClose();
             } finally {
                 setLoading(false);

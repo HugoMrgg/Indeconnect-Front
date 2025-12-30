@@ -59,7 +59,7 @@ function computeStarsForCategory(
     const qs = questions.filter(q => q.category === category);
 
     const maxPossible = qs.reduce((acc, q) => {
-        const maxOpt = Math.max(...q.options.map((o: { score: any; }) => o.score));
+        const maxOpt = Math.max(...q.options.map((o: { score: number }) => o.score));
         return acc + maxOpt;
     }, 0);
 
@@ -97,7 +97,7 @@ export function useBrandQuestionnaireStub(brandId: number) {
 
     // 2. Initialisation Lazy du state (ne s'exécute qu'une fois au montage)
     const [questionnaire, setQuestionnaire] = useState<BrandQuestionnaireDTO>(() => {
-        if (!brandId) return {} as any; // Securité
+        if (!brandId) return { brandId: 0, answersMap: {}, lastSaved: new Date().toISOString() };
         const key = mkKey(brandId);
         const existing = safeParse<BrandQuestionnaireDTO>(localStorage.getItem(key));
         if (existing && existing.brandId === brandId) return existing;

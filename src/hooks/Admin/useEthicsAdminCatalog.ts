@@ -14,7 +14,6 @@ type QuestionVM = AdminQuestionDto & { clientId: string };
 type OptionVM = AdminOptionDto & { clientId: string };
 
 const cid = () => crypto.randomUUID();
-
 const isNew = (id: number) => !id || id <= 0;
 
 export function useEthicsAdminCatalog(open: boolean) {
@@ -27,13 +26,14 @@ export function useEthicsAdminCatalog(open: boolean) {
     const [error, setError] = useState<string | null>(null);
 
     const baselineRef = useRef<string>("");
+    const [publishing, setPublishing] = useState(false);
 
+    // ← SIMPLIFIÉ : Plus de fix, le backend renvoie les bons noms
     const hydrate = useCallback((dto: AdminCatalogDto) => {
         setCatalog(dto);
         setQuestions(dto.questions.map(q => ({ ...q, clientId: cid() })));
         setOptions(dto.options.map(o => ({ ...o, clientId: cid() })));
 
-        // baseline pour dirty check
         baselineRef.current = JSON.stringify({
             q: dto.questions,
             o: dto.options,
@@ -67,14 +67,15 @@ export function useEthicsAdminCatalog(open: boolean) {
         return now !== baselineRef.current;
     }, [catalog, questions, options]);
 
-
     // -------- actions Questions --------
     const addQuestion = useCallback((categoryKey: string) => {
+        // ← FIX : categoryId 0/1 au lieu de 1/2
+        const categoryId = categoryKey === "MaterialsManufacturing" ? 0 : 1;
         setQuestions(prev => [
             ...prev,
             {
                 id: 0,
-                categoryId: 0,
+                categoryId: categoryId,
                 categoryKey,
                 key: "",
                 label: "",
@@ -142,29 +143,28 @@ export function useEthicsAdminCatalog(open: boolean) {
             isActive: o.isActive,
         }));
 
-        return {
-            categories: [
-                {id: 1, key: "Manufacture", label: "Manufacture", order: 1, isActive: true},
-                {id: 2, key: "Transport", label: "Transport", order: 2, isActive: true},
-            ],
+        // ← FIX : Utilise les vraies catégories du backend avec id 0/1
+        const payload: AdminUpsertCatalogRequest = {
+            categories: catalog?.categories ?? [],
             questions: qPayload,
             options: oPayload,
         };
-    }, [questions, options]);
 
+        return payload;
+    }, [questions, options, catalog]);
 
-        const save = useCallback(async () => {
+    const save = useCallback(async () => {
         if (!catalog) return false;
 
-        // mini validation front (évite les 500)
+        // mini validation front
         const missingQ = questions.find(q => !q.key.trim() || !q.label.trim() || !q.categoryKey.trim());
         if (missingQ) {
-            setError("Certaines questions n’ont pas de Key/Label/Category.");
+            setError("Certaines questions n'ont pas de Key/Label/Category.");
             return false;
         }
         const missingO = options.find(o => !o.key.trim() || !o.label.trim() || !o.questionKey.trim());
         if (missingO) {
-            setError("Certaines options n’ont pas de Key/Label/QuestionKey.");
+            setError("Certaines options n'ont pas de Key/Label/QuestionKey.");
             return false;
         }
 
@@ -175,7 +175,7 @@ export function useEthicsAdminCatalog(open: boolean) {
             hydrate(updated); // refresh ids + baseline
             return true;
         } catch (e) {
-            setError(e instanceof ApiError ? e.message : "Erreur lors de l’enregistrement.");
+            setError(e instanceof ApiError ? e.message : "Erreur lors de l'enregistrement.");
             return false;
         } finally {
             setSaving(false);
@@ -210,6 +210,29 @@ export function useEthicsAdminCatalog(open: boolean) {
         return map;
     }, [options]);
 
+    const publish = useCallback(async () => {
+        if (!catalog) return false;
+
+        // S'assurer que tout est sauvegardé avant de publier
+        if (dirty) {
+            setError("Sauvegarde tes modifications avant de publier !");
+            return false;
+        }
+
+        setPublishing(true);
+        setError(null);
+        try {
+            await EthicsAdminCatalogService.publishDraft();
+            await fetchCatalog(); // Reload pour récupérer la nouvelle version
+            return true;
+        } catch (e) {
+            setError(e instanceof ApiError ? e.message : "Erreur lors de la publication.");
+            return false;
+        } finally {
+            setPublishing(false);
+        }
+    }, [catalog, dirty, fetchCatalog]);
+
     return {
         catalog,
         categories,
@@ -237,5 +260,8 @@ export function useEthicsAdminCatalog(open: boolean) {
         addOption,
         updateOption,
         toggleOptionActive,
+
+        publishing,
+        publish,
     };
 }

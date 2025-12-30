@@ -25,8 +25,6 @@ export function MyBrandPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [showAddProduct, setShowAddProduct] = useState(false);
 
-    const [ethicsModalOpen, setEthicsModalOpen] = useState(false);
-
     const initialData = useMemo(() => {
         if (!brand) return null;
         return {
