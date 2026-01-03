@@ -1,9 +1,10 @@
 ﻿import React, { useMemo, useState } from "react";
-import { Loader2, Check, X, RefreshCcw, Search } from "lucide-react";
+import { Check, X, RefreshCcw, Search } from "lucide-react";
 import { useModeratorReviews } from "@/hooks/Admin/useAdminProductReviews";
 import { ReviewStatus } from "@/api/services/reviews/moderator/type";
 import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
+import { ReviewsTableSkeleton } from "@/components/skeletons";
 
 const statusOptions: Array<ReviewStatus | "All"> = ["All", "Enabled", "Disabled"];
 
@@ -217,10 +218,7 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                         </div>
 
                         {loading ? (
-                            <div className="p-10 flex items-center justify-center text-gray-600">
-                                <Loader2 className="animate-spin" />
-                                <span className="ml-2">Chargement…</span>
-                            </div>
+                            <ReviewsTableSkeleton rows={5} />
                         ) : filteredRows.length === 0 ? (
                             <div className="p-10 text-center text-gray-600">Aucun résultat trouvé.</div>
                         ) : (

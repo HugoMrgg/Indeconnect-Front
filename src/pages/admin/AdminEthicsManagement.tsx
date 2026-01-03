@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
 import { EthicsAdminHeroBanner } from "@/features/admin/ethics/EthicsAdminHeroBanner";
+import { PageSkeleton } from "@/components/skeletons";
 
 import { useEthicsAdminCatalog } from "@/hooks/Admin/useEthicsAdminCatalog";
 
@@ -234,18 +235,7 @@ export const AdminEthicsManagement: React.FC = () => {
     };
 
     if (loading) {
-        return (
-            <>
-                <AuthPanel />
-                <main className="relative bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen mx-auto pb-16">
-                    <EthicsAdminHeroBanner />
-                    <div className="min-h-[60vh] flex items-center justify-center">
-                        <Loader2 className="animate-spin text-blue-600" size={32} />
-                    </div>
-                </main>
-                <NavBar searchValue={searchQuery} onSearchChange={setSearchQuery} />
-            </>
-        );
+        return <PageSkeleton />;
     }
 
     if (!catalog || !categories?.length) {

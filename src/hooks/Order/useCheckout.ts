@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ShippingChoice } from "@/types/checkout";
 import { useOrder } from "@/hooks/Order/useOrder";
 import toast from "react-hot-toast";
+import { logger } from "@/utils/logger";
 
 /**
  * Hook orchestrateur pour le processus de checkout
@@ -77,7 +78,7 @@ export function useCheckout() {
 
             return null;
         } catch (error: unknown) {
-            console.error("[useCheckout] handleCreateOrder error:", error);
+            logger.error("useCheckout.handleCreateOrder", error);
             return null;
         } finally {
             setProcessing(false);

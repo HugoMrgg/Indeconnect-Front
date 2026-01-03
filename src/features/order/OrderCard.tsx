@@ -1,7 +1,9 @@
-﻿import { OrderDto } from "@/api/services/orders/types";
+﻿import { useState } from "react";
+import { OrderDto } from "@/api/services/orders/types";
 import { OrderStatusBadge } from "./OrderStatusBadge";
-import { Package, Calendar, CreditCard, ChevronRight, Receipt, Store } from "lucide-react";
+import { Package, Calendar, CreditCard, ChevronRight, Receipt, Store, Wallet } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { PaymentModal } from "@/features/checkout/PaymentModal";
 
 type Props = {
     order: OrderDto;
@@ -9,6 +11,7 @@ type Props = {
 
 export function OrderCard({ order }: Props) {
     const navigate = useNavigate();
+    const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 
     const orderDate = new Date(order.placedAt).toLocaleDateString("fr-FR", {
         day: "2-digit",
@@ -83,14 +86,39 @@ export function OrderCard({ order }: Props) {
                 </div>
 
                 {/* Actions */}
-                <button
-                    onClick={() => navigate(`/orders/${order.id}`)}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
-                >
-                    Suivre ma commande
-                    <ChevronRight size={18} />
-                </button>
+                <div className="flex gap-3">
+                    {/* Bouton Payer si commande en attente */}
+                    {order.status === "Pending" && (
+                        <button
+                            onClick={() => setPaymentModalOpen(true)}
+                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+                        >
+                            <Wallet size={18} />
+                            Payer maintenant
+                        </button>
+                    )}
+
+                    {/* Bouton Suivre la commande */}
+                    <button
+                        onClick={() => navigate(`/orders/${order.id}`)}
+                        className={`${order.status === "Pending" ? "flex-1" : "w-full"} flex items-center justify-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors`}
+                    >
+                        Suivre ma commande
+                        <ChevronRight size={18} />
+                    </button>
+                </div>
             </div>
+
+            {/* Modal de paiement */}
+            <PaymentModal
+                isOpen={paymentModalOpen}
+                onClose={() => setPaymentModalOpen(false)}
+                orderId={order.id}
+                onPaymentSuccess={() => {
+                    setPaymentModalOpen(false);
+                    navigate(`/orders/${order.id}`);
+                }}
+            />
         </div>
     );
 }

@@ -1,44 +1,52 @@
 ﻿/**
  * Gère le stockage du token d'authentification
+ * Utilise des cookies sécurisés au lieu de localStorage pour une meilleure sécurité
  */
+import { logger } from "@/utils/logger";
+import { setCookie, getCookie, removeCookie, hasCookie } from "@/utils/cookieStorage";
 
 const TOKEN_KEY = "indeconnect_auth_token";
 
 export const authStorage = {
     /**
-     * Récupère le token du localStorage
+     * Récupère le token depuis un cookie sécurisé
      */
     getToken: (): string | null => {
         try {
-            return localStorage.getItem(TOKEN_KEY);
+            return getCookie(TOKEN_KEY) || null;
         } catch (error) {
-            console.error("[AuthStorage] Erreur lecture token", error);
+            logger.error("AuthStorage.getToken", error);
             return null;
         }
     },
 
     /**
-     * Sauvegarde le token dans localStorage
+     * Sauvegarde le token dans un cookie sécurisé
+     * Le cookie expire après 7 jours et utilise les flags Secure et SameSite
      */
     setToken: (token: string): void => {
         try {
             if (!token) {
                 throw new Error("Token invalide");
             }
-            localStorage.setItem(TOKEN_KEY, token);
+            setCookie(TOKEN_KEY, token, {
+                expires: 7, // 7 jours
+                secure: import.meta.env.PROD, // HTTPS uniquement en production
+                sameSite: 'strict', // Protection CSRF
+            });
         } catch (error) {
-            console.error("[AuthStorage] Erreur sauvegarde token", error);
+            logger.error("AuthStorage.setToken", error);
         }
     },
 
     /**
-     * Supprime le token du localStorage
+     * Supprime le token du cookie
      */
     clearToken: (): void => {
         try {
-            localStorage.removeItem(TOKEN_KEY);
+            removeCookie(TOKEN_KEY);
         } catch (error) {
-            console.error("[AuthStorage] Erreur suppression token", error);
+            logger.error("AuthStorage.clearToken", error);
         }
     },
 
@@ -46,6 +54,6 @@ export const authStorage = {
      * Vérifie si un token est présent
      */
     hasToken: (): boolean => {
-        return authStorage.getToken() !== null;
+        return hasCookie(TOKEN_KEY);
     },
 } as const;

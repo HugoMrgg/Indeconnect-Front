@@ -1,6 +1,5 @@
-﻿import { useState, useEffect, useCallback } from "react";
+﻿import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getCart, addVariantToCart, removeVariantFromCart, clearCart } from "@/api/services/cart";
-import { CartDto } from "@/api/services/cart/types";
 import { useAuth } from "@/hooks/Auth/useAuth";
 import { useCartUI } from "@/hooks/User/useCartUI";
 import toast from "react-hot-toast";
@@ -8,130 +7,105 @@ import toast from "react-hot-toast";
 export function useCart(shouldFetch: boolean = true) {
     const { user } = useAuth();
     const { openCart } = useCartUI();
+    const queryClient = useQueryClient();
 
-    const [cart, setCart] = useState<CartDto | null>(null);
-    const [loading, setLoading] = useState(shouldFetch && !!user?.id);
-    const [addingToCart, setAddingToCart] = useState(false);
-    const [removingFromCart, setRemovingFromCart] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const { data, isLoading, error, refetch } = useQuery({
+        queryKey: ['cart', user?.id],
+        queryFn: async () => {
+            if (!user?.id) return null;
+            return await getCart(user.id);
+        },
+        enabled: shouldFetch && !!user?.id,
+        staleTime: 1 * 60 * 1000, // 1 min (panier change souvent)
+    });
 
-    const fetchCart = useCallback(async () => {
-
-        if (!user?.id) {
-            setCart(null);
-            setLoading(false);
-            return;
-        }
-
-        setLoading(true);
-        setError(null);
-
-        try {
-            const data = await getCart(user.id);
-            setCart(data);
-        } catch (_e) {
-            setError("Erreur lors du chargement du panier.");
-        } finally {
-            setLoading(false);
-        }
-    }, [user?.id]);
-
-    const addToCart = useCallback(async (variantId: number, quantity: number) => {
-        if (!user?.id) {
-            toast.error("Veuillez vous connecter");
-            throw new Error("Non authentifié");
-        }
-
-        setAddingToCart(true);
-
-        try {
+    const addMutation = useMutation({
+        mutationFn: async ({ variantId, quantity }: { variantId: number; quantity: number }) => {
+            if (!user?.id) throw new Error("Non authentifié");
             await addVariantToCart(user.id, variantId, quantity);
-
+        },
+        onSuccess: () => {
             toast.success("Produit ajouté au panier !", {
                 icon: "🛒",
                 duration: 2000,
             });
-
-            await fetchCart();
-
-            setTimeout(() => {
-                openCart();
-            }, 300);
-
-            return true;
-        } catch (e: unknown) {
+            queryClient.invalidateQueries({ queryKey: ['cart', user?.id] });
+            setTimeout(() => openCart(), 300);
+        },
+        onError: (e: unknown) => {
             const message = e instanceof Error ? e.message : "Erreur ajout panier";
             toast.error(message);
-            throw e;
-        } finally {
-            setAddingToCart(false);
-        }
-    }, [user?.id, fetchCart, openCart]);
+        },
+    });
 
-    const removeFromCart = useCallback(async (variantId: number, quantity?: number) => {
-        if (!user?.id) {
-            toast.error("Veuillez vous connecter");
-            throw new Error("Non authentifié");
-        }
-
-        setRemovingFromCart(true);
-
-        try {
+    const removeMutation = useMutation({
+        mutationFn: async ({ variantId, quantity }: { variantId: number; quantity?: number }) => {
+            if (!user?.id) throw new Error("Non authentifié");
             await removeVariantFromCart(user.id, variantId, quantity);
-
+        },
+        onSuccess: () => {
             toast.success("Produit retiré du panier", {
                 icon: "🗑️",
                 duration: 2000,
             });
-
-            await fetchCart();
-        } catch (e: unknown) {
+            queryClient.invalidateQueries({ queryKey: ['cart', user?.id] });
+        },
+        onError: (e: unknown) => {
             const message = e instanceof Error ? e.message : "Erreur suppression";
             toast.error(message);
-            throw e;
-        } finally {
-            setRemovingFromCart(false);
-        }
-    }, [user?.id, fetchCart]);
+        },
+    });
 
-    const clearUserCart = useCallback(async () => {
-        if (!user?.id) {
-            toast.error("Veuillez vous connecter");
-            throw new Error("Non authentifié");
-        }
-
-        try {
+    const clearMutation = useMutation({
+        mutationFn: async () => {
+            if (!user?.id) throw new Error("Non authentifié");
             await clearCart(user.id);
-
+        },
+        onSuccess: () => {
             toast.success("Panier vidé", {
                 icon: "🗑️",
                 duration: 2000,
             });
-
-            await fetchCart();
-        } catch (e: unknown) {
+            queryClient.invalidateQueries({ queryKey: ['cart', user?.id] });
+        },
+        onError: (e: unknown) => {
             const message = e instanceof Error ? e.message : "Erreur vidage panier";
             toast.error(message);
-            throw e;
-        }
-    }, [user?.id, fetchCart]);
+        },
+    });
 
-    useEffect(() => {
-        if (shouldFetch && user?.id) {
-            fetchCart();
-        } else if (!user?.id) {
-            setCart(null);
-            setLoading(false);
+    const addToCart = async (variantId: number, quantity: number) => {
+        if (!user?.id) {
+            toast.error("Veuillez vous connecter");
+            throw new Error("Non authentifié");
         }
-    }, [user?.id, shouldFetch, fetchCart]);
+        await addMutation.mutateAsync({ variantId, quantity });
+        return true;
+    };
+
+    const removeFromCart = async (variantId: number, quantity?: number) => {
+        if (!user?.id) {
+            toast.error("Veuillez vous connecter");
+            throw new Error("Non authentifié");
+        }
+        await removeMutation.mutateAsync({ variantId, quantity });
+    };
+
+    const clearUserCart = async () => {
+        if (!user?.id) {
+            toast.error("Veuillez vous connecter");
+            throw new Error("Non authentifié");
+        }
+        await clearMutation.mutateAsync();
+    };
 
     return {
-        cart,
-        loading,
-        addingToCart,
-        removingFromCart,
-        error,
-        refetch: fetchCart,
+        cart: data ?? null,
+        loading: isLoading,
+        addingToCart: addMutation.isPending,
+        removingFromCart: removeMutation.isPending,
+        error: error ? "Erreur lors du chargement du panier." : null,
+        refetch,
         addToCart,
         removeFromCart,
         clearUserCart,

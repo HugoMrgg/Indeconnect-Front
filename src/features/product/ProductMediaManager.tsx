@@ -18,6 +18,7 @@ import { Upload, Loader2} from "lucide-react";
 import { imagesService } from "@/api/services/image";
 import toast from "react-hot-toast";
 import { SortableMediaItem } from "./SortableMediaItem";
+import { logger } from "@/utils/logger";
 
 interface MediaItem {
     url: string;
@@ -79,7 +80,7 @@ export function ProductMediaManager({ media, onMediaUpdate }: ProductMediaManage
             onMediaUpdate([...media, newMedia]);
             toast.success("Image ajoutée !", { icon: "📸" });
         } catch (err) {
-            console.error("Erreur upload:", err);
+            logger.error("ProductMediaManager.uploadImage", err);
             toast.error("Erreur lors de l'upload de l'image");
         } finally {
             setUploading(false);

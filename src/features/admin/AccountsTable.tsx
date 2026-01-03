@@ -2,6 +2,7 @@
 import type { Account } from "@/api/services/account/types";
 import type { InviteAccountRequest } from "@/types/account";
 import { type InvitableRole } from "@/types/account";
+import { logger } from "@/utils/logger";
 
 interface AccountsTableProps {
     accounts: Account[];
@@ -20,10 +21,10 @@ export function AccountsTable({ accounts, onToggleStatus, onResendInvitation }: 
     }
 
     const handleResend = async (account: Account) => {
-        const invitableRoles: InvitableRole[] = ["Administrator", "Moderator", "SuperVendor"];
+        const invitableRoles: InvitableRole[] = ["Administrator", "Moderator", "SuperVendor", "Vendor"];
 
         if (!invitableRoles.includes(account.role as InvitableRole)) {
-            console.error(`Invalid role for invitation: ${account.role}`);
+            logger.error("AccountsTable.handleResend", `Invalid role for invitation: ${account.role}`);
             return;
         }
 
@@ -96,7 +97,7 @@ export function AccountsTable({ accounts, onToggleStatus, onResendInvitation }: 
                             {new Date(account.createdAt).toLocaleDateString("fr-FR")}
                         </td>
                         <td className="px-6 py-4">
-                            {account.isPendingActivation ? (
+                            {account.isPendingActivation && account.isEnabled ? (
                                 <button
                                     onClick={() => handleResend(account)}
                                     className="flex items-center gap-2 text-xs px-4 py-2 rounded-lg border border-orange-300 bg-orange-50 text-orange-700 hover:bg-orange-100 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 font-medium"

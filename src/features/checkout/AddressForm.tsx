@@ -3,6 +3,7 @@ import { createShippingAddress } from "@/api/services/shipping";
 import { ShippingAddressDto } from "@/api/services/shipping/types";
 import { extractErrorMessage } from "@/utils/errorHandling";
 import toast from "react-hot-toast";
+import { logger } from "@/utils/logger";
 
 type Props = {
     userId: number;
@@ -85,7 +86,7 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
             toast.success("Adresse ajoutée !");
             onSuccess(newAddress);
         } catch (error: unknown) {
-            console.error("Erreur création adresse:", error);
+            logger.error("AddressForm.handleSubmit", error);
             toast.error(extractErrorMessage(error));
         } finally {
             setLoading(false);

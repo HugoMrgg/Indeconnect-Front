@@ -3,6 +3,8 @@ import { authStorage } from "@/storage/AuthStorage";
 import { userStorage } from "@/storage/UserStorage";
 import { AuthContext, type AuthContextType, type AuthState, type UserRole } from "../AuthContext";
 import type { User } from "@/api/services/user/types";
+import { logger } from "@/utils/logger";
+import { setUser as setSentryUser } from "@/utils/sentry";
 
 type AuthAction =
     | { type: "AUTH_LOGIN"; payload: { user: User; token: string } }
@@ -94,16 +96,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
                 if (token && user) {
                     dispatch({ type: "AUTH_RESTORE", payload: { token, user } });
+                    // Définir l'utilisateur dans Sentry pour le suivi
+                    setSentryUser({
+                        id: user.id,
+                        email: user.email,
+                        username: user.username || user.email,
+                    });
                 } else {
                     authStorage.clearToken();
                     userStorage.clear();
                     dispatch({ type: "AUTH_RESTORE", payload: { token: null, user: null } });
+                    setSentryUser(null);
                 }
             } catch (error) {
-                console.error("[AuthProvider] Erreur restauration session", error);
+                logger.error("AuthProvider.restoreSession", error);
                 authStorage.clearToken();
                 userStorage.clear();
                 dispatch({ type: "AUTH_RESTORE", payload: { token: null, user: null } });
+                setSentryUser(null);
             }
         };
 
@@ -114,19 +124,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         authStorage.setToken(token);
         userStorage.setUser(user);
         dispatch({ type: "AUTH_LOGIN", payload: { user, token } });
+        // Définir l'utilisateur dans Sentry pour le suivi
+        setSentryUser({
+            id: user.id,
+            email: user.email,
+            username: user.username || user.email,
+        });
     }, []);
 
     const logout = useCallback(() => {
         dispatch({ type: "AUTH_LOGOUT" });
+        // Supprimer l'utilisateur de Sentry
+        setSentryUser(null);
     }, []);
 
     const setUser = useCallback((user: User | null) => {
         if (user) {
             userStorage.setUser(user);
             dispatch({ type: "AUTH_SET_USER", payload: user });
+            // Mettre à jour l'utilisateur dans Sentry
+            setSentryUser({
+                id: user.id,
+                email: user.email,
+                username: user.username || user.email,
+            });
         } else {
             userStorage.clear();
             dispatch({ type: "AUTH_LOGOUT" });
+            setSentryUser(null);
         }
     }, []);
 

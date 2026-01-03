@@ -4,7 +4,9 @@ import { useAuth } from "@/hooks/Auth/useAuth";
 import { useOrder } from "@/hooks/Order/useOrder";
 import { BrandDeliveryCard } from "@/features/order/BrandDeliveryCard";
 import { OrderPageLayout } from "@/features/order/OrderPageLayout";
-import { Loader2, AlertCircle, Package, ArrowLeft, Home, ChevronRight, Calendar } from "lucide-react";
+import { AlertCircle, Package, ArrowLeft, Home, ChevronRight, Calendar, Wallet } from "lucide-react";
+import { OrderDetailsSkeleton } from "@/components/skeletons";
+import { PaymentModal } from "@/features/checkout/PaymentModal";
 
 export function OrderDetailsPage() {
     const { orderId } = useParams<{ orderId: string }>();
@@ -13,6 +15,7 @@ export function OrderDetailsPage() {
     const { tracking, loading, error, fetchTracking } = useOrder();
 
     const [activeBrandIndex, setActiveBrandIndex] = useState(0);
+    const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 
     useEffect(() => {
         if (!user || !orderId) {
@@ -34,11 +37,7 @@ export function OrderDetailsPage() {
     if (loading) {
         return (
             <OrderPageLayout>
-                <div className="max-w-5xl mx-auto px-4 py-8">
-                    <div className="flex items-center justify-center py-16">
-                        <Loader2 className="animate-spin text-gray-400" size={48} />
-                    </div>
-                </div>
+                <OrderDetailsSkeleton />
             </OrderPageLayout>
         );
     }
@@ -143,6 +142,22 @@ export function OrderDetailsPage() {
                         </button>
                     </div>
 
+                    {/* Bouton Payer si commande en attente */}
+                    {tracking.globalStatus === "Pending" && (
+                        <div className="mt-4 pt-4 border-t">
+                            <button
+                                onClick={() => setPaymentModalOpen(true)}
+                                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold shadow-sm"
+                            >
+                                <Wallet size={20} />
+                                Payer maintenant
+                            </button>
+                            <p className="text-sm text-gray-500 mt-2 text-center">
+                                Votre commande sera traitée dès réception du paiement
+                            </p>
+                        </div>
+                    )}
+
                     {/* Estimation de livraison globale */}
                     {globalEstimatedDate && tracking.globalStatus !== "Delivered" && (
                         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
@@ -220,6 +235,18 @@ export function OrderDetailsPage() {
                     </div>
                 )}
             </div>
+
+            {/* Modal de paiement */}
+            <PaymentModal
+                isOpen={paymentModalOpen}
+                onClose={() => setPaymentModalOpen(false)}
+                orderId={tracking.orderId}
+                onPaymentSuccess={() => {
+                    setPaymentModalOpen(false);
+                    // Recharger les données pour afficher le nouveau statut
+                    fetchTracking(tracking.orderId);
+                }}
+            />
         </OrderPageLayout>
     );
 }

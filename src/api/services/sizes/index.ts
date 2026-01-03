@@ -1,4 +1,5 @@
 ﻿import axiosInstance from "@/api/api";
+import { logger } from "@/utils/logger";
 
 export interface SizeDto {
     id: number;
@@ -15,7 +16,7 @@ export async function fetchSizesByCategory(categoryId: number): Promise<SizeDto[
         const response = await axiosInstance.get<SizeDto[]>(`/sizes/category/${categoryId}`);
         return response.data;
     } catch (error) {
-        console.error("Error fetching sizes:", error);
+        logger.error("SizesService.fetchSizesByCategory", error);
         throw error;
     }
 }
@@ -28,7 +29,7 @@ export async function fetchAllSizes(): Promise<SizeDto[]> {
         const response = await axiosInstance.get<SizeDto[]>("/sizes");
         return response.data;
     } catch (error) {
-        console.error("Error fetching all sizes:", error);
+        logger.error("SizesService.fetchAllSizes", error);
         throw error;
     }
 }

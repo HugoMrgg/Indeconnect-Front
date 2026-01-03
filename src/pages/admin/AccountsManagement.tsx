@@ -7,6 +7,8 @@ import type { InviteAccountRequest } from "@/types/account";
 import type { Account } from "@/api/services/account/types";
 import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
+import { AccountTableSkeleton } from "@/components/skeletons";
+import { logger } from "@/utils/logger";
 
 export function AccountsManagement() {
     const [searchQuery, setSearchQuery] = useState<string>("");
@@ -23,7 +25,7 @@ export function AccountsManagement() {
         try {
             await toggleStatus(accountId, currentStatus);
         } catch (err) {
-            console.error("Failed to toggle account status:", err);
+            logger.error("AccountsManagement.handleToggleStatus", err);
         }
     };
 
@@ -31,7 +33,7 @@ export function AccountsManagement() {
         try {
             await resendInvitation(data);
         } catch (err) {
-            console.error("Failed to resend invitation:", err);
+            logger.error("AccountsManagement.handleResendInvitation", err);
         }
     };
 
@@ -44,18 +46,12 @@ export function AccountsManagement() {
 
         return accounts.filter((a: Account) => {
             // Filter accounts based on search query
-            const fullName =
-                `${a.firstName ?? ""} ${a.lastName ?? ""}`.trim() ||
-                a.name ||
-                "";
-
+            const fullName = `${a.firstName ?? ""} ${a.lastName ?? ""}`.trim();
             const email = a.email ?? "";
-            const username = a.username ?? "";
-            const company = a.company ?? a.companyName ?? "";
-            const roles = Array.isArray(a.roles) ? a.roles.join(" ") : (a.role ?? "");
-            const status = typeof a.isActive === "boolean" ? (a.isActive ? "actif active enabled" : "inactif disabled") : "";
+            const role = a.role ?? "";
+            const status = typeof a.isEnabled === "boolean" ? (a.isEnabled ? "actif active enabled" : "inactif disabled") : "";
 
-            const haystack = `${fullName} ${email} ${username} ${company} ${roles} ${status}`.toLowerCase();
+            const haystack = `${fullName} ${email} ${role} ${status}`.toLowerCase();
             return haystack.includes(q);
         });
     }, [accounts, searchQuery]);
@@ -123,8 +119,8 @@ export function AccountsManagement() {
 
                     {/* Loading State */}
                     {loading ? (
-                        <div className="flex justify-center items-center mt-12">
-                            <p className="text-gray-500 animate-pulse">Chargement des comptes...</p>
+                        <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
+                            <AccountTableSkeleton rows={5} />
                         </div>
                     ) : (
                         <>

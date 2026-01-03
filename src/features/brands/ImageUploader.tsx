@@ -1,6 +1,7 @@
 ﻿import { useState, useRef } from "react";
 import { Upload, X, Loader2 } from "lucide-react";
 import { imagesService } from "@/api/services/image";
+import { logger } from "@/utils/logger";
 
 interface ImageUploaderProps {
     label: string;
@@ -45,8 +46,8 @@ export function ImageUploader({
             onUpload(cloudinaryUrl);
 
         } catch (err) {
-            console.error("Erreur upload:", err);
-            alert("Erreur lors de l'upload de l'image. Vérifiez la console.");
+            logger.error("ImageUploader.handleUpload", err);
+            alert("Erreur lors de l'upload de l'image.");
             setPreview(currentUrl ?? null);
         } finally {
             setUploading(false);

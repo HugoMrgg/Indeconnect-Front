@@ -58,11 +58,11 @@ export default function AppRouter() {
                 }
             />
 
-            {/* Routes protégées - Admin/Moderator */}
+            {/* Routes protégées - Admin/Moderator/SuperVendor */}
             <Route
                 path="/admin/accounts"
                 element={
-                    <ProtectedRoute requiredRoles={["Administrator", "Moderator"]}>
+                    <ProtectedRoute requiredRoles={["Administrator", "Moderator", "SuperVendor"]}>
                         <AccountsManagement />
                     </ProtectedRoute>
                 }
@@ -92,11 +92,11 @@ export default function AppRouter() {
                     </ProtectedRoute>
                 }
             />
-            {/* SuperVendor Routes */}
+            {/* SuperVendor & Vendor Routes */}
             <Route
                 path="/my-brand"
                 element={
-                    <ProtectedRoute requiredRoles={["SuperVendor"]}>
+                    <ProtectedRoute requiredRoles={["SuperVendor", "Vendor"]}>
                         <MyBrandPage />
                     </ProtectedRoute>
                 }
@@ -104,7 +104,7 @@ export default function AppRouter() {
             <Route
                 path="/my-brand/product/:productId"
                 element={
-                    <ProtectedRoute requiredRoles={["SuperVendor"]}>
+                    <ProtectedRoute requiredRoles={["SuperVendor", "Vendor"]}>
                         <ProductPage editMode={true} />
                     </ProtectedRoute>
                 }

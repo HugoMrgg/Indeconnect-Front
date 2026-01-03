@@ -5,6 +5,7 @@ import { ProductReview } from "@/types/Product";
 import { ReviewModal } from "./ReviewModal";
 import { useAuth } from "@/hooks/Auth/useAuth";
 import toast from "react-hot-toast";
+import { logger } from "@/utils/logger";
 
 interface Props {
     productId: number;
@@ -26,7 +27,7 @@ export function ProductReviewsSection({ productId, canReview = false }: Props) {
                 const res = await fetchProductReviews(productId);
                 setReviews(res.reviews || []);
             } catch (error) {
-                console.error(error);
+                logger.error("ProductReviewsSection.load", error);
             } finally {
                 setLoading(false);
             }
@@ -45,7 +46,7 @@ export function ProductReviewsSection({ productId, canReview = false }: Props) {
             // On met à jour la liste localement en supprimant l'avis masqué
             setReviews((prev) => prev.filter((r) => r.id !== reviewId));
         } catch (error) {
-            console.error(error);
+            logger.error("ProductReviewsSection.handleDisableReview", error);
             toast.error("Impossible de désactiver cet avis.");
         }
     };

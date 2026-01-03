@@ -3,6 +3,7 @@ import qs from "qs";
 import { authStorage } from "@/storage/AuthStorage";
 import { userStorage } from "@/storage/UserStorage";
 import { ApiError, BackendErrorResponse } from "@/api/errors";
+import { logger } from "@/utils/logger";
 
 const API_BASE_URL = import.meta.env.VITE_API_HOST + "/indeconnect"; //"http://" +
 //const API_BASE_URL_LOCAL = "http://localhost:5237/indeconnect";
@@ -61,7 +62,7 @@ axiosInstance.interceptors.response.use(
         const { status = 0, data } = error.response;
 
         if (status === 401) {
-            console.warn("[API] 401 - Session expirée ou token invalide");
+            logger.warn("API.interceptor", "401 - Session expirée ou token invalide");
             authStorage.clearToken();
             userStorage.clear();
 
@@ -71,7 +72,7 @@ axiosInstance.interceptors.response.use(
         }
 
         if (status === 403) {
-            console.warn("[API] 403 - Accès refusé (permissions insuffisantes)");
+            logger.warn("API.interceptor", "403 - Accès refusé (permissions insuffisantes)");
         }
 
         const backendMessage = data?.error ?? data?.message;

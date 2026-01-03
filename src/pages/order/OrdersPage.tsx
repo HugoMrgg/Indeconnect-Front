@@ -3,8 +3,9 @@ import { useAuth } from "@/hooks/Auth/useAuth";
 import { useOrder } from "@/hooks/Order/useOrder";
 import { OrderCard } from "@/features/order/OrderCard";
 import { OrderPageLayout } from "@/features/order/OrderPageLayout";
-import { Loader2, Package, AlertCircle, Home, ChevronRight, ShoppingBag } from "lucide-react";
+import { Package, AlertCircle, Home, ChevronRight, ShoppingBag } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { OrderCardSkeletonList } from "@/components/skeletons";
 
 export function OrdersPage() {
     const { user } = useAuth();
@@ -26,9 +27,7 @@ export function OrdersPage() {
             <OrderPageLayout>
                 <div className="max-w-5xl mx-auto px-4 py-8">
                     <h1 className="text-3xl font-bold mb-8">Mes commandes</h1>
-                    <div className="flex items-center justify-center py-16">
-                        <Loader2 className="animate-spin text-gray-400" size={48} />
-                    </div>
+                    <OrderCardSkeletonList count={3} />
                 </div>
             </OrderPageLayout>
         );

@@ -1,4 +1,4 @@
-﻿import React, {useMemo} from "react";
+﻿import React, { useMemo } from "react";
 
 import { userStorage } from "@/storage/UserStorage";
 import { Product } from "@/types/Product";
@@ -10,7 +10,6 @@ import { ProductList } from "@/features/brands/ProductList";
 import { AddProductCard } from "@/features/product/AddProductCard";
 import ProductCard from "@/components/cards/ProductCard";
 
-/* Typage du filtre */
 interface ProductFiltersState {
     filtered: Product[];
     sort: "featured" | "price_asc" | "price_desc";
@@ -22,21 +21,20 @@ interface ProductFiltersState {
 interface Props {
     filter: ProductFiltersState;
     searchQuery: string;
-    editMode?: boolean;
+    canManageProducts?: boolean; // ✅ NOUVEAU : remplace editMode
     onAddProduct?: () => void;
 }
 
 export const BrandProducts: React.FC<Props> = ({
                                                    filter,
                                                    searchQuery,
-                                                   editMode = false,
-                                                   onAddProduct
+                                                   canManageProducts = false, // ✅ Par défaut false (client)
+                                                   onAddProduct,
                                                }) => {
     const { filtered, sort, setSort, view, setView } = filter;
 
     const user = userStorage.getUser();
 
-    /** Filtrage par texte */
     const filteredByText = useMemo(() => {
         if (!searchQuery.trim()) return filtered;
 
@@ -51,11 +49,10 @@ export const BrandProducts: React.FC<Props> = ({
         });
     }, [filtered, searchQuery]);
 
-    // Gestion de la wishlist via le hook dédié
     const { likedMap, toggleLike } = useWishlistUI(user?.id, filteredByText);
 
-    // Cas spécial : mode édition sans produits
-    if (editMode && filteredByText.length === 0 && onAddProduct) {
+    // ✅ Cas spécial : mode gestion sans produits
+    if (canManageProducts && filteredByText.length === 0 && onAddProduct) {
         return (
             <section className="space-y-4">
                 <div className="text-center py-8 text-gray-500">
@@ -90,8 +87,8 @@ export const BrandProducts: React.FC<Props> = ({
             />
 
             {view === "grid" ? (
-                editMode && onAddProduct ? (
-                    // Mode édition : grille manuelle avec AddProductCard
+                canManageProducts && onAddProduct ? (
+                    // ✅ Mode gestion : grille manuelle avec AddProductCard
                     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                         <AddProductCard onClick={onAddProduct} />
                         {filteredByText.map((p) => (
@@ -100,13 +97,13 @@ export const BrandProducts: React.FC<Props> = ({
                                 product={p}
                                 liked={likedMap[p.id] ?? false}
                                 onToggleLike={() => toggleLike(p.id)}
-                                showStatus={editMode}
-                                editMode={editMode}
+                                showStatus={canManageProducts}
+                                editMode={canManageProducts}
                             />
                         ))}
                     </div>
                 ) : (
-                    // Mode normal : utiliser ProductGrid comme avant
+                    // Mode normal : utiliser ProductGrid
                     <ProductGrid
                         items={filteredByText}
                         likedMap={likedMap}
@@ -115,8 +112,8 @@ export const BrandProducts: React.FC<Props> = ({
                 )
             ) : (
                 <>
-                    {/* En mode liste, on affiche la carte d'ajout avant la liste */}
-                    {editMode && onAddProduct && (
+                    {/* En mode liste, carte d'ajout avant la liste */}
+                    {canManageProducts && onAddProduct && (
                         <div className="mb-6">
                             <AddProductCard onClick={onAddProduct} />
                         </div>

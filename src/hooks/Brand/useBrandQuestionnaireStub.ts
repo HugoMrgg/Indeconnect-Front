@@ -97,7 +97,14 @@ export function useBrandQuestionnaireStub(brandId: number) {
 
     // 2. Initialisation Lazy du state (ne s'exécute qu'une fois au montage)
     const [questionnaire, setQuestionnaire] = useState<BrandQuestionnaireDTO>(() => {
-        if (!brandId) return { brandId: 0, answersMap: {}, lastSaved: new Date().toISOString() };
+        if (!brandId) return {
+            id: 0,
+            brandId: 0,
+            submittedAt: null,
+            isApproved: false,
+            approvedAt: null,
+            responses: []
+        };
         const key = mkKey(brandId);
         const existing = safeParse<BrandQuestionnaireDTO>(localStorage.getItem(key));
         if (existing && existing.brandId === brandId) return existing;

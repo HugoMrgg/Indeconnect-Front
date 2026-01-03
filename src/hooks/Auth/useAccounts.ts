@@ -1,127 +1,82 @@
 ﻿// useAccounts.ts
-import {useCallback, useEffect, useRef, useState} from "react";
-import {AxiosError} from "axios";
-import {AccountsService} from "@/api/services/account";
-import {InviteAccountRequest} from "@/types/account";
-import {Account} from "@/api/services/account/types";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { AccountsService } from "@/api/services/account";
+import { InviteAccountRequest } from "@/types/account";
+import { Account } from "@/api/services/account/types";
 
 interface UseAccountsReturn {
     accounts: Account[];
     loading: boolean;
     error: string | null;
-    refetch: () => Promise<void>;
+    refetch: () => void;
     toggleStatus: (accountId: number, currentStatus: boolean) => Promise<void>;
     resendInvitation: (data: InviteAccountRequest) => Promise<void>;
 }
 
 export function useAccounts(): UseAccountsReturn {
-    const [accounts, setAccounts] = useState<Account[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const queryClient = useQueryClient();
 
-    const abortControllerRef = useRef<AbortController | null>(null);
+    const { data, isLoading, error, refetch } = useQuery({
+        queryKey: ['accounts'],
+        queryFn: async ({ signal }) => {
+            return await AccountsService.getAll(signal);
+        },
+        staleTime: 2 * 60 * 1000, // 2 minutes
+    });
 
-    const fetchAccounts = useCallback(async () => {
-        // Annule la requête précédente si elle existe
-        if (abortControllerRef.current) {
-            abortControllerRef.current.abort();
-        }
+    const toggleStatusMutation = useMutation({
+        mutationFn: async ({ accountId, currentStatus }: { accountId: number; currentStatus: boolean }) => {
+            await AccountsService.toggleStatus(accountId, !currentStatus);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['accounts'] });
+        },
+    });
 
-        abortControllerRef.current = new AbortController();
+    const resendInvitationMutation = useMutation({
+        mutationFn: async (data: InviteAccountRequest) => {
+            await AccountsService.resendInvitation(data);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['accounts'] });
+        },
+    });
 
+    const handleToggleStatus = async (accountId: number, currentStatus: boolean) => {
         try {
-            setLoading(true);
-            setError(null);
-            const data = await AccountsService.getAll(abortControllerRef.current.signal);
-            setAccounts(data);
+            await toggleStatusMutation.mutateAsync({ accountId, currentStatus });
         } catch (err) {
-            if (err instanceof Error && err.name === "CanceledError") {
-                return;
-            }
-
-            if (err instanceof AxiosError) {
-                setError(err.response?.data?.message || "Impossible de charger les comptes");
-            } else if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError("Impossible de charger les comptes");
-            }
-
-            setAccounts([]);
-        } finally {
-            setLoading(false);
+            const errorMessage =
+                err instanceof AxiosError
+                    ? err.response?.data?.message || "Erreur lors de la mise à jour du compte"
+                    : err instanceof Error
+                        ? err.message
+                        : "Erreur lors de la mise à jour du compte";
+            throw new Error(errorMessage);
         }
-    }, []);
+    };
 
-    const toggleAccountStatus = useCallback(
-        async (accountId: number, currentStatus: boolean) => {
-            try {
-                await AccountsService.toggleStatus(
-                    accountId,
-                    !currentStatus,
-                    abortControllerRef.current?.signal
-                );
-                await fetchAccounts();
-            } catch (err) {
-                if (err instanceof Error && err.name === "CanceledError") {
-                    return;
-                }
-
-                const errorMessage =
-                    err instanceof AxiosError
-                        ? err.response?.data?.message || "Erreur lors de la mise à jour du compte"
-                        : err instanceof Error
-                            ? err.message
-                            : "Erreur lors de la mise à jour du compte";
-
-                setError(errorMessage);
-                throw err;
-            }
-        },
-        [fetchAccounts]
-    );
-
-    const resendInvitation = useCallback(
-        async (data: InviteAccountRequest) => {
-            try {
-                await AccountsService.resendInvitation(
-                    data,
-                    abortControllerRef.current?.signal
-                );
-                await fetchAccounts();
-            } catch (err) {
-                if (err instanceof Error && err.name === "CanceledError") {
-                    return;
-                }
-
-                const errorMessage =
-                    err instanceof AxiosError
-                        ? err.response?.data?.message || "Erreur lors de la réinvitation"
-                        : err instanceof Error
-                            ? err.message
-                            : "Erreur lors de la réinvitation";
-
-                setError(errorMessage);
-                throw err;
-            }
-        },
-        [fetchAccounts]
-    );
-
-    useEffect(() => {
-        fetchAccounts();
-
-        return () => {
-            abortControllerRef.current?.abort();
-        };
-    }, []);
+    const handleResendInvitation = async (data: InviteAccountRequest) => {
+        try {
+            await resendInvitationMutation.mutateAsync(data);
+        } catch (err) {
+            const errorMessage =
+                err instanceof AxiosError
+                    ? err.response?.data?.message || "Erreur lors de la réinvitation"
+                    : err instanceof Error
+                        ? err.message
+                        : "Erreur lors de la réinvitation";
+            throw new Error(errorMessage);
+        }
+    };
 
     return {
-        accounts,
-        loading,
-        error,
-        refetch: fetchAccounts,
-        toggleStatus: toggleAccountStatus,
-        resendInvitation,
+        accounts: data ?? [],
+        loading: isLoading,
+        error: error ? "Impossible de charger les comptes" : null,
+        refetch,
+        toggleStatus: handleToggleStatus,
+        resendInvitation: handleResendInvitation,
     };
 }

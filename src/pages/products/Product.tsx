@@ -40,6 +40,7 @@ import { ProductEditPanel } from "@/features/product/ProductEditPanel";
 import { ProductColorEditor } from "@/features/product/ProductColorEditor";
 import { ProductVariantsManager } from "@/features/product/ProductVariantsManager";
 import { useProductEditing } from "@/hooks/Product/useProductEditing";
+import {FrequentlyBoughtTogetherSection} from "@/features/recommendations/FrequentlyBoughtTogetherSection";
 
 interface ProductPageProps {
     editMode?: boolean;
@@ -283,10 +284,14 @@ export function ProductPage({ editMode = false }: ProductPageProps) {
 
                 {/* Reviews (masqué en mode edit) */}
                 {!editMode && (
-                    <ProductReviewsSection
-                        productId={id}
-                        canReview={canReview}
-                    />
+                    <>
+                        <FrequentlyBoughtTogetherSection productId={id} />
+
+                        <ProductReviewsSection
+                            productId={id}
+                            canReview={canReview}
+                        />
+                    </>
                 )}
             </div>
 

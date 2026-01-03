@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { logger } from "@/utils/logger";
 
 interface LoginFormProps {
     email: string;
@@ -34,12 +35,12 @@ export function LoginForm({
                 setGoogleLoading(false);
             }
         } else {
-            console.error("No credential in response");
+            logger.error("LoginForm.handleGoogleSuccess", "No credential in response");
         }
     };
 
     const handleGoogleError = () => {
-        console.error("Google login failed");
+        logger.error("LoginForm.handleGoogleError", "Google login failed");
         setGoogleLoading(false);
     };
 

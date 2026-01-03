@@ -7,6 +7,8 @@ import { useGeolocation } from "@/hooks/User/useGeolocation";
 import { BrandFiltersPanel } from "@/features/filters/BrandFiltersPanel";
 import { BrandPageLayout } from "@/features/brands/BrandPageLayout";
 import { belgianCities } from "@/types/belgianCities";
+import {RecommendationsSection} from "@/features/recommendations/RecommendationsSection";
+import {BrandSectionSkeleton} from "@/components/skeletons/BrandSectionSkeleton";
 
 interface ApiFilters {
     page: number;
@@ -134,9 +136,7 @@ export const Home: React.FC = () => {
     if (loading) {
         return (
             <BrandPageLayout searchQuery={searchQuery} onSearchChange={setSearchQuery}>
-                <div className="flex justify-center items-center mt-12">
-                    <p className="text-gray-500 animate-pulse">Chargement des marques...</p>
-                </div>
+                <BrandSectionSkeleton cards={4} />
             </BrandPageLayout>
         );
     }
@@ -185,6 +185,7 @@ export const Home: React.FC = () => {
             <div className="items-center mt-6">
                 <BrandSection title="Toutes les marques :" brands={convertedBrands} />
             </div>
+            <RecommendationsSection />
         </BrandPageLayout>
     );
 };

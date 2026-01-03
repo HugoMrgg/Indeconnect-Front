@@ -2,7 +2,7 @@
 import { useParams } from "react-router-dom";
 import { useBrands } from "@/hooks/Brand/useBrands";
 import { BannerBrand } from "@/features/banners/BannerBrand";
-import { BrandLoading } from "@/features/brands/BrandLoading";
+import { BrandInfoLoading } from "@/features/brands/BrandInfoLoading";
 import { BrandError } from "@/features/brands/BrandError";
 import { BrandDetailDTO } from "@/api/services/brands/types";
 import { brandsService } from "@/api/services/brands";
@@ -49,7 +49,7 @@ export const BrandInfoPage: React.FC = () => {
 
     if (listLoading || loadingDetail) {
         return (
-            <BrandLoading
+            <BrandInfoLoading
                 name={brand?.name || decodedBrand}
                 bannerUrl={brand?.bannerUrl || summary?.bannerUrl || null}
             />

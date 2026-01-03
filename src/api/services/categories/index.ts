@@ -1,4 +1,5 @@
 ﻿import axiosInstance from "@/api/api";
+import { logger } from "@/utils/logger";
 
 export interface CategoryDto {
     id: number;
@@ -13,7 +14,7 @@ export async function fetchCategories(): Promise<CategoryDto[]> {
         const response = await axiosInstance.get<CategoryDto[]>("/categories");
         return response.data;
     } catch (error) {
-        console.error("Error fetching Categories:", error);
+        logger.error("CategoryService.fetchCategories", error);
         throw error;
     }
 }

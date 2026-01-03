@@ -1,5 +1,5 @@
 ﻿// @/features/admin/InviteAccountModal.tsx
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { X, CheckCircle, AlertCircle } from "lucide-react";
 import { useInviteAccount } from "@/hooks/Auth/useInviteAccount";
 import { InviteAccountForm } from "./InviteAccountForm";
@@ -15,14 +15,23 @@ export function InviteAccountModal({ onClose, onSuccess }: InviteAccountModalPro
     const modalRef = useRef<HTMLDivElement>(null);
     const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-    const { invite, loading, error, success, validationErrors, formData } = useInviteAccount(onSuccess);
+    const { invite, loading, error, success, validationErrors, formData, reset } = useInviteAccount(onSuccess);
     const { user } = useAuth();
+
+    const handleSuccessClose = useCallback(() => {
+        reset();
+        onSuccess();
+    }, [reset, onSuccess]);
 
     // Focus trap et gestion du clavier
     useEffect(() => {
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === "Escape" && !loading) {
-                onClose();
+                if (success) {
+                    handleSuccessClose();
+                } else {
+                    onClose();
+                }
             }
         };
 
@@ -30,7 +39,7 @@ export function InviteAccountModal({ onClose, onSuccess }: InviteAccountModalPro
 
         document.addEventListener("keydown", handleEscape);
         return () => document.removeEventListener("keydown", handleEscape);
-    }, [onClose, loading]);
+    }, [onClose, loading, success, handleSuccessClose]);
 
     // Empêcher le scroll du body
     useEffect(() => {
@@ -95,7 +104,7 @@ export function InviteAccountModal({ onClose, onSuccess }: InviteAccountModalPro
                     )}
 
                     <button
-                        onClick={onClose}
+                        onClick={handleSuccessClose}
                         className="w-full mt-6 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
                     >
                         Fermer

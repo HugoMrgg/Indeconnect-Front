@@ -9,6 +9,7 @@ import { CheckoutSummary } from "@/features/checkout/CheckoutSummary";
 import { CheckoutFooter } from "@/features/checkout/CheckoutFooter";
 import { CartItemDto } from "@/api/services/cart/types";
 import { Loader2 } from "lucide-react";
+import { CheckoutSkeleton } from "@/components/skeletons";
 
 export function CheckoutPage() {
     const navigate = useNavigate();
@@ -26,16 +27,22 @@ export function CheckoutPage() {
     } = useCheckout();
 
     // Redirection si non authentifié ou panier vide
+    // MAIS on ne redirige pas si une commande a été créée (orderId existe)
     useEffect(() => {
         if (!user) {
             navigate("/");
             return;
         }
 
+        // Ne pas rediriger si une commande est en cours ou créée
+        if (orderId) {
+            return;
+        }
+
         if (!cartLoading && (!cart || !cart.items || cart.items.length === 0)) {
             navigate("/cart");
         }
-    }, [user, cart, cartLoading, navigate]);
+    }, [user, cart, cartLoading, navigate, orderId]);
 
     const itemsByBrand = useMemo(() => {
         if (!cart || !cart.items || !Array.isArray(cart.items)) {
@@ -61,11 +68,7 @@ export function CheckoutPage() {
     }
 
     if (cartLoading || !cart) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <Loader2 className="animate-spin text-gray-400" size={48} />
-            </div>
-        );
+        return <CheckoutSkeleton />;
     }
 
     return (

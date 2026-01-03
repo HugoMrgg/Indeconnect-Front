@@ -19,19 +19,21 @@ interface BrandPageProps {
     brandId?: number;
     brandData?: Brand;
     editMode?: boolean;
+    canManageProducts?: boolean; // ✅ NOUVEAU : Gestion des produits
     onUpdateField?: <K extends keyof EditableBrandFields>(
         field: K,
         value: EditableBrandFields[K]
     ) => void;
-    onAddProduct?: () => void; // NOUVEAU
+    onAddProduct?: () => void;
 }
 
 export const BrandPage: React.FC<BrandPageProps> = ({
                                                         brandId: propBrandId,
                                                         brandData: propBrandData,
                                                         editMode = false,
+                                                        canManageProducts, // ✅ NOUVEAU
                                                         onUpdateField,
-                                                        onAddProduct, // NOUVEAU
+                                                        onAddProduct,
                                                     }) => {
     const { brandName } = useParams();
     const decodedBrand = brandName ? decodeURIComponent(brandName) : "";
@@ -65,6 +67,9 @@ export const BrandPage: React.FC<BrandPageProps> = ({
 
     const filter = useProductFilters(products);
     const [searchQuery, setSearchQuery] = useState<string>("");
+
+    // ✅ Si canManageProducts n'est pas défini, utiliser editMode comme défaut (rétrocompatible)
+    const effectiveCanManageProducts = canManageProducts !== undefined ? canManageProducts : editMode;
 
     if (loading || brandsLoading) {
         return (
@@ -100,7 +105,6 @@ export const BrandPage: React.FC<BrandPageProps> = ({
                 {!editMode && <BrandBreadcrumbs />}
 
                 <section className="space-y-6">
-                    {/* Header dans une carte propre */}
                     <div className="bg-white rounded-2xl shadow-xl border border-gray-100 px-6 py-5 sm:px-8 sm:py-6">
                         <BrandHeader
                             brand={brand}
@@ -109,7 +113,6 @@ export const BrandPage: React.FC<BrandPageProps> = ({
                         />
                     </div>
 
-                    {/* Panneau de filtres */}
                     <FiltersPanel
                         open={filtersOpen}
                         onClose={closeFilters}
@@ -128,13 +131,12 @@ export const BrandPage: React.FC<BrandPageProps> = ({
                         ethicsAvailable={filter.availableEthics}
                     />
 
-                    {/* Grille produits dans une carte */}
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6">
                         <BrandProducts
                             filter={filter}
                             searchQuery={searchQuery}
-                            editMode={editMode}
-                            onAddProduct={onAddProduct} // NOUVEAU
+                            canManageProducts={effectiveCanManageProducts} // ✅ Passer le bon prop
+                            onAddProduct={onAddProduct}
                         />
                     </div>
                 </section>
