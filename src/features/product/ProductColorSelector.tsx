@@ -1,4 +1,5 @@
 ﻿import React from "react";
+import { useTranslation } from "react-i18next";
 import { ColorVariant, Color } from "@/types/Product";
 
 interface Props {
@@ -8,9 +9,11 @@ interface Props {
 }
 
 export function ProductColorSelector({ current, variants, onSelect }: Props) {
+    const { t } = useTranslation();
+
     return (
         <div className="mt-6">
-            <div className="font-semibold mb-2">Couleur</div>
+            <div className="font-semibold mb-2">{t('product.color_selector.title')}</div>
 
             <div className="grid grid-cols-6 gap-3">
                 {variants.map((v) => {
@@ -56,4 +59,3 @@ export function ProductColorSelector({ current, variants, onSelect }: Props) {
         </div>
     );
 }
-

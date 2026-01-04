@@ -1,6 +1,6 @@
 ﻿import React from "react";
+import { useTranslation } from "react-i18next";
 import { SizeVariant } from "@/types/Product";
-
 
 interface Props {
     variants: SizeVariant[];
@@ -9,6 +9,8 @@ interface Props {
 }
 
 export function ProductSizeSelector({ variants, selected, onSelect }: Props) {
+    const { t } = useTranslation();
+
     const handleSelect = (v: SizeVariant) => {
         if (!v.isAvailable) return;
         onSelect(v);
@@ -16,7 +18,7 @@ export function ProductSizeSelector({ variants, selected, onSelect }: Props) {
 
     return (
         <div className="mt-6">
-            <div className="font-semibold mb-2">Taille</div>
+            <div className="font-semibold mb-2">{t('product.size_selector.title')}</div>
             <div className="grid grid-cols-4 gap-3">
                 {variants.map(v => (
                     <button

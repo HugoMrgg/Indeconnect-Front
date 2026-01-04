@@ -1,8 +1,20 @@
 ﻿// src/pages/payment-methods/CardForm.tsx
 import React, { useState } from 'react';
 import {PaymentCardFormData} from "@/api/services/payments-methods/types";
-import {generateFakeCardNumber, generateFakeName} from "@/api/services/payments-methods";
 
+// Utility functions for UX testing
+const generateFakeCardNumber = (): string => {
+    const randomDigits = () => Math.floor(1000 + Math.random() * 9000);
+    return `${randomDigits()} ${randomDigits()} ${randomDigits()} ${randomDigits()}`;
+};
+
+const generateFakeName = (): string => {
+    const firstNames = ['Jean', 'Marie', 'Pierre', 'Sophie', 'Lucas', 'Emma', 'Thomas', 'Julie'];
+    const lastNames = ['Martin', 'Bernard', 'Dubois', 'Thomas', 'Robert', 'Richard', 'Petit', 'Durand'];
+    const randomFirst = firstNames[Math.floor(Math.random() * firstNames.length)];
+    const randomLast = lastNames[Math.floor(Math.random() * lastNames.length)];
+    return `${randomFirst} ${randomLast}`;
+};
 
 interface CardFormProps {
     onSubmit: (data: PaymentCardFormData) => void;

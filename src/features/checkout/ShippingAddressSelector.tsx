@@ -1,8 +1,8 @@
 ﻿import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Plus, MapPin, Check, Loader2 } from "lucide-react";
 import { useShipping } from "@/hooks/Order/useShipping";
 import { AddressForm } from "./AddressForm";
-import toast from "react-hot-toast";
 
 type Props = {
     userId: number;
@@ -11,6 +11,7 @@ type Props = {
 };
 
 export function ShippingAddressSelector({ userId, selectedAddressId, onSelectAddress }: Props) {
+    const { t } = useTranslation();
     const { addresses, loading, fetchAddresses } = useShipping();
     const [showAddForm, setShowAddForm] = useState(false);
 
@@ -29,7 +30,7 @@ export function ShippingAddressSelector({ userId, selectedAddressId, onSelectAdd
     if (loading) {
         return (
             <div className="bg-white rounded-lg shadow p-6">
-                <h2 className="text-xl font-semibold mb-4">Adresse de livraison</h2>
+                <h2 className="text-xl font-semibold mb-4">{t('common.loading')}</h2>
                 <div className="flex items-center justify-center py-8">
                     <Loader2 className="animate-spin text-gray-400" size={32} />
                 </div>
@@ -40,13 +41,13 @@ export function ShippingAddressSelector({ userId, selectedAddressId, onSelectAdd
     return (
         <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold">Adresse de livraison</h2>
+                <h2 className="text-xl font-semibold">{t('common.loading')}</h2>
                 <button
                     onClick={() => setShowAddForm(!showAddForm)}
                     className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 transition-colors"
                 >
                     <Plus size={16} />
-                    {showAddForm ? "Annuler" : "Nouvelle adresse"}
+                    {showAddForm ? t('common.cancel') : t('common.add')}
                 </button>
             </div>
 
@@ -68,16 +69,16 @@ export function ShippingAddressSelector({ userId, selectedAddressId, onSelectAdd
                 {addresses.length === 0 ? (
                     <div className="text-center py-8">
                         <MapPin className="mx-auto text-gray-400 mb-3" size={48} />
-                        <p className="text-gray-600 font-medium mb-1">Aucune adresse enregistrée</p>
+                        <p className="text-gray-600 font-medium mb-1">{t('common.loading')}</p>
                         <p className="text-gray-500 text-sm mb-4">
-                            Ajoutez une adresse de livraison pour continuer
+                            {t('common.loading')}
                         </p>
                         <button
                             onClick={() => setShowAddForm(true)}
                             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                         >
                             <Plus size={18} />
-                            Ajouter une adresse
+                            {t('common.add')}
                         </button>
                     </div>
                 ) : (

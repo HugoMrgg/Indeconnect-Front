@@ -1,4 +1,13 @@
-﻿export interface Color {
+﻿export interface Sale {
+    id: number;
+    name: string;
+    description: string | null;
+    discountPercentage: number;
+    startDate: string;
+    endDate: string;
+    isActive: boolean;
+}
+export interface Color {
     id: number;
     name: string;
     hexa: string;
@@ -25,8 +34,8 @@ export interface Product {
     reviewCount: number;
     primaryColor: Color | null;
     status?: "Draft" | "Online" | "Offline";
+    sale?: Sale;
 
-    // Pour compatibilité avec ton code existant
     brand: string;
     category?: string;
     image?: string;
@@ -49,6 +58,7 @@ export interface ProductDetail {
         logoUrl: string | null;
     };
     category: Category;
+    categoryId: number;
     primaryColor: Color | null;
     colorVariants: ColorVariant[];
     media: ProductMedia[];

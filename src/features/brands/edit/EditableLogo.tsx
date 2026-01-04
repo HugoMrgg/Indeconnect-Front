@@ -1,4 +1,5 @@
 ﻿import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { EditableBrandFields } from "@/types/brand";
 import { ImageUploader } from "@/features/brands/ImageUploader";
 
@@ -16,6 +17,7 @@ export const EditableLogo: React.FC<EditableLogoProps> = ({
                                                               editMode,
                                                               onUpdateField,
                                                           }) => {
+    const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
 
     if (!editMode || !onUpdateField) {
@@ -25,7 +27,7 @@ export const EditableLogo: React.FC<EditableLogoProps> = ({
             <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center overflow-hidden">
                 <img
                     src={logoUrl}
-                    alt="Logo de la marque"
+                    alt={t('brands.logo.alt')}
                     className="h-12 w-12 sm:h-16 sm:w-16 object-contain"
                 />
             </div>
@@ -42,26 +44,26 @@ export const EditableLogo: React.FC<EditableLogoProps> = ({
                 {logoUrl ? (
                     <img
                         src={logoUrl}
-                        alt="Logo de la marque"
+                        alt={t('brands.logo.alt')}
                         className="h-12 w-12 sm:h-16 sm:w-16 object-contain"
                     />
                 ) : (
                     <span className="text-xs text-gray-400 text-center px-2">
-                        Ajouter un logo
+                        {t('brands.logo.add_logo')}
                     </span>
                 )}
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 text-[11px] text-white flex items-center justify-center text-center px-2 transition">
-                    Modifier le logo
+                    {t('brands.logo.edit_logo')}
                 </div>
             </button>
 
             {isEditing && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
                     <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl">
-                        <h3 className="text-lg font-semibold mb-4">Modifier le logo</h3>
+                        <h3 className="text-lg font-semibold mb-4">{t('brands.logo.modal_title')}</h3>
 
                         <ImageUploader
-                            label="Logo"
+                            label={t('brands.logo.label')}
                             currentUrl={logoUrl ?? null}
                             onUpload={(url) => {
                                 onUpdateField("logoUrl", url);
@@ -75,7 +77,7 @@ export const EditableLogo: React.FC<EditableLogoProps> = ({
                                 onClick={() => setIsEditing(false)}
                                 className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
                             >
-                                Annuler
+                                {t('common.cancel')}
                             </button>
                         </div>
                     </div>

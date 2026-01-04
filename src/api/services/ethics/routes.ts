@@ -1,12 +1,14 @@
 ﻿export const ETHICS_ROUTES = {
     // Admin catalogue
-    getAdminCatalog: "/ethics/catalog",
-    saveAdminCatalog: "/ethics/catalog",
+    getAdminCatalog: "/admin/ethics/catalog",
+    saveAdminCatalog: "/admin/ethics/catalog",
+    publishCatalog: "/admin/ethics/catalog/publish",
 
-    // SuperVendor questionnaire (pour sa marque)
+    // SuperVendor questionnaire
     getMyForm: "/ethics/questionnaire",
     saveMyForm: "/ethics/questionnaire",
+    markReviewed: "/ethics/questionnaire/mark-reviewed",
 
-    // si tu as un endpoint tags séparé, garde-le
+    // Public
     tags: "/ethics/tags",
 } as const;

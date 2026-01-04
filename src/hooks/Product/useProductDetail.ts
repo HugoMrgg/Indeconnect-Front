@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useQueries } from "@tanstack/react-query";
 import {
     fetchProductById,
     fetchProductVariants,
@@ -23,43 +23,36 @@ interface UseProductDetailReturn {
  * Encapsule les appels API pour product, variants de couleur et variants de taille
  */
 export function useProductDetail(productId: number): UseProductDetailReturn {
-    const [product, setProduct] = useState<ProductDetail | null>(null);
-    const [colorVariants, setColorVariants] = useState<ColorVariant[]>([]);
-    const [sizeVariants, setSizeVariants] = useState<SizeVariant[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const results = useQueries({
+        queries: [
+            {
+                queryKey: ['product', productId],
+                queryFn: () => fetchProductById(productId),
+                staleTime: 5 * 60 * 1000, // 5 min (données produit changent peu)
+            },
+            {
+                queryKey: ['product-color-variants', productId],
+                queryFn: () => fetchProductColorVariants(productId),
+                staleTime: 5 * 60 * 1000,
+            },
+            {
+                queryKey: ['product-size-variants', productId],
+                queryFn: () => fetchProductVariants(productId),
+                staleTime: 5 * 60 * 1000,
+            },
+        ],
+    });
 
-    useEffect(() => {
-        async function load() {
-            try {
-                setLoading(true);
-                setError(null);
+    const [productQuery, colorVariantsQuery, sizeVariantsQuery] = results;
 
-                // Charger toutes les données en parallèle
-                const [prod, colors, sizes] = await Promise.all([
-                    fetchProductById(productId),
-                    fetchProductColorVariants(productId),
-                    fetchProductVariants(productId),
-                ]);
-
-                setProduct(prod);
-                setColorVariants(colors);
-                setSizeVariants(sizes);
-            } catch (err) {
-                setError(err instanceof Error ? err.message : "Erreur lors du chargement du produit");
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        void load();
-    }, [productId]);
+    const loading = results.some((q) => q.isLoading);
+    const error = results.find((q) => q.error)?.error;
 
     return {
-        product,
-        colorVariants,
-        sizeVariants,
+        product: productQuery.data ?? null,
+        colorVariants: colorVariantsQuery.data ?? [],
+        sizeVariants: sizeVariantsQuery.data ?? [],
         loading,
-        error,
+        error: error ? "Erreur lors du chargement du produit" : null,
     };
 }

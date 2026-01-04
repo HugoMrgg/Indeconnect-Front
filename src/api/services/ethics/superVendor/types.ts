@@ -3,6 +3,8 @@
 export type EthicsFormDto = {
     questionnaireId: number | null;
     status: QuestionnaireStatus;
+    needsUpdate?: boolean;        // ← NOUVEAU (optionnel pour compatibilité backend)
+    migratedAt?: string;          // ← NOUVEAU (optionnel)
     categories: EthicsCategoryDto[];
 };
 
@@ -21,7 +23,7 @@ export type EthicsQuestionDto = {
     order: number;
     answerType: "Single" | "Multiple";
     options: EthicsOptionDto[];
-    selectedOptionIds: number[]; // utile côté remplissage marque, peut rester []
+    selectedOptionIds: number[];
 };
 
 export type EthicsOptionDto = {

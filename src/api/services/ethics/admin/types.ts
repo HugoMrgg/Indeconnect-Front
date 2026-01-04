@@ -6,7 +6,7 @@
 
 export type AdminCategoryDto = {
     id: number;
-    key: string;
+    key: "MaterialsManufacturing" | "Transport";
     label: string;
     order: number;
     isActive: boolean;
@@ -42,12 +42,11 @@ export type AdminUpsertCatalogRequest = {
 
 export type UpsertCategoryDto = {
     id: number | null;
-    key: "Manufacture" | "Transport";
+    key: "MaterialsManufacturing" | "Transport";
     label: string;
     order: number;
     isActive: boolean;
 };
-
 
 export type UpsertQuestionDto = {
     id: number | null;

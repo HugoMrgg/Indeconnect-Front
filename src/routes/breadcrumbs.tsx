@@ -1,14 +1,19 @@
 ﻿import { Link } from "react-router-dom";
 import { BreadcrumbsRoute } from "use-react-router-breadcrumbs";
+import i18n from '@/i18n';
 
 export const breadcrumbRoutes: BreadcrumbsRoute[] = [
     {
         path: "/",
-        breadcrumb: () => <Link to="/">Accueil</Link>,
+        breadcrumb: () => {
+            return <Link to="/">{i18n.t('routes.breadcrumbs.home')}</Link>;
+        },
     },
     {
         path: "/brands",
-        breadcrumb: () => <Link to="/brands">Marques</Link>,
+        breadcrumb: () => {
+            return <Link to="/brands">{i18n.t('routes.breadcrumbs.brands')}</Link>;
+        },
     },
     {
         path: "/brands/:brandName",

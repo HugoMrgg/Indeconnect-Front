@@ -3,6 +3,8 @@ import qs from "qs";
 import { authStorage } from "@/storage/AuthStorage";
 import { userStorage } from "@/storage/UserStorage";
 import { ApiError, BackendErrorResponse } from "@/api/errors";
+import { logger } from "@/utils/logger";
+import i18n from "@/i18n";
 
 const API_BASE_URL = "https://" + import.meta.env.VITE_API_HOST + "/indeconnect";
 //const API_BASE_URL_LOCAL = "http://localhost:5237/indeconnect";
@@ -32,10 +34,20 @@ export const setOnUnauthorizedCallback = (callback: (() => void) | null) => {
 
 axiosInstance.interceptors.request.use(
     (config) => {
+        // Ajouter le token d'authentification
         const token = authStorage.getToken();
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
+
+        // Ajouter automatiquement le paramètre lang à toutes les requêtes
+        if (i18n.language) {
+            config.params = {
+                ...config.params,
+                lang: i18n.language,
+            };
+        }
+
         return config;
     },
     (error) => Promise.reject(error)
@@ -61,7 +73,7 @@ axiosInstance.interceptors.response.use(
         const { status = 0, data } = error.response;
 
         if (status === 401) {
-            console.warn("[API] 401 - Session expirée ou token invalide");
+            logger.warn("API.interceptor", "401 - Session expirée ou token invalide");
             authStorage.clearToken();
             userStorage.clear();
 
@@ -71,7 +83,7 @@ axiosInstance.interceptors.response.use(
         }
 
         if (status === 403) {
-            console.warn("[API] 403 - Accès refusé (permissions insuffisantes)");
+            logger.warn("API.interceptor", "403 - Accès refusé (permissions insuffisantes)");
         }
 
         const backendMessage = data?.error ?? data?.message;

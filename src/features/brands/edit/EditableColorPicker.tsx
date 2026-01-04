@@ -1,4 +1,5 @@
 ﻿import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface EditableColorPickerProps {
     value: string | null | undefined;
@@ -11,6 +12,8 @@ export const EditableColorPicker: React.FC<EditableColorPickerProps> = ({
                                                                             onChange,
                                                                             editMode
                                                                         }) => {
+    const { t } = useTranslation();
+
     if (!editMode) {
         return (
             <div className="flex items-center gap-2">
@@ -21,7 +24,7 @@ export const EditableColorPicker: React.FC<EditableColorPickerProps> = ({
                     />
                 )}
                 <span className="text-sm text-gray-600">
-                    {value || "Aucune couleur"}
+                    {value || t('brands.color_picker.no_color')}
                 </span>
             </div>
         );
@@ -35,6 +38,7 @@ export const EditableColorPicker: React.FC<EditableColorPickerProps> = ({
                     value={value || "#000000"}
                     onChange={(e) => onChange(e.target.value)}
                     className="w-12 h-12 rounded border border-gray-300 cursor-pointer"
+                    aria-label={t('brands.color_picker.select_color')}
                 />
             </div>
             <div className="flex flex-col">
@@ -52,7 +56,7 @@ export const EditableColorPicker: React.FC<EditableColorPickerProps> = ({
                     maxLength={7}
                 />
                 <span className="text-xs text-gray-500 mt-1">
-                    Couleur d'accent de votre marque
+                    {t('brands.color_picker.accent_description')}
                 </span>
             </div>
             {value && (
@@ -60,7 +64,7 @@ export const EditableColorPicker: React.FC<EditableColorPickerProps> = ({
                     onClick={() => onChange(null)}
                     className="text-sm text-red-600 hover:text-red-700"
                 >
-                    Supprimer
+                    {t('common.delete')}
                 </button>
             )}
         </div>

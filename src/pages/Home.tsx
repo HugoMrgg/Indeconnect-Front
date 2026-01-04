@@ -1,4 +1,5 @@
-﻿import React, { useEffect, useState, useMemo, useCallback } from "react";
+﻿import React, { useEffect, useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { BrandSection } from "@/features/brands/BrandSection";
 import { useBrands } from "@/hooks/Brand/useBrands";
 import { useUI } from "@/context/UIContext";
@@ -7,6 +8,8 @@ import { useGeolocation } from "@/hooks/User/useGeolocation";
 import { BrandFiltersPanel } from "@/features/filters/BrandFiltersPanel";
 import { BrandPageLayout } from "@/features/brands/BrandPageLayout";
 import { belgianCities } from "@/types/belgianCities";
+import {RecommendationsSection} from "@/features/recommendations/RecommendationsSection";
+import {BrandSectionSkeleton} from "@/components/skeletons/BrandSectionSkeleton";
 import { Leaf, MapPin, ShieldCheck, ArrowDownRight } from "lucide-react";
 
 interface ApiFilters {
@@ -24,6 +27,8 @@ interface ApiFilters {
 }
 
 export const Home: React.FC = () => {
+    const { t } = useTranslation();
+
     const [apiFilters, setApiFilters] = useState<ApiFilters>({
         page: 1,
         pageSize: 10,
@@ -127,6 +132,23 @@ export const Home: React.FC = () => {
 
     const currentCity = belgianCities.find((c) => c.latitude === apiFilters.lat && c.longitude === apiFilters.lon);
 
+    if (loading) {
+        return (
+            <BrandPageLayout searchQuery={searchQuery} onSearchChange={setSearchQuery}>
+                <BrandSectionSkeleton cards={4} />
+            </BrandPageLayout>
+        );
+    }
+
+    if (error) {
+        return (
+            <BrandPageLayout searchQuery={searchQuery} onSearchChange={setSearchQuery}>
+                <div className="flex justify-center items-center mt-12">
+                    <p className="text-red-600">{error}</p>
+                </div>
+            </BrandPageLayout>
+        );
+    }
     const scrollToBrands = useCallback(() => {
         document.getElementById("brands-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, []);
@@ -227,6 +249,7 @@ export const Home: React.FC = () => {
             </section>
 
             <div className="items-center mt-6">
+                <BrandSection title={t('brands.all_brands')} brands={convertedBrands} />
                 {loading && (
                     <div className="flex justify-center items-center mt-8">
                         <p className="text-gray-500 animate-pulse">Chargement des marques...</p>
@@ -245,6 +268,7 @@ export const Home: React.FC = () => {
                     </div>
                 )}
             </div>
+            <RecommendationsSection />
         </BrandPageLayout>
     );
 };

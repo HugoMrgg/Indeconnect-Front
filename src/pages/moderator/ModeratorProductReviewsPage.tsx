@@ -1,17 +1,13 @@
 ﻿import React, { useMemo, useState } from "react";
-import { Loader2, Check, X, RefreshCcw, Search } from "lucide-react";
+import { Check, X, RefreshCcw, Search } from "lucide-react";
 import { useModeratorReviews } from "@/hooks/Admin/useAdminProductReviews";
 import { ReviewStatus } from "@/api/services/reviews/moderator/type";
 import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
+import { ReviewsTableSkeleton } from "@/components/skeletons";
+import { useTranslation } from 'react-i18next';
 
 const statusOptions: Array<ReviewStatus | "All"> = ["All", "Enabled", "Disabled"];
-
-const statusLabel = (s: string) => {
-    if (s === "Enabled") return "Publié";
-    if (s === "Disabled") return "Masqué";
-    return s;
-};
 
 const statusBadgeClass = (s: string) => {
     if (s === "Enabled") return "border-emerald-200 bg-emerald-50 text-emerald-700";
@@ -20,6 +16,7 @@ const statusBadgeClass = (s: string) => {
 };
 
 export const ModeratorProductReviewsPage: React.FC = () => {
+    const { t } = useTranslation();
     const {
         filters,
         setFilters,
@@ -70,11 +67,11 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                         <div className="flex justify-between items-start gap-6">
                             <div>
                                 <h1 className="text-5xl font-serif font-bold text-gray-900 mb-4">
-                                    Modération des Reviews Produits
+                                    {t('pages.moderator.reviews.title')}
                                 </h1>
                                 <div className="w-24 h-1 bg-gray-900 mb-6" aria-hidden="true"></div>
                                 <p className="text-gray-700 text-lg">
-                                    Les commentaires sont publiés automatiquement. Ici, tu peux les masquer ou les réactiver.
+                                    {t('pages.moderator.reviews.heroSubtitle')}
                                 </p>
                             </div>
                         </div>
@@ -85,10 +82,10 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <div>
                             <h2 className="text-2xl font-semibold text-gray-900">
-                                Modération • Reviews produits
+                                {t('pages.moderator.reviews.heading')}
                             </h2>
                             <p className="text-sm text-gray-600 mt-1">
-                                Enabled = visible sur le site • Disabled = masqué (mais conservé)
+                                {t('pages.moderator.reviews.headingSubtitle')}
                             </p>
                         </div>
 
@@ -98,7 +95,7 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 hover:bg-gray-50"
                             disabled={loading}
                         >
-                            <RefreshCcw size={16} /> Recharger
+                            <RefreshCcw size={16} /> {t('pages.moderator.reviews.reload')}
                         </button>
                     </div>
 
@@ -106,34 +103,34 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                     <div className="mt-6 bg-white border border-gray-200 rounded-2xl p-4 shadow-sm">
                         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
                             <div className="md:col-span-3">
-                                <label className="text-xs text-gray-500">Statut</label>
+                                <label className="text-xs text-gray-500">{t('pages.moderator.reviews.filters.statusLabel')}</label>
                                 <select
                                     className="mt-1 w-full px-3 py-2 rounded-xl border border-gray-200"
-                                    value={(filters.status as any) ?? "All"}
+                                    value={filters.status ?? "All"}
                                     onChange={(e) =>
                                         setFilters((p) => ({
                                             ...p,
-                                            // "All" => null côté back (tu dis gérer ça dans le hook)
-                                            status: e.target.value as any,
+                                            // "All" value is converted to null on backend side (handled in hook)
+                                            status: e.target.value as ReviewStatus,
                                             page: 1,
                                         }))
                                     }
                                 >
                                     {statusOptions.map((s) => (
                                         <option key={s} value={s}>
-                                            {s === "All" ? "All (tous)" : s}
+                                            {s === "All" ? t('pages.moderator.reviews.status.all') : t(`pages.moderator.reviews.status.${String(s).toLowerCase()}`)}
                                         </option>
                                     ))}
                                 </select>
                             </div>
 
                             <div className="md:col-span-3">
-                                <label className="text-xs text-gray-500">ProductId (optionnel)</label>
+                                <label className="text-xs text-gray-500">{t('pages.moderator.reviews.filters.productIdLabel')}</label>
                                 <input
                                     className="mt-1 w-full px-3 py-2 rounded-xl border border-gray-200"
                                     value={productIdInput}
                                     onChange={(e) => setProductIdInput(e.target.value)}
-                                    placeholder="ex: 123"
+                                    placeholder={t('pages.moderator.reviews.filters.productIdPlaceholder')}
                                 />
                             </div>
 
@@ -150,12 +147,12 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                                         }));
                                     }}
                                 >
-                                    Appliquer
+                                    {t('common.apply')}
                                 </button>
                             </div>
 
                             <div className="md:col-span-2">
-                                <label className="text-xs text-gray-500">PageSize</label>
+                                <label className="text-xs text-gray-500">{t('pages.moderator.reviews.filters.pageSizeLabel')}</label>
                                 <select
                                     className="mt-1 w-full px-3 py-2 rounded-xl border border-gray-200"
                                     value={filters.pageSize}
@@ -176,7 +173,7 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                             </div>
 
                             <div className="md:col-span-2">
-                                <label className="text-xs text-gray-500">Recherche</label>
+                                <label className="text-xs text-gray-500">{t('pages.moderator.reviews.filters.searchLabel')}</label>
                                 <div className="relative mt-1">
                                     <Search
                                         size={16}
@@ -186,7 +183,7 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                                         className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200"
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
-                                        placeholder="Commentaire, user, produit…"
+                                        placeholder={t('pages.moderator.reviews.filters.searchPlaceholder')}
                                     />
                                 </div>
                             </div>
@@ -204,10 +201,10 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                         <div className="p-4 border-b border-gray-200 flex items-center justify-between">
                             <div className="text-sm text-gray-600">
                                 {loading
-                                    ? "Chargement…"
+                                    ? t('common.loading')
                                     : query
-                                        ? `${filteredRows.length} / ${rows.length} review(s) (filtrées)`
-                                        : `${rows.length} review(s)`}
+                                        ? t('pages.moderator.reviews.filteredCount', { filtered: filteredRows.length, total: rows.length })
+                                        : t('pages.moderator.reviews.totalCount', { total: rows.length })}
                             </div>
 
                             <div className="text-sm text-gray-600">
@@ -217,12 +214,9 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                         </div>
 
                         {loading ? (
-                            <div className="p-10 flex items-center justify-center text-gray-600">
-                                <Loader2 className="animate-spin" />
-                                <span className="ml-2">Chargement…</span>
-                            </div>
+                            <ReviewsTableSkeleton rows={5} />
                         ) : filteredRows.length === 0 ? (
-                            <div className="p-10 text-center text-gray-600">Aucun résultat trouvé.</div>
+                            <div className="p-10 text-center text-gray-600">{t('pages.moderator.reviews.noResults')}</div>
                         ) : (
                             <div className="divide-y divide-gray-100">
                                 {filteredRows.map((r) => {
@@ -244,7 +238,7 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                                                             ].join(" ")}
                                                             title={currentStatus}
                                                         >
-                              {statusLabel(currentStatus)}
+                              {isEnabled ? t('pages.moderator.reviews.status.enabled') : isDisabled ? t('pages.moderator.reviews.status.disabled') : currentStatus}
                             </span>
 
                                                         <span className="text-sm text-gray-600">
@@ -262,12 +256,12 @@ export const ModeratorProductReviewsPage: React.FC = () => {
 
                                                     <div className="mt-2 text-sm text-gray-800 whitespace-pre-wrap break-words">
                                                         {r.comment ?? (
-                                                            <span className="text-gray-400 italic">Pas de commentaire</span>
+                                                            <span className="text-gray-400 italic">{t('pages.moderator.reviews.noComment')}</span>
                                                         )}
                                                     </div>
 
                                                     <div className="mt-2 text-xs text-gray-500">
-                                                        Créé: {new Date(r.createdAt).toLocaleString()}
+                                                        {t('pages.moderator.reviews.createdLabel')} {new Date(r.createdAt).toLocaleString()}
                                                     </div>
                                                 </div>
 
@@ -279,9 +273,9 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                                                             onClick={() => reject(r.id)} // => passe en Disabled
                                                             disabled={actingId === r.id}
                                                             className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-rose-600 text-white hover:bg-rose-700 disabled:opacity-50"
-                                                            title="Masquer ce commentaire"
+                                                            title={t('pages.moderator.reviews.action.hideTitle')}
                                                         >
-                                                            <X size={16} /> Désactiver
+                                                            <X size={16} /> {t('pages.moderator.reviews.action.disable')}
                                                         </button>
                                                     ) : isDisabled ? (
                                                         <button
@@ -289,12 +283,12 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                                                             onClick={() => approve(r.id)} // => repasse en Enabled
                                                             disabled={actingId === r.id}
                                                             className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50"
-                                                            title="Rendre ce commentaire visible"
+                                                            title={t('pages.moderator.reviews.action.unhideTitle')}
                                                         >
-                                                            <Check size={16} /> Réactiver
+                                                            <Check size={16} /> {t('pages.moderator.reviews.action.enable')}
                                                         </button>
                                                     ) : (
-                                                        <span className="text-sm text-gray-500">Aucune action</span>
+                                                        <span className="text-sm text-gray-500">{t('pages.moderator.reviews.noAction')}</span>
                                                     )}
                                                 </div>
                                             </div>
@@ -312,7 +306,7 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                                 onClick={() => setFilters((p) => ({ ...p, page: Math.max(1, p.page - 1) }))}
                                 disabled={filters.page <= 1 || loading}
                             >
-                                ← Précédent
+                                ← {t('common.previous')}
                             </button>
 
                             <button
@@ -323,7 +317,7 @@ export const ModeratorProductReviewsPage: React.FC = () => {
                                 }
                                 disabled={filters.page >= totalPages || loading}
                             >
-                                Suivant →
+                                {t('common.next')} →
                             </button>
                         </div>
                     </div>

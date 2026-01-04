@@ -2,23 +2,39 @@
 
 import { Tag } from "@/components/cards/Tag";
 import { Product } from "@/types/Product";
+import { calculatePrice } from "@/utils/priceCalculator";
 
 import { Heart } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 export default function ProductCard({
                                         product,
                                         liked,
                                         onToggleLike,
-                                        showStatus = false
+                                        showStatus = false,
+                                        editMode = false,
                                     }: {
     product: Product;
     liked: boolean;
     onToggleLike: () => void;
     showStatus?: boolean;
+    editMode?: boolean;
 }) {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { brandName } = useParams();
     const encodedBrand = encodeURIComponent(brandName ?? "");
+
+    const handleClick = () => {
+        if (editMode) {
+            navigate(`/my-brand/product/${product.id}`);
+        } else {
+            navigate(`/brand/${encodedBrand}/product/${product.id}`);
+        }
+    };
+
+    // ← NOUVEAU : Calculer le prix avec promo
+    const { current, original, discount } = calculatePrice(product.price, product.sale);
 
     // Configuration des couleurs selon le statut
     const statusConfig = {
@@ -43,7 +59,7 @@ export default function ProductCard({
 
     return (
         <div
-            onClick={() => navigate(`/brand/${encodeURIComponent(encodedBrand)}/product/${product.id}`)}
+            onClick={handleClick}
             className={`group relative flex flex-col rounded-2xl border-2 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg overflow-hidden font-poppins cursor-pointer ${
                 status ? status.border : "border-gray-200"
             }`}
@@ -61,6 +77,13 @@ export default function ProductCard({
                     </div>
                 )}
 
+                {/* Badge de promo (priorité sur statut et couleur) */}
+                {discount && !status && (
+                    <div className="absolute left-3 top-3 flex items-center gap-2 bg-red-500 text-white rounded-lg px-3 py-1.5 shadow-md z-20 font-bold text-xs">
+                        -{discount}%
+                    </div>
+                )}
+
                 {/* Badge de statut (supervendeur uniquement) */}
                 {status && (
                     <div className={`absolute left-3 top-3 flex items-center gap-2 ${status.bg} text-white rounded-lg px-3 py-1.5 shadow-md z-20 font-semibold text-xs`}>
@@ -74,7 +97,7 @@ export default function ProductCard({
                         e.stopPropagation();
                         onToggleLike();
                     }}
-                    aria-label="Ajouter aux favoris"
+                    aria-label={t('components.productCard.addToWishlist')}
                     className="absolute right-3 top-3 flex items-center justify-center rounded-full bg-white/80 p-2 shadow-sm backdrop-blur-sm transition hover:bg-white z-10"
                 >
                     <Heart
@@ -84,8 +107,8 @@ export default function ProductCard({
                     />
                 </button>
 
-                {/* Badge couleur */}
-                {product.primaryColor && !status && (
+                {/* Badge couleur (si pas de promo ni statut) */}
+                {product.primaryColor && !status && !discount && (
                     <div className="absolute left-3 top-3 flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1.5 shadow-sm">
                         <div
                             className="w-4 h-4 rounded-full border border-gray-300"
@@ -106,10 +129,22 @@ export default function ProductCard({
                     {product.name}
                 </h3>
 
-                <div className="mt-2 flex items-center gap-3">
-                    <p className="text-base font-bold text-gray-800">
-                        € {product.price.toFixed(2)}
-                    </p>
+                {/* ← MODIFIÉ : Affichage des prix avec promo */}
+                <div className="mt-2 flex items-center gap-2 flex-wrap">
+                    {original ? (
+                        <>
+                            <p className="text-base font-bold text-red-600">
+                                € {current.toFixed(2)}
+                            </p>
+                            <p className="text-sm text-gray-500 line-through">
+                                € {original.toFixed(2)}
+                            </p>
+                        </>
+                    ) : (
+                        <p className="text-base font-bold text-gray-800">
+                            € {current.toFixed(2)}
+                        </p>
+                    )}
 
                     {/* Rating */}
                     {product.reviewCount > 0 && (

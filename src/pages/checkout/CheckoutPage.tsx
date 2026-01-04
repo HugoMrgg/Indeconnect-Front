@@ -1,4 +1,5 @@
 ﻿import { useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/Auth/useAuth";
 import { useCart } from "@/hooks/User/useCart";
@@ -9,8 +10,10 @@ import { CheckoutSummary } from "@/features/checkout/CheckoutSummary";
 import { CheckoutFooter } from "@/features/checkout/CheckoutFooter";
 import { CartItemDto } from "@/api/services/cart/types";
 import { Loader2 } from "lucide-react";
+import { CheckoutSkeleton } from "@/components/skeletons";
 
 export function CheckoutPage() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { user } = useAuth();
     const { cart, loading: cartLoading } = useCart();
@@ -26,16 +29,22 @@ export function CheckoutPage() {
     } = useCheckout();
 
     // Redirection si non authentifié ou panier vide
+    // MAIS on ne redirige pas si une commande a été créée (orderId existe)
     useEffect(() => {
         if (!user) {
             navigate("/");
             return;
         }
 
+        // Ne pas rediriger si une commande est en cours ou créée
+        if (orderId) {
+            return;
+        }
+
         if (!cartLoading && (!cart || !cart.items || cart.items.length === 0)) {
             navigate("/cart");
         }
-    }, [user, cart, cartLoading, navigate]);
+    }, [user, cart, cartLoading, navigate, orderId]);
 
     const itemsByBrand = useMemo(() => {
         if (!cart || !cart.items || !Array.isArray(cart.items)) {
@@ -55,23 +64,19 @@ export function CheckoutPage() {
     if (!user) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <p className="text-gray-600">Vous devez être connecté pour accéder au checkout</p>
+                <p className="text-gray-600">{t('checkout.login_required')}</p>
             </div>
         );
     }
 
     if (cartLoading || !cart) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <Loader2 className="animate-spin text-gray-400" size={48} />
-            </div>
-        );
+        return <CheckoutSkeleton />;
     }
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
             <div className="max-w-7xl mx-auto px-4">
-                <h1 className="text-3xl font-bold mb-8">Finaliser votre commande</h1>
+                <h1 className="text-3xl font-bold mb-8">{t('checkout.title')}</h1>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Colonne principale */}
@@ -86,7 +91,7 @@ export function CheckoutPage() {
                         {/* 2. Méthodes de livraison par marque (affichées seulement si adresse sélectionnée) */}
                         {selectedAddressId && (
                             <div className="space-y-4">
-                                <h2 className="text-xl font-semibold">Modes de livraison</h2>
+                                <h2 className="text-xl font-semibold">{t('checkout.delivery_modes')}</h2>
                                 {Array.from(itemsByBrand.entries()).map(([brandId, items]) => (
                                     <ShippingMethodSelector
                                         key={`${brandId}-${selectedAddressId}`}

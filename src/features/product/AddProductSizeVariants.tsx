@@ -1,14 +1,7 @@
 import React from "react";
-
-// Liste des tailles disponibles
-const AVAILABLE_SIZES = [
-    { id: 1, name: "XS" },
-    { id: 2, name: "S" },
-    { id: 3, name: "M" },
-    { id: 4, name: "L" },
-    { id: 5, name: "XL" },
-    { id: 6, name: "XXL" },
-];
+import { useTranslation } from "react-i18next";
+import { Loader2 } from "lucide-react";
+import { SizeDto } from "@/api/services/sizes";
 
 interface SizeVariant {
     sizeId: number;
@@ -17,25 +10,78 @@ interface SizeVariant {
 }
 
 interface AddProductSizeVariantsProps {
+    categoryId: number | null;
+    availableSizes: SizeDto[];
+    loadingSizes: boolean;
+    errorSizes: string | null;
     sizeVariants: SizeVariant[];
     onToggleSize: (sizeId: number, sizeName: string) => void;
     onUpdateStock: (sizeId: number, stockCount: number) => void;
 }
 
 export function AddProductSizeVariants({
-    sizeVariants,
-    onToggleSize,
-    onUpdateStock,
-}: AddProductSizeVariantsProps) {
+                                           categoryId,
+                                           availableSizes,
+                                           loadingSizes,
+                                           errorSizes,
+                                           sizeVariants,
+                                           onToggleSize,
+                                           onUpdateStock,
+                                       }: AddProductSizeVariantsProps) {
+    const { t } = useTranslation();
+
+    if (!categoryId) {
+        return (
+            <div className="space-y-4">
+                <h3 className="font-semibold text-lg">{t('add_product.sizes.title')}</h3>
+                <div className="text-gray-500 bg-gray-50 rounded-lg p-4 text-center">
+                    {t('add_product.sizes.select_category_first')}
+                </div>
+            </div>
+        );
+    }
+
+    if (loadingSizes) {
+        return (
+            <div className="space-y-4">
+                <h3 className="font-semibold text-lg">{t('add_product.sizes.title')}</h3>
+                <div className="flex items-center justify-center gap-2 text-gray-500 p-4">
+                    <Loader2 size={20} className="animate-spin" />
+                    {t('add_product.sizes.loading')}
+                </div>
+            </div>
+        );
+    }
+
+    if (errorSizes) {
+        return (
+            <div className="space-y-4">
+                <h3 className="font-semibold text-lg">{t('add_product.sizes.title')}</h3>
+                <div className="text-red-500 bg-red-50 rounded-lg p-4">{errorSizes}</div>
+            </div>
+        );
+    }
+
+    if (availableSizes.length === 0) {
+        return (
+            <div className="space-y-4">
+                <h3 className="font-semibold text-lg">{t('add_product.sizes.title')}</h3>
+                <div className="text-gray-500 bg-gray-50 rounded-lg p-4 text-center">
+                    {t('add_product.sizes.no_sizes')}
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="space-y-4">
-            <h3 className="font-semibold text-lg">Tailles et stocks</h3>
+            <h3 className="font-semibold text-lg">{t('add_product.sizes.title')}</h3>
             <p className="text-sm text-gray-600">
-                Sélectionnez les tailles disponibles et définissez leurs stocks
+                {t('add_product.sizes.description')}
             </p>
 
             <div className="space-y-3">
-                {AVAILABLE_SIZES.map((size) => {
+                {availableSizes.map((size) => {
                     const variant = sizeVariants.find((v) => v.sizeId === size.id);
                     const isSelected = !!variant;
 
@@ -44,7 +90,7 @@ export function AddProductSizeVariants({
                             <button
                                 type="button"
                                 onClick={() => onToggleSize(size.id, size.name)}
-                                className={`px-4 py-2 border-2 rounded-lg font-medium transition ${
+                                className={`px-4 py-2 border-2 rounded-lg font-medium transition min-w-[80px] ${
                                     isSelected
                                         ? "border-blue-500 bg-blue-50 text-blue-700"
                                         : "border-gray-200 hover:border-gray-300"
@@ -55,7 +101,7 @@ export function AddProductSizeVariants({
 
                             {isSelected && (
                                 <div className="flex-1 flex items-center gap-2">
-                                    <label className="text-sm font-medium">Stock:</label>
+                                    <label className="text-sm font-medium">{t('add_product.sizes.stock')}:</label>
                                     <input
                                         type="number"
                                         min="0"
@@ -66,7 +112,7 @@ export function AddProductSizeVariants({
                                         className="w-24 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                                         placeholder="0"
                                     />
-                                    <span className="text-sm text-gray-600">unités</span>
+                                    <span className="text-sm text-gray-600">{t('add_product.sizes.units')}</span>
                                 </div>
                             )}
                         </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Loader2, Upload, X, Image as ImageIcon } from "lucide-react";
 
 interface MediaItem {
@@ -16,16 +17,18 @@ interface AddProductImageUploadProps {
 }
 
 export function AddProductImageUpload({
-    media,
-    uploading,
-    onImageSelect,
-    onRemoveImage,
-}: AddProductImageUploadProps) {
+                                          media,
+                                          uploading,
+                                          onImageSelect,
+                                          onRemoveImage,
+                                      }: AddProductImageUploadProps) {
+    const { t } = useTranslation();
+
     return (
         <div className="space-y-4">
             <h3 className="font-semibold text-lg flex items-center gap-2">
                 <ImageIcon size={20} />
-                Images de cette variante
+                {t('add_product.images.title')}
             </h3>
 
             <div className="flex flex-col gap-4">
@@ -34,12 +37,12 @@ export function AddProductImageUpload({
                         {uploading ? (
                             <>
                                 <Loader2 size={18} className="animate-spin" />
-                                Upload en cours...
+                                {t('add_product.images.uploading')}
                             </>
                         ) : (
                             <>
                                 <Upload size={18} />
-                                Choisir une image
+                                {t('add_product.images.choose')}
                             </>
                         )}
                     </div>
@@ -58,12 +61,12 @@ export function AddProductImageUpload({
                             <div key={index} className="relative group">
                                 <img
                                     src={item.url}
-                                    alt={`Image ${index + 1}`}
+                                    alt={t('add_product.images.alt', { number: index + 1 })}
                                     className="w-full h-32 object-cover rounded-lg"
                                 />
                                 {item.isPrimary && (
                                     <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">
-                                        Principale
+                                        {t('add_product.images.primary')}
                                     </div>
                                 )}
                                 <button

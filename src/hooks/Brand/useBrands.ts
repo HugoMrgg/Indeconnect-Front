@@ -1,6 +1,6 @@
-﻿import { useState, useEffect, useRef } from "react";
+﻿import { useQuery } from "@tanstack/react-query";
 import { brandsService } from "@/api/services/brands";
-import { BrandSummaryDTO, EthicsSortType } from "@/api/services/brands/types";
+import { EthicsSortType } from "@/api/services/brands/types";
 
 interface BrandFilters {
     page?: number;
@@ -17,38 +17,18 @@ interface BrandFilters {
 }
 
 export function useBrands(filters: BrandFilters = {}) {
-    const [brands, setBrands] = useState<BrandSummaryDTO[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['brands', filters],
+        queryFn: async () => {
+            const response = await brandsService.getBrands(filters);
+            return response.brands ?? [];
+        },
+        staleTime: 3 * 60 * 1000, // 3 minutes (données des marques changent peu)
+    });
 
-    const prevFiltersRef = useRef<string>("");
-
-    useEffect(() => {
-        const filtersString = JSON.stringify(filters);
-
-        if (prevFiltersRef.current === filtersString) {
-            return;
-        }
-
-        prevFiltersRef.current = filtersString;
-
-        const loadBrands = async () => {
-            try {
-                setLoading(true);
-                const response = await brandsService.getBrands(filters);
-                setBrands(response.brands ?? []);
-                setError(null);
-            } catch (err) {
-                console.error("Erreur chargement marques:", err);
-                setError("Impossible de charger les marques.");
-                setBrands([]);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadBrands();
-    }, [filters]);
-
-    return { brands, loading, error };
+    return {
+        brands: data ?? [],
+        loading: isLoading,
+        error: error ? "Impossible de charger les marques." : null
+    };
 }

@@ -1,5 +1,6 @@
 ﻿import React from "react";
 import { Plus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { EthicsCategoryDto } from "@/api/services/ethics/superVendor/types";
 import { highlight } from "@/features/admin/ethics/utils/search";
 
@@ -20,17 +21,21 @@ export const EthicsCategoriesSidebar: React.FC<Props> = ({
                                                              readOnly,
                                                              searchQuery,
                                                          }) => {
+    const { t } = useTranslation();
+
     return (
         <div className="rounded-2xl border border-gray-200 bg-white p-3">
             <div className="flex items-center justify-between">
-                <div className="text-sm font-semibold text-gray-900">Catégories</div>
+                <div className="text-sm font-semibold text-gray-900">
+                    {t('ethics.categories.title')}
+                </div>
                 <button
                     type="button"
                     onClick={onAdd}
                     disabled={readOnly}
                     className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2 py-1 text-sm hover:bg-gray-50 disabled:opacity-50"
                 >
-                    <Plus size={16} /> Ajouter
+                    <Plus size={16} /> {t('common.add')}
                 </button>
             </div>
 
@@ -53,7 +58,7 @@ export const EthicsCategoriesSidebar: React.FC<Props> = ({
                                     {highlight(c.label, searchQuery)}
                                 </div>
                                 <div className="text-xs text-gray-500">
-                                    {highlight(c.key, searchQuery)} • {c.questions.length} questions
+                                    {highlight(c.key, searchQuery)} • {c.questions.length} {t('ethics.categories.questions')}
                                 </div>
                             </button>
                         );
@@ -61,7 +66,7 @@ export const EthicsCategoriesSidebar: React.FC<Props> = ({
 
                 {categories.length === 0 ? (
                     <div className="text-sm text-gray-500 p-3">
-                        Aucun résultat. Essaie un autre mot-clé.
+                        {t('ethics.categories.no_results')}
                     </div>
                 ) : null}
             </div>

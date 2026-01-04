@@ -2,6 +2,8 @@
 import type { Account } from "@/api/services/account/types";
 import type { InviteAccountRequest } from "@/types/account";
 import { type InvitableRole } from "@/types/account";
+import { logger } from "@/utils/logger";
+import { useTranslation } from "react-i18next";
 
 interface AccountsTableProps {
     accounts: Account[];
@@ -10,20 +12,22 @@ interface AccountsTableProps {
 }
 
 export function AccountsTable({ accounts, onToggleStatus, onResendInvitation }: AccountsTableProps) {
+    const { t } = useTranslation();
+
     if (accounts.length === 0) {
         return (
             <div className="text-center py-16">
                 <Mail size={56} className="mx-auto text-gray-300 mb-4" aria-hidden="true" />
-                <p className="text-gray-500 text-lg">Aucun compte à afficher</p>
+                <p className="text-gray-500 text-lg">{t('admin.accounts.no_accounts')}</p>
             </div>
         );
     }
 
     const handleResend = async (account: Account) => {
-        const invitableRoles: InvitableRole[] = ["Administrator", "Moderator", "SuperVendor"];
+        const invitableRoles: InvitableRole[] = ["Administrator", "Moderator", "SuperVendor", "Vendor"];
 
         if (!invitableRoles.includes(account.role as InvitableRole)) {
-            console.error(`Invalid role for invitation: ${account.role}`);
+            logger.error("AccountsTable.handleResend", `Invalid role for invitation: ${account.role}`);
             return;
         }
 
@@ -41,22 +45,22 @@ export function AccountsTable({ accounts, onToggleStatus, onResendInvitation }: 
                 <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                     <th scope="col" className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                        Email
+                        {t('admin.accounts.email')}
                     </th>
                     <th scope="col" className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                        Nom
+                        {t('admin.accounts.name')}
                     </th>
                     <th scope="col" className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                        Rôle
+                        {t('admin.accounts.role')}
                     </th>
                     <th scope="col" className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                        Statut
+                        {t('admin.accounts.status')}
                     </th>
                     <th scope="col" className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                        Date création
+                        {t('admin.accounts.creation_date')}
                     </th>
                     <th scope="col" className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                        Actions
+                        {t('admin.accounts.actions')}
                     </th>
                 </tr>
                 </thead>
@@ -77,17 +81,17 @@ export function AccountsTable({ accounts, onToggleStatus, onResendInvitation }: 
                                 {account.isPendingActivation ? (
                                     <>
                                         <Clock size={16} className="text-orange-600" aria-hidden="true" />
-                                        <span className="text-sm text-orange-600 font-medium">En attente</span>
+                                        <span className="text-sm text-orange-600 font-medium">{t('admin.accounts.statuses.pending')}</span>
                                     </>
                                 ) : account.isEnabled ? (
                                     <>
                                         <CheckCircle size={16} className="text-green-600" aria-hidden="true" />
-                                        <span className="text-sm text-green-600 font-medium">Actif</span>
+                                        <span className="text-sm text-green-600 font-medium">{t('admin.accounts.statuses.active')}</span>
                                     </>
                                 ) : (
                                     <>
                                         <XCircle size={16} className="text-red-600" aria-hidden="true" />
-                                        <span className="text-sm text-red-600 font-medium">Désactivé</span>
+                                        <span className="text-sm text-red-600 font-medium">{t('admin.accounts.statuses.disabled')}</span>
                                     </>
                                 )}
                             </div>
@@ -96,22 +100,22 @@ export function AccountsTable({ accounts, onToggleStatus, onResendInvitation }: 
                             {new Date(account.createdAt).toLocaleDateString("fr-FR")}
                         </td>
                         <td className="px-6 py-4">
-                            {account.isPendingActivation ? (
+                            {account.isPendingActivation && account.isEnabled ? (
                                 <button
                                     onClick={() => handleResend(account)}
                                     className="flex items-center gap-2 text-xs px-4 py-2 rounded-lg border border-orange-300 bg-orange-50 text-orange-700 hover:bg-orange-100 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 font-medium"
-                                    aria-label={`Réinviter ${account.firstName} ${account.lastName}`}
+                                    aria-label={`${t('admin.accounts.reinvite')} ${account.firstName} ${account.lastName}`}
                                 >
                                     <Send size={14} aria-hidden="true" />
-                                    Réinviter
+                                    {t('admin.accounts.reinvite')}
                                 </button>
                             ) : (
                                 <button
                                     onClick={() => onToggleStatus(account.id, account.isEnabled)}
                                     className="text-xs px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 font-medium"
-                                    aria-label={`${account.isEnabled ? 'Désactiver' : 'Réactiver'} le compte de ${account.firstName} ${account.lastName}`}
+                                    aria-label={`${account.isEnabled ? t('admin.accounts.disable') : t('admin.accounts.reactivate')} ${account.firstName} ${account.lastName}`}
                                 >
-                                    {account.isEnabled ? "Désactiver" : "Réactiver"}
+                                    {account.isEnabled ? t('admin.accounts.disable') : t('admin.accounts.reactivate')}
                                 </button>
                             )}
                         </td>

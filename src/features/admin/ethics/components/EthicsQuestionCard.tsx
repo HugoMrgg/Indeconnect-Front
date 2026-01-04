@@ -2,6 +2,7 @@
 import { Plus, Trash2 } from "lucide-react";
 import { EthicsOptionDto, EthicsQuestionDto } from "@/api/services/ethics/superVendor/types";
 import { highlight } from "@/features/admin/ethics/utils/search";
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     categoryId: number;
@@ -28,12 +29,13 @@ export const EthicsQuestionCard: React.FC<Props> = ({
                                                         onUpdateOption,
                                                         onDeleteOption,
                                                     }) => {
+    const { t } = useTranslation();
     return (
         <div className="rounded-2xl border border-gray-200 p-4">
             {/* Question */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div className="md:col-span-2">
-                    <label className="text-xs font-semibold text-gray-600">Question (Label)</label>
+                    <label className="text-xs font-semibold text-gray-600">{t('features.admin.ethics.questionCard.questionLabel')}</label>
                     <input
                         disabled={readOnly}
                         value={q.label}
@@ -46,7 +48,7 @@ export const EthicsQuestionCard: React.FC<Props> = ({
                 </div>
 
                 <div>
-                    <label className="text-xs font-semibold text-gray-600">Key</label>
+                    <label className="text-xs font-semibold text-gray-600">{t('features.admin.ethics.questionCard.keyLabel')}</label>
                     <input
                         disabled={readOnly}
                         value={q.key}
@@ -61,7 +63,7 @@ export const EthicsQuestionCard: React.FC<Props> = ({
 
             <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div>
-                    <label className="text-xs font-semibold text-gray-600">Answer type</label>
+                    <label className="text-xs font-semibold text-gray-600">{t('features.admin.ethics.questionCard.answerTypeLabel')}</label>
                     <select
                         disabled={readOnly}
                         value={q.answerType}
@@ -70,13 +72,13 @@ export const EthicsQuestionCard: React.FC<Props> = ({
                         }
                         className="mt-1 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm disabled:bg-gray-50 disabled:text-gray-500"
                     >
-                        <option value="Single">Single</option>
-                        <option value="Multiple">Multiple</option>
+                        <option value="Single">{t('features.admin.ethics.questionCard.answerType.single')}</option>
+                        <option value="Multiple">{t('features.admin.ethics.questionCard.answerType.multiple')}</option>
                     </select>
                 </div>
 
                 <div>
-                    <label className="text-xs font-semibold text-gray-600">Order</label>
+                    <label className="text-xs font-semibold text-gray-600">{t('features.admin.ethics.questionCard.orderLabel')}</label>
                     <input
                         disabled={readOnly}
                         type="number"
@@ -94,21 +96,21 @@ export const EthicsQuestionCard: React.FC<Props> = ({
                         className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-3 py-2 text-sm text-red-700 hover:bg-red-50 disabled:opacity-50"
                     >
                         <Trash2 size={16} />
-                        Supprimer
+                        {t('features.admin.ethics.questionCard.deleteButton')}
                     </button>
                 </div>
             </div>
 
             {/* Options */}
             <div className="mt-4 flex items-center justify-between">
-                <div className="text-sm font-semibold text-gray-900">Options</div>
+                <div className="text-sm font-semibold text-gray-900">{t('features.admin.ethics.questionCard.optionsTitle')}</div>
                 <button
                     type="button"
                     disabled={readOnly}
                     onClick={() => onAddOption(categoryId, q.id)}
                     className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm hover:bg-gray-50 disabled:opacity-50"
                 >
-                    <Plus size={16} /> Ajouter une option
+                    <Plus size={16} /> {t('features.admin.ethics.questionCard.addOptionButton')}
                 </button>
             </div>
 
@@ -119,7 +121,7 @@ export const EthicsQuestionCard: React.FC<Props> = ({
                     .map((o) => (
                         <div key={o.id} className="grid grid-cols-12 gap-2 items-end">
                             <div className="col-span-12 md:col-span-3">
-                                <label className="text-xs font-semibold text-gray-600">Key</label>
+                                <label className="text-xs font-semibold text-gray-600">{t('features.admin.ethics.questionCard.keyLabel')}</label>
                                 <input
                                     disabled={readOnly}
                                     value={o.key}
@@ -129,7 +131,7 @@ export const EthicsQuestionCard: React.FC<Props> = ({
                             </div>
 
                             <div className="col-span-12 md:col-span-5">
-                                <label className="text-xs font-semibold text-gray-600">Label</label>
+                                <label className="text-xs font-semibold text-gray-600">{t('features.admin.ethics.questionCard.labelLabel')}</label>
                                 <input
                                     disabled={readOnly}
                                     value={o.label}
@@ -142,7 +144,7 @@ export const EthicsQuestionCard: React.FC<Props> = ({
                             </div>
 
                             <div className="col-span-6 md:col-span-2">
-                                <label className="text-xs font-semibold text-gray-600">Score</label>
+                                <label className="text-xs font-semibold text-gray-600">{t('features.admin.ethics.questionCard.scoreLabel')}</label>
                                 <input
                                     disabled={readOnly}
                                     type="number"
@@ -154,7 +156,7 @@ export const EthicsQuestionCard: React.FC<Props> = ({
                             </div>
 
                             <div className="col-span-4 md:col-span-1">
-                                <label className="text-xs font-semibold text-gray-600">Order</label>
+                                <label className="text-xs font-semibold text-gray-600">{t('features.admin.ethics.questionCard.orderLabel')}</label>
                                 <input
                                     disabled={readOnly}
                                     type="number"
@@ -170,7 +172,7 @@ export const EthicsQuestionCard: React.FC<Props> = ({
                                     disabled={readOnly}
                                     onClick={() => onDeleteOption(categoryId, q.id, o.id)}
                                     className="rounded-lg border border-red-200 px-3 py-2 text-sm text-red-700 hover:bg-red-50 disabled:opacity-50"
-                                    title="Supprimer"
+                                    title={t('features.admin.ethics.questionCard.deleteButton')}
                                 >
                                     <Trash2 size={16} />
                                 </button>
@@ -179,7 +181,7 @@ export const EthicsQuestionCard: React.FC<Props> = ({
                     ))}
 
                 {q.options.length === 0 ? (
-                    <div className="text-sm text-gray-500">Aucune option. Ajoute-en au moins 2.</div>
+                    <div className="text-sm text-gray-500">{t('features.admin.ethics.questionCard.noOptions')}</div>
                 ) : null}
             </div>
         </div>

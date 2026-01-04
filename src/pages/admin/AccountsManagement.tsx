@@ -4,11 +4,16 @@ import { InviteAccountModal } from "@/features/admin/InviteAccountModal";
 import { AccountsTable } from "@/features/admin/AccountsTable";
 import { useAccounts } from "@/hooks/Auth/useAccounts";
 import type { InviteAccountRequest } from "@/types/account";
+import type { Account } from "@/api/services/account/types";
 import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
+import { AccountTableSkeleton } from "@/components/skeletons";
+import { logger } from "@/utils/logger";
+import { useTranslation } from "react-i18next";
 import {useLocation, useNavigate} from "react-router-dom";
 
 export function AccountsManagement() {
+    const { t } = useTranslation();
     const [searchQuery, setSearchQuery] = useState<string>("");
 
     const [openModal, setOpenModal] = useState(false);
@@ -39,7 +44,7 @@ export function AccountsManagement() {
         try {
             await toggleStatus(accountId, currentStatus);
         } catch (err) {
-            console.error("Failed to toggle account status:", err);
+            logger.error("AccountsManagement.handleToggleStatus", err);
         }
     };
 
@@ -47,7 +52,7 @@ export function AccountsManagement() {
         try {
             await resendInvitation(data);
         } catch (err) {
-            console.error("Failed to resend invitation:", err);
+            logger.error("AccountsManagement.handleResendInvitation", err);
         }
     };
 
@@ -58,20 +63,14 @@ export function AccountsManagement() {
         const q = searchQuery.trim().toLowerCase();
         if (!q) return accounts;
 
-        return accounts.filter((a: any) => {
-            // adapte si tes props sont typées différemment
-            const fullName =
-                `${a.firstName ?? ""} ${a.lastName ?? ""}`.trim() ||
-                a.name ||
-                "";
-
+        return accounts.filter((a: Account) => {
+            // Filter accounts based on search query
+            const fullName = `${a.firstName ?? ""} ${a.lastName ?? ""}`.trim();
             const email = a.email ?? "";
-            const username = a.username ?? "";
-            const company = a.company ?? a.companyName ?? "";
-            const roles = Array.isArray(a.roles) ? a.roles.join(" ") : (a.role ?? "");
-            const status = typeof a.isActive === "boolean" ? (a.isActive ? "actif active enabled" : "inactif disabled") : "";
+            const role = a.role ?? "";
+            const status = typeof a.isEnabled === "boolean" ? (a.isEnabled ? "actif active enabled" : "inactif disabled") : "";
 
-            const haystack = `${fullName} ${email} ${username} ${company} ${roles} ${status}`.toLowerCase();
+            const haystack = `${fullName} ${email} ${role} ${status}`.toLowerCase();
             return haystack.includes(q);
         });
     }, [accounts, searchQuery]);
@@ -86,7 +85,7 @@ export function AccountsManagement() {
                     <div className="flex justify-between items-start gap-6">
                         <div>
                             <h1 className="text-5xl font-serif font-bold text-gray-900 mb-4">
-                                Gestion des Comptes
+                                {t('admin.accounts.title')}
                             </h1>
                             <div className="w-24 h-1 bg-gray-900 mb-6" aria-hidden="true"></div>
                             <p className="text-gray-700 text-lg">
@@ -95,7 +94,7 @@ export function AccountsManagement() {
 
                             {isSearching && !loading ? (
                                 <p className="mt-4 text-sm text-gray-800">
-                                    Résultats pour <span className="font-semibold">“{searchQuery}”</span> :{" "}
+                                    Résultats pour <span className="font-semibold">"{searchQuery}"</span> :{" "}
                                     <span className="font-semibold">{filteredAccounts.length}</span>
                                 </p>
                             ) : null}
@@ -104,10 +103,10 @@ export function AccountsManagement() {
                         <button
                             onClick={() => setOpenModal(true)}
                             className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 shadow-lg"
-                            aria-label="Ouvrir le formulaire d'invitation de compte"
+                            aria-label={t('admin.accounts.invite_button')}
                         >
                             <Plus size={20} aria-hidden="true" />
-                            Inviter un compte
+                            {t('admin.accounts.invite_button')}
                         </button>
                     </div>
                 </div>
@@ -135,18 +134,18 @@ export function AccountsManagement() {
                     )}
 
                     {/* Section Title */}
-                    <h2 className="text-xl font-semibold mb-4">Tous les comptes :</h2>
+                    <h2 className="text-xl font-semibold mb-4">{t('brands.all_brands')}</h2>
 
                     {/* Loading State */}
                     {loading ? (
-                        <div className="flex justify-center items-center mt-12">
-                            <p className="text-gray-500 animate-pulse">Chargement des comptes...</p>
+                        <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100">
+                            <AccountTableSkeleton rows={5} />
                         </div>
                     ) : (
                         <>
                             {filteredAccounts.length === 0 ? (
                                 <div className="text-center py-10 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                                    <p className="text-gray-700 font-semibold">Aucun compte ne correspond.</p>
+                                    <p className="text-gray-700 font-semibold">{t('admin.accounts.no_accounts')}</p>
                                     <p className="text-gray-500 mt-1 text-sm">
                                         Essaie un email, un nom, ou un rôle (ex: “administrator”, “moderator”, “supervendor”).
                                     </p>

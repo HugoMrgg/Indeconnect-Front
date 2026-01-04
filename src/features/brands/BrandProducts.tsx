@@ -1,4 +1,5 @@
-﻿import React, {useMemo} from "react";
+﻿import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next"; // ✅ Importer
 
 import { userStorage } from "@/storage/UserStorage";
 import { Product } from "@/types/Product";
@@ -10,7 +11,6 @@ import { ProductList } from "@/features/brands/ProductList";
 import { AddProductCard } from "@/features/product/AddProductCard";
 import ProductCard from "@/components/cards/ProductCard";
 
-/* Typage du filtre */
 interface ProductFiltersState {
     filtered: Product[];
     sort: "featured" | "price_asc" | "price_desc";
@@ -22,21 +22,21 @@ interface ProductFiltersState {
 interface Props {
     filter: ProductFiltersState;
     searchQuery: string;
-    editMode?: boolean;
+    canManageProducts?: boolean;
     onAddProduct?: () => void;
 }
 
 export const BrandProducts: React.FC<Props> = ({
                                                    filter,
                                                    searchQuery,
-                                                   editMode = false,
-                                                   onAddProduct
+                                                   canManageProducts = false,
+                                                   onAddProduct,
                                                }) => {
+    const { t } = useTranslation(); // ✅ Hook de traduction
     const { filtered, sort, setSort, view, setView } = filter;
 
     const user = userStorage.getUser();
 
-    /** Filtrage par texte */
     const filteredByText = useMemo(() => {
         if (!searchQuery.trim()) return filtered;
 
@@ -51,16 +51,19 @@ export const BrandProducts: React.FC<Props> = ({
         });
     }, [filtered, searchQuery]);
 
-    // Gestion de la wishlist via le hook dédié
     const { likedMap, toggleLike } = useWishlistUI(user?.id, filteredByText);
 
-    // Cas spécial : mode édition sans produits
-    if (editMode && filteredByText.length === 0 && onAddProduct) {
+    // ✅ Cas spécial : mode gestion sans produits
+    if (canManageProducts && filteredByText.length === 0 && onAddProduct) {
         return (
             <section className="space-y-4">
                 <div className="text-center py-8 text-gray-500">
-                    <p className="text-lg font-medium mb-2">Aucun produit pour le moment</p>
-                    <p className="text-sm">Commencez par ajouter votre premier produit !</p>
+                    <p className="text-lg font-medium mb-2">
+                        {t('brands.products.no_products')} {/* ✅ Traduit */}
+                    </p>
+                    <p className="text-sm">
+                        {t('brands.products.add_first')} {/* ✅ Traduit */}
+                    </p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <AddProductCard onClick={onAddProduct} />
@@ -73,8 +76,12 @@ export const BrandProducts: React.FC<Props> = ({
     if (filteredByText.length === 0) {
         return (
             <section className="space-y-4 py-10 text-center text-gray-500">
-                <p className="text-lg">Votre recherche n'a rien donné...</p>
-                <p className="text-sm opacity-70">Essayez d'autres mots-clés</p>
+                <p className="text-lg">
+                    {t('brands.products.no_results')} {/* ✅ Traduit */}
+                </p>
+                <p className="text-sm opacity-70">
+                    {t('brands.products.try_other_keywords')} {/* ✅ Traduit */}
+                </p>
             </section>
         );
     }
@@ -90,8 +97,8 @@ export const BrandProducts: React.FC<Props> = ({
             />
 
             {view === "grid" ? (
-                editMode && onAddProduct ? (
-                    // Mode édition : grille manuelle avec AddProductCard
+                canManageProducts && onAddProduct ? (
+                    // Mode gestion : grille manuelle avec AddProductCard
                     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                         <AddProductCard onClick={onAddProduct} />
                         {filteredByText.map((p) => (
@@ -100,12 +107,13 @@ export const BrandProducts: React.FC<Props> = ({
                                 product={p}
                                 liked={likedMap[p.id] ?? false}
                                 onToggleLike={() => toggleLike(p.id)}
-                                showStatus={true}
+                                showStatus={canManageProducts}
+                                editMode={canManageProducts}
                             />
                         ))}
                     </div>
                 ) : (
-                    // Mode normal : utiliser ProductGrid comme avant
+                    // Mode normal : utiliser ProductGrid
                     <ProductGrid
                         items={filteredByText}
                         likedMap={likedMap}
@@ -114,8 +122,8 @@ export const BrandProducts: React.FC<Props> = ({
                 )
             ) : (
                 <>
-                    {/* En mode liste, on affiche la carte d'ajout avant la liste */}
-                    {editMode && onAddProduct && (
+                    {/* En mode liste, carte d'ajout avant la liste */}
+                    {canManageProducts && onAddProduct && (
                         <div className="mb-6">
                             <AddProductCard onClick={onAddProduct} />
                         </div>

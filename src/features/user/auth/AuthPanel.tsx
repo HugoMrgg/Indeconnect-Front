@@ -7,6 +7,7 @@ import { LoginForm } from "@/features/user/auth/LoginForm";
 import { RegisterForm } from "@/features/user/auth/RegisterForm";
 
 import { X } from "lucide-react";
+import { logger } from "@/utils/logger";
 
 export function AuthPanel() {
     const { authOpen, authMode, closeAuth } = useUI();
@@ -87,7 +88,7 @@ export function AuthPanel() {
                 : "Erreur d'authentification Google";
 
             setLocalError(errorMessage);
-            console.error("Google auth failed:", err);
+            logger.error("AuthPanel.handleGoogleAuth", err);
         }
     };
 

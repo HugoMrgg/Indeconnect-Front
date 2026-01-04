@@ -1,4 +1,5 @@
-﻿import { TrackingStepDto } from "@/api/services/orders/types";
+﻿import { useTranslation } from "react-i18next";
+import { TrackingStepDto } from "@/api/services/orders/types";
 import { Check, Loader2, ShoppingCart, CreditCard, Package, Truck, Home, CheckCircle2 } from "lucide-react";
 
 type Props = {
@@ -46,11 +47,13 @@ const getStepColor = (isCompleted: boolean, isCurrent: boolean) => {
 };
 
 export function OrderTracker({ timeline }: Props) {
+    const { t } = useTranslation();
+
     return (
         <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
             <div className="flex items-center gap-2 mb-6">
                 <Package className="text-gray-700" size={24} />
-                <h2 className="text-xl font-bold">Suivi de commande</h2>
+                <h2 className="text-xl font-bold">{t('orders.track_order')}</h2>
             </div>
 
             <div className="space-y-2">
@@ -99,12 +102,12 @@ export function OrderTracker({ timeline }: Props) {
                                     </h3>
                                     {step.isCompleted && (
                                         <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
-                                            Terminé
+                                            {t('common.loading')}
                                         </span>
                                     )}
                                     {step.isCurrent && (
                                         <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
-                                            En cours
+                                            {t('common.loading')}
                                         </span>
                                     )}
                                 </div>

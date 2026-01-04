@@ -9,6 +9,7 @@ import { WishlistService } from "@/api/services/wishlist";
 import {useWishlist} from "@/hooks/User/useWishList";
 import {WishlistResponse} from "@/api/services/wishlist/types";
 import {userStorage} from "@/storage/UserStorage";
+import {WishlistSkeleton} from "@/components/skeletons";
 
 export function Wishlist() {
     const navigate = useNavigate();
@@ -61,8 +62,8 @@ export function Wishlist() {
     if (loading) {
         return (
             <WishlistPageLayout searchQuery={searchQuery} onSearchChange={setSearchQuery}>
-                <div className="flex justify-center items-center mt-12">
-                    <p className="text-gray-500 animate-pulse">Chargement des produits favoris...</p>
+                <div className="px-6 mt-6">
+                    <WishlistSkeleton />
                 </div>
             </WishlistPageLayout>
         );

@@ -1,4 +1,5 @@
 ﻿import { useMemo, useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { CartDto } from "@/api/services/cart/types";
 import { PaymentModal } from "./PaymentModal";
 import { ShippingChoice } from "@/types/checkout";
@@ -23,6 +24,7 @@ export function CheckoutFooter({
                                    onCreateOrder,
                                    onPaymentSuccess,
                                }: Props) {
+    const { t } = useTranslation();
     // État pour gérer l'ouverture du modal de paiement
     const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 
@@ -67,32 +69,32 @@ export function CheckoutFooter({
                         {processing ? (
                             <span className="flex items-center justify-center gap-2">
                                 <Loader2 className="animate-spin" size={20} />
-                                Création de la commande...
+                                {t('checkout.creating_order')}
                             </span>
                         ) : (
-                            "Créer la commande"
+                            t('checkout.create_order')
                         )}
                     </button>
 
                     {!canProceed && (
                         <p className="text-sm text-red-600 mt-2 text-center">
                             {!selectedAddressId
-                                ? "Veuillez sélectionner une adresse de livraison"
-                                : "Veuillez sélectionner un mode de livraison pour chaque marque"}
+                                ? t('checkout.error_no_address')
+                                : t('checkout.error_no_delivery_mode')}
                         </p>
                     )}
                 </>
             ) : (
                 <div className="space-y-4">
                     <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg text-sm">
-                        La commande créée. Le paiement s'ouvre dans une fenêtre.
+                        {t('checkout.order_created')}
                     </div>
 
                     <button
                         onClick={() => setPaymentModalOpen(true)}
                         className="w-full py-4 px-6 rounded-lg font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-all active:scale-[0.98]"
                     >
-                        Procéder au paiement
+                        {t('checkout.proceed_to_payment')}
                     </button>
                 </div>
             )}

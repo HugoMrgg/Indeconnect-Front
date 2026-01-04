@@ -7,16 +7,16 @@ import {SuperVendorEthicsStickyNotice} from "@/pages/brands/SuperVendorEthicsSti
 import {useAuth} from "@/hooks/Auth/useAuth";
 
 export function SuperVendorEthicsGlobal() {
-    const { user, isAuthenticated } = useAuth(); // <-- adapte si ton hook/context s'appelle autrement
+    const { user, isAuthenticated } = useAuth(); // Adjust hook/context name if using different auth implementation
     const { pathname } = useLocation();
     const [open, setOpen] = useState(false);
 
     const isSuperVendor = useMemo(() => {
         if (!isAuthenticated || !user) return false;
 
-        // cas classiques : user.roles = ["SuperVendor"] ou user.role = "SuperVendor"
-        const roles = (user as any).roles as string[] | undefined;
-        const role = (user as any).role as string | undefined;
+        // Handle both roles array and single role property in user object
+        const roles = (user as { roles?: string[] }).roles;
+        const role = (user as { role?: string }).role;
 
         if (roles?.some(r => r.toLowerCase() === "supervendor")) return true;
         if (role?.toLowerCase() === "supervendor") return true;
@@ -38,7 +38,7 @@ export function SuperVendorEthicsGlobal() {
         <>
             <SuperVendorEthicsStickyNotice
                 onOpen={() => setOpen(true)}
-                // si tu veux éviter qu’il cache un header local
+                // Offset to prevent overlap with local header if present
                 className="top-24"
             />
 

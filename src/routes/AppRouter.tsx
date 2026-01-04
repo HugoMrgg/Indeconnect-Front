@@ -10,6 +10,7 @@ import { ProtectedRoute } from "@/routes/ProtectedRoute";
 import {MyBrandPage} from "@/pages/brands/MyBrandPage";
 import {BrandInfoPageWrapper} from "@/pages/brands/BrandInfoPageWrapper";
 import {SettingsPage} from "@/pages/settings/Settings";
+import { ModeratorProductReviewsPage } from "@/pages/moderator/ModeratorProductReviewsPage";
 import {CheckoutPage} from "@/pages/checkout/CheckoutPage";
 import {OrderConfirmation} from "@/pages/checkout/OrderConfirmation";
 import {OrdersPage} from "@/pages/order/OrdersPage";
@@ -60,11 +61,11 @@ export default function AppRouter() {
                 }
             />
 
-            {/* Routes protégées - Admin/Moderator */}
+            {/* Routes protégées - Admin/Moderator/SuperVendor */}
             <Route
                 path="/admin/accounts"
                 element={
-                    <ProtectedRoute requiredRoles={["Administrator", "Moderator"]}>
+                    <ProtectedRoute requiredRoles={["Administrator", "Moderator", "SuperVendor"]}>
                         <AccountsManagement />
                     </ProtectedRoute>
                 }
@@ -94,12 +95,20 @@ export default function AppRouter() {
                     </ProtectedRoute>
                 }
             />
-            {/* SuperVendor Routes */}
+            {/* SuperVendor & Vendor Routes */}
             <Route
                 path="/my-brand"
                 element={
-                    <ProtectedRoute requiredRoles={["SuperVendor"]}>
+                    <ProtectedRoute requiredRoles={["SuperVendor", "Vendor"]}>
                         <MyBrandPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/my-brand/product/:productId"
+                element={
+                    <ProtectedRoute requiredRoles={["SuperVendor", "Vendor"]}>
+                        <ProductPage editMode={true} />
                     </ProtectedRoute>
                 }
             />

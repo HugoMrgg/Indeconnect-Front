@@ -1,4 +1,5 @@
 ﻿import axiosInstance from "@/api/api";
+import { logger } from "@/utils/logger";
 
 export interface ColorDto {
     id: number;
@@ -14,7 +15,7 @@ export async function fetchColors(): Promise<ColorDto[]> {
         const response = await axiosInstance.get<ColorDto[]>("/colors");
         return response.data;
     } catch (error) {
-        console.error("Error fetching colors:", error);
+        logger.error("ColorService.fetchColors", error);
         throw error;
     }
 }

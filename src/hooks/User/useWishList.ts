@@ -1,4 +1,4 @@
-﻿import { useEffect, useState, useCallback, useRef } from "react";
+﻿import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { WishlistService } from "@/api/services/wishlist";
 import type { WishlistResponse } from "@/api/services/wishlist/types";
@@ -10,79 +10,39 @@ interface UseWishlistState {
 }
 
 interface UseWishlistReturn extends UseWishlistState {
-    retry: () => Promise<void>;
+    retry: () => void;
 }
 
 export function useWishlist(userId: number | undefined): UseWishlistReturn {
-    const [state, setState] = useState<UseWishlistState>({
-        wishlist: null,
-        loading: true,
-        error: null,
-    });
+    const { data, isLoading, error, refetch } = useQuery({
+        queryKey: ['wishlist', userId],
+        queryFn: async ({ signal }) => {
+            if (!userId) {
+                throw new Error("Utilisateur non authentifié");
+            }
 
-    // Ref pour tracker les montages/démontages
-    const abortControllerRef = useRef<AbortController | null>(null);
-
-    const load = useCallback(async () => {
-        if (!userId) {
-            setState({
-                wishlist: null,
-                loading: false,
-                error: "Utilisateur non authentifié",
-            });
-            return;
-        }
-
-        abortControllerRef.current?.abort();
-        abortControllerRef.current = new AbortController();
-
-        setState(prev => ({ ...prev, loading: true, error: null }));
-
-        try {
-            const response = await WishlistService.getWishlist(
-                userId,
-                abortControllerRef.current.signal
-            );
-
-            if (abortControllerRef.current.signal.aborted) return;
+            const response = await WishlistService.getWishlist(userId, signal);
 
             if (!response?.data) {
                 throw new Error("Format réponse invalide");
             }
 
-            setState({
-                wishlist: response.data as WishlistResponse,
-                loading: false,
-                error: null,
-            });
-        } catch (err) {
-            if (abortControllerRef.current.signal.aborted) return;
+            return response.data as WishlistResponse;
+        },
+        enabled: !!userId,
+        staleTime: 2 * 60 * 1000, // 2 min
+    });
 
-            const errorMsg =
-                err instanceof AxiosError
-                    ? err.response?.data?.message || err.message
-                    : err instanceof Error
-                        ? err.message
-                        : "Impossible de charger vos favoris";
-
-            setState({
-                wishlist: null,
-                loading: false,
-                error: errorMsg,
-            });
-        }
-    }, [userId]);
-
-    useEffect(() => {
-        load();
-
-        return () => {
-            abortControllerRef.current?.abort();
-        };
-    }, [load, userId]);
+    const errorMsg = error instanceof AxiosError
+        ? error.response?.data?.message || error.message
+        : error instanceof Error
+            ? error.message
+            : error ? "Impossible de charger vos favoris" : null;
 
     return {
-        ...state,
-        retry: load,
+        wishlist: data ?? null,
+        loading: isLoading,
+        error: errorMsg,
+        retry: refetch,
     };
 }

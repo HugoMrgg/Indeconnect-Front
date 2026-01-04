@@ -1,5 +1,6 @@
 ﻿import React from "react";
 import { Plus, Trash2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { EthicsCategoryDto, EthicsQuestionDto, EthicsOptionDto } from "@/api/services/ethics/superVendor/types";
 import { EthicsQuestionCard } from "@/features/admin/ethics/components/EthicsQuestionCard";
 
@@ -33,10 +34,12 @@ export const EthicsCategoryEditor: React.FC<Props> = ({
                                                           onUpdateOption,
                                                           onDeleteOption,
                                                       }) => {
+    const { t } = useTranslation();
+
     if (!category) {
         return (
             <div className="rounded-2xl border border-gray-200 bg-white p-6 text-gray-600">
-                Ajoute une catégorie pour commencer.
+                {t('ethics.editor.add_category_prompt')}
             </div>
         );
     }
@@ -48,7 +51,9 @@ export const EthicsCategoryEditor: React.FC<Props> = ({
                 <div className="flex-1 space-y-3">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div className="md:col-span-2">
-                            <label className="text-xs font-semibold text-gray-600">Label</label>
+                            <label className="text-xs font-semibold text-gray-600">
+                                {t('ethics.editor.label')}
+                            </label>
                             <input
                                 disabled={readOnly}
                                 value={category.label}
@@ -57,7 +62,9 @@ export const EthicsCategoryEditor: React.FC<Props> = ({
                             />
                         </div>
                         <div>
-                            <label className="text-xs font-semibold text-gray-600">Key</label>
+                            <label className="text-xs font-semibold text-gray-600">
+                                {t('ethics.editor.key')}
+                            </label>
                             <input
                                 disabled={readOnly}
                                 value={category.key}
@@ -69,7 +76,9 @@ export const EthicsCategoryEditor: React.FC<Props> = ({
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div>
-                            <label className="text-xs font-semibold text-gray-600">Order</label>
+                            <label className="text-xs font-semibold text-gray-600">
+                                {t('ethics.editor.order')}
+                            </label>
                             <input
                                 disabled={readOnly}
                                 type="number"
@@ -87,7 +96,7 @@ export const EthicsCategoryEditor: React.FC<Props> = ({
                                 className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-3 py-2 text-sm text-red-700 hover:bg-red-50 disabled:opacity-50"
                             >
                                 <Trash2 size={16} />
-                                Supprimer catégorie
+                                {t('ethics.editor.delete_category')}
                             </button>
                         </div>
                     </div>
@@ -96,14 +105,16 @@ export const EthicsCategoryEditor: React.FC<Props> = ({
 
             {/* Questions */}
             <div className="mt-6 flex items-center justify-between">
-                <div className="text-sm font-semibold text-gray-900">Questions</div>
+                <div className="text-sm font-semibold text-gray-900">
+                    {t('ethics.editor.questions_title')}
+                </div>
                 <button
                     type="button"
                     disabled={readOnly}
                     onClick={() => onAddQuestion(category.id)}
                     className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm hover:bg-gray-50 disabled:opacity-50"
                 >
-                    <Plus size={16} /> Ajouter une question
+                    <Plus size={16} /> {t('ethics.editor.add_question')}
                 </button>
             </div>
 
@@ -127,7 +138,9 @@ export const EthicsCategoryEditor: React.FC<Props> = ({
                     ))}
 
                 {category.questions.length === 0 ? (
-                    <div className="text-sm text-gray-500">Aucune question. Ajoute ta première.</div>
+                    <div className="text-sm text-gray-500">
+                        {t('ethics.editor.no_questions')}
+                    </div>
                 ) : null}
             </div>
         </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { Plus, Loader2 } from "lucide-react";
 import { useShipping } from "@/hooks/Order/useShipping";
 import { ShippingMethodForm, FormData } from "./ShippingMethodForm";
@@ -19,6 +20,7 @@ const INITIAL_FORM_DATA: FormData = {
 };
 
 export function ShippingMethodsManager({ brandId, editMode = false }: Props) {
+    const { t } = useTranslation();
     const { methods, loading, fetchBrandMethods, createMethod, deleteMethod } = useShipping();
 
     const [showForm, setShowForm] = useState(false);
@@ -53,7 +55,7 @@ export function ShippingMethodsManager({ brandId, editMode = false }: Props) {
     };
 
     const handleDelete = async (methodId: number) => {
-        if (!window.confirm("Supprimer cette méthode de livraison ?")) return;
+        if (!window.confirm(t('shipping.manager.confirm_delete'))) return; 
 
         const success = await deleteMethod(brandId, methodId);
         if (success) {
@@ -79,7 +81,9 @@ export function ShippingMethodsManager({ brandId, editMode = false }: Props) {
     if (!editMode) {
         return (
             <div className="space-y-3">
-                <h3 className="font-semibold text-gray-900">Méthodes de livraison</h3>
+                <h3 className="font-semibold text-gray-900">
+                    {t('shipping.manager.title')}
+                </h3>
                 <ShippingMethodList methods={methods} editMode={false} />
             </div>
         );
@@ -89,14 +93,16 @@ export function ShippingMethodsManager({ brandId, editMode = false }: Props) {
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-gray-900">Méthodes de livraison</h3>
+                <h3 className="font-semibold text-gray-900">
+                    {t('shipping.manager.title')}
+                </h3>
                 {!showForm && (
                     <button
                         onClick={() => setShowForm(true)}
                         className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm"
                     >
                         <Plus size={16} />
-                        Ajouter
+                        {t('common.add')} 
                     </button>
                 )}
             </div>

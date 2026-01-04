@@ -1,5 +1,16 @@
 ﻿import { Color } from "@/types/Product";
 
+// ← Importer le type Sale
+export interface Sale {
+    id: number;
+    name: string;
+    description: string | null;
+    discountPercentage: number;
+    startDate: string;
+    endDate: string;
+    isActive: boolean;
+}
+
 // DTO qui correspond à ce que le backend envoie dans la liste de produits
 export interface ProductDTO {
     id: number;
@@ -12,7 +23,9 @@ export interface ProductDTO {
     primaryColor?: Color | null;
     category?: string;
     status?: "Draft" | "Online" | "Offline";
+    sale?: Sale | null;
 }
+
 
 export interface ProductsResponse {
     products: ProductDTO[];
@@ -177,4 +190,37 @@ export interface CreateProductResponse {
     price: number;
     status: string;
     createdAt: string;
+}
+// Types pour la mise à jour d'un produit
+export interface UpdateProductRequest {
+    name: string;
+    description: string;
+    price: number;
+    status: "Draft" | "Active" | "Online" | "Disabled";
+    primaryColorId: number | null;
+    categoryId: number;
+    sale: {
+        discountPercentage: number;
+        startDate: string;
+        endDate: string;
+        description?: string;
+    } | null;
+    variants: Array<{
+        sizeId: number;
+        stockCount: number;
+        id?: number; // Si id existe, c'est une mise à jour, sinon c'est une création
+    }>;
+    media: Array<{
+        url: string;
+        type: "Image" | "Video";
+        displayOrder: number;
+        isPrimary: boolean;
+    }>;
+}
+
+export interface UpdateProductResponse {
+    id: number;
+    name: string;
+    status: string;
+    updatedAt: string;
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { SlidersHorizontal, Search } from "lucide-react";
 import { useUI } from "@/context/UIContext";
 
@@ -10,23 +11,6 @@ type Props = {
     onChange?: (value: string) => void;
 };
 
-// create a method to handle all scenarios of scope
-function handleScopes(scope?: string) {
-    switch (scope) {
-        case "brands":
-            return "Rechercher parmi les marques...";
-        case "products":
-            return "Rechercher parmi les produits...";
-        case "wishlist":
-            return "Rechercher dans votre liste de souhaits...";
-        case "settings":
-            return "Rechercher dans les paramètres...";
-        case "accounts":
-            return "Rechercher parmi les comptes...";
-        default:
-            return "Rechercher sur cet page...";
-    }
-}
 export function SearchBar({
                               scope,
                               enabled = true,
@@ -34,10 +18,29 @@ export function SearchBar({
                               value = "",
                               onChange
                           }: Props) {
+    const { t } = useTranslation();
     const [open, setOpen] = useState(false);
     const { toggleFilters } = useUI();
 
-    const placeholder = handleScopes(scope);
+    // Fonction pour gérer les placeholders selon le scope
+    function getPlaceholder(scope?: string) {
+        switch (scope) {
+            case "brands":
+                return t('search_bar.placeholder.brands');
+            case "products":
+                return t('search_bar.placeholder.products');
+            case "wishlist":
+                return t('search_bar.placeholder.wishlist');
+            case "settings":
+                return t('search_bar.placeholder.settings');
+            case "accounts":
+                return t('search_bar.placeholder.accounts');
+            default:
+                return t('search_bar.placeholder.default');
+        }
+    }
+
+    const placeholder = getPlaceholder(scope);
     const disabledClasses = enabled ? "opacity-100" : "opacity-50 pointer-events-none select-none";
 
     return (
@@ -52,7 +55,7 @@ export function SearchBar({
                 className="flex items-center space-x-1 p-1 mx-2 rounded-xl bg-gray-600 text-white"
             >
                 <SlidersHorizontal size={20} />
-                <p>Filtres</p>
+                <p>{t('search_bar.filters')}</p>
             </button>
 
             {/**

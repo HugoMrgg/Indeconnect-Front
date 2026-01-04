@@ -15,17 +15,22 @@ import { BrandEthicsCallout } from "@/features/brands/BrandEthicsCallout";
 import { AddProductForm } from "@/features/product/AddProductForm";
 import { createProduct } from "@/api/services/products";
 import { CreateProductRequest } from "@/api/services/products/types";
-
+import { useAuthContext } from "@/hooks/Auth/useAuthContext";
+import { PageSkeleton } from "@/components/skeletons";
+import { logger } from "@/utils/logger";
+import { VendorManagementSection } from "@/features/vendors/VendorManagementSection";
 
 export function MyBrandPage() {
+    const { userRole } = useAuthContext();
+    const isVendor = userRole === "Vendor";
+
     const { brand, loading, error, refetch } = useMyBrand();
     const [showPreview, setShowPreview] = useState(false);
-    const [activeTab, setActiveTab] = useState<"products" | "about" | "shipping">("products");
+    const [activeTab, setActiveTab] = useState<"products" | "about" | "shipping" | "team">("products");
     const [depositModalOpen, setDepositModalOpen] = useState(false);
+    const [setEthicsModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [showAddProduct, setShowAddProduct] = useState(false);
-
-    const [ethicsModalOpen, setEthicsModalOpen] = useState(false);
 
     const initialData = useMemo(() => {
         if (!brand) return null;
@@ -69,12 +74,11 @@ export function MyBrandPage() {
             try {
                 await createProduct(data);
                 setShowAddProduct(false);
-                // Petit délai pour une meilleure UX avant le refresh
                 setTimeout(() => {
                     refetch();
                 }, 300);
             } catch (error) {
-                console.error("Error creating product:", error);
+                logger.error("MyBrandPage.handleCreateProduct", error);
                 throw error;
             }
         },
@@ -107,11 +111,7 @@ export function MyBrandPage() {
     }, [brand, editing.formData]);
 
     if (loading) {
-        return (
-            <div className="flex items-center justify-center min-h-screen">
-                <Loader2 size={48} className="animate-spin text-gray-400" />
-            </div>
-        );
+        return <PageSkeleton />;
     }
 
     if (error || !brand || !displayBrand) {
@@ -129,8 +129,8 @@ export function MyBrandPage() {
 
     return (
         <>
-            {/* Barre d'actions fixe */}
-            {editing.hasChanges && (
+            {/* Barre d'actions fixe - cachée pour les Vendors */}
+            {!isVendor && editing.hasChanges && (
                 <div className="fixed top-0 left-0 right-0 z-50 bg-blue-600 text-white shadow-lg">
                     <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
                         <span className="font-medium">Modifications non enregistrées</span>
@@ -164,62 +164,78 @@ export function MyBrandPage() {
             )}
 
             {/* Contenu avec onglets */}
-            <div className={editing.hasChanges ? "pt-16" : ""}>
-                {/* Tabs */}
-                <div className="bg-gradient-to-b from-gray-50 to-white py-4">
-                    <div className="mx-auto max-w-3xl px-4">
-                        <div className="bg-gray-100 rounded-2xl p-1.5 shadow-inner">
-                            <div className="flex gap-1.5">
-                                <button
-                                    type="button"
-                                    onClick={() => setActiveTab("products")}
-                                    className={`flex-1 px-4 py-3 text-sm font-semibold rounded-xl transition-all ${
-                                        activeTab === "products"
-                                            ? "bg-white text-gray-900 shadow-sm"
-                                            : "text-gray-600 hover:text-gray-900"
-                                    }`}
-                                >
-                                    Produits
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => setActiveTab("about")}
-                                    className={`flex-1 px-4 py-3 text-sm font-semibold rounded-xl transition-all ${
-                                        activeTab === "about"
-                                            ? "bg-white text-gray-900 shadow-sm"
-                                            : "text-gray-600 hover:text-gray-900"
-                                    }`}
-                                >
-                                    Présentation
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => setActiveTab("shipping")}
-                                    className={`flex-1 px-4 py-3 text-sm font-semibold rounded-xl transition-all ${
-                                        activeTab === "shipping"
-                                            ? "bg-white text-gray-900 shadow-sm"
-                                            : "text-gray-600 hover:text-gray-900"
-                                    }`}
-                                >
-                                    Livraison
-                                </button>
+            <div className={!isVendor && editing.hasChanges ? "pt-16" : ""}>
+                {/* Tabs - cachés pour les Vendors qui voient uniquement les produits */}
+                {!isVendor && (
+                    <div className="bg-gradient-to-b from-gray-50 to-white py-4">
+                        <div className="mx-auto max-w-3xl px-4">
+                            <div className="bg-gray-100 rounded-2xl p-1.5 shadow-inner">
+                                <div className="flex gap-1.5">
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveTab("products")}
+                                        className={`flex-1 px-4 py-3 text-sm font-semibold rounded-xl transition-all ${
+                                            activeTab === "products"
+                                                ? "bg-white text-gray-900 shadow-sm"
+                                                : "text-gray-600 hover:text-gray-900"
+                                        }`}
+                                    >
+                                        Produits
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveTab("about")}
+                                        className={`flex-1 px-4 py-3 text-sm font-semibold rounded-xl transition-all ${
+                                            activeTab === "about"
+                                                ? "bg-white text-gray-900 shadow-sm"
+                                                : "text-gray-600 hover:text-gray-900"
+                                        }`}
+                                    >
+                                        Présentation
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveTab("shipping")}
+                                        className={`flex-1 px-4 py-3 text-sm font-semibold rounded-xl transition-all ${
+                                            activeTab === "shipping"
+                                                ? "bg-white text-gray-900 shadow-sm"
+                                                : "text-gray-600 hover:text-gray-900"
+                                        }`}
+                                    >
+                                        Livraison
+                                    </button>
+
+                                    {userRole === "SuperVendor" && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setActiveTab("team")}
+                                            className={`flex-1 px-4 py-3 text-sm font-semibold rounded-xl transition-all ${
+                                                activeTab === "team"
+                                                    ? "bg-white text-gray-900 shadow-sm"
+                                                    : "text-gray-600 hover:text-gray-900"
+                                            }`}
+                                        >
+                                            Équipe
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                )}
 
-                {/* Onglet Produits */}
-                {activeTab === "products" && (
+                {/* Onglet Produits - toujours affiché pour les Vendors */}
+                {(activeTab === "products" || isVendor) && (
                     <>
                         <BrandPage
                             brandId={brand.id}
                             brandData={displayBrand}
-                            editMode={true}
-                            onUpdateField={editing.updateField}
-                            onAddProduct={() => setShowAddProduct(true)} // NOUVEAU
+                            editMode={!isVendor} // ✅ Vendor ne peut PAS éditer la marque
+                            canManageProducts={true} // ✅ Mais PEUT gérer les produits
+                            onUpdateField={isVendor ? undefined : editing.updateField}
+                            onAddProduct={() => setShowAddProduct(true)}
                         />
 
-                        {/* Modal d'ajout de produit */}
                         {showAddProduct && (
                             <AddProductForm
                                 brandId={brand.id}
@@ -234,8 +250,8 @@ export function MyBrandPage() {
                     </>
                 )}
 
-                {/* Onglet Présentation */}
-                {activeTab === "about" && (
+                {/* Onglet Présentation - caché pour les Vendors */}
+                {!isVendor && activeTab === "about" && (
                     <div className="min-h-full bg-gradient-to-b from-gray-50 to-white">
                         <BannerBrand
                             name={displayBrand.name}
@@ -275,7 +291,8 @@ export function MyBrandPage() {
                     </div>
                 )}
 
-                {activeTab === "shipping" && (
+                {/* Onglet Livraison - caché pour les Vendors */}
+                {!isVendor && activeTab === "shipping" && (
                     <div className="min-h-full bg-gradient-to-b from-gray-50 to-white py-8">
                         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                             <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
@@ -284,9 +301,13 @@ export function MyBrandPage() {
                         </div>
                     </div>
                 )}
+
+                {/* Onglet Équipe - SuperVendor uniquement */}
+                {!isVendor && userRole === "SuperVendor" && activeTab === "team" && (
+                    <VendorManagementSection brandId={brand.id} />
+                )}
             </div>
 
-            {/* Modal dépôt principal */}
             <DepositModal
                 open={depositModalOpen}
                 onClose={() => setDepositModalOpen(false)}
@@ -296,12 +317,10 @@ export function MyBrandPage() {
                 }}
             />
 
-            {/* Modal Preview client */}
             {showPreview && displayBrand && (
                 <PreviewModal brand={displayBrand} onClose={() => setShowPreview(false)} />
             )}
 
-            {/* AuthPanel et NavBar */}
             <AuthPanel />
             <NavBar searchValue={searchQuery} onSearchChange={setSearchQuery} />
         </>

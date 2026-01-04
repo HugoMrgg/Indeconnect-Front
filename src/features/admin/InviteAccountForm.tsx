@@ -1,5 +1,6 @@
 ﻿import { useState, useId, useMemo } from "react";
 import { AlertCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Role } from "@/types/account";
 import { getInvitableRoles } from "@/utils/roleHierarchy";
 import type { InvitableRole, InviteAccountRequest } from "@/types/account";
@@ -25,6 +26,8 @@ export function InviteAccountForm({
                                       validationErrors = {},
                                       currentRole
                                   }: InviteAccountFormProps) {
+    const { t } = useTranslation();
+
     // Calculer les rôles invitables
     const invitableRoles = useMemo(() => getInvitableRoles(currentRole), [currentRole]);
 
@@ -61,7 +64,7 @@ export function InviteAccountForm({
                 className="flex items-center gap-2 bg-red-50 text-red-700 p-4 rounded-lg"
             >
                 <AlertCircle size={20} aria-hidden="true" />
-                <p>Vous n'avez pas les permissions pour inviter des comptes.</p>
+                <p>{t('admin.invite.no_permission')}</p>
             </div>
         );
     }
@@ -87,7 +90,7 @@ export function InviteAccountForm({
                     htmlFor={`${formId}-email`}
                     className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                    Email <span aria-label="obligatoire">*</span>
+                    {t('admin.invite.email_label')} <span aria-label={t('validation.required_field')}>*</span>
                 </label>
                 <input
                     id={`${formId}-email`}
@@ -97,7 +100,7 @@ export function InviteAccountForm({
                     className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black ${
                         validationErrors.email ? "border-red-500" : "border-gray-300"
                     }`}
-                    placeholder="exemple@email.com"
+                    placeholder={t('admin.invite.email_placeholder')}
                     aria-invalid={!!validationErrors.email}
                     aria-describedby={validationErrors.email ? `${formId}-email-error` : undefined}
                     required
@@ -117,7 +120,7 @@ export function InviteAccountForm({
                     htmlFor={`${formId}-firstName`}
                     className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                    Prénom <span aria-label="obligatoire">*</span>
+                    {t('admin.invite.first_name_label')} <span aria-label={t('validation.required_field')}>*</span>
                 </label>
                 <input
                     id={`${formId}-firstName`}
@@ -127,7 +130,7 @@ export function InviteAccountForm({
                     className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black ${
                         validationErrors.firstName ? "border-red-500" : "border-gray-300"
                     }`}
-                    placeholder="Jean"
+                    placeholder={t('admin.invite.first_name_placeholder')}
                     aria-invalid={!!validationErrors.firstName}
                     aria-describedby={validationErrors.firstName ? `${formId}-firstName-error` : undefined}
                     required
@@ -146,7 +149,7 @@ export function InviteAccountForm({
                     htmlFor={`${formId}-lastName`}
                     className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                    Nom <span aria-label="obligatoire">*</span>
+                    {t('admin.invite.last_name_label')} <span aria-label={t('validation.required_field')}>*</span>
                 </label>
                 <input
                     id={`${formId}-lastName`}
@@ -156,7 +159,7 @@ export function InviteAccountForm({
                     className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black ${
                         validationErrors.lastName ? "border-red-500" : "border-gray-300"
                     }`}
-                    placeholder="Dupont"
+                    placeholder={t('admin.invite.last_name_placeholder')}
                     aria-invalid={!!validationErrors.lastName}
                     aria-describedby={validationErrors.lastName ? `${formId}-lastName-error` : undefined}
                     required
@@ -173,7 +176,7 @@ export function InviteAccountForm({
                     htmlFor={`${formId}-role`}
                     className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                    Rôle <span aria-label="obligatoire">*</span>
+                    {t('admin.invite.role_label')} <span aria-label={t('validation.required_field')}>*</span>
                 </label>
                 <select
                     id={`${formId}-role`}
@@ -199,7 +202,7 @@ export function InviteAccountForm({
                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={loading}
                 >
-                    Annuler
+                    {t('common.cancel')}
                 </button>
                 <button
                     type="submit"
@@ -207,7 +210,7 @@ export function InviteAccountForm({
                     className="flex-1 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
                     aria-busy={loading}
                 >
-                    {loading ? "Envoi en cours..." : "Inviter"}
+                    {loading ? t('admin.invite.sending') : t('admin.invite.submit_button')}
                 </button>
             </div>
         </form>

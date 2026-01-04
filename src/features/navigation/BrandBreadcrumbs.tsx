@@ -2,14 +2,16 @@
 import { breadcrumbRoutes } from "@/routes/breadcrumbs";
 import { ChevronRight, Home } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 export function BrandBreadcrumbs() {
+    const { t } = useTranslation();
     const breadcrumbs = useBreadcrumbs(breadcrumbRoutes);
 
     return (
         <nav
             className="mb-4"
-            aria-label="Fil d'ariane"
+            aria-label={t('routes.breadcrumbs.aria')}
         >
             <ol className="flex items-center gap-2 text-sm">
                 {breadcrumbs.map(({ breadcrumb, match }, index) => {

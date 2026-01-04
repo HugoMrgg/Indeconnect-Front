@@ -3,11 +3,12 @@ import { BrandPage } from "@/pages/brands/Brand";
 import { AddProductForm } from "@/features/product/AddProductForm";
 import { createProduct } from "@/api/services/products";
 import { CreateProductRequest } from "@/api/services/products/types";
-import { Brand } from "@/types/brand";
+import { Brand, EditableBrandFields } from "@/types/brand";
+import { logger } from "@/utils/logger";
 
 interface MyBrandProductsTabProps {
     brand: Brand;
-    onUpdateField: any;
+    onUpdateField: <K extends keyof EditableBrandFields>(field: K, value: EditableBrandFields[K]) => void;
     onRefetch: () => void;
 }
 
@@ -24,7 +25,7 @@ export function MyBrandProductsTab({ brand, onUpdateField, onRefetch }: MyBrandP
                     onRefetch();
                 }, 300);
             } catch (error) {
-                console.error("Error creating product:", error);
+                logger.error("MyBrandProductsTab.handleCreateProduct", error);
                 throw error;
             }
         },

@@ -1,14 +1,15 @@
 ﻿import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AlertTriangle, Leaf, Star, CheckCircle2, Clock, XCircle, RefreshCcw } from "lucide-react";
 import { EthicsSuperVendorQuestionnaireService } from "@/api/services/ethics/superVendor";
+import { useTranslation } from "react-i18next";
 
 type QuestionnaireStatus = "Draft" | "Submitted" | "Approved" | "Rejected" | string;
 
 type Props = {
-    brandId: number; // ok à garder
-    questionnaireStatus?: QuestionnaireStatus; // si tu le passes, on le prend direct
-    ethicsScoreProduction: number; // 0..5
-    ethicsScoreTransport: number;  // 0..5
+    brandId: number;
+    questionnaireStatus?: QuestionnaireStatus; // Optional: overrides fetched status if provided
+    ethicsScoreProduction: number; // Score range: 0 to 5
+    ethicsScoreTransport: number;  // Score range: 0 to 5
     ethicTags?: string[];
     onOpen: () => void;
 };
@@ -23,6 +24,7 @@ export const BrandEthicsCallout: React.FC<Props> = ({
                                                         ethicTags,
                                                         onOpen,
                                                     }) => {
+    const { t } = useTranslation();
     // --- status source (prop OR fetched) ---
     const [fetchedStatus, setFetchedStatus] = useState<QuestionnaireStatus | null>(null);
     const [statusLoading, setStatusLoading] = useState(false);
@@ -72,19 +74,19 @@ export const BrandEthicsCallout: React.FC<Props> = ({
         try {
             const form = await EthicsSuperVendorQuestionnaireService.getMyForm();
             setFetchedStatus(form.status as QuestionnaireStatus);
-        } catch (e: any) {
-            setStatusError(e?.message ?? "Impossible de récupérer le statut du questionnaire.");
+        } catch (e: unknown) {
+            setStatusError((e as Error)?.message ?? "Impossible de récupérer le statut du questionnaire.");
         } finally {
             setStatusLoading(false);
         }
     }, [questionnaireStatus]);
 
-    // fetch au mount (si pas de status en props)
+    // Fetch status on component mount if not provided via props
     useEffect(() => {
         fetchStatus();
     }, [fetchStatus]);
 
-    // 🔔 écoute un event global pour refresh après save/submit du modal
+    // Listen to global event to refresh status after modal save/submit
     useEffect(() => {
         const handler = () => fetchStatus();
         window.addEventListener("ethics:updated", handler);
@@ -92,20 +94,20 @@ export const BrandEthicsCallout: React.FC<Props> = ({
     }, [fetchStatus]);
 
     const title = useMemo(() => {
-        if (!isCompleted) return "Questionnaire éthique à compléter";
-        if (isUnderReview) return "Questionnaire envoyé";
-        if (isApproved) return "Questionnaire validé";
-        if (isRejected) return "Questionnaire refusé";
-        return "Questionnaire éthique";
-    }, [isCompleted, isUnderReview, isApproved, isRejected]);
+        if (!isCompleted) return t('brands.ethics.questionnaire_pending');
+        if (isUnderReview) return t('brands.ethics.questionnaire_sent');
+        if (isApproved) return t('brands.ethics.questionnaire_validated');
+        if (isRejected) return t('brands.ethics.questionnaire_refused');
+        return t('brands.ethics.questionnaire_pending');
+    }, [isCompleted, isUnderReview, isApproved, isRejected, t]);
 
     const subtitle = useMemo(() => {
-        if (!isCompleted) return "Remplis le questionnaire pour afficher ton score et tes labels sur ta page.";
-        if (isUnderReview) return "Tes réponses ont été envoyées. Vérification en cours.";
-        if (isApproved) return "Ton score officiel est publié sur ta page marque.";
-        if (isRejected) return "Corrige tes réponses puis renvoie le questionnaire.";
-        return "Gère tes informations éthiques.";
-    }, [isCompleted, isUnderReview, isApproved, isRejected]);
+        if (!isCompleted) return t('brands.ethics.pending_message');
+        if (isUnderReview) return t('brands.ethics.sent_message');
+        if (isApproved) return t('brands.ethics.validated_message');
+        if (isRejected) return t('brands.ethics.refused_message');
+        return t('brands.ethics.manage_button');
+    }, [isCompleted, isUnderReview, isApproved, isRejected, t]);
 
     const Icon = useMemo(() => {
         if (!isCompleted) return AlertTriangle;
@@ -116,7 +118,7 @@ export const BrandEthicsCallout: React.FC<Props> = ({
     }, [isCompleted, isUnderReview, isApproved, isRejected]);
 
     const tone = useMemo(() => {
-        // juste pour une UI qui “réagit”
+        // UI color scheme based on questionnaire status
         if (!isCompleted) return { wrap: "bg-amber-50 border-amber-200", icon: "text-amber-700", badge: "bg-amber-100 text-amber-900" };
         if (isUnderReview) return { wrap: "bg-blue-50 border-blue-200", icon: "text-blue-700", badge: "bg-blue-100 text-blue-900" };
         if (isApproved) return { wrap: "bg-emerald-50 border-emerald-200", icon: "text-emerald-700", badge: "bg-emerald-100 text-emerald-900" };
@@ -136,12 +138,12 @@ export const BrandEthicsCallout: React.FC<Props> = ({
                         <div className="font-semibold text-gray-900">{title}</div>
 
                         <span className={`text-xs px-2 py-1 rounded-full ${tone.badge}`}>
-              Statut : {displayedStatus}
+              {t('brands.ethics.status_label')} {displayedStatus}
             </span>
 
                         {justChanged ? (
                             <span className="text-xs px-2 py-1 rounded-full bg-black text-white">
-                Statut mis à jour ✓
+                {t('brands.ethics.status_updated')}
               </span>
                         ) : null}
                     </div>
@@ -156,7 +158,7 @@ export const BrandEthicsCallout: React.FC<Props> = ({
                                 onClick={fetchStatus}
                                 className="ml-2 inline-flex items-center gap-1 underline underline-offset-4"
                             >
-                                <RefreshCcw size={12} /> Réessayer
+                                <RefreshCcw size={12} /> {t('brands.ethics.retry')}
                             </button>
                         </div>
                     ) : null}
@@ -172,17 +174,17 @@ export const BrandEthicsCallout: React.FC<Props> = ({
                             </div>
 
                             <div className="text-sm text-gray-700 mt-2">
-                                Transport {transport.toFixed(1)}/5 • Production {production.toFixed(1)}/5
+                                {t('brands.ethics.transport_production').replace('Transport', `${t('brands.ethics.transport')} ${transport.toFixed(1)}/5`).replace('Production', `${t('brands.ethics.production')} ${production.toFixed(1)}/5`)}
                             </div>
 
                             {(ethicTags?.length ?? 0) > 0 ? (
                                 <div className="mt-3 flex flex-wrap gap-2">
-                                    {ethicTags!.slice(0, 6).map((t) => (
+                                    {ethicTags!.slice(0, 6).map((tag) => (
                                         <span
-                                            key={t}
+                                            key={tag}
                                             className="text-xs px-2 py-1 rounded-full bg-white/70 border border-gray-200 text-gray-800"
                                         >
-                      {t}
+                      {tag}
                     </span>
                                     ))}
                                 </div>
@@ -196,10 +198,10 @@ export const BrandEthicsCallout: React.FC<Props> = ({
                         className="mt-3 text-sm text-gray-700 hover:text-gray-900 underline underline-offset-4"
                     >
                         {statusLoading
-                            ? "Mise à jour du statut…"
+                            ? t('brands.ethics.status_updating')
                             : isCompleted
-                                ? "Voir / modifier le questionnaire →"
-                                : "Remplir le questionnaire éthique →"}
+                                ? t('brands.ethics.view_edit_questionnaire')
+                                : t('brands.ethics.fill_questionnaire')}
                     </button>
                 </div>
             </div>

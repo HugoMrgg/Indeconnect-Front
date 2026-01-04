@@ -1,0 +1,951 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "not_available_short": "N/A",
+    "error": "Error",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "close": "Close",
+    "back": "Back",
+    "or": "or",
+    "please_wait": "Please wait",
+    "editable": {
+      "click_to_edit": "Click to edit"
+    },
+    "apply": "Apply",
+    "previous": "Previous",
+    "next": "Next",
+    "locale": "en-US"
+  },
+  "auth": {
+    "login": {
+      "title": "Log in",
+      "email_label": "Email address",
+      "email_placeholder": "example@mail.com",
+      "password_label": "Password",
+      "password_placeholder": "Your password",
+      "submit_button": "Log in",
+      "submitting": "Logging in...",
+      "google_error": "Google authentication error",
+      "error_generic": "Authentication error",
+      "relogin_prompt": "Please log in again."
+    },
+    "register": {
+      "title": "Sign up",
+      "first_name_label": "First name",
+      "first_name_placeholder": "John",
+      "last_name_label": "Last name",
+      "last_name_placeholder": "Doe",
+      "email_label": "Email address",
+      "email_placeholder": "example@mail.com",
+      "password_label": "Password",
+      "password_placeholder": "••••••••",
+      "confirm_password_label": "Confirm",
+      "confirm_password_placeholder": "••••••••",
+      "submit_button": "Create my account",
+      "submitting": "…",
+      "password_mismatch": "Passwords do not match."
+    }
+  },
+  "navigation": {
+    "search": {
+      "brands": "Search among brands...",
+      "products": "Search among products...",
+      "wishlist": "Search in your wishlist...",
+      "settings": "Search in settings...",
+      "accounts": "Search among accounts...",
+      "page": "Search on this page...",
+      "filters": "Filters"
+    },
+    "menu": {
+      "guest": {
+        "login": "Log in",
+        "register": "Sign up"
+      },
+      "user": {
+        "wishlist": "Wishlist",
+        "cart": "Cart",
+        "orders": "Orders",
+        "settings": "Settings",
+        "logout": "Log out"
+      },
+      "admin": {
+        "logs": "View logs",
+        "accounts": "Manage accounts",
+        "payment_methods": "Payment methods",
+        "delivery_methods": "Delivery methods",
+        "ethics_questionnaire": "Manage ethics questionnaire"
+      }
+    }
+  },
+  "products": {
+    "details": {
+      "color": "Color",
+      "size": "Size",
+      "base_price": "Base price",
+      "color_price": "Price of this color",
+      "stock": "Stock",
+      "category": "Category"
+    },
+    "add_product": {
+      "title": "Create a product",
+      "mode_title": "Choose how you want to create your product",
+      "mode_new_type": "New product type",
+      "mode_new_type_desc": "Create a new product with all its information",
+      "mode_add_color": "Add a color",
+      "mode_add_color_desc": "Add a color variant to an existing product",
+      "category_label": "Category:",
+      "category_inherited": "Inherited from selected product group",
+      "price_label": "Price (€) *",
+      "price_placeholder": "0.00",
+      "submit_button": "Create product",
+      "submitting": "Creating...",
+      "no_product_groups": "No existing product group. Create a new product first.",
+      "error_loading_groups": "Error loading product groups",
+      "error_creating_product": "Error creating product",
+      "error_no_category": "Please select a category",
+      "error_no_color": "Please select a color",
+      "error_no_size": "Please select at least one size",
+      "error_image_upload": "Error uploading image"
+    },
+    "reviews": {
+      "title": "Customer Reviews",
+      "rating": "★ / 5",
+      "comment_singular": "comment",
+      "comment_plural": "comments",
+      "write_review": "Write a review",
+      "no_reviews": "No reviews yet.",
+      "disable_confirm": "Do you really want to hide this review?",
+      "disabled_success": "Review disabled successfully",
+      "disable_error": "Unable to disable this review.",
+      "disable_button": "Disable this review (Moderator)",
+      "rate_product": "Rate this product",
+      "rate_question": "What rating would you give?",
+      "comment_label": "Your comment",
+      "comment_placeholder": "Tell us what you think...",
+      "submit_button": "Submit",
+      "success": "Your review has been published!",
+      "error": "Error submitting review."
+    }
+  },
+  "cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty.",
+    "login_required": "Please log in to access your cart.",
+    "loading": "Loading cart...",
+    "items_count": "Number of items",
+    "subtotal": "Subtotal",
+    "checkout_button": "Checkout",
+    "add_to_cart": "Add to cart",
+    "unavailable": "Unavailable",
+    "remove_from_cart": "Remove from cart",
+    "quantity": "Quantity",
+    "item_details": {
+      "size": "Size:",
+      "color": "Color:",
+      "stock": "Stock:"
+    }
+  },
+  "orders": {
+    "title": "My orders",
+    "empty": "No orders",
+    "empty_description": "You haven't placed any orders yet",
+    "discover_products": "Discover our products",
+    "error_loading": "Loading error",
+    "order_number": "Order #",
+    "total": "Total:",
+    "items_singular": "item",
+    "items_plural": "items",
+    "brands": "brands",
+    "pay_now": "Pay now",
+    "track_order": "Track my order",
+    "invoice_singular": "Invoice",
+    "invoice_plural": "invoices",
+    "separate_deliveries": "Separate deliveries",
+    "order_not_found": "Order not found",
+    "statuses": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "processing": "Processing",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "delivery": {
+      "number": "Delivery #",
+      "tracking_number": "Tracking number:",
+      "items": "Items (",
+      "statuses": {
+        "preparing": "Preparing",
+        "shipped": "Shipped",
+        "in_transit": "In transit",
+        "out_for_delivery": "Out for delivery",
+        "delivered": "Delivered",
+        "failed": "Failed",
+        "returned": "Returned"
+      }
+    }
+  },
+  "checkout": {
+    "title": "Complete your order",
+    "login_required": "You must be logged in to access checkout",
+    "delivery_modes": "Delivery methods",
+    "summary": "Summary",
+    "products_subtotal": "Products subtotal",
+    "delivery": "Delivery",
+    "free": "Free",
+    "vat": "including VAT (21%)",
+    "total_with_tax": "Total incl. tax",
+    "creating_order": "Creating order...",
+    "create_order": "Create order",
+    "error_no_address": "Please select a delivery address",
+    "error_no_delivery_mode": "Please select a delivery method for each brand",
+    "order_created": "Order created. Payment opens in a window.",
+    "proceed_to_payment": "Proceed to payment",
+    "address": {
+      "street_label": "Street *",
+      "street_placeholder": "Peace Street",
+      "street_error": "Street must contain at least 2 characters",
+      "number_label": "Number *",
+      "number_placeholder": "42",
+      "number_error": "Number is required",
+      "postal_code_label": "Postal code *",
+      "postal_code_placeholder": "4000",
+      "postal_code_error": "Postal code must contain 4 digits (e.g. 4000)",
+      "city_label": "City *",
+      "city_placeholder": "Liège",
+      "city_error": "City must contain at least 2 characters",
+      "complement_label": "Address complement (optional)",
+      "complement_placeholder": "Building A, 3rd floor",
+      "set_default": "Set as default address",
+      "add_button": "Add",
+      "adding": "Adding...",
+      "form_errors": "Please correct the form errors",
+      "added_success": "Address added!"
+    }
+  },
+  "wishlist": {
+    "product_card": {
+      "no_image": "Image not available",
+      "remove": "Remove",
+      "product_label": "PRODUCT"
+    },
+    "title": "My Wishlist",
+    "empty": "No items in wishlist.",
+    "empty_cta": "Browse products and add some to your wishlist!",
+    "login_required": "Log in to see your wishlist ❤️",
+    "loading": "Loading...",
+    "remove_button": "Remove",
+    "removed_success": "Product removed from your wishlist ❤️"
+  },
+  "brands": {
+    "preview": {
+      "title": "Customer preview",
+      "description": "This is how customers will see your brand"
+    },
+    "deposit": {
+      "title": "Main warehouse",
+      "number_label": "No.",
+      "street_label": "Street",
+      "postal_code_label": "Postal code",
+      "city_label": "City",
+      "country_label": "Country",
+      "default_country": "Belgium",
+      "saving": "Saving..."
+    },
+    "section": {
+      "result_count_singular": "{{count}} result",
+      "result_count_plural": "{{count}} results",
+      "scroll_left": "Scroll left",
+      "scroll_right": "Scroll right",
+      "no_match": "No matching brands.",
+      "try_modify_filters": "Try modifying your filters or search."
+    },
+    "products": {
+      "no_products": "No products yet",
+      "add_first": "Start by adding your first product!",
+      "no_results": "Your search returned no results...",
+      "try_other_keywords": "Try other keywords"
+    },
+    "info": {
+      "price_range": "Price range",
+      "select_price_range": "Select a range",
+      "price_range_economy": "€ - Economy",
+      "price_range_mid": "€€ - Mid-range",
+      "price_range_premium": "€€€ - Premium",
+      "about_title": "About the brand",
+      "where_title": "Where to find us",
+      "other_title": "Other information",
+      "practical_info": "Practical information",
+      "not_specified": "Not specified",
+      "main_deposit": "Main warehouse",
+      "add_address": "Add an address"
+    },
+    "back_to_brands": "Back to brands",
+    "card": {
+      "logo_alt": "{{name}} logo",
+      "ethics_production": "Ethics (production)",
+      "ethics_transport": "Ethics (transport)"
+    },
+    "details": {
+      "about_us": "About us",
+      "about_us_placeholder": "Present your brand in detail...",
+      "where_are_we": "Where to find us",
+      "where_are_we_placeholder": "Addresses, retail locations...",
+      "contact": "Contact",
+      "contact_placeholder": "Email, phone, social media...",
+      "other_info": "Other information",
+      "other_info_placeholder": "Additional information..."
+    },
+    "logo": {
+      "alt": "Brand logo",
+      "add_logo": "Add a logo",
+      "edit_logo": "Edit logo",
+      "modal_title": "Edit logo",
+      "label": "Logo"
+    },
+    "banner": {
+      "edit_button": "Edit banner",
+      "modal_title": "Edit banner",
+      "label": "Banner"
+    },
+    "all_brands": "All brands:",
+    "no_brands": "No brands to display",
+    "subscribe": "Subscribe",
+    "subscribed": "Subscribed ✓",
+    "about_us": "Who are we?",
+    "ethics": {
+      "categories": {
+        "title": "Categories",
+        "questions": "questions",
+        "no_results": "No results. Try another keyword."
+      },
+      "production": "Ethics (production)",
+      "transport": "Ethics (transport)",
+      "questionnaire_pending": "Ethics questionnaire to complete",
+      "questionnaire_sent": "Questionnaire sent",
+      "questionnaire_validated": "Questionnaire validated",
+      "questionnaire_refused": "Questionnaire refused",
+      "pending_message": "Fill out the questionnaire to display your score and labels on your page.",
+      "sent_message": "Your answers have been sent. Verification in progress.",
+      "validated_message": "Your official score is published on your brand page.",
+      "refused_message": "Correct your answers then resend the questionnaire.",
+      "manage_button": "Manage your ethical information.",
+      "status_label": "Status:",
+      "status_updated": "Status updated ✓",
+      "status_updating": "Updating status…",
+      "view_edit_questionnaire": "View / edit questionnaire →",
+      "fill_questionnaire": "Fill out ethics questionnaire →",
+      "retry": "Retry",
+      "transport_production": "Transport / Production"
+    },
+    "vendor": {
+      "no_empty_brand": "No empty brand was automatically created for this SuperVendor. They will need to complete it upon first login."
+    }
+  },
+  "home": {
+    "popular_products": "Popular products",
+    "recommended_for_you": "Recommended for you",
+    "based_on_purchases": "Based on your previous purchases",
+    "community_favorites": "Community favorites",
+    "banner": {
+      "title": "New Fashion Collection"
+    }
+  },
+  "admin": {
+    "accounts": {
+      "title": "Manage accounts",
+      "invite_button": "Invite an account",
+      "email": "Email",
+      "name": "Name",
+      "role": "Role",
+      "status": "Status",
+      "creation_date": "Creation date",
+      "actions": "Actions",
+      "no_accounts": "No accounts to display",
+      "reinvite": "Reinvite",
+      "disable": "Disable",
+      "reactivate": "Reactivate",
+      "statuses": {
+        "pending": "Pending",
+        "active": "Active",
+        "disabled": "Disabled"
+      }
+    },
+    "invite": {
+      "supervendor_created": "SuperVendor created!",
+      "supervendor_message": "A SuperVendor account has been created with an empty brand. The user will receive an activation email. Once logged in, they can complete their brand information.",
+      "invitation_sent": "Invitation sent!",
+      "invitation_message": "An activation email has been sent. The user can set their password by clicking the link.",
+      "no_permission": "You don't have permission to invite accounts.",
+      "email_label": "Email",
+      "email_placeholder": "example@email.com",
+      "first_name_label": "First name",
+      "first_name_placeholder": "John",
+      "last_name_label": "Last name",
+      "last_name_placeholder": "Doe",
+      "role_label": "Role",
+      "sending": "Sending...",
+      "submit_button": "Invite"
+    },
+    "ethics": {
+      "questionCard": {
+        "questionLabel": "Question (Label)",
+        "keyLabel": "Key",
+        "answerTypeLabel": "Answer type",
+        "answerType": {
+          "single": "Single",
+          "multiple": "Multiple"
+        },
+        "orderLabel": "Order",
+        "deleteButton": "Delete",
+        "optionsTitle": "Options",
+        "addOptionButton": "Add option",
+        "labelLabel": "Label",
+        "scoreLabel": "Score",
+        "noOptions": "No options. Add at least 2."
+      }
+    }
+  },
+  "validation": {
+    "required_field": "This field is required",
+    "invalid_email": "Invalid email address",
+    "min_length": "Minimum {{count}} characters",
+    "max_length": "Maximum {{count}} characters"
+  },
+  "errors": {
+    "generic": "An error occurred",
+    "network": "Connection error",
+    "not_found": "Item not found",
+    "unauthorized": "Unauthorized",
+    "forbidden": "Access forbidden"
+  },
+  "sorting": {
+    "products_count": "{{count}} products",
+    "products_count_singular": "{{count}} product",
+    "featured": "Featured",
+    "price_asc": "Price: low to high",
+    "price_desc": "Price: high to low"
+  },
+  "routes": {
+    "breadcrumbs": {
+      "home": "Home",
+      "brands": "Brands",
+      "aria": "Breadcrumb"
+    }
+  },
+  "components": {
+    "languageSwitcher": {
+      "open": "Change language"
+    },
+    "productCard": {
+      "addToWishlist": "Add to wishlist"
+    },
+    "imageUploader": {
+      "removeAria": "Remove image",
+      "uploading": "Uploading...",
+      "clickToUpload": "Click to upload",
+      "uploadError": "Error uploading image."
+    },
+    "sortableMedia": {
+      "primaryImage": "Primary image",
+      "setPrimary": "Set as primary",
+      "remove": "Remove",
+      "primaryBadge": "Primary"
+    }
+  },
+  "pages": {
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Manage your settings and preferences here.",
+      "errors": {
+        "notAuthenticated": "Log in to access settings."
+      },
+      "tabs": {
+        "profile": {
+          "label": "My information",
+          "description": "Profile, identity, billing"
+        },
+        "payments": {
+          "label": "Payment methods",
+          "description": "Cards, default, deletion"
+        },
+        "notifications": {
+          "label": "Notifications",
+          "description": "Emails, preferences"
+        }
+      },
+      "search": {
+        "profileName": {
+          "title": "Name / First name",
+          "description": "Modify your personal information"
+        },
+        "paymentsAddCard": {
+          "title": "Add a card",
+          "description": "Register a new bank card"
+        },
+        "paymentsDefault": {
+          "title": "Default card",
+          "description": "Set a card for future purchases"
+        },
+        "notificationsEmail": {
+          "title": "Email notifications",
+          "description": "Manage marketing and security emails"
+        }
+      },
+      "profile": {
+        "title": "My information",
+        "subtitle": "Account info, contact details, billing…",
+        "name": {
+          "label": "Name"
+        },
+        "email": {
+          "label": "Email"
+        },
+        "placeholder": "Here you'll connect your 'profile' hook later. For now it's a clean framework."
+      },
+      "nav": {
+        "title": "Navigation",
+        "ariaLabel": "Settings navigation",
+        "tip": "Tip: visited tabs remain 'in memory' (no remount)."
+      }
+    },
+    "vendors": {
+      "title": "Team management",
+      "subtitle": "Invite and manage your brand's vendors ({{count}})",
+      "inviteAria": "Invite a vendor",
+      "inviteButton": "Invite a vendor",
+      "searchPlaceholder": "Search for a vendor (name, email, status...)",
+      "noMatch": "No matching vendors.",
+      "noVendors": "No vendors yet.",
+      "tryAnother": "Try another name or email.",
+      "inviteFirst": "Start by inviting your first vendor!"
+    },
+    "paymentMethods": {
+      "title": "Payment methods",
+      "subtitle": "Manage your registered cards and payment methods.",
+      "addButton": "+ Add",
+      "addCardButton": "Add a card",
+      "loading": "Loading your payment methods…",
+      "deleted": "Payment method deleted ✅",
+      "setDefault": "Default payment method changed ✅",
+      "defaultBadge": "Default",
+      "expiresOn": "Expires on",
+      "method": "Method",
+      "setAsDefaultButton": "Default",
+      "deleteButton": "Delete",
+      "empty": "You haven't registered any payment method yet.",
+      "confirmDeleteTitle": "Delete this payment method?",
+      "confirmDeleteMessagePrefix": "You are about to delete",
+      "confirmDeleteWarning": "⚠️ This was your default method. After deletion, you'll need to choose another one.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    },
+    "moderator": {
+      "reviews": {
+        "title": "Product review moderation",
+        "heroSubtitle": "Comments are published automatically. Use this interface to hide or reactivate.",
+        "heading": "Moderation • Product reviews",
+        "headingSubtitle": "Enabled = visible on site • Disabled = hidden (preserved)",
+        "reload": "Reload",
+        "filters": {
+          "statusLabel": "Status",
+          "productIdLabel": "ProductId (optional)",
+          "productIdPlaceholder": "e.g. 123",
+          "pageSizeLabel": "Page size",
+          "searchLabel": "Search",
+          "searchPlaceholder": "Comment, user, product…"
+        },
+        "status": {
+          "all": "All",
+          "enabled": "Published",
+          "disabled": "Hidden"
+        },
+        "filteredCount": "{{filtered}} / {{total}} review(s) (filtered)",
+        "totalCount": "{{total}} review(s)",
+        "noResults": "No results found.",
+        "noComment": "No comment",
+        "createdLabel": "Created:",
+        "action": {
+          "hideTitle": "Hide this comment",
+          "disable": "Disable",
+          "unhideTitle": "Make this comment visible",
+          "enable": "Reactivate"
+        },
+        "noAction": "No action",
+        "pageLabel": "Page"
+      }
+    }
+  },
+  "features": {
+    "vendors": {
+      "no_empty_brand": "No empty brand was automatically created for this SuperVendor. They will need to complete it upon first login."
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Manage your settings and preferences here.",
+      "errors": {
+        "notAuthenticated": "Log in to access settings."
+      },
+      "tabs": {
+        "profile": {
+          "label": "My information",
+          "description": "Profile, identity, billing"
+        },
+        "payments": {
+          "label": "Payment methods",
+          "description": "Cards, default, deletion"
+        },
+        "notifications": {
+          "label": "Notifications",
+          "description": "Emails, preferences"
+        }
+      },
+      "search": {
+        "profileName": {
+          "title": "Name / First name",
+          "description": "Modify your personal information"
+        },
+        "paymentsAddCard": {
+          "title": "Add a card",
+          "description": "Register a new bank card"
+        },
+        "paymentsDefault": {
+          "title": "Default card",
+          "description": "Set a card for future purchases"
+        },
+        "notificationsEmail": {
+          "title": "Email notifications",
+          "description": "Manage marketing and security emails"
+        }
+      },
+      "profile": {
+        "title": "My information",
+        "subtitle": "Account info, contact details, billing…",
+        "name": {
+          "label": "Name"
+        },
+        "email": {
+          "label": "Email"
+        },
+        "placeholder": "Here you'll connect your 'profile' hook later. For now it's a clean framework."
+      },
+      "nav": {
+        "title": "Navigation",
+        "ariaLabel": "Settings navigation",
+        "tip": "Tip: visited tabs remain 'in memory' (no remount)."
+      }
+    },
+    "product": {
+      "recommended_card": {
+        "no_image": "No image",
+        "promo_badge": "SALE"
+      },
+      "recommendations": {
+        "frequently_bought_together": "Frequently bought together"
+      },
+      "size_selector": {
+        "title": "Size"
+      },
+      "sale_manager": {
+        "title": {
+          "new": "New sale",
+          "edit": "Edit sale"
+        },
+        "fields": {
+          "discount": "Discount percentage",
+          "discount_hint": "Between 1% and 100%",
+          "start_date": "Start date",
+          "end_date": "End date",
+          "description": "Description (optional)",
+          "description_placeholder": "E.g: Winter sale, End of season promotion..."
+        },
+        "errors": {
+          "discount_range": "Discount must be between 1 and 100%",
+          "date_range": "Start date must be before end date"
+        },
+        "actions": {
+          "cancel": "Cancel",
+          "create": "Create",
+          "edit": "Edit"
+        }
+      },
+      "media_manager": {
+        "title": "Product images",
+        "count": "{{count}} image(s)",
+        "instructions": "Drag and drop to reorder. The star indicates the primary image.",
+        "upload": {
+          "uploading": "Uploading...",
+          "add_image": "Add an image",
+          "formats": "JPEG, PNG or WebP (max 10 MB)"
+        },
+        "toast": {
+          "image_added": "Image added!",
+          "upload_error": "Error uploading image",
+          "image_removed": "Image removed"
+        }
+      },
+      "image_gallery": {
+        "thumbnail_alt": "Thumbnail {{number}}",
+        "main_alt": "Product image",
+        "unavailable": "Image unavailable"
+      },
+      "edit_panel": {
+        "title": "Product actions",
+        "status": {
+          "label": "Product status",
+          "draft": "Draft",
+          "active": "Active",
+          "online": "Online",
+          "disabled": "Disabled"
+        },
+        "sale": {
+          "label": "Sale",
+          "discount": "Discount",
+          "start": "Start",
+          "end": "End",
+          "edit": "Edit",
+          "add": "Add a sale"
+        },
+        "save": {
+          "save": "Save",
+          "saving": "Saving...",
+          "no_changes": "No changes"
+        }
+      },
+      "variants": {
+        "title": "Sizes and stock",
+        "loading": "Loading sizes...",
+        "availableCount": "{{count}} size(s)",
+        "noConfigured": "No sizes configured",
+        "addPrompt": "Add at least one size for this product",
+        "stockLabel": "Stock:",
+        "units": "units",
+        "removeTitle": "Remove this size",
+        "selectSize": "Select a size",
+        "cancel": "Cancel",
+        "addButton": "Add a size",
+        "allAdded": "All available sizes for this category have been added"
+      }
+    }
+  },
+  "payment": {
+    "error_create_payment": "Unable to create payment",
+    "error_title": "Payment error",
+    "retry": "Retry",
+    "initializing": "Initializing payment...",
+    "stripe_not_loaded": "Stripe is not loaded yet. Please try again.",
+    "error_processing": "Error processing payment",
+    "error_validation": "Error validating payment. Contact support.",
+    "error_not_completed": "Payment was not completed. Please try again.",
+    "error_unexpected": "An unexpected error occurred",
+    "form_title": "Payment information",
+    "form_subtitle": "Enter your bank details",
+    "secure_ssl": "Secure SSL payment",
+    "processing": "Processing payment...",
+    "submit_button": "Complete payment",
+    "security_note_line1": "Your banking information is encrypted and secure.",
+    "security_note_line2": "No card data is stored on our servers."
+  },
+  "shipping": {
+    "form": {
+      "provider_label": "Carrier",
+      "provider_placeholder": "Colissimo, Chronopost...",
+      "display_name_label": "Display name",
+      "display_name_placeholder": "Standard delivery...",
+      "type_label": "Type",
+      "type_home_delivery": "Home delivery",
+      "type_locker": "Automated locker",
+      "type_pickup_point": "Pickup point",
+      "type_store_pickup": "Store pickup",
+      "price_label": "Price (€)",
+      "min_days_label": "Min delay (days)",
+      "max_days_label": "Max delay (days)",
+      "error_max_min": "Maximum delay must be greater than or equal to minimum delay",
+      "adding": "Adding..."
+    },
+    "list": {
+      "no_methods_configured": "No delivery methods configured",
+      "no_methods_available": "No delivery methods available",
+      "days": "days"
+    },
+    "manager": {
+      "title": "Delivery methods",
+      "confirm_delete": "Delete this delivery method?"
+    }
+  },
+  "filters": {
+    "title": "Filters",
+    "location": {
+      "label": "Location",
+      "city_mode": "Reference city",
+      "gps_mode": "My location",
+      "choose_city": "Choose a city...",
+      "simulated_position": "Simulated position at",
+      "activate_gps": "Activate my position",
+      "gps_active": "GPS position activated",
+      "gps_loading": "Locating...",
+      "gps_help": "Use your real position to find brands closest to you."
+    },
+    "sort": {
+      "label": "Sort by:",
+      "none": "No sorting",
+      "ethics_production": "Production ethics",
+      "ethics_transport": "Transport ethics",
+      "rating": "User rating",
+      "distance": "Distance"
+    },
+    "distance": {
+      "label": "Max distance:",
+      "no_limit": "No limit",
+      "unit": "km"
+    },
+    "ethics_production": {
+      "label": "Min production ethics:",
+      "none": "None"
+    },
+    "ethics_transport": {
+      "label": "Min transport ethics:",
+      "none": "None"
+    },
+    "rating": {
+      "label": "Minimum rating:"
+    },
+    "price_range": {
+      "label": "Price range:",
+      "all": "All"
+    },
+    "ethical_tags": {
+      "label": "Ethical tags:",
+      "all_required": "Brand must have ALL checked tags",
+      "loading": "Loading tags..."
+    },
+    "reset": "Reset filters"
+  },
+  "sidebar_filters": {
+    "price": {
+      "label": "Price:",
+      "min": "Min",
+      "max": "Max"
+    },
+    "categories": {
+      "label": "Categories",
+      "t-shirt": "T-shirt",
+      "pull": "Sweater",
+      "sweat": "Sweatshirt",
+      "jeans": "Jeans"
+    },
+    "ethics": {
+      "label": "Ethics"
+    },
+    "colors": {
+      "label": "Colors"
+    },
+    "size": {
+      "label": "Size"
+    }
+  },
+  "star_rating": {
+    "aria_label": "{{count}} star",
+    "aria_label_plural": "{{count}} stars",
+    "minimum": "{{count}} star minimum",
+    "minimum_plural": "{{count}} stars minimum"
+  },
+  "supervendor_menu": {
+    "my_brand": "My brand",
+    "vendors": "Vendor management",
+    "products": "Manage products",
+    "stats": "Statistics",
+    "customize": "Customize",
+    "policies": "Policies"
+  },
+  "vendor_menu": {
+    "my_products": "My products"
+  },
+  "admin_menu": {
+    "logs": "View logs",
+    "accounts": "Manage accounts",
+    "payments": "Payment methods",
+    "delivery": "Delivery methods",
+    "ethics": "Manage ethics questionnaire"
+  },
+  "moderator_menu": {
+    "accounts": "Account management",
+    "brands": "Validate brands",
+    "products": "Moderate products",
+    "reviews": "Moderate reviews",
+    "logs": "View logs"
+  },
+  "search_bar": {
+    "filters": "Filters",
+    "placeholder": {
+      "brands": "Search among brands...",
+      "products": "Search among products...",
+      "wishlist": "Search in your wishlist...",
+      "settings": "Search in settings...",
+      "accounts": "Search among accounts...",
+      "default": "Search on this page..."
+    }
+  },
+  "add_product": {
+    "basic_info": {
+      "title": "General information",
+      "name_label": "Product name",
+      "name_placeholder": "E.g: Streetwear T-shirt",
+      "description_label": "Description",
+      "description_placeholder": "Describe your product...",
+      "edit_mode": "EDIT MODE",
+      "name": "Product name",
+      "price": "Price (€)",
+      "characters_count": "{{count}} characters"
+    },
+    "category": {
+      "title": "Product category",
+      "loading": "Loading categories...",
+      "description": "Select the category to display available sizes"
+    },
+    "color": {
+      "title": "Color of this variant",
+      "loading": "Loading colors..."
+    },
+    "group": {
+      "title": "Select product group",
+      "placeholder": "Choose a product group",
+      "color_one": "color",
+      "color_other": "colors",
+      "description_label": "Group description"
+    },
+    "images": {
+      "title": "Images of this variant",
+      "choose": "Choose an image",
+      "uploading": "Uploading...",
+      "primary": "Primary",
+      "alt": "Image {{number}}"
+    },
+    "color_editor": {
+      "title": "Primary color",
+      "loading": "Loading colors...",
+      "description": "Select the color of this product variant"
+    },
+    "color_selector": {
+      "title": "Color"
+    }
+  },
+  "add_product_card": {
+    "title": "Add a product",
+    "description": "Click to create a new product",
+    "badge": "New product"
+  },
+  "sizes": {
+    "title": "Sizes and stock",
+    "select_category_first": "Select a category first to display available sizes",
+    "loading": "Loading sizes...",
+    "no_sizes": "No sizes available for this category",
+    "description": "Select available sizes and set their stock levels",
+    "stock": "Stock",
+    "units": "units"
+  }
+}

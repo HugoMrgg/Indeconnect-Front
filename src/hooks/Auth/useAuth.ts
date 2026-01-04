@@ -6,32 +6,6 @@ import toast from "react-hot-toast";
 import type { AuthResponse, LoginPayload, RegisterPayload } from "@/api/services/auth/types";
 
 /**
- * Extrait l'ID utilisateur du JWT
- */
-function getUserIdFromToken(token: string): number | null {
-    try {
-        const base64 = token.split(".")[1];
-        if (!base64) return null;
-
-        const jsonPayload = decodeURIComponent(
-            atob(base64.replace(/-/g, "+").replace(/_/g, "/"))
-                .split("")
-                .map((c) => `%${c.charCodeAt(0).toString(16).padStart(2, "0")}`)
-                .join("")
-        );
-
-        const payload = JSON.parse(jsonPayload);
-        const id =
-            payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-
-        return Number(id) || null;
-    } catch (error) {
-        console.error("[useAuth] Erreur parsing JWT", error);
-        return null;
-    }
-}
-
-/**
  * Hook principal pour la gestion de l'authentification
  */
 export function useAuth() {

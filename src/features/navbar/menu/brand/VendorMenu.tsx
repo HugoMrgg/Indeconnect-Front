@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Package, Boxes, BarChart3 } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Package } from "lucide-react";
 
 export function VendorMenu() {
+    const { t } = useTranslation();
     const [, setOpen] = useState(false);
     const navigate = useNavigate();
 
     const menuItems = [
-        { icon: Package, label: "Mes produits", path: "/vendor/products" },
-        { icon: Boxes, label: "Gestion du stock", path: "/vendor/inventory" },
-        { icon: BarChart3, label: "Statistiques", path: "/vendor/stats" }
+        { icon: Package, label: t('vendor_menu.my_products'), path: "/my-brand" } // Vendor voit uniquement les produits
     ];
 
     return (

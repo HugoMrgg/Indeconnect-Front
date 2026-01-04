@@ -1,4 +1,5 @@
 ﻿import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface StarRatingProps {
     rating: number | undefined; // 0-5
@@ -11,6 +12,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
                                                           onRatingChange,
                                                           maxStars = 5
                                                       }) => {
+    const { t } = useTranslation();
     const [hoveredStar, setHoveredStar] = React.useState<number | null>(null);
 
     const handleClick = (starIndex: number) => {
@@ -33,7 +35,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
                 onMouseEnter={() => setHoveredStar(index)}
                 onMouseLeave={() => setHoveredStar(null)}
                 className="focus:outline-none transition-transform hover:scale-110"
-                aria-label={`${index} étoile${index > 1 ? 's' : ''}`}
+                aria-label={t('star_rating.aria_label', { count: index })}
             >
                 <svg
                     className={`w-8 h-8 transition-colors ${
@@ -61,8 +63,8 @@ export const StarRating: React.FC<StarRatingProps> = ({
             {Array.from({ length: maxStars }, (_, i) => renderStar(i + 1))}
             {rating > 0 && (
                 <span className="ml-2 text-sm text-gray-600">
-          {rating} étoile{rating > 1 ? 's' : ''} minimum
-        </span>
+                    {t('star_rating.minimum', { count: rating })}
+                </span>
             )}
         </div>
     );

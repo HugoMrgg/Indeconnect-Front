@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+﻿import { useQuery } from "@tanstack/react-query";
 import { brandsService } from "@/api/services/brands";
 import { BrandDetailDTO } from "@/api/services/brands/types";
 
@@ -6,37 +6,22 @@ interface UseMyBrandReturn {
     brand: BrandDetailDTO | null;
     loading: boolean;
     error: string | null;
-    refetch: () => Promise<void>;
+    refetch: () => void;
 }
 
 export function useMyBrand(): UseMyBrandReturn {
-    const [brand, setBrand] = useState<BrandDetailDTO | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    const fetchBrand = async () => {
-        try {
-            setLoading(true);
-            setError(null);
-            const data = await brandsService.getMyBrand();
-            setBrand(data);
-        } catch (err) {
-            console.error("Erreur chargement ma marque:", err);
-            setError("Impossible de charger votre marque.");
-            setBrand(null);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchBrand();
-    }, []);
+    const { data, isLoading, error, refetch } = useQuery({
+        queryKey: ['my-brand'],
+        queryFn: async () => {
+            return await brandsService.getMyBrand();
+        },
+        staleTime: 2 * 60 * 1000, // 2 minutes
+    });
 
     return {
-        brand,
-        loading,
-        error,
-        refetch: fetchBrand  // Permet de recharger après sauvegarde
+        brand: data ?? null,
+        loading: isLoading,
+        error: error ? "Impossible de charger votre marque." : null,
+        refetch
     };
 }

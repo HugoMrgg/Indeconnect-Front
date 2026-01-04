@@ -4,7 +4,7 @@ import {EthicsFormDto, EthicsQuestionDto} from "@/api/services/ethics/superVendo
 
 import { EthicsSuperVendorQuestionnaireService } from "@/api/services/ethics/superVendor";
 
-/** DTO de requête attendu par ton back (d’après ton code) */
+/** Request DTO expected by backend API */
 type UpsertQuestionnaireRequest = {
     submit: boolean;
     answers: QuestionAnswerDto[];
@@ -43,11 +43,11 @@ export function useMyEthicsQuestionnaire(open: boolean) {
         }
     }, []);
 
-    // Fetch uniquement quand modal ouverte
+    // Fetch only when modal is opened
     useEffect(() => {
         if (!open) return;
 
-        // si tu veux recharger à chaque ouverture, supprime ce if
+        // Remove this check to reload on every modal open
         if (fetchedOnceRef.current) return;
 
         fetchForm();
@@ -129,7 +129,7 @@ export function useMyEthicsQuestionnaire(open: boolean) {
         [form, locked]
     );
 
-    /** Reset local (tu peux aussi choisir de re-fetch pour revenir à l’état serveur) */
+    /** Reset local state (alternatively, could re-fetch to restore server state) */
     const reset = useCallback(() => {
         if (!form) return;
         if (locked) return;
@@ -187,7 +187,7 @@ export function useMyEthicsQuestionnaire(open: boolean) {
             return false;
         }
         if (!isComplete) {
-            setError("Tu dois répondre à toutes les questions avant de soumettre.");
+            setError("All questions must be answered before submitting.");
             return false;
         }
 

@@ -1,4 +1,5 @@
 ﻿import { Edit2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Brand } from "@/types/brand";
 import { useState } from "react";
 
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const BrandDetailsSection = ({ brand, editMode = false, onUpdateField }: Props) => {
+    const { t } = useTranslation();
     const [editingField, setEditingField] = useState<string | null>(null);
 
     const EditableSection = ({
@@ -70,31 +72,31 @@ export const BrandDetailsSection = ({ brand, editMode = false, onUpdateField }: 
     return (
         <div className="my-8 space-y-6">
             <EditableSection
-                title="À propos"
+                title={t('brands.details.about_us')}
                 value={brand.aboutUs}
                 field="aboutUs"
-                placeholder="Présentez votre marque en détail..."
+                placeholder={t('brands.details.about_us_placeholder')}
             />
 
             <EditableSection
-                title="Où nous trouver"
+                title={t('brands.details.where_are_we')}
                 value={brand.whereAreWe}
                 field="whereAreWe"
-                placeholder="Adresses, points de vente..."
+                placeholder={t('brands.details.where_are_we_placeholder')}
             />
 
             <EditableSection
-                title="Contact"
+                title={t('brands.details.contact')}
                 value={brand.contact}
                 field="contact"
-                placeholder="Email, téléphone, réseaux sociaux..."
+                placeholder={t('brands.details.contact_placeholder')}
             />
 
             <EditableSection
-                title="Autres informations"
+                title={t('brands.details.other_info')}
                 value={brand.otherInfo}
                 field="otherInfo"
-                placeholder="Informations complémentaires..."
+                placeholder={t('brands.details.other_info_placeholder')}
             />
         </div>
     );

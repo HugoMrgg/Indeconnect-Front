@@ -1,6 +1,7 @@
 ﻿import axiosInstance from "@/api/api";
 import { Product, ProductDetail } from "@/types/Product";
 import { PRODUCTS_ROUTES } from "./routes";
+import { logger } from "@/utils/logger";
 import {
     ProductsResponse,
     ProductDTO,
@@ -14,7 +15,9 @@ import {
     ProductGroupDto,
     ProductGroupSummaryDto,
     ProductReviewDTO,
-    CreateProductReviewDTO
+    CreateProductReviewDTO,
+    UpdateProductRequest,
+    UpdateProductResponse,
 } from "@/api/services/products/types";
 
 /**
@@ -31,6 +34,7 @@ function mapProductDTO(dto: ProductDTO, brandName: string): Product {
         reviewCount: dto.reviewCount || 0,
         primaryColor: dto.primaryColor || null,
         status: dto.status,
+        sale: dto.sale || undefined,
 
         brand: brandName,
         category: dto.category || undefined,
@@ -76,7 +80,7 @@ export async function fetchProductsByBrand(
 
         return response.data.products.map(p => mapProductDTO(p, brandName));
     } catch (error) {
-        console.error("Error fetching products:", error);
+        logger.error("ProductsService.fetchProductsByBrand", error);
         throw error;
     }
 }
@@ -89,7 +93,7 @@ export async function fetchProductById(productId: number): Promise<ProductDetail
         const response = await axiosInstance.get<ProductDetail>(PRODUCTS_ROUTES.byId(productId));
         return response.data;
     } catch (error) {
-        console.error("Error fetching product detail:", error);
+        logger.error("ProductsService.fetchProductById", error);
         throw error;
     }
 }
@@ -104,7 +108,7 @@ export async function fetchProductVariants(productId: number): Promise<SizeVaria
         );
         return response.data;
     } catch (error) {
-        console.error("Error fetching product variants:", error);
+        logger.error("ProductsService.fetchProductVariants", error);
         throw error;
     }
 }
@@ -119,7 +123,7 @@ export async function fetchProductColorVariants(productId: number): Promise<Colo
         );
         return response.data;
     } catch (error) {
-        console.error("Error fetching color variants:", error);
+        logger.error("ProductsService.fetchProductColorVariants", error);
         throw error;
     }
 }
@@ -134,7 +138,7 @@ export async function fetchProductStock(productId: number): Promise<ProductStock
         );
         return response.data;
     } catch (error) {
-        console.error("Error fetching product stock:", error);
+        logger.error("ProductsService.fetchProductStock", error);
         throw error;
     }
 }
@@ -164,7 +168,7 @@ export async function fetchProductReviews(
         };
 
     } catch (error) {
-        console.error("Error fetching product reviews:", error);
+        logger.error("ProductsService.fetchProductReviews", error);
         return {
             reviews: [],
             totalCount: 0,
@@ -189,7 +193,7 @@ export async function createProductReview(
         );
         return response.data;
     } catch (error) {
-        console.error("Error creating product review:", error);
+        logger.error("ProductsService.createProductReview", error);
         throw error;
     }
 }
@@ -205,7 +209,7 @@ export async function createProduct(data: CreateProductRequest): Promise<CreateP
         );
         return response.data;
     } catch (error) {
-        console.error("Error creating product:", error);
+        logger.error("ProductsService.createProduct", error);
         throw error;
     }
 }
@@ -221,7 +225,7 @@ export async function createProductGroup(data: CreateProductGroupRequest): Promi
         );
         return response.data;
     } catch (error) {
-        console.error("Error creating product group:", error);
+        logger.error("ProductsService.createProductGroup", error);
         throw error;
     }
 }
@@ -233,7 +237,7 @@ export async function fetchProductGroupsByBrand(brandId: number): Promise<Produc
         );
         return response.data;
     } catch (error) {
-        console.error("Error fetching product groups:", error);
+        logger.error("ProductsService.fetchProductGroupsByBrand", error);
         throw error;
     }
 }
@@ -248,7 +252,7 @@ export async function checkCanUserReview(productId: number): Promise<boolean> {
 
         return response.data;
     } catch (error) {
-        console.error("checkCanUserReview error:", error);
+        logger.error("ProductsService.checkCanUserReview", error);
         return false;
     }
 }
@@ -261,4 +265,23 @@ export async function disableProductReview(reviewId: number): Promise<void> {
     await axiosInstance.post(
         PRODUCTS_ROUTES.disableReview(reviewId)
     );
+}
+
+/**
+ * Met à jour un produit existant (SuperVendor uniquement)
+ */
+export async function updateProduct(
+    productId: number,
+    data: UpdateProductRequest
+): Promise<UpdateProductResponse> {
+    try {
+        const response = await axiosInstance.put<UpdateProductResponse>(
+            PRODUCTS_ROUTES.update(productId),
+            data
+        );
+        return response.data;
+    } catch (error) {
+        logger.error("ProductsService.updateProduct", error);
+        throw error;
+    }
 }

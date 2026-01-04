@@ -1,4 +1,5 @@
 ﻿import {ProductDetail, SizeVariant} from "@/types/Product";
+import { useTranslation } from "react-i18next";
 
 interface CartModalProps {
     open: boolean;
@@ -21,12 +22,13 @@ export function AddToCartModal({
                                    onClose,
                                    onConfirm
                                }: CartModalProps) {
+    const { t } = useTranslation();
     if (!open) return null;
     const imageUrl = product.media?.[0]?.url || "/placeholder.png";
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
             <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md">
-                <h2 className="text-xl font-semibold mb-4">Ajouter au panier</h2>
+                <h2 className="text-xl font-semibold mb-4">{t('cart.add_to_cart')}</h2>
 
                 <div className="flex gap-4 mb-4">
                     <img
@@ -42,19 +44,19 @@ export function AddToCartModal({
                         </p>
                         {product.primaryColor && (
                             <p className="text-xs text-gray-500">
-                                Couleur : {product.primaryColor.name}
+                                {t('cart.item_details.color')} {product.primaryColor.name}
                             </p>
                         )}
                         {selectedSize && (
                             <p className="text-xs text-gray-500">
-                                Taille : {selectedSize.size?.name}
+                                {t('cart.item_details.size')} {selectedSize.size?.name}
                             </p>
                         )}
                     </div>
                 </div>
 
                 <div className="flex items-center justify-between mb-6">
-                    <span className="text-sm text-gray-600">Quantité</span>
+                    <span className="text-sm text-gray-600">{t('cart.quantity')}</span>
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => onQuantityChange(Math.max(1, quantity - 1))}
@@ -79,13 +81,13 @@ export function AddToCartModal({
                         onClick={onClose}
                         className="px-4 py-2 text-sm rounded-lg border hover:bg-gray-50"
                     >
-                        Annuler
+                        {t('common.cancel')}
                     </button>
                     <button
                         onClick={onConfirm}
                         className="px-4 py-2 text-sm rounded-lg bg-black text-white hover:bg-gray-800"
                     >
-                        Confirmer
+                        {t('common.confirm')}
                     </button>
                 </div>
             </div>

@@ -1,18 +1,23 @@
 ﻿import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/Auth/useAuth";
 import { useOrder } from "@/hooks/Order/useOrder";
 import { BrandDeliveryCard } from "@/features/order/BrandDeliveryCard";
 import { OrderPageLayout } from "@/features/order/OrderPageLayout";
-import { Loader2, AlertCircle, Package, ArrowLeft, Home, ChevronRight, Calendar } from "lucide-react";
+import { AlertCircle, Package, ArrowLeft, Home, ChevronRight, Calendar, Wallet } from "lucide-react";
+import { OrderDetailsSkeleton } from "@/components/skeletons";
+import { PaymentModal } from "@/features/checkout/PaymentModal";
 
 export function OrderDetailsPage() {
+    const { t } = useTranslation();
     const { orderId } = useParams<{ orderId: string }>();
     const { user } = useAuth();
     const navigate = useNavigate();
     const { tracking, loading, error, fetchTracking } = useOrder();
 
     const [activeBrandIndex, setActiveBrandIndex] = useState(0);
+    const [paymentModalOpen, setPaymentModalOpen] = useState(false);
 
     useEffect(() => {
         if (!user || !orderId) {
@@ -34,11 +39,7 @@ export function OrderDetailsPage() {
     if (loading) {
         return (
             <OrderPageLayout>
-                <div className="max-w-5xl mx-auto px-4 py-8">
-                    <div className="flex items-center justify-center py-16">
-                        <Loader2 className="animate-spin text-gray-400" size={48} />
-                    </div>
-                </div>
+                <OrderDetailsSkeleton />
             </OrderPageLayout>
         );
     }
@@ -51,8 +52,8 @@ export function OrderDetailsPage() {
                         <div className="flex items-start gap-3">
                             <AlertCircle className="text-red-600 flex-shrink-0 mt-0.5" size={24} />
                             <div>
-                                <p className="text-red-800 font-medium mb-1">Erreur</p>
-                                <p className="text-red-700 text-sm">{error || "Commande introuvable"}</p>
+                                <p className="text-red-800 font-medium mb-1">{t('common.error')}</p>
+                                <p className="text-red-700 text-sm">{error || t('orders.order_not_found')}</p>
                             </div>
                         </div>
                     </div>
@@ -72,11 +73,11 @@ export function OrderDetailsPage() {
     // Badge du statut global
     const getGlobalStatusBadge = () => {
         const statusConfig: Record<string, { label: string; color: string }> = {
-            Pending: { label: "En attente", color: "bg-gray-100 text-gray-700" },
-            Paid: { label: "Payée", color: "bg-green-100 text-green-700" },
-            Processing: { label: "En traitement", color: "bg-blue-100 text-blue-700" },
-            Delivered: { label: "Livrée", color: "bg-green-100 text-green-700" },
-            Cancelled: { label: "Annulée", color: "bg-red-100 text-red-700" },
+            Pending: { label: t('orders.statuses.pending'), color: "bg-gray-100 text-gray-700" },
+            Paid: { label: t('orders.statuses.paid'), color: "bg-green-100 text-green-700" },
+            Processing: { label: t('orders.statuses.processing'), color: "bg-blue-100 text-blue-700" },
+            Delivered: { label: t('orders.statuses.delivered'), color: "bg-green-100 text-green-700" },
+            Cancelled: { label: t('orders.statuses.cancelled'), color: "bg-red-100 text-red-700" },
         };
 
         const config = statusConfig[tracking.globalStatus] || statusConfig.Pending;
@@ -99,24 +100,24 @@ export function OrderDetailsPage() {
                         className="hover:text-gray-900 transition-colors flex items-center gap-1"
                     >
                         <Home size={16} />
-                        <span>Accueil</span>
+                        <span>{t('navigation.menu.user.orders')}</span>
                     </button>
                     <ChevronRight size={14} />
                     <button
                         onClick={() => navigate("/orders")}
                         className="hover:text-gray-900 transition-colors"
                     >
-                        Mes commandes
+                        {t('orders.title')}
                     </button>
                     <ChevronRight size={14} />
-                    <span className="text-gray-900 font-medium">Commande #{tracking.orderId}</span>
+                    <span className="text-gray-900 font-medium">{t('orders.order_number')}{tracking.orderId}</span>
                 </nav>
 
                 {/* Header sticky avec info commande */}
                 <div className="bg-white rounded-xl shadow-md p-6 mb-6 sticky top-4 z-10 border border-gray-200">
                     <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
-                            <h1 className="text-2xl font-bold mb-2">Commande #{tracking.orderId}</h1>
+                            <h1 className="text-2xl font-bold mb-2">{t('orders.order_number')}{tracking.orderId}</h1>
                             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
                                 <div className="flex items-center gap-2">
                                     <Package size={16} />
@@ -129,7 +130,7 @@ export function OrderDetailsPage() {
                                     </span>
                                 </div>
                                 <div className="font-bold text-gray-900">
-                                    Total : {tracking.totalAmount.toFixed(2)} €
+                                    {t('orders.total')} {tracking.totalAmount.toFixed(2)} €
                                 </div>
                                 {getGlobalStatusBadge()}
                             </div>
@@ -139,9 +140,25 @@ export function OrderDetailsPage() {
                             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors px-4 py-2 rounded-lg hover:bg-gray-100"
                         >
                             <ArrowLeft size={18} />
-                            <span className="hidden sm:inline">Retour</span>
+                            <span className="hidden sm:inline">{t('common.back')}</span>
                         </button>
                     </div>
+
+                    {/* Bouton Payer si commande en attente */}
+                    {tracking.globalStatus === "Pending" && (
+                        <div className="mt-4 pt-4 border-t">
+                            <button
+                                onClick={() => setPaymentModalOpen(true)}
+                                className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold shadow-sm"
+                            >
+                                <Wallet size={20} />
+                                {t('orders.pay_now')}
+                            </button>
+                            <p className="text-sm text-gray-500 mt-2 text-center">
+                                {t('checkout.order_created')}
+                            </p>
+                        </div>
+                    )}
 
                     {/* Estimation de livraison globale */}
                     {globalEstimatedDate && tracking.globalStatus !== "Delivered" && (
@@ -215,11 +232,23 @@ export function OrderDetailsPage() {
                 {tracking.deliveriesByBrand.length === 0 && (
                     <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
                         <p className="text-yellow-800">
-                            Les informations de livraison seront bientôt disponibles.
+                            {t('common.loading')}
                         </p>
                     </div>
                 )}
             </div>
+
+            {/* Modal de paiement */}
+            <PaymentModal
+                isOpen={paymentModalOpen}
+                onClose={() => setPaymentModalOpen(false)}
+                orderId={tracking.orderId}
+                onPaymentSuccess={() => {
+                    setPaymentModalOpen(false);
+                    // Recharger les données pour afficher le nouveau statut
+                    fetchTracking(tracking.orderId);
+                }}
+            />
         </OrderPageLayout>
     );
 }

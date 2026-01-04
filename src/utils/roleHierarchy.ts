@@ -5,7 +5,7 @@
  */
 export const INVITABLE_ROLES_BY_ROLE: Record<Role, Role[]> = {
     [Role.Administrator]: [Role.Moderator],
-    [Role.Moderator]: [Role.SuperVendor, Role.Vendor],
+    [Role.Moderator]: [Role.SuperVendor],
     [Role.SuperVendor]: [Role.Vendor],
     [Role.Vendor]: [],
     [Role.Client]: []

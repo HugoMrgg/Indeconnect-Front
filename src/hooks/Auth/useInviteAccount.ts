@@ -1,4 +1,4 @@
-﻿import { useState, useCallback, useEffect } from "react";
+﻿import { useState, useCallback } from "react";
 import { AxiosError } from "axios";
 import { AuthService } from "@/api/services/auth";
 import type { InviteAccountRequest } from "@/types/account";
@@ -49,17 +49,8 @@ export function useInviteAccount(onSuccess: () => void): UseInviteAccountReturn 
         }
     }, []);
 
-    // Cleanup et callback de succès
-    useEffect(() => {
-        if (!success) return;
-
-        const timer = setTimeout(() => {
-            onSuccess();
-            reset();
-        }, 2000);
-
-        return () => clearTimeout(timer);
-    }, [success, onSuccess]);
+    // Note: onSuccess sera appelé manuellement par la modal quand l'utilisateur clique sur "Fermer"
+    // Pas de fermeture automatique après 2 secondes
 
     const reset = useCallback(() => {
         setError(null);

@@ -1,4 +1,5 @@
 ﻿import React from "react";
+import { useTranslation } from 'react-i18next';
 
 export type TabKey = "profile" | "payments" | "notifications";
 
@@ -16,15 +17,16 @@ type Props = {
 };
 
 export const SettingsNav: React.FC<Props> = ({ tabs, active, onChange }) => {
+    const { t } = useTranslation();
     return (
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-2">
             <div className="px-3 pt-3 pb-2">
                 <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                    Navigation
+                    {t('pages.settings.nav.title')}
                 </div>
             </div>
 
-            <nav role="tablist" aria-label="Paramètres" className="p-2 space-y-1">
+            <nav role="tablist" aria-label={t('pages.settings.nav.ariaLabel')} className="p-2 space-y-1">
                 {tabs.map((t) => {
                     const isActive = t.key === active;
                     return (
@@ -52,7 +54,7 @@ export const SettingsNav: React.FC<Props> = ({ tabs, active, onChange }) => {
             </nav>
 
             <div className="px-4 pb-3 pt-2 text-xs text-gray-500">
-                Astuce: les onglets visités restent “en mémoire” (pas de remount).
+                {t('pages.settings.nav.tip')}
             </div>
         </div>
     );

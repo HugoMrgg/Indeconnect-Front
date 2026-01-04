@@ -4,6 +4,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { paymentMethodsService } from "@/api/services/payments-methods";
 import { AddPaymentMethodForm } from "./AddPaymentMethodForm";
+import { useTranslation } from 'react-i18next';
 
 const publishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string | undefined;
 const stripePromise = publishableKey ? loadStripe(publishableKey) : null;
@@ -15,6 +16,7 @@ type Props = {
 };
 
 export const AddPaymentMethodModal: React.FC<Props> = ({ open, onClose, onAdded }) => {
+    const { t } = useTranslation();
     const [clientSecret, setClientSecret] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
@@ -25,7 +27,7 @@ export const AddPaymentMethodModal: React.FC<Props> = ({ open, onClose, onAdded 
         }
 
         if (!stripePromise) {
-            toast.error("Stripe publishable key manquante (VITE_STRIPE_PUBLISHABLE_KEY).");
+            toast.error(t('features.settings.payments.missingStripeKey'));
             onClose();
             return;
         }
@@ -35,14 +37,14 @@ export const AddPaymentMethodModal: React.FC<Props> = ({ open, onClose, onAdded 
             try {
                 const secret = await paymentMethodsService.createSetupIntent();
                 setClientSecret(secret);
-            } catch (e: any) {
-                toast.error(e?.message ?? "Impossible de démarrer l’ajout de carte");
+            } catch (e: unknown) {
+                toast.error((e as Error)?.message ?? t('features.settings.payments.cannotStart'));
                 onClose();
             } finally {
                 setLoading(false);
             }
         })();
-    }, [open, onClose]);
+    }, [open, onClose, t]);
 
     const options = useMemo(() => {
         if (!clientSecret) return undefined;
@@ -59,7 +61,7 @@ export const AddPaymentMethodModal: React.FC<Props> = ({ open, onClose, onAdded 
             {/* Backdrop */}
             <button
                 type="button"
-                aria-label="Close"
+                aria-label={t('common.close')}
                 className="absolute inset-0 bg-black/40"
                 onClick={onClose}
             />
@@ -72,9 +74,9 @@ export const AddPaymentMethodModal: React.FC<Props> = ({ open, onClose, onAdded 
                         {/* Header */}
                         <div className="p-6 border-b border-gray-100 flex items-start justify-between gap-4">
                             <div>
-                                <h3 className="text-xl font-semibold text-gray-900">Ajouter une carte</h3>
+                                <h3 className="text-xl font-semibold text-gray-900">{t('features.settings.payments.addCardTitle')}</h3>
                                 <p className="text-gray-600 text-sm mt-1">
-                                    La carte est enregistrée chez Stripe (promis, sans lasers).
+                                    {t('features.settings.payments.addCardSubtitle')}
                                 </p>
                             </div>
 
@@ -92,13 +94,13 @@ export const AddPaymentMethodModal: React.FC<Props> = ({ open, onClose, onAdded 
                         <div className="p-6 overflow-y-auto">
                             {loading || !options || !stripePromise ? (
                                 <div className="py-10 text-center text-gray-500 animate-pulse">
-                                    Préparation Stripe…
+                                    {t('features.settings.payments.preparingStripe')}
                                 </div>
                             ) : (
                                 <Elements stripe={stripePromise} options={options}>
                                     <AddPaymentMethodForm
                                         onSuccess={() => {
-                                            toast.success("Carte enregistrée ✅");
+                                            toast.success(t('features.settings.payments.cardSaved'));
                                             onAdded();
                                             onClose();
                                         }}

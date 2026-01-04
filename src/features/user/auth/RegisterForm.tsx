@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { useTranslation } from "react-i18next";
+import { logger } from "@/utils/logger";
 
 interface RegisterFormProps {
     firstName: string;
@@ -34,6 +36,7 @@ export function RegisterForm({
                                  onSubmit,
                                  onGoogleRegister,
                              }: RegisterFormProps) {
+    const { t } = useTranslation();
     const [googleLoading, setGoogleLoading] = useState(false);
 
     const handleGoogleSuccess = (credentialResponse: CredentialResponse) => {
@@ -46,19 +49,19 @@ export function RegisterForm({
                 setGoogleLoading(false);
             }
         } else {
-            console.error("No credential in response");
+            logger.error("RegisterForm.handleGoogleSuccess", "No credential in response");
         }
     };
 
     const handleGoogleError = () => {
-        console.error("Google login failed");
+        logger.error("RegisterForm.handleGoogleError", "Google registration failed");
         setGoogleLoading(false);
     };
 
     return (
         <form onSubmit={onSubmit} className="space-y-4">
             <h1 className="text-xl font-semibold text-gray-900 text-center">
-                S'inscrire
+                {t('auth.register.title')}
             </h1>
 
             {error && (
@@ -73,7 +76,7 @@ export function RegisterForm({
             <div className="grid grid-cols-2 gap-3">
                 <div>
                     <label htmlFor="firstName" className="block text-sm text-gray-700 mb-1">
-                        Prénom
+                        {t('auth.register.first_name_label')}
                     </label>
                     <input
                         id="firstName"
@@ -83,12 +86,12 @@ export function RegisterForm({
                         disabled={loading || googleLoading}
                         required
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-                        placeholder="Jean"
+                        placeholder={t('auth.register.first_name_placeholder')}
                     />
                 </div>
                 <div>
                     <label htmlFor="lastName" className="block text-sm text-gray-700 mb-1">
-                        Nom
+                        {t('auth.register.last_name_label')}
                     </label>
                     <input
                         id="lastName"
@@ -98,14 +101,14 @@ export function RegisterForm({
                         disabled={loading || googleLoading}
                         required
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-                        placeholder="Dupont"
+                        placeholder={t('auth.register.last_name_placeholder')}
                     />
                 </div>
             </div>
 
             <div>
                 <label htmlFor="email" className="block text-sm text-gray-700 mb-1">
-                    Adresse mail
+                    {t('auth.register.email_label')}
                 </label>
                 <input
                     id="email"
@@ -115,14 +118,14 @@ export function RegisterForm({
                     disabled={loading || googleLoading}
                     required
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-                    placeholder="exemple@mail.com"
+                    placeholder={t('auth.register.email_placeholder')}
                 />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
                 <div>
                     <label htmlFor="password" className="block text-sm text-gray-700 mb-1">
-                        Mot de passe
+                        {t('auth.register.password_label')}
                     </label>
                     <input
                         id="password"
@@ -132,12 +135,12 @@ export function RegisterForm({
                         disabled={loading || googleLoading}
                         required
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-                        placeholder="••••••••"
+                        placeholder={t('auth.register.password_placeholder')}
                     />
                 </div>
                 <div>
                     <label htmlFor="confirmPassword" className="block text-sm text-gray-700 mb-1">
-                        Confirmer
+                        {t('auth.register.confirm_password_label')}
                     </label>
                     <input
                         id="confirmPassword"
@@ -147,7 +150,7 @@ export function RegisterForm({
                         disabled={loading || googleLoading}
                         required
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-                        placeholder="••••••••"
+                        placeholder={t('auth.register.confirm_password_placeholder')}
                     />
                 </div>
             </div>
@@ -158,12 +161,12 @@ export function RegisterForm({
                 className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition active:scale-[0.98] font-medium"
                 aria-busy={loading}
             >
-                {loading ? "…" : "Créer mon compte"}
+                {loading ? t('auth.register.submitting') : t('auth.register.submit_button')}
             </button>
 
             <div className="flex items-center gap-3 my-4">
                 <div className="flex-1 h-px bg-gray-300" />
-                <span className="text-sm text-gray-500">ou</span>
+                <span className="text-sm text-gray-500">{t('common.or')}</span>
                 <div className="flex-1 h-px bg-gray-300" />
             </div>
 

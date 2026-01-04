@@ -1,4 +1,5 @@
 ﻿import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { X } from "lucide-react";
 import React from "react";
 
@@ -15,6 +16,7 @@ interface WishlistProductCardProps {
 }
 
 export function WishlistProductCard({ product, onRemove }: WishlistProductCardProps) {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { brandName } = useParams();
 
@@ -42,7 +44,7 @@ export function WishlistProductCard({ product, onRemove }: WishlistProductCardPr
                     />
                 ) : (
                     <div className="flex h-full items-center justify-center text-gray-400 text-xs">
-                        Image non disponible
+                        {t('wishlist.product_card.no_image')}
                     </div>
                 )}
 
@@ -60,7 +62,7 @@ export function WishlistProductCard({ product, onRemove }: WishlistProductCardPr
                     </div>
                 )}
 
-                 BOUTON SUPPRIMER
+                {/* BOUTON SUPPRIMER */}
                 <button
                     onClick={(e) => {
                         e.stopPropagation();
@@ -70,14 +72,16 @@ export function WishlistProductCard({ product, onRemove }: WishlistProductCardPr
                         bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full
                         text-red-600 text-xs font-semibold shadow hover:bg-white
                         transition-all">
-                        Supprimer
-                        <X className="w-3 h-3" />
+                    {t('wishlist.product_card.remove')}
+                    <X className="w-3 h-3" />
                 </button>
             </div>
 
             {/* INFO PRODUIT */}
             <div className="p-2.5 text-left">
-                <p className="text-[9px] uppercase tracking-wide text-gray-500">PRODUIT</p>
+                <p className="text-[9px] uppercase tracking-wide text-gray-500">
+                    {t('wishlist.product_card.product_label')}
+                </p>
 
                 <h3 className="mt-1 text-sm font-semibold text-gray-900 leading-snug line-clamp-2">
                     {product.name}
