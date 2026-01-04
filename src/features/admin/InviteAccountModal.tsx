@@ -5,6 +5,7 @@ import { useInviteAccount } from "@/hooks/Auth/useInviteAccount";
 import { InviteAccountForm } from "./InviteAccountForm";
 import { useAuth } from "@/hooks/Auth/useAuth";
 import { Role } from "@/types/account";
+import { useTranslation } from "react-i18next";
 
 interface InviteAccountModalProps {
     onClose: () => void;
@@ -12,6 +13,7 @@ interface InviteAccountModalProps {
 }
 
 export function InviteAccountModal({ onClose, onSuccess }: InviteAccountModalProps) {
+    const { t } = useTranslation();
     const modalRef = useRef<HTMLDivElement>(null);
     const closeButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -58,14 +60,14 @@ export function InviteAccountModal({ onClose, onSuccess }: InviteAccountModalPro
     const getSuccessMessage = () => {
         if (formData?.targetRole === "SuperVendor") {
             return {
-                title: "SuperVendor créé !",
-                description: "Un compte SuperVendor a été créé avec une marque vide. L'utilisateur recevra un email d'activation. Une fois connecté, il pourra compléter les informations de sa marque."
+                title: t('admin.invite.supervendor_created'),
+                description: t('admin.invite.supervendor_message')
             };
         }
 
         return {
-            title: "Invitation envoyée !",
-            description: "Un email d'activation a été envoyé. L'utilisateur pourra définir son mot de passe en cliquant sur le lien."
+            title: t('admin.invite.invitation_sent'),
+            description: t('admin.invite.invitation_message')
         };
     };
 
@@ -98,7 +100,7 @@ export function InviteAccountModal({ onClose, onSuccess }: InviteAccountModalPro
                         <div className="flex items-start gap-3 bg-blue-50 border border-blue-200 p-4 rounded-lg">
                             <AlertCircle size={18} className="text-blue-600 flex-shrink-0 mt-0.5" aria-hidden="true" />
                             <p className="text-sm text-blue-700">
-                                Une marque vide a été automatiquement créée pour ce SuperVendor. Il devra la compléter lors de sa première connexion.
+                                {t('brands.vendor.no_empty_brand')}
                             </p>
                         </div>
                     )}
@@ -107,7 +109,7 @@ export function InviteAccountModal({ onClose, onSuccess }: InviteAccountModalPro
                         onClick={handleSuccessClose}
                         className="w-full mt-6 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
                     >
-                        Fermer
+                        {t('common.close')}
                     </button>
                 </div>
             </div>
@@ -125,14 +127,14 @@ export function InviteAccountModal({ onClose, onSuccess }: InviteAccountModalPro
                 <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full">
                     <div className="flex items-center gap-3 text-red-600 mb-4">
                         <AlertCircle size={24} aria-hidden="true" />
-                        <h2 className="text-xl font-bold">Erreur d'authentification</h2>
+                        <h2 className="text-xl font-bold">{t('auth.login.google_error')}</h2>
                     </div>
-                    <p className="text-gray-600 mb-6">Veuillez vous reconnecter.</p>
+                    <p className="text-gray-600 mb-6">{t('auth.login.relogin_prompt')}</p>
                     <button
                         onClick={onClose}
                         className="w-full px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
                     >
-                        Fermer
+                        {t('common.close')}
                     </button>
                 </div>
             </div>
@@ -154,14 +156,14 @@ export function InviteAccountModal({ onClose, onSuccess }: InviteAccountModalPro
             >
                 <div className="flex justify-between items-center mb-6">
                     <h2 id="modal-title" className="text-2xl font-bold">
-                        Inviter un compte
+                        {t('admin.accounts.invite_button')}
                     </h2>
                     <button
                         ref={closeButtonRef}
                         onClick={onClose}
                         disabled={loading}
                         className="text-gray-500 hover:text-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-black rounded-lg p-1 disabled:opacity-50 disabled:cursor-not-allowed"
-                        aria-label="Fermer la modal"
+                        aria-label={t('common.close')}
                     >
                         <X size={24} aria-hidden="true" />
                     </button>

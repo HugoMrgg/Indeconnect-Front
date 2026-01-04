@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Truck, Package, MapPin, Store, Trash2 } from "lucide-react";
 import { ShippingMethodDto } from "@/api/services/shipping/types";
 
@@ -24,14 +25,17 @@ const getIcon = (type: string) => {
 };
 
 export function ShippingMethodList({ methods, editMode = false, onDelete }: ShippingMethodListProps) {
+    const { t } = useTranslation();
+
     if (methods.length === 0) {
         return (
             <div className="text-center py-6">
                 <Truck className="mx-auto text-gray-400 mb-2" size={32} />
                 <p className="text-sm text-gray-500">
                     {editMode
-                        ? "Aucune méthode de livraison configurée"
-                        : "Aucune méthode de livraison disponible"}
+                        ? t('shipping.list.no_methods_configured')
+                        : t('shipping.list.no_methods_available')
+                    }
                 </p>
             </div>
         );
@@ -51,11 +55,14 @@ export function ShippingMethodList({ methods, editMode = false, onDelete }: Ship
                             <p className="font-medium">{method.displayName}</p>
                             <p className="text-sm text-gray-600">
                                 {method.providerName} • {method.estimatedMinDays}-
-                                {method.estimatedMaxDays} jours
+                                {method.estimatedMaxDays} {t('shipping.list.days')}
                             </p>
                         </div>
                         <p className="font-semibold">
-                            {method.price === 0 ? "Gratuit" : `${method.price.toFixed(2)} €`}
+                            {method.price === 0
+                                ? t('checkout.free')
+                                : `${method.price.toFixed(2)} €`
+                            }
                         </p>
 
                         {/* Bouton de suppression en mode édition */}
@@ -63,7 +70,7 @@ export function ShippingMethodList({ methods, editMode = false, onDelete }: Ship
                             <button
                                 onClick={() => onDelete(method.id)}
                                 className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
-                                title="Supprimer"
+                                title={t('common.delete')}
                             >
                                 <Trash2 size={18} />
                             </button>

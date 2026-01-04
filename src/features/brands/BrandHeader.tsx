@@ -1,6 +1,7 @@
 import { Heart, IdCard, MapPin } from "lucide-react";
 import { Brand, EditableBrandFields } from "@/types/brand";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useBrandSubscription } from "@/hooks/Brand/useBrandSubscription";
 import { EditableField } from "@/features/brands/edit/EditableField";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +21,7 @@ export const BrandHeader: React.FC<Props> = ({
                                                  editMode = false,
                                                  onUpdateField,
                                              }) => {
+    const { t } = useTranslation();
     const { isSubscribed, loading, toggleSubscription } = useBrandSubscription(
         brand?.id
     );
@@ -92,7 +94,7 @@ export const BrandHeader: React.FC<Props> = ({
                                 fill={isSubscribed ? "currentColor" : "none"}
                             />
                             <span>
-                {loading ? "..." : isSubscribed ? "Abonné ✓" : "S'abonner"}
+                {loading ? "..." : isSubscribed ? t('brands.subscribed') : t('brands.subscribe')}
               </span>
                         </button>
 
@@ -103,7 +105,7 @@ export const BrandHeader: React.FC<Props> = ({
                             }
                         >
                             <IdCard className="w-6 h-6 text-gray-700" />
-                            <span>Qui sommes-nous ?</span>
+                            <span>{t('brands.about_us')}</span>
                         </button>
                     </div>
                 )}

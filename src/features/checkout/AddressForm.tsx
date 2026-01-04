@@ -1,4 +1,5 @@
 ﻿import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { createShippingAddress } from "@/api/services/shipping";
 import { ShippingAddressDto } from "@/api/services/shipping/types";
 import { extractErrorMessage } from "@/utils/errorHandling";
@@ -19,6 +20,8 @@ type FormErrors = {
 };
 
 export function AddressForm({ userId, onSuccess, onCancel }: Props) {
+    const { t } = useTranslation();
+
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         street: "",
@@ -42,19 +45,19 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
         const newErrors: FormErrors = {};
 
         if (formData.street.trim().length < 2) {
-            newErrors.street = "La rue doit contenir au moins 2 caractères";
+            newErrors.street = t('checkout.address.street_error');
         }
 
         if (!formData.number.trim()) {
-            newErrors.number = "Le numéro est requis";
+            newErrors.number = t('checkout.address.number_error');
         }
 
         if (!validatePostalCode(formData.postalCode)) {
-            newErrors.postalCode = "Le code postal doit contenir 4 chiffres (ex: 4000)";
+            newErrors.postalCode = t('checkout.address.postal_code_error');
         }
 
         if (formData.city.trim().length < 2) {
-            newErrors.city = "La ville doit contenir au moins 2 caractères";
+            newErrors.city = t('checkout.address.city_error');
         }
 
         setErrors(newErrors);
@@ -75,7 +78,7 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
         e.preventDefault();
 
         if (!validate()) {
-            toast.error("Veuillez corriger les erreurs du formulaire");
+            toast.error(t('checkout.address.form_errors'));
             return;
         }
 
@@ -83,7 +86,7 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
 
         try {
             const newAddress = await createShippingAddress(userId, formData);
-            toast.success("Adresse ajoutée !");
+            toast.success(t('checkout.address.added_success'));
             onSuccess(newAddress);
         } catch (error: unknown) {
             logger.error("AddressForm.handleSubmit", error);
@@ -99,7 +102,7 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
                 {/* Rue */}
                 <div className="col-span-2 sm:col-span-1">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Rue <span className="text-red-500">*</span>
+                        {t('checkout.address.street_label')} <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -112,7 +115,7 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
                         className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                             errors.street ? "border-red-500" : "border-gray-300"
                         }`}
-                        placeholder="Rue de la Paix"
+                        placeholder={t('checkout.address.street_placeholder')}
                     />
                     {errors.street && (
                         <p className="text-red-500 text-xs mt-1">{errors.street}</p>
@@ -122,7 +125,7 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
                 {/* Numéro */}
                 <div className="col-span-2 sm:col-span-1">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Numéro <span className="text-red-500">*</span>
+                        {t('checkout.address.number_label')} <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -135,7 +138,7 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
                         className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                             errors.number ? "border-red-500" : "border-gray-300"
                         }`}
-                        placeholder="42"
+                        placeholder={t('checkout.address.number_placeholder')}
                     />
                     {errors.number && (
                         <p className="text-red-500 text-xs mt-1">{errors.number}</p>
@@ -145,7 +148,7 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
                 {/* Code postal */}
                 <div className="col-span-2 sm:col-span-1">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Code postal <span className="text-red-500">*</span>
+                        {t('checkout.address.postal_code_label')} <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -153,14 +156,14 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
                         maxLength={4}
                         value={formData.postalCode}
                         onChange={(e) => {
-                            const value = e.target.value.replace(/\D/g, ""); // Uniquement chiffres
+                            const value = e.target.value.replace(/\D/g, "");
                             setFormData({ ...formData, postalCode: value });
                             if (errors.postalCode) setErrors({ ...errors, postalCode: undefined });
                         }}
                         className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                             errors.postalCode ? "border-red-500" : "border-gray-300"
                         }`}
-                        placeholder="4000"
+                        placeholder={t('checkout.address.postal_code_placeholder')}
                     />
                     {errors.postalCode && (
                         <p className="text-red-500 text-xs mt-1">{errors.postalCode}</p>
@@ -170,7 +173,7 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
                 {/* Ville */}
                 <div className="col-span-2 sm:col-span-1">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Ville <span className="text-red-500">*</span>
+                        {t('checkout.address.city_label')} <span className="text-red-500">*</span>
                     </label>
                     <input
                         type="text"
@@ -183,7 +186,7 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
                         className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                             errors.city ? "border-red-500" : "border-gray-300"
                         }`}
-                        placeholder="Liège"
+                        placeholder={t('checkout.address.city_placeholder')}
                     />
                     {errors.city && (
                         <p className="text-red-500 text-xs mt-1">{errors.city}</p>
@@ -193,14 +196,14 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
                 {/* Complément d'adresse */}
                 <div className="col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Complément d'adresse (optionnel)
+                        {t('checkout.address.complement_label')}
                     </label>
                     <input
                         type="text"
                         value={formData.extra}
                         onChange={(e) => setFormData({ ...formData, extra: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Bâtiment A, 3ème étage"
+                        placeholder={t('checkout.address.complement_placeholder')}
                     />
                 </div>
 
@@ -213,7 +216,9 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
                             onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
                             className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                         />
-                        <span className="text-sm text-gray-700">Définir comme adresse par défaut</span>
+                        <span className="text-sm text-gray-700">
+                            {t('checkout.address.set_default')}
+                        </span>
                     </label>
                 </div>
             </div>
@@ -225,7 +230,7 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
                     disabled={loading || !isFormValid}
                     className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                    {loading ? "Ajout..." : "Ajouter"}
+                    {loading ? t('checkout.address.adding') : t('checkout.address.add_button')}
                 </button>
                 <button
                     type="button"
@@ -233,7 +238,7 @@ export function AddressForm({ userId, onSuccess, onCancel }: Props) {
                     disabled={loading}
                     className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-300 disabled:opacity-50 transition-colors"
                 >
-                    Annuler
+                    {t('common.cancel')}
                 </button>
             </div>
         </form>

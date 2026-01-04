@@ -5,8 +5,10 @@ import { useAuth } from "@/hooks/Auth/useAuth";
 import Skeleton from "react-loading-skeleton";
 import {RecommendationsSkeletonGrid} from "@/components/skeletons/RecommendedProductCardSkeleton";
 import { logger } from "@/utils/logger";
+import { useTranslation } from "react-i18next";
 
 export function RecommendationsSection() {
+    const { t } = useTranslation();
     const { user } = useAuth();
     const [recommendations, setRecommendations] = useState<RecommendedProduct[]>([]);
     const [loading, setLoading] = useState(false);
@@ -66,16 +68,16 @@ export function RecommendationsSection() {
             <div className="mb-4">
                 {isPersonalized ? (
                     <>
-                        <h2 className="text-xl font-semibold tracking-tight">Recommandé pour vous</h2>
+                        <h2 className="text-xl font-semibold tracking-tight">{t('home.recommended_for_you')}</h2>
                         <p className="text-sm text-gray-500">
-                            Basé sur vos achats précédents
+                            {t('home.based_on_purchases')}
                         </p>
                     </>
                 ) : (
                     <>
-                        <h2 className="text-xl font-semibold tracking-tight">Produits populaires</h2>
+                        <h2 className="text-xl font-semibold tracking-tight">{t('home.popular_products')}</h2>
                         <p className="text-sm text-gray-500">
-                            Les plus appréciés par la communauté
+                            {t('home.community_favorites')}
                         </p>
                     </>
                 )}

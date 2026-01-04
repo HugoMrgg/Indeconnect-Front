@@ -1,4 +1,5 @@
-﻿import { BrandDeliveryTrackingDto } from "@/api/services/orders/types";
+﻿import { useTranslation } from "react-i18next";
+import { BrandDeliveryTrackingDto } from "@/api/services/orders/types";
 import { OrderTracker } from "./OrderTracker";
 import { Package, Truck, Calendar, ShoppingBag } from "lucide-react";
 
@@ -7,6 +8,8 @@ type Props = {
 };
 
 export function BrandDeliveryCard({ delivery }: Props) {
+    const { t } = useTranslation();
+
     if (!delivery) {
         return null;
     }
@@ -32,15 +35,15 @@ export function BrandDeliveryCard({ delivery }: Props) {
     // Badge de statut
     const getStatusBadge = () => {
         const statusConfig: Record<string, { label: string; color: string }> = {
-            Pending: { label: "En attente", color: "bg-gray-100 text-gray-700" },
-            Preparing: { label: "En préparation", color: "bg-yellow-100 text-yellow-700" },
-            Shipped: { label: "Expédiée", color: "bg-blue-100 text-blue-700" },
-            InTransit: { label: "En transit", color: "bg-indigo-100 text-indigo-700" },
-            OutForDelivery: { label: "En cours de livraison", color: "bg-purple-100 text-purple-700" },
-            Delivered: { label: "Livrée", color: "bg-green-100 text-green-700" },
-            Failed: { label: "Échec", color: "bg-red-100 text-red-700" },
-            Returned: { label: "Retournée", color: "bg-orange-100 text-orange-700" },
-            Cancelled: { label: "Annulée", color: "bg-red-100 text-red-700" },
+            Pending: { label: t('orders.delivery.statuses.preparing'), color: "bg-gray-100 text-gray-700" },
+            Preparing: { label: t('orders.delivery.statuses.preparing'), color: "bg-yellow-100 text-yellow-700" },
+            Shipped: { label: t('orders.delivery.statuses.shipped'), color: "bg-blue-100 text-blue-700" },
+            InTransit: { label: t('orders.delivery.statuses.in_transit'), color: "bg-indigo-100 text-indigo-700" },
+            OutForDelivery: { label: t('orders.delivery.statuses.out_for_delivery'), color: "bg-purple-100 text-purple-700" },
+            Delivered: { label: t('orders.delivery.statuses.delivered'), color: "bg-green-100 text-green-700" },
+            Failed: { label: t('orders.delivery.statuses.failed'), color: "bg-red-100 text-red-700" },
+            Returned: { label: t('orders.delivery.statuses.returned'), color: "bg-orange-100 text-orange-700" },
+            Cancelled: { label: t('orders.statuses.cancelled'), color: "bg-red-100 text-red-700" },
         };
 
         const config = statusConfig[delivery.status] || statusConfig.Pending;
@@ -69,7 +72,7 @@ export function BrandDeliveryCard({ delivery }: Props) {
                         <div>
                             <h3 className="text-xl font-bold text-gray-900">{delivery.brandName}</h3>
                             <p className="text-sm text-gray-600">
-                                Livraison #{delivery.brandDeliveryId}
+                                {t('orders.delivery.number')}{delivery.brandDeliveryId}
                             </p>
                         </div>
                     </div>
@@ -81,7 +84,7 @@ export function BrandDeliveryCard({ delivery }: Props) {
                     <div className="bg-white rounded-lg p-3 border border-gray-200">
                         <div className="flex items-center gap-2 text-sm">
                             <Truck className="text-gray-500" size={18} />
-                            <span className="font-medium text-gray-700">Numéro de suivi :</span>
+                            <span className="font-medium text-gray-700">{t('orders.delivery.tracking_number')}</span>
                             <span className="font-mono font-bold text-gray-900">
                                 {delivery.trackingNumber}
                             </span>
@@ -96,7 +99,7 @@ export function BrandDeliveryCard({ delivery }: Props) {
                     <div className="flex items-center gap-2 mb-3">
                         <ShoppingBag className="text-gray-700" size={20} />
                         <h4 className="font-bold text-gray-900">
-                            Articles ({safeItems.length})
+                            {t('orders.delivery.items')}{safeItems.length})
                         </h4>
                     </div>
                     <div className="space-y-2">
@@ -107,7 +110,7 @@ export function BrandDeliveryCard({ delivery }: Props) {
                             >
                                 <div>
                                     <p className="font-medium text-gray-900">{item.productName}</p>
-                                    <p className="text-sm text-gray-600">Quantité : {item.quantity}</p>
+                                    <p className="text-sm text-gray-600">{t('cart.quantity')} : {item.quantity}</p>
                                 </div>
                                 <p className="font-bold text-gray-900">
                                     {item.unitPrice.toFixed(2)} €
@@ -116,7 +119,7 @@ export function BrandDeliveryCard({ delivery }: Props) {
                         ))}
                     </div>
                     <div className="mt-3 pt-3 border-t border-gray-200 flex justify-between items-center">
-                        <span className="font-bold text-gray-700">Sous-total :</span>
+                        <span className="font-bold text-gray-700">{t('checkout.products_subtotal')} :</span>
                         <span className="text-xl font-bold text-gray-900">
                             {delivery.totalAmount.toFixed(2)} €
                         </span>
@@ -128,7 +131,7 @@ export function BrandDeliveryCard({ delivery }: Props) {
                     {delivery.shippedAt && (
                         <div className="flex items-center gap-2 text-sm">
                             <Truck className="text-blue-600" size={16} />
-                            <span className="text-gray-600">Expédié le :</span>
+                            <span className="text-gray-600">{t('common.loading')}</span>
                             <span className="font-medium text-gray-900">
                                 {new Date(delivery.shippedAt).toLocaleDateString("fr-FR", {
                                     day: "2-digit",
@@ -141,14 +144,14 @@ export function BrandDeliveryCard({ delivery }: Props) {
                     {deliveredDate && (
                         <div className="flex items-center gap-2 text-sm">
                             <Package className="text-green-600" size={16} />
-                            <span className="text-gray-600">Livré le :</span>
+                            <span className="text-gray-600">{t('common.loading')}</span>
                             <span className="font-medium text-gray-900">{deliveredDate}</span>
                         </div>
                     )}
                     {estimatedDate && delivery.status !== "Delivered" && (
                         <div className="flex items-center gap-2 text-sm">
                             <Calendar className="text-indigo-600" size={16} />
-                            <span className="text-gray-600">Livraison estimée :</span>
+                            <span className="text-gray-600">{t('common.loading')}</span>
                             <span className="font-medium text-gray-900">{estimatedDate}</span>
                         </div>
                     )}

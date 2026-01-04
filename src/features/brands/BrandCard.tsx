@@ -1,5 +1,6 @@
 ﻿import React, { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Brand } from "@/types/brand";
 import { MapPin, Star } from "lucide-react";
 
@@ -17,7 +18,7 @@ const StarRating: React.FC<{ value?: number; size?: number }> = ({ value, size =
     const percents = useMemo(() => {
         if (rating === null) return Array(5).fill(0);
         return Array.from({ length: 5 }, (_, i) => {
-            const raw = rating - i;            // ex: 4.6 - 4 = 0.6 for 5th star
+            const raw = rating - i;
             const pct = clamp(raw, 0, 1) * 100;
             return pct;
         });
@@ -60,6 +61,7 @@ export const BrandCard: React.FC<Brand> = ({
                                                distanceKm,
                                                userRating,
                                            }) => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const prod = useMemo(() => clamp((ethicsScoreProduction ?? 0) / 20, 0, 5), [ethicsScoreProduction]);
@@ -90,7 +92,7 @@ export const BrandCard: React.FC<Brand> = ({
                     {logoUrl ? (
                         <img
                             src={logoUrl}
-                            alt={`${name} logo`}
+                            alt={t('brands.card.logo_alt', { name })}
                             className="h-full w-full object-contain p-2"
                             loading="lazy"
                         />
@@ -104,24 +106,24 @@ export const BrandCard: React.FC<Brand> = ({
                         <h3 className="text-lg font-semibold tracking-tight truncate">{name}</h3>
 
                         <span className="inline-flex items-center gap-1 rounded-full bg-gray-50 px-3 py-1 text-xs text-gray-700 border border-gray-100">
-              <MapPin size={14} />
+                            <MapPin size={14} />
                             {distanceKm !== undefined ? `${Math.round(distanceKm as number)} km` : "?"}
-            </span>
+                        </span>
                     </div>
 
                     <div className="mt-1 flex items-center gap-2">
                         <StarRating value={userRating} size={16} />
                         <span className="text-sm text-gray-600">
-              {userRating !== undefined && userRating !== null ? userRating.toFixed(1) : "N/A"}
-            </span>
+                            {userRating !== undefined && userRating !== null ? userRating.toFixed(1) : t('common.not_available_short')}
+                        </span>
                     </div>
                 </div>
             </div>
 
-            {/* ETHICS blocks (cleaner) */}
+            {/* ETHICS blocks */}
             <div className="mt-4 grid grid-cols-2 gap-3">
                 <div className="rounded-2xl bg-gray-50 border border-gray-100 p-3">
-                    <p className="text-xs text-gray-500">Éthique (production)</p>
+                    <p className="text-xs text-gray-500">{t('brands.card.ethics_production')}</p>
                     <div className="mt-2 h-2 w-full rounded-full bg-white border border-gray-100 overflow-hidden">
                         <div className="h-full bg-gray-900/70 rounded-full" style={{ width: `${(prod / 5) * 100}%` }} />
                     </div>
@@ -129,7 +131,7 @@ export const BrandCard: React.FC<Brand> = ({
                 </div>
 
                 <div className="rounded-2xl bg-gray-50 border border-gray-100 p-3">
-                    <p className="text-xs text-gray-500">Éthique (transport)</p>
+                    <p className="text-xs text-gray-500">{t('brands.card.ethics_transport')}</p>
                     <div className="mt-2 h-2 w-full rounded-full bg-white border border-gray-100 overflow-hidden">
                         <div className="h-full bg-gray-900/70 rounded-full" style={{ width: `${(transp / 5) * 100}%` }} />
                     </div>
@@ -148,8 +150,8 @@ export const BrandCard: React.FC<Brand> = ({
             <div className="mt-4 flex flex-wrap gap-2">
                 {address && (
                     <span className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-700">
-            {address}
-          </span>
+                        {address}
+                    </span>
                 )}
             </div>
         </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";
 import { SizeDto } from "@/api/services/sizes";
 
@@ -27,12 +28,14 @@ export function AddProductSizeVariants({
                                            onToggleSize,
                                            onUpdateStock,
                                        }: AddProductSizeVariantsProps) {
+    const { t } = useTranslation();
+
     if (!categoryId) {
         return (
             <div className="space-y-4">
-                <h3 className="font-semibold text-lg">Tailles et stocks</h3>
+                <h3 className="font-semibold text-lg">{t('add_product.sizes.title')}</h3>
                 <div className="text-gray-500 bg-gray-50 rounded-lg p-4 text-center">
-                    Sélectionnez d'abord une catégorie pour afficher les tailles disponibles
+                    {t('add_product.sizes.select_category_first')}
                 </div>
             </div>
         );
@@ -41,10 +44,10 @@ export function AddProductSizeVariants({
     if (loadingSizes) {
         return (
             <div className="space-y-4">
-                <h3 className="font-semibold text-lg">Tailles et stocks</h3>
+                <h3 className="font-semibold text-lg">{t('add_product.sizes.title')}</h3>
                 <div className="flex items-center justify-center gap-2 text-gray-500 p-4">
                     <Loader2 size={20} className="animate-spin" />
-                    Chargement des tailles...
+                    {t('add_product.sizes.loading')}
                 </div>
             </div>
         );
@@ -53,7 +56,7 @@ export function AddProductSizeVariants({
     if (errorSizes) {
         return (
             <div className="space-y-4">
-                <h3 className="font-semibold text-lg">Tailles et stocks</h3>
+                <h3 className="font-semibold text-lg">{t('add_product.sizes.title')}</h3>
                 <div className="text-red-500 bg-red-50 rounded-lg p-4">{errorSizes}</div>
             </div>
         );
@@ -62,9 +65,9 @@ export function AddProductSizeVariants({
     if (availableSizes.length === 0) {
         return (
             <div className="space-y-4">
-                <h3 className="font-semibold text-lg">Tailles et stocks</h3>
+                <h3 className="font-semibold text-lg">{t('add_product.sizes.title')}</h3>
                 <div className="text-gray-500 bg-gray-50 rounded-lg p-4 text-center">
-                    Aucune taille disponible pour cette catégorie
+                    {t('add_product.sizes.no_sizes')}
                 </div>
             </div>
         );
@@ -72,9 +75,9 @@ export function AddProductSizeVariants({
 
     return (
         <div className="space-y-4">
-            <h3 className="font-semibold text-lg">Tailles et stocks</h3>
+            <h3 className="font-semibold text-lg">{t('add_product.sizes.title')}</h3>
             <p className="text-sm text-gray-600">
-                Sélectionnez les tailles disponibles et définissez leurs stocks
+                {t('add_product.sizes.description')}
             </p>
 
             <div className="space-y-3">
@@ -98,7 +101,7 @@ export function AddProductSizeVariants({
 
                             {isSelected && (
                                 <div className="flex-1 flex items-center gap-2">
-                                    <label className="text-sm font-medium">Stock:</label>
+                                    <label className="text-sm font-medium">{t('add_product.sizes.stock')}:</label>
                                     <input
                                         type="number"
                                         min="0"
@@ -109,7 +112,7 @@ export function AddProductSizeVariants({
                                         className="w-24 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                                         placeholder="0"
                                     />
-                                    <span className="text-sm text-gray-600">unités</span>
+                                    <span className="text-sm text-gray-600">{t('add_product.sizes.units')}</span>
                                 </div>
                             )}
                         </div>

@@ -1,4 +1,5 @@
 ﻿import React from "react";
+import { useTranslation } from "react-i18next";
 import { useColors } from "@/hooks/Color/useColors";
 import { Loader2 } from "lucide-react";
 
@@ -11,15 +12,16 @@ export function ProductColorEditor({
                                        currentColorId,
                                        onSelectColor,
                                    }: ProductColorEditorProps) {
+    const { t } = useTranslation();
     const { colors, loading, error } = useColors();
 
     if (loading) {
         return (
             <div className="mt-6 space-y-4">
-                <h3 className="text-lg font-semibold text-gray-800">Couleur principale</h3>
+                <h3 className="text-lg font-semibold text-gray-800">{t('add_product.color_editor.title')}</h3>
                 <div className="flex items-center gap-2 text-gray-500">
                     <Loader2 size={20} className="animate-spin" />
-                    Chargement des couleurs...
+                    {t('add_product.color_editor.loading')}
                 </div>
             </div>
         );
@@ -28,7 +30,7 @@ export function ProductColorEditor({
     if (error) {
         return (
             <div className="mt-6 space-y-4">
-                <h3 className="text-lg font-semibold text-gray-800">Couleur principale</h3>
+                <h3 className="text-lg font-semibold text-gray-800">{t('add_product.color_editor.title')}</h3>
                 <div className="text-red-500 bg-red-50 rounded-lg p-4">{error}</div>
             </div>
         );
@@ -37,10 +39,10 @@ export function ProductColorEditor({
     return (
         <div className="mt-6 space-y-4">
             <h3 className="text-lg font-semibold text-gray-800">
-                Couleur principale <span className="text-red-500">*</span>
+                {t('add_product.color_editor.title')} <span className="text-red-500">*</span>
             </h3>
             <p className="text-sm text-gray-600">
-                Sélectionnez la couleur de cette variante de produit
+                {t('add_product.color_editor.description')}
             </p>
 
             <div className="grid grid-cols-3 gap-3">

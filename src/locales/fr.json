@@ -1,0 +1,954 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "not_available_short": "N/A",
+    "error": "Erreur",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "close": "Fermer",
+    "back": "Retour",
+    "or": "ou",
+    "please_wait": "Veuillez patienter",
+    "editable": {
+      "click_to_edit": "Cliquer pour modifier"
+    },
+    "apply": "Appliquer",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "locale": "fr-FR"
+  },
+
+  "auth": {
+    "login": {
+      "title": "Se connecter",
+      "email_label": "Adresse mail",
+      "email_placeholder": "exemple@mail.com",
+      "password_label": "Mot de passe",
+      "password_placeholder": "Votre mot de passe",
+      "submit_button": "Se connecter",
+      "submitting": "Connexion...",
+      "google_error": "Erreur d'authentification Google",
+      "error_generic": "Erreur d'authentification",
+      "relogin_prompt": "Veuillez vous reconnecter."
+    },
+    "register": {
+      "title": "S'inscrire",
+      "first_name_label": "Prénom",
+      "first_name_placeholder": "Jean",
+      "last_name_label": "Nom",
+      "last_name_placeholder": "Dupont",
+      "email_label": "Adresse mail",
+      "email_placeholder": "exemple@mail.com",
+      "password_label": "Mot de passe",
+      "password_placeholder": "••••••••",
+      "confirm_password_label": "Confirmer",
+      "confirm_password_placeholder": "••••••••",
+      "submit_button": "Créer mon compte",
+      "submitting": "…",
+      "password_mismatch": "Les mots de passe ne correspondent pas."
+    }
+  },
+
+  "navigation": {
+    "search": {
+      "brands": "Rechercher parmi les marques...",
+      "products": "Rechercher parmi les produits...",
+      "wishlist": "Rechercher dans votre liste de souhaits...",
+      "settings": "Rechercher dans les paramètres...",
+      "accounts": "Rechercher parmi les comptes...",
+      "page": "Rechercher sur cette page...",
+      "filters": "Filtres"
+    },
+    "menu": {
+      "guest": {
+        "login": "Se connecter",
+        "register": "S'inscrire"
+      },
+      "user": {
+        "wishlist": "Favoris",
+        "cart": "Panier",
+        "orders": "Commandes",
+        "settings": "Paramètres",
+        "logout": "Se déconnecter"
+      },
+      "admin": {
+        "logs": "Consulter les logs",
+        "accounts": "Gérer les comptes",
+        "payment_methods": "Moyens de paiement",
+        "delivery_methods": "Moyens de livraison",
+        "ethics_questionnaire": "Gérer questionnaire éthique"
+      }
+    }
+  },
+
+  "products": {
+    "details": {
+      "color": "Couleur",
+      "size": "Taille",
+      "base_price": "Prix de base",
+      "color_price": "Prix de cette couleur",
+      "stock": "Stock",
+      "category": "Catégorie"
+    },
+    "add_product": {
+      "title": "Créer un produit",
+      "mode_title": "Choisissez comment vous souhaitez créer votre produit",
+      "mode_new_type": "Nouveau type de produit",
+      "mode_new_type_desc": "Créer un nouveau produit avec toutes ses informations",
+      "mode_add_color": "Ajouter une couleur",
+      "mode_add_color_desc": "Ajouter une variante de couleur à un produit existant",
+      "category_label": "Catégorie :",
+      "category_inherited": "Héritée du groupe de produit sélectionné",
+      "price_label": "Prix (€) *",
+      "price_placeholder": "0.00",
+      "submit_button": "Créer le produit",
+      "submitting": "Création...",
+      "no_product_groups": "Aucun groupe de produit existant. Créez d'abord un nouveau produit.",
+      "error_loading_groups": "Erreur lors du chargement des groupes de produits",
+      "error_creating_product": "Erreur lors de la création du produit",
+      "error_no_category": "Veuillez sélectionner une catégorie",
+      "error_no_color": "Veuillez sélectionner une couleur",
+      "error_no_size": "Veuillez sélectionner au moins une taille",
+      "error_image_upload": "Erreur lors de l'upload de l'image"
+    },
+    "reviews": {
+      "title": "Avis Clients",
+      "rating": "★ / 5",
+      "comment_singular": "commentaire",
+      "comment_plural": "commentaires",
+      "write_review": "Écrire un avis",
+      "no_reviews": "Aucun avis pour le moment.",
+      "disable_confirm": "Voulez-vous vraiment masquer cet avis ?",
+      "disabled_success": "Avis désactivé avec succès",
+      "disable_error": "Impossible de désactiver cet avis.",
+      "disable_button": "Désactiver cet avis (Modérateur)",
+      "rate_product": "Noter ce produit",
+      "rate_question": "Quelle note donnez-vous ?",
+      "comment_label": "Votre commentaire",
+      "comment_placeholder": "Dites-nous ce que vous en pensez...",
+      "submit_button": "Envoyer",
+      "success": "Votre avis a été publié !",
+      "error": "Erreur lors de l'envoi de l'avis."
+    }
+  },
+
+  "cart": {
+    "title": "Votre panier",
+    "empty": "Votre panier est vide.",
+    "login_required": "Veuillez vous connecter pour accéder à votre panier.",
+    "loading": "Chargement du panier...",
+    "items_count": "Nombre d'articles",
+    "subtotal": "Sous-total",
+    "checkout_button": "Passer commande",
+    "add_to_cart": "Ajouter au panier",
+    "unavailable": "Indisponible",
+    "remove_from_cart": "Retirer du panier",
+    "quantity": "Quantité",
+    "item_details": {
+      "size": "Taille :",
+      "color": "Couleur :",
+      "stock": "Stock :"
+    }
+  },
+
+  "orders": {
+    "title": "Mes commandes",
+    "empty": "Aucune commande",
+    "empty_description": "Vous n'avez pas encore passé de commande",
+    "discover_products": "Découvrir nos produits",
+    "error_loading": "Erreur de chargement",
+    "order_number": "Commande #",
+    "total": "Total :",
+    "items_singular": "article",
+    "items_plural": "articles",
+    "brands": "marques",
+    "pay_now": "Payer maintenant",
+    "track_order": "Suivre ma commande",
+    "invoice_singular": "Facture",
+    "invoice_plural": "factures",
+    "separate_deliveries": "Livraisons séparées",
+    "order_not_found": "Commande introuvable",
+    "statuses": {
+      "pending": "En attente",
+      "paid": "Payée",
+      "processing": "En traitement",
+      "delivered": "Livrée",
+      "cancelled": "Annulée"
+    },
+    "delivery": {
+      "number": "Livraison #",
+      "tracking_number": "Numéro de suivi :",
+      "items": "Articles (",
+      "statuses": {
+        "preparing": "En préparation",
+        "shipped": "Expédiée",
+        "in_transit": "En transit",
+        "out_for_delivery": "En cours de livraison",
+        "delivered": "Livrée",
+        "failed": "Échec",
+        "returned": "Retournée"
+      }
+    }
+  },
+
+  "checkout": {
+    "title": "Finaliser votre commande",
+    "login_required": "Vous devez être connecté pour accéder au checkout",
+    "delivery_modes": "Modes de livraison",
+    "summary": "Récapitulatif",
+    "products_subtotal": "Sous-total produits",
+    "delivery": "Livraison",
+    "free": "Gratuit",
+    "vat": "dont TVA (21%)",
+    "total_with_tax": "Total TTC",
+    "creating_order": "Création de la commande...",
+    "create_order": "Créer la commande",
+    "error_no_address": "Veuillez sélectionner une adresse de livraison",
+    "error_no_delivery_mode": "Veuillez sélectionner un mode de livraison pour chaque marque",
+    "order_created": "La commande créée. Le paiement s'ouvre dans une fenêtre.",
+    "proceed_to_payment": "Procéder au paiement",
+    "address": {
+      "street_label": "Rue *",
+      "street_placeholder": "Rue de la Paix",
+      "street_error": "La rue doit contenir au moins 2 caractères",
+      "number_label": "Numéro *",
+      "number_placeholder": "42",
+      "number_error": "Le numéro est requis",
+      "postal_code_label": "Code postal *",
+      "postal_code_placeholder": "4000",
+      "postal_code_error": "Le code postal doit contenir 4 chiffres (ex: 4000)",
+      "city_label": "Ville *",
+      "city_placeholder": "Liège",
+      "city_error": "La ville doit contenir au moins 2 caractères",
+      "complement_label": "Complément d'adresse (optionnel)",
+      "complement_placeholder": "Bâtiment A, 3ème étage",
+      "set_default": "Définir comme adresse par défaut",
+      "add_button": "Ajouter",
+      "adding": "Ajout...",
+      "form_errors": "Veuillez corriger les erreurs du formulaire",
+      "added_success": "Adresse ajoutée !"
+    }
+  },
+
+  "wishlist": {
+    "product_card": {
+      "no_image": "Image non disponible",
+      "remove": "Supprimer",
+      "product_label": "PRODUIT"
+    },
+    "title": "Mes Favoris",
+    "empty": "Aucun article en favoris.",
+    "empty_cta": "Parcourez les produits et ajoutez-en à vos favoris !",
+    "login_required": "Connecte-toi pour voir tes favoris ❤️",
+    "loading": "Chargement...",
+    "remove_button": "Supprimer",
+    "removed_success": "Produit supprimé de vos favoris ❤️"
+  },
+
+  "brands": {
+    "preview": {
+      "title": "Aperçu client",
+      "description": "Voici comment les clients verront votre marque"
+    },
+    "deposit": {
+      "title": "Dépôt principal",
+      "number_label": "N°",
+      "street_label": "Rue",
+      "postal_code_label": "Code postal",
+      "city_label": "Ville",
+      "country_label": "Pays",
+      "default_country": "Belgique",
+      "saving": "Enregistrement..."
+    },
+    "section": {
+      "result_count_singular": "{{count}} résultat",
+      "result_count_plural": "{{count}} résultats",
+      "scroll_left": "Défiler vers la gauche",
+      "scroll_right": "Défiler vers la droite",
+      "no_match": "Aucune marque ne correspond.",
+      "try_modify_filters": "Essaie de modifier tes filtres ou ta recherche."
+    },
+    "products": {
+      "no_products": "Aucun produit pour le moment",
+      "add_first": "Commencez par ajouter votre premier produit !",
+      "no_results": "Votre recherche n'a rien donné...",
+      "try_other_keywords": "Essayez d'autres mots-clés"
+    },
+    "info": {
+      "price_range": "Gamme de prix",
+      "select_price_range": "Sélectionnez une gamme",
+      "price_range_economy": "€ - Économique",
+      "price_range_mid": "€€ - Moyen",
+      "price_range_premium": "€€€ - Premium",
+      "about_title": "À propos de la marque",
+      "where_title": "Où nous trouver",
+      "other_title": "Autres informations",
+      "practical_info": "Informations pratiques",
+      "not_specified": "Non renseignée",
+      "main_deposit": "Dépôt principal",
+      "add_address": "Ajouter une adresse"
+    },
+    "back_to_brands": "Retour aux marques",
+    "card": {
+      "logo_alt": "Logo {{name}}",
+      "ethics_production": "Éthique (production)",
+      "ethics_transport": "Éthique (transport)"
+    },
+    "details": {
+      "about_us": "À propos",
+      "about_us_placeholder": "Présentez votre marque en détail...",
+      "where_are_we": "Où nous trouver",
+      "where_are_we_placeholder": "Adresses, points de vente...",
+      "contact": "Contact",
+      "contact_placeholder": "Email, téléphone, réseaux sociaux...",
+      "other_info": "Autres informations",
+      "other_info_placeholder": "Informations complémentaires..."
+    },
+    "logo": {
+      "alt": "Logo de la marque",
+      "add_logo": "Ajouter un logo",
+      "edit_logo": "Modifier le logo",
+      "modal_title": "Modifier le logo",
+      "label": "Logo"
+    },
+    "banner": {
+      "edit_button": "Modifier la bannière",
+      "modal_title": "Modifier la bannière",
+      "label": "Bannière"
+    },
+    "all_brands": "Toutes les marques :",
+    "no_brands": "Aucune marque à afficher",
+    "subscribe": "S'abonner",
+    "subscribed": "Abonné ✓",
+    "about_us": "Qui sommes-nous ?",
+    "ethics": {
+      "categories": {
+        "title": "Catégories",
+        "questions": "questions",
+        "no_results": "Aucun résultat. Essaie un autre mot-clé."
+      },
+      "production": "Éthique (production)",
+      "transport": "Éthique (transport)",
+      "questionnaire_pending": "Questionnaire éthique à compléter",
+      "questionnaire_sent": "Questionnaire envoyé",
+      "questionnaire_validated": "Questionnaire validé",
+      "questionnaire_refused": "Questionnaire refusé",
+      "pending_message": "Remplis le questionnaire pour afficher ton score et tes labels sur ta page.",
+      "sent_message": "Tes réponses ont été envoyées. Vérification en cours.",
+      "validated_message": "Ton score officiel est publié sur ta page marque.",
+      "refused_message": "Corrige tes réponses puis renvoie le questionnaire.",
+      "manage_button": "Gère tes informations éthiques.",
+      "status_label": "Statut :",
+      "status_updated": "Statut mis à jour ✓",
+      "status_updating": "Mise à jour du statut…",
+      "view_edit_questionnaire": "Voir / modifier le questionnaire →",
+      "fill_questionnaire": "Remplir le questionnaire éthique →",
+      "retry": "Réessayer",
+      "transport_production": "Transport / Production"
+    },
+    "vendor": {
+      "no_empty_brand": "Aucune marque vide a été automatiquement créée pour ce SuperVendor. Il devra la compléter lors de sa première connexion."
+    }
+  },
+
+  "home": {
+    "popular_products": "Produits populaires",
+    "recommended_for_you": "Recommandé pour vous",
+    "based_on_purchases": "Basé sur vos achats précédents",
+    "community_favorites": "Les plus appréciés par la communauté",
+    "banner": {
+      "title": "New Fashion Collection"
+    }
+  },
+
+  "admin": {
+    "accounts": {
+      "title": "Gérer les comptes",
+      "invite_button": "Inviter un compte",
+      "email": "Email",
+      "name": "Nom",
+      "role": "Rôle",
+      "status": "Statut",
+      "creation_date": "Date création",
+      "actions": "Actions",
+      "no_accounts": "Aucun compte à afficher",
+      "reinvite": "Réinviter",
+      "disable": "Désactiver",
+      "reactivate": "Réactiver",
+      "statuses": {
+        "pending": "En attente",
+        "active": "Actif",
+        "disabled": "Désactivé"
+      }
+    },
+    "invite": {
+      "supervendor_created": "SuperVendor créé !",
+      "supervendor_message": "Un compte SuperVendor a été créé avec une marque vide. L'utilisateur recevra un email d'activation. Une fois connecté, il pourra compléter les informations de sa marque.",
+      "invitation_sent": "Invitation envoyée !",
+      "invitation_message": "Un email d'activation a été envoyé. L'utilisateur pourra définir son mot de passe en cliquant sur le lien.",
+      "no_permission": "Vous n'avez pas les permissions pour inviter des comptes.",
+      "email_label": "Email",
+      "email_placeholder": "exemple@email.com",
+      "first_name_label": "Prénom",
+      "first_name_placeholder": "Jean",
+      "last_name_label": "Nom",
+      "last_name_placeholder": "Dupont",
+      "role_label": "Rôle",
+      "sending": "Envoi en cours...",
+      "submit_button": "Inviter"
+    },
+    "ethics": {
+      "questionCard": {
+        "questionLabel": "Question (Label)",
+        "keyLabel": "Key",
+        "answerTypeLabel": "Type de réponse",
+        "answerType": { "single": "Single", "multiple": "Multiple" },
+        "orderLabel": "Ordre",
+        "deleteButton": "Supprimer",
+        "optionsTitle": "Options",
+        "addOptionButton": "Ajouter une option",
+        "labelLabel": "Label",
+        "scoreLabel": "Score",
+        "noOptions": "Aucune option. Ajoute-en au moins 2."
+      }
+    }
+  },
+
+  "validation": {
+    "required_field": "Ce champ est requis",
+    "invalid_email": "Adresse email invalide",
+    "min_length": "Minimum {{count}} caractères",
+    "max_length": "Maximum {{count}} caractères"
+  },
+
+  "errors": {
+    "generic": "Une erreur est survenue",
+    "network": "Erreur de connexion",
+    "not_found": "Élément introuvable",
+    "unauthorized": "Non autorisé",
+    "forbidden": "Accès interdit"
+  },
+
+  "sorting": {
+    "products_count": "{{count}} produits",
+    "products_count_singular": "{{count}} produit",
+    "featured": "En vedette",
+    "price_asc": "Prix: croissant",
+    "price_desc": "Prix: décroissant"
+  },
+
+  "routes": {
+    "breadcrumbs": {
+      "home": "Accueil",
+      "brands": "Marques",
+      "aria": "Fil d'ariane"
+    }
+  },
+
+  "components": {
+    "languageSwitcher": {
+      "open": "Changer de langue"
+    },
+    "productCard": {
+      "addToWishlist": "Ajouter aux favoris"
+    },
+    "imageUploader": {
+      "removeAria": "Supprimer l'image",
+      "uploading": "Upload en cours...",
+      "clickToUpload": "Cliquer pour uploader",
+      "uploadError": "Erreur lors de l'upload de l'image."
+    },
+    "sortableMedia": {
+      "primaryImage": "Image principale",
+      "setPrimary": "Définir comme principale",
+      "remove": "Supprimer",
+      "primaryBadge": "Principale"
+    }
+  },
+
+  "pages": {
+    "settings": {
+      "title": "Paramètres",
+      "subtitle": "Gérer ici vos paramètres et préférences.",
+      "errors": {
+        "notAuthenticated": "Connecte-toi pour accéder aux paramètres."
+      },
+      "tabs": {
+        "profile": { "label": "Mes informations", "description": "Profil, identité, facturation" },
+        "payments": { "label": "Moyens de paiement", "description": "Cartes, défaut, suppression" },
+        "notifications": { "label": "Notifications", "description": "Emails, préférences" }
+      },
+      "search": {
+        "profileName": { "title": "Nom / Prénom", "description": "Modifier tes informations personnelles" },
+        "paymentsAddCard": { "title": "Ajouter une carte", "description": "Enregistrer une nouvelle carte bancaire" },
+        "paymentsDefault": { "title": "Carte par défaut", "description": "Définir une carte pour les futurs achats" },
+        "notificationsEmail": { "title": "Notifications email", "description": "Gérer emails marketing et sécurité" }
+      },
+      "profile": {
+        "title": "Mes informations",
+        "subtitle": "Infos de compte, coordonnées, facturation…",
+        "name": { "label": "Nom" },
+        "email": { "label": "Email" },
+        "placeholder": "Ici tu branches ton hook “profile” plus tard. Pour l’instant c’est un châssis propre."
+      },
+      "nav": {
+        "title": "Navigation",
+        "ariaLabel": "Navigation paramètres",
+        "tip": "Astuce: les onglets visités restent “en mémoire” (pas de remount)."
+      }
+    },
+
+    "vendors": {
+      "title": "Gestion de l'équipe",
+      "subtitle": "Invitez et gérez les vendeurs de votre marque ({{count}})",
+      "inviteAria": "Inviter un vendeur",
+      "inviteButton": "Inviter un vendeur",
+      "searchPlaceholder": "Rechercher un vendeur (nom, email, statut...)",
+      "noMatch": "Aucun vendeur ne correspond.",
+      "noVendors": "Aucun vendeur pour le moment.",
+      "tryAnother": "Essaie un autre nom ou email.",
+      "inviteFirst": "Commence par inviter ton premier vendeur !"
+    },
+
+    "paymentMethods": {
+      "title": "Moyens de paiement",
+      "subtitle": "Gère tes cartes enregistrées et moyens de paiement.",
+      "addButton": "+ Ajouter",
+      "addCardButton": "Ajouter une carte",
+      "loading": "Chargement de tes moyens de paiement…",
+      "deleted": "Moyen de paiement supprimé ✅",
+      "setDefault": "Moyen de paiement par défaut modifié ✅",
+      "defaultBadge": "Par défaut",
+      "expiresOn": "Expire le",
+      "method": "Méthode",
+      "setAsDefaultButton": "Par défaut",
+      "deleteButton": "Supprimer",
+      "empty": "Tu n’as pas encore enregistré de moyen de paiement.",
+      "confirmDeleteTitle": "Supprimer ce moyen de paiement ?",
+      "confirmDeleteMessagePrefix": "Tu es sur le point de supprimer",
+      "confirmDeleteWarning": "⚠️ C’était ta méthode par défaut. Après suppression, il faudra en choisir une autre.",
+      "confirm": "Supprimer",
+      "cancel": "Annuler"
+    },
+
+    "settings": {
+      "title": "Paramètres",
+      "subtitle": "Gérer ici vos paramètres et préférences.",
+      "errors": {
+        "notAuthenticated": "Connecte-toi pour accéder aux paramètres."
+      },
+      "tabs": {
+        "profile": { "label": "Mes informations", "description": "Profil, identité, facturation" },
+        "payments": { "label": "Moyens de paiement", "description": "Cartes, défaut, suppression" },
+        "notifications": { "label": "Notifications", "description": "Emails, préférences" }
+      },
+      "search": {
+        "profileName": { "title": "Nom / Prénom", "description": "Modifier tes informations personnelles" },
+        "paymentsAddCard": { "title": "Ajouter une carte", "description": "Enregistrer une nouvelle carte bancaire" },
+        "paymentsDefault": { "title": "Carte par défaut", "description": "Définir une carte pour les futurs achats" },
+        "notificationsEmail": { "title": "Notifications email", "description": "Gérer emails marketing et sécurité" }
+      },
+      "profile": {
+        "title": "Mes informations",
+        "subtitle": "Infos de compte, coordonnées, facturation…",
+        "name": { "label": "Nom" },
+        "email": { "label": "Email" },
+        "placeholder": "Ici tu branches ton hook “profile” plus tard. Pour l’instant c’est un châssis propre."
+      },
+      "nav": {
+        "title": "Navigation",
+        "ariaLabel": "Navigation paramètres",
+        "tip": "Astuce: les onglets visités restent “en mémoire” (pas de remount)."
+      }
+    },
+
+    "moderator": {
+      "reviews": {
+        "title": "Modération des avis produits",
+        "heroSubtitle": "Les commentaires sont publiés automatiquement. Utilisez cette interface pour masquer ou réactiver.",
+        "heading": "Modération • Reviews produits",
+        "headingSubtitle": "Enabled = visible sur le site • Disabled = masqué (conservé)",
+        "reload": "Recharger",
+        "filters": {
+          "statusLabel": "Statut",
+          "productIdLabel": "ProductId (optionnel)",
+          "productIdPlaceholder": "ex: 123",
+          "pageSizeLabel": "Taille de page",
+          "searchLabel": "Recherche",
+          "searchPlaceholder": "Commentaire, user, produit…"
+        },
+        "status": {
+          "all": "All (tous)",
+          "enabled": "Publié",
+          "disabled": "Masqué"
+        },
+        "filteredCount": "{{filtered}} / {{total}} review(s) (filtrées)",
+        "totalCount": "{{total}} review(s)",
+        "noResults": "Aucun résultat trouvé.",
+        "noComment": "Pas de commentaire",
+        "createdLabel": "Créé :",
+        "action": {
+          "hideTitle": "Masquer ce commentaire",
+          "disable": "Désactiver",
+          "unhideTitle": "Rendre ce commentaire visible",
+          "enable": "Réactiver"
+        },
+        "noAction": "Aucune action",
+        "pageLabel": "Page"
+      }
+    }
+  },
+
+  "features": {
+    "vendors": {
+      "no_empty_brand": "Aucune marque vide a été automatiquement créée pour ce SuperVendor. Il devra la compléter lors de sa première connexion."
+    },
+    "settings": {
+      "title": "Paramètres",
+      "subtitle": "Gérer ici vos paramètres et préférences.",
+      "errors": {
+        "notAuthenticated": "Connecte-toi pour accéder aux paramètres."
+      },
+      "tabs": {
+        "profile": { "label": "Mes informations", "description": "Profil, identité, facturation" },
+        "payments": { "label": "Moyens de paiement", "description": "Cartes, défaut, suppression" },
+        "notifications": { "label": "Notifications", "description": "Emails, préférences" }
+      },
+      "search": {
+        "profileName": { "title": "Nom / Prénom", "description": "Modifier tes informations personnelles" },
+        "paymentsAddCard": { "title": "Ajouter une carte", "description": "Enregistrer une nouvelle carte bancaire" },
+        "paymentsDefault": { "title": "Carte par défaut", "description": "Définir une carte pour les futurs achats" },
+        "notificationsEmail": { "title": "Notifications email", "description": "Gérer emails marketing et sécurité" }
+      },
+      "profile": {
+        "title": "Mes informations",
+        "subtitle": "Infos de compte, coordonnées, facturation…",
+        "name": { "label": "Nom" },
+        "email": { "label": "Email" },
+        "placeholder": "Ici tu branches ton hook “profile” plus tard. Pour l’instant c’est un châssis propre."
+      },
+      "nav": {
+        "title": "Navigation",
+        "ariaLabel": "Navigation paramètres",
+        "tip": "Astuce: les onglets visités restent “en mémoire” (pas de remount)."
+      }
+    },
+    "product": {
+      "recommended_card": {
+        "no_image": "Pas d'image",
+        "promo_badge": "PROMO"
+      },
+      "recommendations": {
+        "frequently_bought_together": "Fréquemment achetés ensemble"
+      },
+      "size_selector": {
+        "title": "Taille"
+      },
+      "sale_manager": {
+        "title": {
+          "new": "Nouvelle promotion",
+          "edit": "Modifier la promotion"
+        },
+        "fields": {
+          "discount": "Pourcentage de réduction",
+          "discount_hint": "Entre 1% et 100%",
+          "start_date": "Date de début",
+          "end_date": "Date de fin",
+          "description": "Description (optionnel)",
+          "description_placeholder": "Ex: Soldes d'hiver, Promotion de fin de saison..."
+        },
+        "errors": {
+          "discount_range": "La réduction doit être entre 1 et 100%",
+          "date_range": "La date de début doit être avant la date de fin"
+        },
+        "actions": {
+          "cancel": "Annuler",
+          "create": "Créer",
+          "edit": "Modifier"
+        }
+      },
+      "media_manager": {
+        "title": "Images du produit",
+        "count": "{{count}} image(s)",
+        "instructions": "Glissez-déposez pour réorganiser. L'étoile indique l'image principale.",
+        "upload": {
+          "uploading": "Upload en cours...",
+          "add_image": "Ajouter une image",
+          "formats": "JPEG, PNG ou WebP (max 10 MB)"
+        },
+        "toast": {
+          "image_added": "Image ajoutée !",
+          "upload_error": "Erreur lors de l'upload de l'image",
+          "image_removed": "Image supprimée"
+        }
+      },
+      "image_gallery": {
+        "thumbnail_alt": "Miniature {{number}}",
+        "main_alt": "Image du produit",
+        "unavailable": "Image indisponible"
+      },
+      "edit_panel": {
+        "title": "Actions produit",
+        "status": {
+          "label": "Statut du produit",
+          "draft": "Brouillon",
+          "active": "Actif",
+          "online": "En ligne",
+          "disabled": "Désactivé"
+        },
+        "sale": {
+          "label": "Promotion",
+          "discount": "Réduction",
+          "start": "Début",
+          "end": "Fin",
+          "edit": "Modifier",
+          "add": "Ajouter une promotion"
+        },
+        "save": {
+          "save": "Enregistrer",
+          "saving": "Enregistrement...",
+          "no_changes": "Aucune modification"
+        }
+      },
+      "variants": {
+        "title": "Tailles et stocks",
+        "loading": "Chargement des tailles...",
+        "availableCount": "{{count}} taille(s)",
+        "noConfigured": "Aucune taille configurée",
+        "addPrompt": "Ajoutez au moins une taille pour ce produit",
+        "stockLabel": "Stock:",
+        "units": "unités",
+        "removeTitle": "Supprimer cette taille",
+        "selectSize": "Sélectionnez une taille",
+        "cancel": "Annuler",
+        "addButton": "Ajouter une taille",
+        "allAdded": "Toutes les tailles disponibles pour cette catégorie ont été ajoutées"
+      }
+    }
+  },
+  "payment": {
+    "error_create_payment": "Impossible de créer le paiement",
+    "error_title": "Erreur de paiement",
+    "retry": "Réessayer",
+    "initializing": "Initialisation du paiement...",
+    "stripe_not_loaded": "Stripe n'est pas encore chargé. Veuillez réessayer.",
+    "error_processing": "Erreur lors du paiement",
+    "error_validation": "Erreur lors de la validation du paiement. Contactez le support.",
+    "error_not_completed": "Le paiement n'a pas abouti. Veuillez réessayer.",
+    "error_unexpected": "Une erreur inattendue est survenue",
+    "form_title": "Informations de paiement",
+    "form_subtitle": "Entrez vos coordonnées bancaires",
+    "secure_ssl": "Paiement sécurisé SSL",
+    "processing": "Traitement du paiement...",
+    "submit_button": "Finaliser le paiement",
+    "security_note_line1": "Vos informations bancaires sont cryptées et sécurisées.",
+    "security_note_line2": "Aucune donnée de carte n'est stockée sur nos serveurs."
+  },
+  "shipping": {
+    "form": {
+      "provider_label": "Transporteur",
+      "provider_placeholder": "Colissimo, Chronopost...",
+      "display_name_label": "Nom affiché",
+      "display_name_placeholder": "Livraison standard...",
+      "type_label": "Type",
+      "type_home_delivery": "Livraison domicile",
+      "type_locker": "Consigne automatique",
+      "type_pickup_point": "Point relais",
+      "type_store_pickup": "Retrait en magasin",
+      "price_label": "Prix (€)",
+      "min_days_label": "Délai min (jours)",
+      "max_days_label": "Délai max (jours)",
+      "error_max_min": "Le délai maximum doit être supérieur ou égal au délai minimum",
+      "adding": "Ajout..."
+    },
+    "list": {
+      "no_methods_configured": "Aucune méthode de livraison configurée",
+      "no_methods_available": "Aucune méthode de livraison disponible",
+      "days": "jours"
+    },
+    "manager": {
+      "title": "Méthodes de livraison",
+      "confirm_delete": "Supprimer cette méthode de livraison ?"
+    }
+  },
+  "filters": {
+    "title": "Filtres",
+    "location": {
+      "label": "Localisation",
+      "city_mode": "Ville de référence",
+      "gps_mode": "Ma localisation",
+      "choose_city": "Choisir une ville...",
+      "simulated_position": "Position simulée à",
+      "activate_gps": "Activer ma position",
+      "gps_active": "Position GPS activée",
+      "gps_loading": "Localisation en cours...",
+      "gps_help": "Utilisez votre position réelle pour trouver les marques les plus proches de vous."
+    },
+    "sort": {
+      "label": "Trier par :",
+      "none": "Aucun tri",
+      "ethics_production": "Éthique production",
+      "ethics_transport": "Éthique transport",
+      "rating": "Note utilisateur",
+      "distance": "Distance"
+    },
+    "distance": {
+      "label": "Distance max :",
+      "no_limit": "Pas de limite",
+      "unit": "km"
+    },
+    "ethics_production": {
+      "label": "Éthique production min :",
+      "none": "Aucun"
+    },
+    "ethics_transport": {
+      "label": "Éthique transport min :",
+      "none": "Aucun"
+    },
+    "rating": {
+      "label": "Note minimale :"
+    },
+    "price_range": {
+      "label": "Gamme de prix :",
+      "all": "Tous"
+    },
+    "ethical_tags": {
+      "label": "Tags éthiques :",
+      "all_required": "La marque doit avoir TOUS les tags cochés",
+      "loading": "Chargement des tags..."
+    },
+    "reset": "Réinitialiser les filtres"
+  },
+  "sidebar_filters": {
+    "price": {
+      "label": "Prix :",
+      "min": "Min",
+      "max": "Max"
+    },
+    "categories": {
+      "label": "Catégories",
+      "t-shirt": "T-shirt",
+      "pull": "Pull",
+      "sweat": "Sweat",
+      "jeans": "Jeans"
+    },
+    "ethics": {
+      "label": "Éthique"
+    },
+    "colors": {
+      "label": "Couleurs"
+    },
+    "size": {
+      "label": "Taille"
+    }
+  },
+  "star_rating": {
+    "aria_label": "{{count}} étoile",
+    "aria_label_plural": "{{count}} étoiles",
+    "minimum": "{{count}} étoile minimum",
+    "minimum_plural": "{{count}} étoiles minimum"
+  },
+  "supervendor_menu": {
+    "my_brand": "Ma marque",
+    "vendors": "Gestion vendeurs",
+    "products": "Gérer les produits",
+    "stats": "Statistiques",
+    "customize": "Personnaliser",
+    "policies": "Politiques"
+  },
+  "vendor_menu": {
+    "my_products": "Mes produits"
+  },
+  "admin_menu": {
+    "logs": "Consulter les logs",
+    "accounts": "Gérer les comptes",
+    "payments": "Moyens de paiement",
+    "delivery": "Moyens de livraison",
+    "ethics": "Gérer questionnaire éthique"
+  },
+  "moderator_menu": {
+    "accounts": "Gestion des Comptes",
+    "brands": "Valider les marques",
+    "products": "Modérer les produits",
+    "reviews": "Modérer les commentaires",
+    "logs": "Consulter les logs"
+  },
+  "search_bar": {
+    "filters": "Filtres",
+    "placeholder": {
+      "brands": "Rechercher parmi les marques...",
+      "products": "Rechercher parmi les produits...",
+      "wishlist": "Rechercher dans votre liste de souhaits...",
+      "settings": "Rechercher dans les paramètres...",
+      "accounts": "Rechercher parmi les comptes...",
+      "default": "Rechercher sur cette page..."
+    }
+  },
+  "add_product": {
+    "basic_info": {
+      "title": "Informations générales",
+      "name_label": "Nom du produit",
+      "name_placeholder": "Ex: T-shirt Streetwear",
+      "description_label": "Description",
+      "description_placeholder": "Décrivez votre produit..."
+    },
+    "category": {
+      "title": "Catégorie du produit",
+      "loading": "Chargement des catégories...",
+      "description": "Sélectionnez la catégorie pour afficher les tailles disponibles"
+    },
+    "color": {
+      "title": "Couleur de cette variante",
+      "loading": "Chargement des couleurs..."
+    },
+    "group": {
+      "title": "Sélectionner le groupe de produit",
+      "placeholder": "Choisissez un groupe de produit",
+      "color_one": "couleur",
+      "color_other": "couleurs",
+      "description_label": "Description du groupe"
+    },
+    "images": {
+      "title": "Images de cette variante",
+      "choose": "Choisir une image",
+      "uploading": "Upload en cours...",
+      "primary": "Principale",
+      "alt": "Image {{number}}"
+    },
+    "basic_info": {
+      "edit_mode": "MODE ÉDITION",
+      "name": "Nom du produit",
+      "name_placeholder": "Ex: T-shirt Organic Cotton - Red",
+      "price": "Prix (€)",
+      "description": "Description",
+      "description_placeholder": "Décrivez votre produit en détail...",
+      "characters_count": "{{count}} caractères"
+    },
+    "color_editor": {
+      "title": "Couleur principale",
+      "loading": "Chargement des couleurs...",
+      "description": "Sélectionnez la couleur de cette variante de produit"
+    },
+    "color_selector": {
+      "title": "Couleur"
+    }
+  },
+  "add_product_card": {
+    "title": "Ajouter un produit",
+    "description": "Cliquez pour créer un nouveau produit",
+    "badge": "Nouveau produit"
+  },
+  "sizes": {
+    "title": "Tailles et stocks",
+    "select_category_first": "Sélectionnez d'abord une catégorie pour afficher les tailles disponibles",
+    "loading": "Chargement des tailles...",
+    "no_sizes": "Aucune taille disponible pour cette catégorie",
+    "description": "Sélectionnez les tailles disponibles et définissez leurs stocks",
+    "stock": "Stock",
+    "units": "unités"
+  }
+}

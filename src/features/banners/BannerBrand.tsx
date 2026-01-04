@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ImageUploader } from "@/features/brands/ImageUploader";
 import { Edit2 } from "lucide-react";
 
@@ -10,6 +11,7 @@ interface BannerBrandProps {
 }
 
 export const BannerBrand = ({ name, bannerUrl, editMode = false, onUpdate }: BannerBrandProps) => {
+    const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
 
     // Image par défaut si pas de banner
@@ -49,7 +51,7 @@ export const BannerBrand = ({ name, bannerUrl, editMode = false, onUpdate }: Ban
                         "
                     >
                         <Edit2 size={18} />
-                        Modifier la bannière
+                        {t('brands.banner.edit_button')}
                     </button>
                 )}
             </section>
@@ -58,10 +60,10 @@ export const BannerBrand = ({ name, bannerUrl, editMode = false, onUpdate }: Ban
             {isEditing && onUpdate && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
                     <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl">
-                        <h3 className="text-xl font-semibold mb-4">Modifier la bannière</h3>
+                        <h3 className="text-xl font-semibold mb-4">{t('brands.banner.modal_title')}</h3>
 
                         <ImageUploader
-                            label="Bannière"
+                            label={t('brands.banner.label')}
                             currentUrl={bannerUrl}
                             onUpload={(url) => {
                                 onUpdate(url);
@@ -75,7 +77,7 @@ export const BannerBrand = ({ name, bannerUrl, editMode = false, onUpdate }: Ban
                                 onClick={() => setIsEditing(false)}
                                 className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
                             >
-                                Annuler
+                                {t('common.cancel')}
                             </button>
                         </div>
                     </div>

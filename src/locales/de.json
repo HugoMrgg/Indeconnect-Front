@@ -1,0 +1,951 @@
+{
+  "common": {
+    "loading": "Laden...",
+    "not_available_short": "N/V",
+    "error": "Fehler",
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "add": "Hinzufügen",
+    "close": "Schließen",
+    "back": "Zurück",
+    "or": "oder",
+    "please_wait": "Bitte warten",
+    "editable": {
+      "click_to_edit": "Klicken zum Bearbeiten"
+    },
+    "apply": "Anwenden",
+    "previous": "Vorherige",
+    "next": "Nächste",
+    "locale": "de-DE"
+  },
+  "auth": {
+    "login": {
+      "title": "Anmelden",
+      "email_label": "E-Mail-Adresse",
+      "email_placeholder": "beispiel@mail.com",
+      "password_label": "Passwort",
+      "password_placeholder": "Ihr Passwort",
+      "submit_button": "Anmelden",
+      "submitting": "Anmelden...",
+      "google_error": "Google-Authentifizierungsfehler",
+      "error_generic": "Authentifizierungsfehler",
+      "relogin_prompt": "Bitte melden Sie sich erneut an."
+    },
+    "register": {
+      "title": "Registrieren",
+      "first_name_label": "Vorname",
+      "first_name_placeholder": "Max",
+      "last_name_label": "Nachname",
+      "last_name_placeholder": "Mustermann",
+      "email_label": "E-Mail-Adresse",
+      "email_placeholder": "beispiel@mail.com",
+      "password_label": "Passwort",
+      "password_placeholder": "••••••••",
+      "confirm_password_label": "Bestätigen",
+      "confirm_password_placeholder": "••••••••",
+      "submit_button": "Konto erstellen",
+      "submitting": "…",
+      "password_mismatch": "Passwörter stimmen nicht überein."
+    }
+  },
+  "navigation": {
+    "search": {
+      "brands": "Marken durchsuchen...",
+      "products": "Produkte durchsuchen...",
+      "wishlist": "Wunschliste durchsuchen...",
+      "settings": "Einstellungen durchsuchen...",
+      "accounts": "Konten durchsuchen...",
+      "page": "Diese Seite durchsuchen...",
+      "filters": "Filter"
+    },
+    "menu": {
+      "guest": {
+        "login": "Anmelden",
+        "register": "Registrieren"
+      },
+      "user": {
+        "wishlist": "Favoriten",
+        "cart": "Warenkorb",
+        "orders": "Bestellungen",
+        "settings": "Einstellungen",
+        "logout": "Abmelden"
+      },
+      "admin": {
+        "logs": "Logs ansehen",
+        "accounts": "Konten verwalten",
+        "payment_methods": "Zahlungsmethoden",
+        "delivery_methods": "Liefermethoden",
+        "ethics_questionnaire": "Ethik-Fragebogen verwalten"
+      }
+    }
+  },
+  "products": {
+    "details": {
+      "color": "Farbe",
+      "size": "Größe",
+      "base_price": "Grundpreis",
+      "color_price": "Preis dieser Farbe",
+      "stock": "Lagerbestand",
+      "category": "Kategorie"
+    },
+    "add_product": {
+      "title": "Produkt erstellen",
+      "mode_title": "Wählen Sie, wie Sie Ihr Produkt erstellen möchten",
+      "mode_new_type": "Neuer Produkttyp",
+      "mode_new_type_desc": "Neues Produkt mit allen Informationen erstellen",
+      "mode_add_color": "Farbe hinzufügen",
+      "mode_add_color_desc": "Farbvariante zu bestehendem Produkt hinzufügen",
+      "category_label": "Kategorie:",
+      "category_inherited": "Von ausgewählter Produktgruppe übernommen",
+      "price_label": "Preis (€) *",
+      "price_placeholder": "0,00",
+      "submit_button": "Produkt erstellen",
+      "submitting": "Erstellen...",
+      "no_product_groups": "Keine bestehende Produktgruppe. Erstellen Sie zuerst ein neues Produkt.",
+      "error_loading_groups": "Fehler beim Laden der Produktgruppen",
+      "error_creating_product": "Fehler beim Erstellen des Produkts",
+      "error_no_category": "Bitte wählen Sie eine Kategorie",
+      "error_no_color": "Bitte wählen Sie eine Farbe",
+      "error_no_size": "Bitte wählen Sie mindestens eine Größe",
+      "error_image_upload": "Fehler beim Hochladen des Bildes"
+    },
+    "reviews": {
+      "title": "Kundenbewertungen",
+      "rating": "★ / 5",
+      "comment_singular": "Kommentar",
+      "comment_plural": "Kommentare",
+      "write_review": "Bewertung schreiben",
+      "no_reviews": "Noch keine Bewertungen.",
+      "disable_confirm": "Möchten Sie diese Bewertung wirklich ausblenden?",
+      "disabled_success": "Bewertung erfolgreich deaktiviert",
+      "disable_error": "Diese Bewertung kann nicht deaktiviert werden.",
+      "disable_button": "Bewertung deaktivieren (Moderator)",
+      "rate_product": "Produkt bewerten",
+      "rate_question": "Welche Bewertung geben Sie?",
+      "comment_label": "Ihr Kommentar",
+      "comment_placeholder": "Sagen Sie uns, was Sie denken...",
+      "submit_button": "Senden",
+      "success": "Ihre Bewertung wurde veröffentlicht!",
+      "error": "Fehler beim Senden der Bewertung."
+    }
+  },
+  "cart": {
+    "title": "Ihr Warenkorb",
+    "empty": "Ihr Warenkorb ist leer.",
+    "login_required": "Bitte melden Sie sich an, um Ihren Warenkorb anzuzeigen.",
+    "loading": "Warenkorb laden...",
+    "items_count": "Anzahl Artikel",
+    "subtotal": "Zwischensumme",
+    "checkout_button": "Zur Kasse",
+    "add_to_cart": "In den Warenkorb",
+    "unavailable": "Nicht verfügbar",
+    "remove_from_cart": "Aus Warenkorb entfernen",
+    "quantity": "Menge",
+    "item_details": {
+      "size": "Größe:",
+      "color": "Farbe:",
+      "stock": "Lagerbestand:"
+    }
+  },
+  "orders": {
+    "title": "Meine Bestellungen",
+    "empty": "Keine Bestellungen",
+    "empty_description": "Sie haben noch keine Bestellungen aufgegeben",
+    "discover_products": "Entdecken Sie unsere Produkte",
+    "error_loading": "Ladefehler",
+    "order_number": "Bestellung #",
+    "total": "Gesamt:",
+    "items_singular": "Artikel",
+    "items_plural": "Artikel",
+    "brands": "Marken",
+    "pay_now": "Jetzt bezahlen",
+    "track_order": "Bestellung verfolgen",
+    "invoice_singular": "Rechnung",
+    "invoice_plural": "Rechnungen",
+    "separate_deliveries": "Separate Lieferungen",
+    "order_not_found": "Bestellung nicht gefunden",
+    "statuses": {
+      "pending": "Ausstehend",
+      "paid": "Bezahlt",
+      "processing": "In Bearbeitung",
+      "delivered": "Geliefert",
+      "cancelled": "Storniert"
+    },
+    "delivery": {
+      "number": "Lieferung #",
+      "tracking_number": "Sendungsnummer:",
+      "items": "Artikel (",
+      "statuses": {
+        "preparing": "In Vorbereitung",
+        "shipped": "Versandt",
+        "in_transit": "Unterwegs",
+        "out_for_delivery": "Wird zugestellt",
+        "delivered": "Zugestellt",
+        "failed": "Fehlgeschlagen",
+        "returned": "Zurückgeschickt"
+      }
+    }
+  },
+  "checkout": {
+    "title": "Bestellung abschließen",
+    "login_required": "Sie müssen angemeldet sein, um zur Kasse zu gehen",
+    "delivery_modes": "Liefermethoden",
+    "summary": "Zusammenfassung",
+    "products_subtotal": "Zwischensumme Produkte",
+    "delivery": "Lieferung",
+    "free": "Kostenlos",
+    "vat": "davon MwSt. (21%)",
+    "total_with_tax": "Gesamt inkl. MwSt.",
+    "creating_order": "Bestellung erstellen...",
+    "create_order": "Bestellung erstellen",
+    "error_no_address": "Bitte wählen Sie eine Lieferadresse",
+    "error_no_delivery_mode": "Bitte wählen Sie eine Liefermethode für jede Marke",
+    "order_created": "Bestellung erstellt. Zahlung öffnet sich in einem Fenster.",
+    "proceed_to_payment": "Zur Zahlung",
+    "address": {
+      "street_label": "Straße *",
+      "street_placeholder": "Friedensstraße",
+      "street_error": "Straße muss mindestens 2 Zeichen enthalten",
+      "number_label": "Nummer *",
+      "number_placeholder": "42",
+      "number_error": "Nummer ist erforderlich",
+      "postal_code_label": "Postleitzahl *",
+      "postal_code_placeholder": "4000",
+      "postal_code_error": "Postleitzahl muss 4 Ziffern enthalten (z.B. 4000)",
+      "city_label": "Stadt *",
+      "city_placeholder": "Lüttich",
+      "city_error": "Stadt muss mindestens 2 Zeichen enthalten",
+      "complement_label": "Adresszusatz (optional)",
+      "complement_placeholder": "Gebäude A, 3. Stock",
+      "set_default": "Als Standardadresse festlegen",
+      "add_button": "Hinzufügen",
+      "adding": "Hinzufügen...",
+      "form_errors": "Bitte korrigieren Sie die Formularfehler",
+      "added_success": "Adresse hinzugefügt!"
+    }
+  },
+  "wishlist": {
+    "product_card": {
+      "no_image": "Bild nicht verfügbar",
+      "remove": "Entfernen",
+      "product_label": "PRODUKT"
+    },
+    "title": "Meine Wunschliste",
+    "empty": "Keine Artikel auf der Wunschliste.",
+    "empty_cta": "Stöbern Sie durch Produkte und fügen Sie welche zu Ihrer Wunschliste hinzu!",
+    "login_required": "Melden Sie sich an, um Ihre Wunschliste zu sehen ❤️",
+    "loading": "Laden...",
+    "remove_button": "Entfernen",
+    "removed_success": "Produkt von Ihrer Wunschliste entfernt ❤️"
+  },
+  "brands": {
+    "preview": {
+      "title": "Kundenvorschau",
+      "description": "So werden Kunden Ihre Marke sehen"
+    },
+    "deposit": {
+      "title": "Hauptlager",
+      "number_label": "Nr.",
+      "street_label": "Straße",
+      "postal_code_label": "Postleitzahl",
+      "city_label": "Stadt",
+      "country_label": "Land",
+      "default_country": "Belgien",
+      "saving": "Speichern..."
+    },
+    "section": {
+      "result_count_singular": "{{count}} Ergebnis",
+      "result_count_plural": "{{count}} Ergebnisse",
+      "scroll_left": "Nach links scrollen",
+      "scroll_right": "Nach rechts scrollen",
+      "no_match": "Keine passenden Marken.",
+      "try_modify_filters": "Versuchen Sie, Ihre Filter oder Suche zu ändern."
+    },
+    "products": {
+      "no_products": "Noch keine Produkte",
+      "add_first": "Beginnen Sie mit dem Hinzufügen Ihres ersten Produkts!",
+      "no_results": "Ihre Suche ergab keine Ergebnisse...",
+      "try_other_keywords": "Versuchen Sie andere Suchbegriffe"
+    },
+    "info": {
+      "price_range": "Preisklasse",
+      "select_price_range": "Wählen Sie eine Klasse",
+      "price_range_economy": "€ - Günstig",
+      "price_range_mid": "€€ - Mittel",
+      "price_range_premium": "€€€ - Premium",
+      "about_title": "Über die Marke",
+      "where_title": "Wo Sie uns finden",
+      "other_title": "Weitere Informationen",
+      "practical_info": "Praktische Informationen",
+      "not_specified": "Nicht angegeben",
+      "main_deposit": "Hauptlager",
+      "add_address": "Adresse hinzufügen"
+    },
+    "back_to_brands": "Zurück zu Marken",
+    "card": {
+      "logo_alt": "{{name}} Logo",
+      "ethics_production": "Ethik (Produktion)",
+      "ethics_transport": "Ethik (Transport)"
+    },
+    "details": {
+      "about_us": "Über uns",
+      "about_us_placeholder": "Präsentieren Sie Ihre Marke im Detail...",
+      "where_are_we": "Wo Sie uns finden",
+      "where_are_we_placeholder": "Adressen, Verkaufsstellen...",
+      "contact": "Kontakt",
+      "contact_placeholder": "E-Mail, Telefon, soziale Medien...",
+      "other_info": "Weitere Informationen",
+      "other_info_placeholder": "Zusätzliche Informationen..."
+    },
+    "logo": {
+      "alt": "Markenlogo",
+      "add_logo": "Logo hinzufügen",
+      "edit_logo": "Logo bearbeiten",
+      "modal_title": "Logo bearbeiten",
+      "label": "Logo"
+    },
+    "banner": {
+      "edit_button": "Banner bearbeiten",
+      "modal_title": "Banner bearbeiten",
+      "label": "Banner"
+    },
+    "all_brands": "Alle Marken:",
+    "no_brands": "Keine Marken anzuzeigen",
+    "subscribe": "Abonnieren",
+    "subscribed": "Abonniert ✓",
+    "about_us": "Wer sind wir?",
+    "ethics": {
+      "categories": {
+        "title": "Kategorien",
+        "questions": "Fragen",
+        "no_results": "Keine Ergebnisse. Versuchen Sie ein anderes Stichwort."
+      },
+      "production": "Ethik (Produktion)",
+      "transport": "Ethik (Transport)",
+      "questionnaire_pending": "Ethik-Fragebogen auszufüllen",
+      "questionnaire_sent": "Fragebogen gesendet",
+      "questionnaire_validated": "Fragebogen validiert",
+      "questionnaire_refused": "Fragebogen abgelehnt",
+      "pending_message": "Füllen Sie den Fragebogen aus, um Ihre Punktzahl und Labels auf Ihrer Seite anzuzeigen.",
+      "sent_message": "Ihre Antworten wurden gesendet. Überprüfung läuft.",
+      "validated_message": "Ihre offizielle Punktzahl ist auf Ihrer Markenseite veröffentlicht.",
+      "refused_message": "Korrigieren Sie Ihre Antworten und senden Sie den Fragebogen erneut.",
+      "manage_button": "Verwalten Sie Ihre Ethik-Informationen.",
+      "status_label": "Status:",
+      "status_updated": "Status aktualisiert ✓",
+      "status_updating": "Status wird aktualisiert…",
+      "view_edit_questionnaire": "Fragebogen ansehen / bearbeiten →",
+      "fill_questionnaire": "Ethik-Fragebogen ausfüllen →",
+      "retry": "Erneut versuchen",
+      "transport_production": "Transport / Produktion"
+    },
+    "vendor": {
+      "no_empty_brand": "Für diesen SuperVendor wurde keine leere Marke automatisch erstellt. Er muss sie beim ersten Login ausfüllen."
+    }
+  },
+  "home": {
+    "popular_products": "Beliebte Produkte",
+    "recommended_for_you": "Für Sie empfohlen",
+    "based_on_purchases": "Basierend auf Ihren vorherigen Käufen",
+    "community_favorites": "Am meisten von der Community geschätzt",
+    "banner": {
+      "title": "Neue Modekollektion"
+    }
+  },
+  "admin": {
+    "accounts": {
+      "title": "Konten verwalten",
+      "invite_button": "Konto einladen",
+      "email": "E-Mail",
+      "name": "Name",
+      "role": "Rolle",
+      "status": "Status",
+      "creation_date": "Erstellungsdatum",
+      "actions": "Aktionen",
+      "no_accounts": "Keine Konten anzuzeigen",
+      "reinvite": "Erneut einladen",
+      "disable": "Deaktivieren",
+      "reactivate": "Reaktivieren",
+      "statuses": {
+        "pending": "Ausstehend",
+        "active": "Aktiv",
+        "disabled": "Deaktiviert"
+      }
+    },
+    "invite": {
+      "supervendor_created": "SuperVendor erstellt!",
+      "supervendor_message": "Ein SuperVendor-Konto wurde mit einer leeren Marke erstellt. Der Benutzer erhält eine Aktivierungs-E-Mail. Nach dem Login kann er die Markeninformationen vervollständigen.",
+      "invitation_sent": "Einladung gesendet!",
+      "invitation_message": "Eine Aktivierungs-E-Mail wurde gesendet. Der Benutzer kann sein Passwort festlegen, indem er auf den Link klickt.",
+      "no_permission": "Sie haben keine Berechtigung, Konten einzuladen.",
+      "email_label": "E-Mail",
+      "email_placeholder": "beispiel@email.com",
+      "first_name_label": "Vorname",
+      "first_name_placeholder": "Max",
+      "last_name_label": "Nachname",
+      "last_name_placeholder": "Mustermann",
+      "role_label": "Rolle",
+      "sending": "Senden...",
+      "submit_button": "Einladen"
+    },
+    "ethics": {
+      "questionCard": {
+        "questionLabel": "Frage (Label)",
+        "keyLabel": "Schlüssel",
+        "answerTypeLabel": "Antworttyp",
+        "answerType": {
+          "single": "Einfach",
+          "multiple": "Mehrfach"
+        },
+        "orderLabel": "Reihenfolge",
+        "deleteButton": "Löschen",
+        "optionsTitle": "Optionen",
+        "addOptionButton": "Option hinzufügen",
+        "labelLabel": "Label",
+        "scoreLabel": "Punktzahl",
+        "noOptions": "Keine Optionen. Fügen Sie mindestens 2 hinzu."
+      }
+    }
+  },
+  "validation": {
+    "required_field": "Dieses Feld ist erforderlich",
+    "invalid_email": "Ungültige E-Mail-Adresse",
+    "min_length": "Mindestens {{count}} Zeichen",
+    "max_length": "Maximal {{count}} Zeichen"
+  },
+  "errors": {
+    "generic": "Ein Fehler ist aufgetreten",
+    "network": "Verbindungsfehler",
+    "not_found": "Element nicht gefunden",
+    "unauthorized": "Nicht autorisiert",
+    "forbidden": "Zugriff verweigert"
+  },
+  "sorting": {
+    "products_count": "{{count}} Produkte",
+    "products_count_singular": "{{count}} Produkt",
+    "featured": "Hervorgehoben",
+    "price_asc": "Preis: aufsteigend",
+    "price_desc": "Preis: absteigend"
+  },
+  "routes": {
+    "breadcrumbs": {
+      "home": "Startseite",
+      "brands": "Marken",
+      "aria": "Breadcrumb"
+    }
+  },
+  "components": {
+    "languageSwitcher": {
+      "open": "Sprache wechseln"
+    },
+    "productCard": {
+      "addToWishlist": "Zur Wunschliste hinzufügen"
+    },
+    "imageUploader": {
+      "removeAria": "Bild entfernen",
+      "uploading": "Hochladen...",
+      "clickToUpload": "Klicken zum Hochladen",
+      "uploadError": "Fehler beim Hochladen des Bildes."
+    },
+    "sortableMedia": {
+      "primaryImage": "Hauptbild",
+      "setPrimary": "Als Hauptbild festlegen",
+      "remove": "Entfernen",
+      "primaryBadge": "Haupt"
+    }
+  },
+  "pages": {
+    "settings": {
+      "title": "Einstellungen",
+      "subtitle": "Verwalten Sie hier Ihre Einstellungen und Präferenzen.",
+      "errors": {
+        "notAuthenticated": "Melden Sie sich an, um auf die Einstellungen zuzugreifen."
+      },
+      "tabs": {
+        "profile": {
+          "label": "Meine Daten",
+          "description": "Profil, Identität, Abrechnung"
+        },
+        "payments": {
+          "label": "Zahlungsmethoden",
+          "description": "Karten, Standard, Löschung"
+        },
+        "notifications": {
+          "label": "Benachrichtigungen",
+          "description": "E-Mails, Präferenzen"
+        }
+      },
+      "search": {
+        "profileName": {
+          "title": "Name / Vorname",
+          "description": "Ihre persönlichen Daten ändern"
+        },
+        "paymentsAddCard": {
+          "title": "Karte hinzufügen",
+          "description": "Neue Bankkarte registrieren"
+        },
+        "paymentsDefault": {
+          "title": "Standardkarte",
+          "description": "Karte für zukünftige Käufe festlegen"
+        },
+        "notificationsEmail": {
+          "title": "E-Mail-Benachrichtigungen",
+          "description": "Marketing- und Sicherheits-E-Mails verwalten"
+        }
+      },
+      "profile": {
+        "title": "Meine Daten",
+        "subtitle": "Kontoinformationen, Kontaktdaten, Abrechnung…",
+        "name": {
+          "label": "Name"
+        },
+        "email": {
+          "label": "E-Mail"
+        },
+        "placeholder": "Hier verbinden Sie später Ihren 'Profil'-Hook. Vorerst ist es ein sauberes Framework."
+      },
+      "nav": {
+        "title": "Navigation",
+        "ariaLabel": "Einstellungen Navigation",
+        "tip": "Tipp: Besuchte Tabs bleiben 'im Speicher' (kein Remount)."
+      }
+    },
+    "vendors": {
+      "title": "Teamverwaltung",
+      "subtitle": "Laden Sie Verkäufer Ihrer Marke ein und verwalten Sie sie ({{count}})",
+      "inviteAria": "Verkäufer einladen",
+      "inviteButton": "Verkäufer einladen",
+      "searchPlaceholder": "Verkäufer suchen (Name, E-Mail, Status...)",
+      "noMatch": "Keine passenden Verkäufer.",
+      "noVendors": "Noch keine Verkäufer.",
+      "tryAnother": "Versuchen Sie einen anderen Namen oder E-Mail.",
+      "inviteFirst": "Beginnen Sie mit der Einladung Ihres ersten Verkäufers!"
+    },
+    "paymentMethods": {
+      "title": "Zahlungsmethoden",
+      "subtitle": "Verwalten Sie Ihre registrierten Karten und Zahlungsmethoden.",
+      "addButton": "+ Hinzufügen",
+      "addCardButton": "Karte hinzufügen",
+      "loading": "Ihre Zahlungsmethoden werden geladen…",
+      "deleted": "Zahlungsmethode gelöscht ✅",
+      "setDefault": "Standard-Zahlungsmethode geändert ✅",
+      "defaultBadge": "Standard",
+      "expiresOn": "Läuft ab am",
+      "method": "Methode",
+      "setAsDefaultButton": "Standard",
+      "deleteButton": "Löschen",
+      "empty": "Sie haben noch keine Zahlungsmethode registriert.",
+      "confirmDeleteTitle": "Diese Zahlungsmethode löschen?",
+      "confirmDeleteMessagePrefix": "Sie sind dabei zu löschen",
+      "confirmDeleteWarning": "⚠️ Das war Ihre Standardmethode. Nach dem Löschen müssen Sie eine andere wählen.",
+      "confirm": "Löschen",
+      "cancel": "Abbrechen"
+    },
+    "moderator": {
+      "reviews": {
+        "title": "Moderation Produktbewertungen",
+        "heroSubtitle": "Kommentare werden automatisch veröffentlicht. Verwenden Sie diese Oberfläche zum Ausblenden oder Reaktivieren.",
+        "heading": "Moderation • Produktbewertungen",
+        "headingSubtitle": "Enabled = auf der Seite sichtbar • Disabled = verborgen (gespeichert)",
+        "reload": "Neu laden",
+        "filters": {
+          "statusLabel": "Status",
+          "productIdLabel": "ProductId (optional)",
+          "productIdPlaceholder": "z.B. 123",
+          "pageSizeLabel": "Seitengröße",
+          "searchLabel": "Suchen",
+          "searchPlaceholder": "Kommentar, Benutzer, Produkt…"
+        },
+        "status": {
+          "all": "Alle",
+          "enabled": "Veröffentlicht",
+          "disabled": "Verborgen"
+        },
+        "filteredCount": "{{filtered}} / {{total}} Bewertung(en) (gefiltert)",
+        "totalCount": "{{total}} Bewertung(en)",
+        "noResults": "Keine Ergebnisse gefunden.",
+        "noComment": "Kein Kommentar",
+        "createdLabel": "Erstellt:",
+        "action": {
+          "hideTitle": "Diesen Kommentar verbergen",
+          "disable": "Deaktivieren",
+          "unhideTitle": "Diesen Kommentar sichtbar machen",
+          "enable": "Reaktivieren"
+        },
+        "noAction": "Keine Aktion",
+        "pageLabel": "Seite"
+      }
+    }
+  },
+  "features": {
+    "vendors": {
+      "no_empty_brand": "Für diesen SuperVendor wurde keine leere Marke automatisch erstellt. Er muss sie beim ersten Login ausfüllen."
+    },
+    "settings": {
+      "title": "Einstellungen",
+      "subtitle": "Verwalten Sie hier Ihre Einstellungen und Präferenzen.",
+      "errors": {
+        "notAuthenticated": "Melden Sie sich an, um auf die Einstellungen zuzugreifen."
+      },
+      "tabs": {
+        "profile": {
+          "label": "Meine Daten",
+          "description": "Profil, Identität, Abrechnung"
+        },
+        "payments": {
+          "label": "Zahlungsmethoden",
+          "description": "Karten, Standard, Löschung"
+        },
+        "notifications": {
+          "label": "Benachrichtigungen",
+          "description": "E-Mails, Präferenzen"
+        }
+      },
+      "search": {
+        "profileName": {
+          "title": "Name / Vorname",
+          "description": "Ihre persönlichen Daten ändern"
+        },
+        "paymentsAddCard": {
+          "title": "Karte hinzufügen",
+          "description": "Neue Bankkarte registrieren"
+        },
+        "paymentsDefault": {
+          "title": "Standardkarte",
+          "description": "Karte für zukünftige Käufe festlegen"
+        },
+        "notificationsEmail": {
+          "title": "E-Mail-Benachrichtigungen",
+          "description": "Marketing- und Sicherheits-E-Mails verwalten"
+        }
+      },
+      "profile": {
+        "title": "Meine Daten",
+        "subtitle": "Kontoinformationen, Kontaktdaten, Abrechnung…",
+        "name": {
+          "label": "Name"
+        },
+        "email": {
+          "label": "E-Mail"
+        },
+        "placeholder": "Hier verbinden Sie später Ihren 'Profil'-Hook. Vorerst ist es ein sauberes Framework."
+      },
+      "nav": {
+        "title": "Navigation",
+        "ariaLabel": "Einstellungen Navigation",
+        "tip": "Tipp: Besuchte Tabs bleiben 'im Speicher' (kein Remount)."
+      }
+    },
+    "product": {
+      "recommended_card": {
+        "no_image": "Kein Bild",
+        "promo_badge": "ANGEBOT"
+      },
+      "recommendations": {
+        "frequently_bought_together": "Häufig zusammen gekauft"
+      },
+      "size_selector": {
+        "title": "Größe"
+      },
+      "sale_manager": {
+        "title": {
+          "new": "Neue Aktion",
+          "edit": "Aktion bearbeiten"
+        },
+        "fields": {
+          "discount": "Rabattprozentsatz",
+          "discount_hint": "Zwischen 1% und 100%",
+          "start_date": "Startdatum",
+          "end_date": "Enddatum",
+          "description": "Beschreibung (optional)",
+          "description_placeholder": "Z.B: Winterschlussverkauf, Saisonende-Aktion..."
+        },
+        "errors": {
+          "discount_range": "Rabatt muss zwischen 1 und 100% liegen",
+          "date_range": "Startdatum muss vor Enddatum liegen"
+        },
+        "actions": {
+          "cancel": "Abbrechen",
+          "create": "Erstellen",
+          "edit": "Bearbeiten"
+        }
+      },
+      "media_manager": {
+        "title": "Produktbilder",
+        "count": "{{count}} Bild(er)",
+        "instructions": "Ziehen und ablegen zum Neuanordnen. Der Stern zeigt das Hauptbild an.",
+        "upload": {
+          "uploading": "Hochladen...",
+          "add_image": "Bild hinzufügen",
+          "formats": "JPEG, PNG oder WebP (max 10 MB)"
+        },
+        "toast": {
+          "image_added": "Bild hinzugefügt!",
+          "upload_error": "Fehler beim Hochladen des Bildes",
+          "image_removed": "Bild entfernt"
+        }
+      },
+      "image_gallery": {
+        "thumbnail_alt": "Vorschau {{number}}",
+        "main_alt": "Produktbild",
+        "unavailable": "Bild nicht verfügbar"
+      },
+      "edit_panel": {
+        "title": "Produktaktionen",
+        "status": {
+          "label": "Produktstatus",
+          "draft": "Entwurf",
+          "active": "Aktiv",
+          "online": "Online",
+          "disabled": "Deaktiviert"
+        },
+        "sale": {
+          "label": "Aktion",
+          "discount": "Rabatt",
+          "start": "Beginn",
+          "end": "Ende",
+          "edit": "Bearbeiten",
+          "add": "Aktion hinzufügen"
+        },
+        "save": {
+          "save": "Speichern",
+          "saving": "Speichern...",
+          "no_changes": "Keine Änderungen"
+        }
+      },
+      "variants": {
+        "title": "Größen und Lagerbestand",
+        "loading": "Größen werden geladen...",
+        "availableCount": "{{count}} Größe(n)",
+        "noConfigured": "Keine Größen konfiguriert",
+        "addPrompt": "Fügen Sie mindestens eine Größe für dieses Produkt hinzu",
+        "stockLabel": "Lagerbestand:",
+        "units": "Einheiten",
+        "removeTitle": "Diese Größe entfernen",
+        "selectSize": "Wählen Sie eine Größe",
+        "cancel": "Abbrechen",
+        "addButton": "Größe hinzufügen",
+        "allAdded": "Alle verfügbaren Größen für diese Kategorie wurden hinzugefügt"
+      }
+    }
+  },
+  "payment": {
+    "error_create_payment": "Zahlung kann nicht erstellt werden",
+    "error_title": "Zahlungsfehler",
+    "retry": "Erneut versuchen",
+    "initializing": "Zahlung initialisieren...",
+    "stripe_not_loaded": "Stripe ist noch nicht geladen. Bitte versuchen Sie es erneut.",
+    "error_processing": "Fehler bei der Zahlungsabwicklung",
+    "error_validation": "Fehler bei der Zahlungsvalidierung. Kontaktieren Sie den Support.",
+    "error_not_completed": "Zahlung wurde nicht abgeschlossen. Bitte versuchen Sie es erneut.",
+    "error_unexpected": "Ein unerwarteter Fehler ist aufgetreten",
+    "form_title": "Zahlungsinformationen",
+    "form_subtitle": "Geben Sie Ihre Bankdaten ein",
+    "secure_ssl": "Sichere SSL-Zahlung",
+    "processing": "Zahlung wird bearbeitet...",
+    "submit_button": "Zahlung abschließen",
+    "security_note_line1": "Ihre Bankinformationen sind verschlüsselt und sicher.",
+    "security_note_line2": "Keine Kartendaten werden auf unseren Servern gespeichert."
+  },
+  "shipping": {
+    "form": {
+      "provider_label": "Spediteur",
+      "provider_placeholder": "DHL, Hermes...",
+      "display_name_label": "Anzeigename",
+      "display_name_placeholder": "Standardlieferung...",
+      "type_label": "Typ",
+      "type_home_delivery": "Hauszustellung",
+      "type_locker": "Automatischer Locker",
+      "type_pickup_point": "Abholpunkt",
+      "type_store_pickup": "Abholung im Geschäft",
+      "price_label": "Preis (€)",
+      "min_days_label": "Min. Frist (Tage)",
+      "max_days_label": "Max. Frist (Tage)",
+      "error_max_min": "Maximale Frist muss größer oder gleich minimaler Frist sein",
+      "adding": "Hinzufügen..."
+    },
+    "list": {
+      "no_methods_configured": "Keine Liefermethoden konfiguriert",
+      "no_methods_available": "Keine Liefermethoden verfügbar",
+      "days": "Tage"
+    },
+    "manager": {
+      "title": "Liefermethoden",
+      "confirm_delete": "Diese Liefermethode löschen?"
+    }
+  },
+  "filters": {
+    "title": "Filter",
+    "location": {
+      "label": "Standort",
+      "city_mode": "Referenzstadt",
+      "gps_mode": "Mein Standort",
+      "choose_city": "Wählen Sie eine Stadt...",
+      "simulated_position": "Simulierte Position bei",
+      "activate_gps": "Meine Position aktivieren",
+      "gps_active": "GPS-Position aktiviert",
+      "gps_loading": "Ortung läuft...",
+      "gps_help": "Verwenden Sie Ihre echte Position, um Marken in Ihrer Nähe zu finden."
+    },
+    "sort": {
+      "label": "Sortieren nach:",
+      "none": "Keine Sortierung",
+      "ethics_production": "Produktionsethik",
+      "ethics_transport": "Transportethik",
+      "rating": "Benutzerbewertung",
+      "distance": "Entfernung"
+    },
+    "distance": {
+      "label": "Max. Entfernung:",
+      "no_limit": "Kein Limit",
+      "unit": "km"
+    },
+    "ethics_production": {
+      "label": "Min. Produktionsethik:",
+      "none": "Keine"
+    },
+    "ethics_transport": {
+      "label": "Min. Transportethik:",
+      "none": "Keine"
+    },
+    "rating": {
+      "label": "Mindestbewertung:"
+    },
+    "price_range": {
+      "label": "Preisklasse:",
+      "all": "Alle"
+    },
+    "ethical_tags": {
+      "label": "Ethische Tags:",
+      "all_required": "Marke muss ALLE angekreuzten Tags haben",
+      "loading": "Tags werden geladen..."
+    },
+    "reset": "Filter zurücksetzen"
+  },
+  "sidebar_filters": {
+    "price": {
+      "label": "Preis:",
+      "min": "Min",
+      "max": "Max"
+    },
+    "categories": {
+      "label": "Kategorien",
+      "t-shirt": "T-Shirt",
+      "pull": "Pullover",
+      "sweat": "Sweatshirt",
+      "jeans": "Jeans"
+    },
+    "ethics": {
+      "label": "Ethik"
+    },
+    "colors": {
+      "label": "Farben"
+    },
+    "size": {
+      "label": "Größe"
+    }
+  },
+  "star_rating": {
+    "aria_label": "{{count}} Stern",
+    "aria_label_plural": "{{count}} Sterne",
+    "minimum": "{{count}} Stern mindestens",
+    "minimum_plural": "{{count}} Sterne mindestens"
+  },
+  "supervendor_menu": {
+    "my_brand": "Meine Marke",
+    "vendors": "Verkäufer verwalten",
+    "products": "Produkte verwalten",
+    "stats": "Statistiken",
+    "customize": "Anpassen",
+    "policies": "Richtlinien"
+  },
+  "vendor_menu": {
+    "my_products": "Meine Produkte"
+  },
+  "admin_menu": {
+    "logs": "Logs ansehen",
+    "accounts": "Konten verwalten",
+    "payments": "Zahlungsmethoden",
+    "delivery": "Liefermethoden",
+    "ethics": "Ethik-Fragebogen verwalten"
+  },
+  "moderator_menu": {
+    "accounts": "Kontenverwaltung",
+    "brands": "Marken validieren",
+    "products": "Produkte moderieren",
+    "reviews": "Bewertungen moderieren",
+    "logs": "Logs ansehen"
+  },
+  "search_bar": {
+    "filters": "Filter",
+    "placeholder": {
+      "brands": "Marken durchsuchen...",
+      "products": "Produkte durchsuchen...",
+      "wishlist": "Wunschliste durchsuchen...",
+      "settings": "Einstellungen durchsuchen...",
+      "accounts": "Konten durchsuchen...",
+      "default": "Diese Seite durchsuchen..."
+    }
+  },
+  "add_product": {
+    "basic_info": {
+      "title": "Allgemeine Informationen",
+      "name_label": "Produktname",
+      "name_placeholder": "Z.B: Streetwear T-Shirt",
+      "description_label": "Beschreibung",
+      "description_placeholder": "Beschreiben Sie Ihr Produkt...",
+      "edit_mode": "BEARBEITUNGSMODUS",
+      "name": "Produktname",
+      "price": "Preis (€)",
+      "characters_count": "{{count}} Zeichen"
+    },
+    "category": {
+      "title": "Produktkategorie",
+      "loading": "Kategorien werden geladen...",
+      "description": "Wählen Sie die Kategorie aus, um verfügbare Größen anzuzeigen"
+    },
+    "color": {
+      "title": "Farbe dieser Variante",
+      "loading": "Farben werden geladen..."
+    },
+    "group": {
+      "title": "Produktgruppe auswählen",
+      "placeholder": "Wählen Sie eine Produktgruppe",
+      "color_one": "Farbe",
+      "color_other": "Farben",
+      "description_label": "Gruppenbeschreibung"
+    },
+    "images": {
+      "title": "Bilder dieser Variante",
+      "choose": "Bild auswählen",
+      "uploading": "Hochladen...",
+      "primary": "Haupt",
+      "alt": "Bild {{number}}"
+    },
+    "color_editor": {
+      "title": "Hauptfarbe",
+      "loading": "Farben werden geladen...",
+      "description": "Wählen Sie die Farbe dieser Produktvariante"
+    },
+    "color_selector": {
+      "title": "Farbe"
+    }
+  },
+  "add_product_card": {
+    "title": "Produkt hinzufügen",
+    "description": "Klicken Sie, um ein neues Produkt zu erstellen",
+    "badge": "Neues Produkt"
+  },
+  "sizes": {
+    "title": "Größen und Lagerbestand",
+    "select_category_first": "Wählen Sie zuerst eine Kategorie, um verfügbare Größen anzuzeigen",
+    "loading": "Größen werden geladen...",
+    "no_sizes": "Keine Größen für diese Kategorie verfügbar",
+    "description": "Wählen Sie verfügbare Größen und legen Sie deren Lagerbestand fest",
+    "stock": "Lagerbestand",
+    "units": "Einheiten"
+  }
+}

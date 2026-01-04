@@ -1,4 +1,5 @@
 ﻿import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { CartDto, CartItemDto } from "@/api/services/cart/types";
 import { ShippingChoice } from "@/types/checkout";
 
@@ -9,6 +10,8 @@ type Props = {
 };
 
 export function CheckoutSummary({ cart, itemsByBrand, shippingChoices }: Props) {
+    const { t } = useTranslation();
+
     const shippingCost = useMemo(() => {
         let total = 0;
         shippingChoices.forEach((choice) => {
@@ -26,7 +29,7 @@ export function CheckoutSummary({ cart, itemsByBrand, shippingChoices }: Props) 
 
     return (
         <div className="bg-white rounded-lg shadow p-6 sticky top-4">
-            <h2 className="text-xl font-semibold mb-4">Récapitulatif</h2>
+            <h2 className="text-xl font-semibold mb-4">{t('checkout.summary')}</h2>
 
             <div className="space-y-3 mb-4 pb-4 border-b">
                 {Array.from(itemsByBrand.entries()).map(([brandId, items]) => {
@@ -47,7 +50,7 @@ export function CheckoutSummary({ cart, itemsByBrand, shippingChoices }: Props) 
                                     <span>✓ {choice.displayName}</span>
                                     <span>
                                         {choice.price === 0
-                                            ? "Gratuit"
+                                            ? t('checkout.free')
                                             : `+${choice.price.toFixed(2)} €`}
                                     </span>
                                 </div>
@@ -59,24 +62,24 @@ export function CheckoutSummary({ cart, itemsByBrand, shippingChoices }: Props) 
 
             <div className="space-y-2 mb-4">
                 <div className="flex justify-between text-sm">
-                    <span>Sous-total produits</span>
+                    <span>{t('checkout.products_subtotal')}</span>
                     <span>{totalProducts.toFixed(2)} €</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                    <span>Livraison</span>
+                    <span>{t('checkout.delivery')}</span>
                     <span className={shippingCost === 0 ? "text-green-600" : "text-gray-900"}>
-                        {shippingCost === 0 ? "Gratuit" : `${shippingCost.toFixed(2)} €`}
+                        {shippingCost === 0 ? t('checkout.free') : `${shippingCost.toFixed(2)} €`}
                     </span>
                 </div>
                 <div className="flex justify-between text-xs text-gray-500 pt-2 border-t">
-                    <span>dont TVA (21%)</span>
+                    <span>{t('checkout.vat')}</span>
                     <span>{totalVAT.toFixed(2)} €</span>
                 </div>
             </div>
 
             <div className="pt-4 border-t">
                 <div className="flex justify-between items-center text-lg font-bold">
-                    <span>Total TTC</span>
+                    <span>{t('checkout.total_with_tax')}</span>
                     <span>{totalWithShipping.toFixed(2)} €</span>
                 </div>
             </div>

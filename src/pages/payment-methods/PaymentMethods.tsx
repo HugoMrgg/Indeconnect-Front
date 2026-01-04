@@ -1,5 +1,6 @@
 ﻿import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { useTranslation } from 'react-i18next';
 
 import { PaymentMethodDto } from "@/api/services/payments-methods/types";
 import { usePaymentMethods } from "@/hooks/Settings/usePaymentsMethods";
@@ -18,6 +19,7 @@ const BrandBadge = ({ brand }: { brand: string }) => {
 
 
 export const PaymentMethodsPage: React.FC = () => {
+    const { t } = useTranslation();
     const { data, isLoading, actingId, error, removePaymentMethod, setDefaultMethod, refetch } = usePaymentMethods();
     const [openAdd, setOpenAdd] = useState(false);
     const [confirmOpen, setConfirmOpen] = useState(false);
@@ -35,7 +37,7 @@ export const PaymentMethodsPage: React.FC = () => {
         setDeleting(true);
         try {
             await removePaymentMethod(toDelete.id);
-            toast.success("Moyen de paiement supprimé ✅");
+            toast.success(t('pages.paymentMethods.deleted'));
             setConfirmOpen(false);
             setToDelete(null);
         } finally {
@@ -45,19 +47,19 @@ export const PaymentMethodsPage: React.FC = () => {
 
     const makeDefault = async (m: PaymentMethodDto) => {
         await setDefaultMethod(m.id);
-        toast.success("Moyen de paiement défini par défaut ✅");
+        toast.success(t('pages.paymentMethods.setDefault'));
     };
 
     if (isLoading) {
-        return <div className="p-8 text-center text-gray-500 animate-pulse">Chargement de tes moyens de paiement…</div>;
+        return <div className="p-8 text-center text-gray-500 animate-pulse">{t('pages.paymentMethods.loading')}</div>;
     }
 
     return (
         <div className="p-6 space-y-6">
             <header id="payments-default" className="flex items-start justify-between gap-4">
                 <div>
-                    <h2 className="text-2xl font-bold text-gray-900">Moyens de paiement</h2>
-                    <p className="text-gray-600 mt-1">Gère tes cartes : défaut, suppression, ajout via Stripe.</p>
+                    <h2 className="text-2xl font-bold text-gray-900">{t('pages.paymentMethods.title')}</h2>
+                    <p className="text-gray-600 mt-1">{t('pages.paymentMethods.subtitle')}</p>
                 </div>
 
                 <button
@@ -65,7 +67,7 @@ export const PaymentMethodsPage: React.FC = () => {
                     onClick={() => setOpenAdd(true)}
                     className="shrink-0 px-4 py-2 rounded-lg text-white bg-gray-900 hover:bg-gray-800 transition"
                 >
-                    + Ajouter
+                    {t('pages.paymentMethods.addButton')}
                 </button>
             </header>
 
@@ -96,7 +98,7 @@ export const PaymentMethodsPage: React.FC = () => {
 
                                     {m.isDefault && (
                                         <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
-                      Par défaut
+                      {t('pages.paymentMethods.defaultBadge')}
                     </span>
                                     )}
                                 </div>
@@ -104,10 +106,10 @@ export const PaymentMethodsPage: React.FC = () => {
                                 <div className="text-sm text-gray-500 mt-1">
                                     {m.type === "card" ? (
                                         <>
-                                            Expire le {(m.expiryMonth ?? 0).toString().padStart(2, "0")}/{m.expiryYear ?? "--"}
+                                            {t('pages.paymentMethods.expiresOn')} {(m.expiryMonth ?? 0).toString().padStart(2, "0")}/{m.expiryYear ?? "--"}
                                         </>
                                     ) : (
-                                        <>Méthode {m.type}</>
+                                        <>{t('pages.paymentMethods.method')} {m.type}</>
                                     )}
                                 </div>
                             </div>
@@ -120,7 +122,7 @@ export const PaymentMethodsPage: React.FC = () => {
                                     disabled={actingId === m.id}
                                     className="text-sm text-gray-600 hover:text-blue-600 px-2 py-1 disabled:opacity-50"
                                 >
-                                    Par défaut
+                                    {t('pages.paymentMethods.setAsDefaultButton')}
                                 </button>
                             )}
 
@@ -129,7 +131,7 @@ export const PaymentMethodsPage: React.FC = () => {
                                 disabled={actingId === m.id}
                                 className="text-sm text-red-600 hover:text-red-800 px-2 py-1 hover:bg-red-50 rounded disabled:opacity-50"
                             >
-                                Supprimer
+                                {t('pages.paymentMethods.deleteButton')}
                             </button>
                         </div>
                     </div>
@@ -137,13 +139,13 @@ export const PaymentMethodsPage: React.FC = () => {
 
                 {data.length === 0 && (
                     <div className="text-center py-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                        <p className="text-gray-500">Tu n’as pas encore enregistré de moyen de paiement.</p>
+                        <p className="text-gray-500">{t('pages.paymentMethods.empty')}</p>
                         <button
                             type="button"
                             onClick={() => setOpenAdd(true)}
                             className="mt-4 px-5 py-2 rounded-lg text-white bg-gray-900 hover:bg-gray-800 transition"
                         >
-                            Ajouter une carte
+                            {t('pages.paymentMethods.addCardButton')}
                         </button>
                     </div>
                 )}
@@ -157,11 +159,11 @@ export const PaymentMethodsPage: React.FC = () => {
 
             <ConfirmDialog
                 open={confirmOpen}
-                title="Supprimer ce moyen de paiement ?"
+                title={t('pages.paymentMethods.confirmDeleteTitle')}
                 message={
                     <div className="space-y-2">
                         <p>
-                            Tu es sur le point de supprimer{" "}
+                            {t('pages.paymentMethods.confirmDeleteMessagePrefix')}{" "}
                             <span className="font-mono font-semibold text-gray-900">
                                 {toDelete?.type === "card" ? `•••• ${toDelete?.last4 ?? "----"}` : (toDelete?.type ?? "").toUpperCase()}
                             </span>.
@@ -169,13 +171,13 @@ export const PaymentMethodsPage: React.FC = () => {
 
                         {toDelete?.isDefault && (
                             <p className="text-red-700 bg-red-50 border border-red-100 rounded-lg p-2">
-                                ⚠️ C’est ta méthode par défaut. Après suppression, il faudra en choisir une autre.
+                                {t('pages.paymentMethods.confirmDeleteWarning')}
                             </p>
                         )}
                     </div>
                 }
-                confirmLabel="Supprimer"
-                cancelLabel="Annuler"
+                confirmLabel={t('pages.paymentMethods.confirm')}
+                cancelLabel={t('pages.paymentMethods.cancel')}
                 danger
                 loading={deleting}
                 onCancel={() => {

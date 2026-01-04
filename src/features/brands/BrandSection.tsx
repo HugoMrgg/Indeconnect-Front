@@ -1,4 +1,5 @@
 import React, { useMemo, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { BrandCard } from "./BrandCard";
 import { Brand } from "@/types/brand";
@@ -9,12 +10,15 @@ interface BrandSectionProps {
 }
 
 export const BrandSection: React.FC<BrandSectionProps> = ({ title, brands }) => {
+    const { t } = useTranslation();
     const scrollerRef = useRef<HTMLDivElement | null>(null);
 
     const countLabel = useMemo(() => {
         const n = brands?.length ?? 0;
-        return n <= 1 ? `${n} résultat` : `${n} résultats`;
-    }, [brands]);
+        return n <= 1
+            ? t('brands.section.result_count_singular', { count: n })
+            : t('brands.section.result_count_plural', { count: n });
+    }, [brands, t]);
 
     const scrollByAmount = (dir: "left" | "right") => {
         const el = scrollerRef.current;
@@ -38,7 +42,7 @@ export const BrandSection: React.FC<BrandSectionProps> = ({ title, brands }) => 
                         type="button"
                         onClick={() => scrollByAmount("left")}
                         className="inline-flex items-center justify-center h-9 w-9 rounded-full border bg-white shadow-sm hover:shadow transition"
-                        aria-label="Défiler vers la gauche"
+                        aria-label={t('brands.section.scroll_left')}
                     >
                         <ChevronLeft size={18} />
                     </button>
@@ -46,7 +50,7 @@ export const BrandSection: React.FC<BrandSectionProps> = ({ title, brands }) => 
                         type="button"
                         onClick={() => scrollByAmount("right")}
                         className="inline-flex items-center justify-center h-9 w-9 rounded-full border bg-white shadow-sm hover:shadow transition"
-                        aria-label="Défiler vers la droite"
+                        aria-label={t('brands.section.scroll_right')}
                     >
                         <ChevronRight size={18} />
                     </button>
@@ -56,9 +60,11 @@ export const BrandSection: React.FC<BrandSectionProps> = ({ title, brands }) => 
             {/* Empty state */}
             {(!brands || brands.length === 0) && (
                 <div className="rounded-3xl border border-dashed p-10 text-center bg-gray-50">
-                    <p className="text-gray-700 font-medium">Aucune marque ne correspond.</p>
+                    <p className="text-gray-700 font-medium">
+                        {t('brands.section.no_match')}
+                    </p>
                     <p className="text-sm text-gray-500 mt-1">
-                        Essaie de modifier tes filtres ou ta recherche.
+                        {t('brands.section.try_modify_filters')}
                     </p>
                 </div>
             )}

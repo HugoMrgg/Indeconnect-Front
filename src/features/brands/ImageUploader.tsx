@@ -2,6 +2,7 @@
 import { Upload, X, Loader2 } from "lucide-react";
 import { imagesService } from "@/api/services/image";
 import { logger } from "@/utils/logger";
+import { useTranslation } from 'react-i18next';
 
 interface ImageUploaderProps {
     label: string;
@@ -16,6 +17,7 @@ export function ImageUploader({
                                   onUpload,
                                   aspectRatio = "square",
                               }: ImageUploaderProps) {
+    const { t } = useTranslation();
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState<string | null>(currentUrl ?? null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -47,7 +49,7 @@ export function ImageUploader({
 
         } catch (err) {
             logger.error("ImageUploader.handleUpload", err);
-            alert("Erreur lors de l'upload de l'image.");
+            alert(t('components.imageUploader.uploadError'));
             setPreview(currentUrl ?? null);
         } finally {
             setUploading(false);
@@ -83,7 +85,7 @@ export function ImageUploader({
                             onClick={handleRemove}
                             disabled={uploading}
                             className="absolute top-2 right-2 p-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors disabled:opacity-50"
-                            aria-label="Supprimer l'image"
+                            aria-label={t('components.imageUploader.removeAria')}
                         >
                             <X size={16} />
                         </button>
@@ -101,7 +103,7 @@ export function ImageUploader({
                             <Upload size={32} />
                         )}
                         <span className="text-sm font-medium">
-                            {uploading ? "Upload en cours..." : "Cliquer pour uploader"}
+                            {uploading ? t('components.imageUploader.uploading') : t('components.imageUploader.clickToUpload')}
                         </span>
                     </button>
                 )}

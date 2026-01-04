@@ -1,4 +1,5 @@
 ﻿import React, { useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Edit2 } from "lucide-react";
 
 interface EditableFieldProps {
@@ -18,6 +19,7 @@ export const EditableField: React.FC<EditableFieldProps> = ({
                                                                 className = "",
                                                                 editMode
                                                             }) => {
+    const { t } = useTranslation();
     const [isEditing, setIsEditing] = useState(false);
     const [localValue, setLocalValue] = useState(value || "");
     const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
@@ -72,7 +74,7 @@ export const EditableField: React.FC<EditableFieldProps> = ({
         <span
             onClick={() => setIsEditing(true)}
             className={`${className} cursor-pointer hover:bg-blue-50 hover:outline hover:outline-2 hover:outline-dashed hover:outline-blue-300 rounded px-2 py-1 transition-all inline-block`}
-            title="Cliquer pour modifier"
+            title={t('common.editable.click_to_edit')}
         >
             {localValue || placeholder}
             <Edit2 size={14} className="inline-block ml-2 text-gray-400" />

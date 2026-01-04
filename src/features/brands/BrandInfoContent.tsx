@@ -1,15 +1,10 @@
 ﻿import React from "react";
+import { useTranslation } from "react-i18next";
 import { EditableField } from "@/features/brands/edit/EditableField";
 import { EditableSelect } from "@/features/brands/edit/EditableSelect";
 import { EditableBrandFields } from "@/types/brand";
 import { EditableLogo } from "@/features/brands/edit/EditableLogo";
 import { DepositDTO } from "@/api/services/brands/types";
-
-const PRICE_RANGE_OPTIONS = [
-    { value: "€", label: "€ - Économique" },
-    { value: "€€", label: "€€ - Moyen" },
-    { value: "€€€", label: "€€€ - Premium" },
-];
 
 interface BrandInfoContentProps {
     brand: {
@@ -39,13 +34,41 @@ export const BrandInfoContent: React.FC<BrandInfoContentProps> = ({
                                                                       onUpdateField,
                                                                       mainDeposit,
                                                                       onEditDeposit,
-                                                                      rightBottomAddon,
                                                                   }) => {
+    const { t } = useTranslation();
     const canEdit = editMode && !!onUpdateField;
+
+    const PRICE_RANGE_OPTIONS = [
+        {
+            value: "€",
+            label: t("brands.info.price_range_economy"), // ex: "€ - Économique"
+        },
+        {
+            value: "€€",
+            label: t("brands.info.price_range_mid"), // ex: "€€ - Moyen"
+        },
+        {
+            value: "€€€",
+            label: t("brands.info.price_range_premium"), // ex: "€€€ - Premium"
+        },
+    ];
+
+    const getPriceRangeLabel = (value: string | null) => {
+        if (!value) return null;
+        switch (value) {
+            case "€":
+                return t("brands.info.price_range_economy");
+            case "€€":
+                return t("brands.info.price_range_mid");
+            case "€€€":
+                return t("brands.info.price_range_premium");
+            default:
+                return value;
+        }
+    };
 
     return (
         <>
-            {/* Carte flottante avec résumé rapide */}
             <section className="relative">
                 <div className="bg-white rounded-2xl shadow-xl border border-gray-100 px-6 py-5 sm:px-8 sm:py-6 flex flex-col sm:flex-row sm:items-center gap-4">
                     <div className="shrink-0">
@@ -66,7 +89,7 @@ export const BrandInfoContent: React.FC<BrandInfoContentProps> = ({
                                 <EditableField
                                     value={brand.description}
                                     onChange={(value) => onUpdateField!("description", value)}
-                                    placeholder="Description de votre marque..."
+                                    placeholder={t("brands.details.about_us_placeholder")}
                                     className="text-sm sm:text-base text-gray-600 leading-relaxed block"
                                     multiline
                                     editMode={true}
@@ -86,13 +109,13 @@ export const BrandInfoContent: React.FC<BrandInfoContentProps> = ({
                         {canEdit ? (
                             <div className="text-right">
                                 <p className="text-xs uppercase tracking-wide text-gray-500">
-                                    Gamme de prix
+                                    {t("brands.info.price_range")}
                                 </p>
                                 <EditableSelect
                                     value={brand.priceRange}
                                     onChange={(value) => onUpdateField!("priceRange", value)}
                                     options={PRICE_RANGE_OPTIONS}
-                                    placeholder="Sélectionnez une gamme"
+                                    placeholder={t("brands.info.select_price_range")}
                                     editMode={true}
                                     className="mt-1 text-sm text-gray-900"
                                 />
@@ -101,10 +124,10 @@ export const BrandInfoContent: React.FC<BrandInfoContentProps> = ({
                             brand.priceRange && (
                                 <div className="text-right">
                                     <p className="text-xs uppercase tracking-wide text-gray-500">
-                                        Gamme de prix
+                                        {t("brands.info.price_range")}
                                     </p>
                                     <p className="text-sm font-medium text-gray-900">
-                                        {brand.priceRange}
+                                        {getPriceRangeLabel(brand.priceRange)}
                                     </p>
                                 </div>
                             )
@@ -120,12 +143,12 @@ export const BrandInfoContent: React.FC<BrandInfoContentProps> = ({
                         {canEdit ? (
                             <div className="hidden sm:block text-right max-w-[220px]">
                                 <p className="text-xs uppercase tracking-wide text-gray-500">
-                                    Contact
+                                    {t("brands.details.contact")}
                                 </p>
                                 <EditableField
                                     value={brand.contact}
                                     onChange={(value) => onUpdateField!("contact", value)}
-                                    placeholder="email@exemple.com, +32 123 456 789"
+                                    placeholder={t("brands.details.contact_placeholder")}
                                     className="mt-1 text-sm text-gray-900 break-words"
                                     editMode={true}
                                 />
@@ -134,7 +157,7 @@ export const BrandInfoContent: React.FC<BrandInfoContentProps> = ({
                             brand.contact && (
                                 <div className="hidden sm:block text-right">
                                     <p className="text-xs uppercase tracking-wide text-gray-500">
-                                        Contact
+                                        {t("brands.details.contact")}
                                     </p>
                                     <p className="text-sm font-medium text-gray-900 truncate max-w-[180px]">
                                         {brand.contact}
@@ -146,26 +169,25 @@ export const BrandInfoContent: React.FC<BrandInfoContentProps> = ({
                 </div>
             </section>
 
-            {/* Corps de page */}
             <section className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
                 <div className="lg:col-span-2 space-y-8">
                     {/* À propos */}
                     <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
                         <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
-                            À propos de la marque
+                            {t("brands.info.about_title")}
                         </h2>
                         {canEdit ? (
                             <EditableField
                                 value={brand.aboutUs}
                                 onChange={(value) => onUpdateField!("aboutUs", value)}
-                                placeholder="Racontez l'histoire de votre marque..."
+                                placeholder={t("brands.details.about_us_placeholder")}
                                 multiline
                                 className="text-gray-700 leading-relaxed whitespace-pre-line"
                                 editMode={true}
                             />
                         ) : (
                             <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                                {brand.aboutUs || "Racontez l'histoire de votre marque..."}
+                                {brand.aboutUs || t("brands.details.about_us_placeholder")}
                             </p>
                         )}
                     </section>
@@ -173,20 +195,21 @@ export const BrandInfoContent: React.FC<BrandInfoContentProps> = ({
                     {/* Où nous trouver */}
                     <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
                         <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
-                            Où nous trouver
+                            {t("brands.info.where_title")}
                         </h2>
                         {canEdit ? (
                             <EditableField
                                 value={brand.whereAreWe}
                                 onChange={(value) => onUpdateField!("whereAreWe", value)}
-                                placeholder="Informations sur vos points de vente..."
+                                placeholder={t("brands.details.where_are_we_placeholder")}
                                 multiline
                                 className="text-gray-700 leading-relaxed whitespace-pre-line"
                                 editMode={true}
                             />
                         ) : (
                             <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                                {brand.whereAreWe || "Informations sur vos points de vente..."}
+                                {brand.whereAreWe ||
+                                    t("brands.details.where_are_we_placeholder")}
                             </p>
                         )}
                     </section>
@@ -194,69 +217,66 @@ export const BrandInfoContent: React.FC<BrandInfoContentProps> = ({
                     {/* Autres informations */}
                     <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
                         <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
-                            Autres informations
+                            {t("brands.info.other_title")}
                         </h2>
                         {canEdit ? (
                             <EditableField
                                 value={brand.otherInfo}
                                 onChange={(value) => onUpdateField!("otherInfo", value)}
-                                placeholder="Certifications, engagements..."
+                                placeholder={t("brands.details.other_info_placeholder")}
                                 multiline
                                 className="text-gray-700 leading-relaxed whitespace-pre-line"
                                 editMode={true}
                             />
                         ) : (
                             <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                                {brand.otherInfo || "Certifications, engagements..."}
+                                {brand.otherInfo || t("brands.details.other_info_placeholder")}
                             </p>
                         )}
                     </section>
                 </div>
 
-                {/* Colonne droite */}
                 <aside className="space-y-6">
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                         <h3 className="text-sm font-semibold text-gray-900 mb-4">
-                            Informations pratiques
+                            {t("brands.info.practical_info")}
                         </h3>
 
                         <dl className="space-y-4 text-sm">
                             <div>
-                                <dt className="text-gray-500">Contact</dt>
+                                <dt className="text-gray-500">
+                                    {t("brands.details.contact")}
+                                </dt>
                                 <dd className="mt-1 text-gray-900 break-words">
-                                    {brand.contact || "email@exemple.com, +32 123 456 789"}
+                                    {brand.contact || t("brands.details.contact_placeholder")}
                                 </dd>
                             </div>
 
                             <div className="border-t border-gray-100 pt-4">
-                                <dt className="text-gray-500">Gamme de prix</dt>
+                                <dt className="text-gray-500">{t("brands.info.price_range")}</dt>
                                 <dd className="mt-1 text-gray-900">
-                                    {brand.priceRange || "Non renseignée"}
+                                    {getPriceRangeLabel(brand.priceRange) ||
+                                        t("brands.info.not_specified")}
                                 </dd>
                             </div>
 
-                            {/* Dépôt principal (éditable uniquement) */}
                             {canEdit && onEditDeposit && (
                                 <div className="border-t border-gray-100 pt-4">
-                                    <dt className="text-gray-500">Dépôt principal</dt>
+                                    <dt className="text-gray-500">
+                                        {t("brands.info.main_deposit")}
+                                    </dt>
                                     <dd className="mt-1">
                                         <button
                                             onClick={onEditDeposit}
                                             className="text-sm text-blue-600 hover:text-blue-700 font-medium"
                                         >
-                                            {mainDeposit?.city || "Ajouter une adresse"}
+                                            {mainDeposit?.city || t("brands.info.add_address")}
                                         </button>
                                     </dd>
                                 </div>
                             )}
                         </dl>
                     </div>
-
-                    {rightBottomAddon ? rightBottomAddon : (
-                        <div className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl p-4 text-sm text-gray-600">
-                            Bloc à venir : score éthique, labels, liens vers la boutique, etc.
-                        </div>
-                    )}
                 </aside>
             </section>
         </>

@@ -9,8 +9,10 @@ import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
 import { AccountTableSkeleton } from "@/components/skeletons";
 import { logger } from "@/utils/logger";
+import { useTranslation } from "react-i18next";
 
 export function AccountsManagement() {
+    const { t } = useTranslation();
     const [searchQuery, setSearchQuery] = useState<string>("");
 
     const [openModal, setOpenModal] = useState(false);
@@ -66,7 +68,7 @@ export function AccountsManagement() {
                     <div className="flex justify-between items-start gap-6">
                         <div>
                             <h1 className="text-5xl font-serif font-bold text-gray-900 mb-4">
-                                Gestion des Comptes
+                                {t('admin.accounts.title')}
                             </h1>
                             <div className="w-24 h-1 bg-gray-900 mb-6" aria-hidden="true"></div>
                             <p className="text-gray-700 text-lg">
@@ -75,7 +77,7 @@ export function AccountsManagement() {
 
                             {isSearching && !loading ? (
                                 <p className="mt-4 text-sm text-gray-800">
-                                    Résultats pour <span className="font-semibold">“{searchQuery}”</span> :{" "}
+                                    Résultats pour <span className="font-semibold">"{searchQuery}"</span> :{" "}
                                     <span className="font-semibold">{filteredAccounts.length}</span>
                                 </p>
                             ) : null}
@@ -84,10 +86,10 @@ export function AccountsManagement() {
                         <button
                             onClick={() => setOpenModal(true)}
                             className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 shadow-lg"
-                            aria-label="Ouvrir le formulaire d'invitation de compte"
+                            aria-label={t('admin.accounts.invite_button')}
                         >
                             <Plus size={20} aria-hidden="true" />
-                            Inviter un compte
+                            {t('admin.accounts.invite_button')}
                         </button>
                     </div>
                 </div>
@@ -115,7 +117,7 @@ export function AccountsManagement() {
                     )}
 
                     {/* Section Title */}
-                    <h2 className="text-xl font-semibold mb-4">Tous les comptes :</h2>
+                    <h2 className="text-xl font-semibold mb-4">{t('brands.all_brands')}</h2>
 
                     {/* Loading State */}
                     {loading ? (
@@ -126,7 +128,7 @@ export function AccountsManagement() {
                         <>
                             {filteredAccounts.length === 0 ? (
                                 <div className="text-center py-10 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                                    <p className="text-gray-700 font-semibold">Aucun compte ne correspond.</p>
+                                    <p className="text-gray-700 font-semibold">{t('admin.accounts.no_accounts')}</p>
                                     <p className="text-gray-500 mt-1 text-sm">
                                         Essaie un email, un nom, ou un rôle (ex: “administrator”, “moderator”, “supervendor”).
                                     </p>

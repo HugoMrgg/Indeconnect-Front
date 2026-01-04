@@ -1,0 +1,951 @@
+{
+  "common": {
+    "loading": "Laden...",
+    "not_available_short": "N.v.t.",
+    "error": "Fout",
+    "cancel": "Annuleren",
+    "confirm": "Bevestigen",
+    "save": "Opslaan",
+    "delete": "Verwijderen",
+    "edit": "Bewerken",
+    "add": "Toevoegen",
+    "close": "Sluiten",
+    "back": "Terug",
+    "or": "of",
+    "please_wait": "Even geduld",
+    "editable": {
+      "click_to_edit": "Klik om te bewerken"
+    },
+    "apply": "Toepassen",
+    "previous": "Vorige",
+    "next": "Volgende",
+    "locale": "nl-NL"
+  },
+  "auth": {
+    "login": {
+      "title": "Inloggen",
+      "email_label": "E-mailadres",
+      "email_placeholder": "voorbeeld@mail.com",
+      "password_label": "Wachtwoord",
+      "password_placeholder": "Uw wachtwoord",
+      "submit_button": "Inloggen",
+      "submitting": "Inloggen...",
+      "google_error": "Google authenticatiefout",
+      "error_generic": "Authenticatiefout",
+      "relogin_prompt": "Log opnieuw in."
+    },
+    "register": {
+      "title": "Registreren",
+      "first_name_label": "Voornaam",
+      "first_name_placeholder": "Jan",
+      "last_name_label": "Achternaam",
+      "last_name_placeholder": "Jansen",
+      "email_label": "E-mailadres",
+      "email_placeholder": "voorbeeld@mail.com",
+      "password_label": "Wachtwoord",
+      "password_placeholder": "••••••••",
+      "confirm_password_label": "Bevestigen",
+      "confirm_password_placeholder": "••••••••",
+      "submit_button": "Account aanmaken",
+      "submitting": "…",
+      "password_mismatch": "Wachtwoorden komen niet overeen."
+    }
+  },
+  "navigation": {
+    "search": {
+      "brands": "Zoeken tussen merken...",
+      "products": "Zoeken tussen producten...",
+      "wishlist": "Zoeken in uw verlanglijst...",
+      "settings": "Zoeken in instellingen...",
+      "accounts": "Zoeken tussen accounts...",
+      "page": "Zoeken op deze pagina...",
+      "filters": "Filters"
+    },
+    "menu": {
+      "guest": {
+        "login": "Inloggen",
+        "register": "Registreren"
+      },
+      "user": {
+        "wishlist": "Favorieten",
+        "cart": "Winkelwagen",
+        "orders": "Bestellingen",
+        "settings": "Instellingen",
+        "logout": "Uitloggen"
+      },
+      "admin": {
+        "logs": "Logboeken bekijken",
+        "accounts": "Accounts beheren",
+        "payment_methods": "Betaalmethoden",
+        "delivery_methods": "Leveringsmethoden",
+        "ethics_questionnaire": "Ethische vragenlijst beheren"
+      }
+    }
+  },
+  "products": {
+    "details": {
+      "color": "Kleur",
+      "size": "Maat",
+      "base_price": "Basisprijs",
+      "color_price": "Prijs van deze kleur",
+      "stock": "Voorraad",
+      "category": "Categorie"
+    },
+    "add_product": {
+      "title": "Product aanmaken",
+      "mode_title": "Kies hoe u uw product wilt aanmaken",
+      "mode_new_type": "Nieuw producttype",
+      "mode_new_type_desc": "Maak een nieuw product aan met al zijn informatie",
+      "mode_add_color": "Kleur toevoegen",
+      "mode_add_color_desc": "Voeg een kleurvariant toe aan een bestaand product",
+      "category_label": "Categorie:",
+      "category_inherited": "Overgenomen van geselecteerde productgroep",
+      "price_label": "Prijs (€) *",
+      "price_placeholder": "0,00",
+      "submit_button": "Product aanmaken",
+      "submitting": "Aanmaken...",
+      "no_product_groups": "Geen bestaande productgroep. Maak eerst een nieuw product aan.",
+      "error_loading_groups": "Fout bij laden productgroepen",
+      "error_creating_product": "Fout bij aanmaken product",
+      "error_no_category": "Selecteer een categorie",
+      "error_no_color": "Selecteer een kleur",
+      "error_no_size": "Selecteer minstens één maat",
+      "error_image_upload": "Fout bij uploaden afbeelding"
+    },
+    "reviews": {
+      "title": "Klantbeoordelingen",
+      "rating": "★ / 5",
+      "comment_singular": "reactie",
+      "comment_plural": "reacties",
+      "write_review": "Schrijf een beoordeling",
+      "no_reviews": "Nog geen beoordelingen.",
+      "disable_confirm": "Wilt u deze beoordeling echt verbergen?",
+      "disabled_success": "Beoordeling succesvol uitgeschakeld",
+      "disable_error": "Kan deze beoordeling niet uitschakelen.",
+      "disable_button": "Beoordeling uitschakelen (Moderator)",
+      "rate_product": "Beoordeel dit product",
+      "rate_question": "Welk cijfer geeft u?",
+      "comment_label": "Uw reactie",
+      "comment_placeholder": "Vertel ons wat u ervan vindt...",
+      "submit_button": "Verzenden",
+      "success": "Uw beoordeling is gepubliceerd!",
+      "error": "Fout bij verzenden beoordeling."
+    }
+  },
+  "cart": {
+    "title": "Uw winkelwagen",
+    "empty": "Uw winkelwagen is leeg.",
+    "login_required": "Log in om uw winkelwagen te bekijken.",
+    "loading": "Winkelwagen laden...",
+    "items_count": "Aantal artikelen",
+    "subtotal": "Subtotaal",
+    "checkout_button": "Bestelling plaatsen",
+    "add_to_cart": "Toevoegen aan winkelwagen",
+    "unavailable": "Niet beschikbaar",
+    "remove_from_cart": "Verwijderen uit winkelwagen",
+    "quantity": "Aantal",
+    "item_details": {
+      "size": "Maat:",
+      "color": "Kleur:",
+      "stock": "Voorraad:"
+    }
+  },
+  "orders": {
+    "title": "Mijn bestellingen",
+    "empty": "Geen bestellingen",
+    "empty_description": "U heeft nog geen bestellingen geplaatst",
+    "discover_products": "Ontdek onze producten",
+    "error_loading": "Laadfout",
+    "order_number": "Bestelling #",
+    "total": "Totaal:",
+    "items_singular": "artikel",
+    "items_plural": "artikelen",
+    "brands": "merken",
+    "pay_now": "Nu betalen",
+    "track_order": "Mijn bestelling volgen",
+    "invoice_singular": "Factuur",
+    "invoice_plural": "facturen",
+    "separate_deliveries": "Aparte leveringen",
+    "order_not_found": "Bestelling niet gevonden",
+    "statuses": {
+      "pending": "In behandeling",
+      "paid": "Betaald",
+      "processing": "Wordt verwerkt",
+      "delivered": "Afgeleverd",
+      "cancelled": "Geannuleerd"
+    },
+    "delivery": {
+      "number": "Levering #",
+      "tracking_number": "Volgnummer:",
+      "items": "Artikelen (",
+      "statuses": {
+        "preparing": "In voorbereiding",
+        "shipped": "Verzonden",
+        "in_transit": "Onderweg",
+        "out_for_delivery": "Wordt bezorgd",
+        "delivered": "Afgeleverd",
+        "failed": "Mislukt",
+        "returned": "Geretourneerd"
+      }
+    }
+  },
+  "checkout": {
+    "title": "Uw bestelling afronden",
+    "login_required": "U moet ingelogd zijn om af te rekenen",
+    "delivery_modes": "Leveringsmethoden",
+    "summary": "Samenvatting",
+    "products_subtotal": "Subtotaal producten",
+    "delivery": "Levering",
+    "free": "Gratis",
+    "vat": "waarvan BTW (21%)",
+    "total_with_tax": "Totaal incl. BTW",
+    "creating_order": "Bestelling aanmaken...",
+    "create_order": "Bestelling aanmaken",
+    "error_no_address": "Selecteer een leveringsadres",
+    "error_no_delivery_mode": "Selecteer een leveringsmethode voor elk merk",
+    "order_created": "Bestelling aangemaakt. Betaling opent in een venster.",
+    "proceed_to_payment": "Doorgaan naar betaling",
+    "address": {
+      "street_label": "Straat *",
+      "street_placeholder": "Vredestraat",
+      "street_error": "Straat moet minstens 2 tekens bevatten",
+      "number_label": "Nummer *",
+      "number_placeholder": "42",
+      "number_error": "Nummer is vereist",
+      "postal_code_label": "Postcode *",
+      "postal_code_placeholder": "4000",
+      "postal_code_error": "Postcode moet 4 cijfers bevatten (bijv. 4000)",
+      "city_label": "Stad *",
+      "city_placeholder": "Luik",
+      "city_error": "Stad moet minstens 2 tekens bevatten",
+      "complement_label": "Adrestoevoeging (optioneel)",
+      "complement_placeholder": "Gebouw A, 3e verdieping",
+      "set_default": "Instellen als standaardadres",
+      "add_button": "Toevoegen",
+      "adding": "Toevoegen...",
+      "form_errors": "Corrigeer de formulierfouten",
+      "added_success": "Adres toegevoegd!"
+    }
+  },
+  "wishlist": {
+    "product_card": {
+      "no_image": "Afbeelding niet beschikbaar",
+      "remove": "Verwijderen",
+      "product_label": "PRODUCT"
+    },
+    "title": "Mijn Verlanglijst",
+    "empty": "Geen artikelen in verlanglijst.",
+    "empty_cta": "Blader door producten en voeg ze toe aan uw verlanglijst!",
+    "login_required": "Log in om uw verlanglijst te zien ❤️",
+    "loading": "Laden...",
+    "remove_button": "Verwijderen",
+    "removed_success": "Product verwijderd uit uw verlanglijst ❤️"
+  },
+  "brands": {
+    "preview": {
+      "title": "Klantvoorbeeld",
+      "description": "Zo zullen klanten uw merk zien"
+    },
+    "deposit": {
+      "title": "Hoofdmagazijn",
+      "number_label": "Nr.",
+      "street_label": "Straat",
+      "postal_code_label": "Postcode",
+      "city_label": "Stad",
+      "country_label": "Land",
+      "default_country": "België",
+      "saving": "Opslaan..."
+    },
+    "section": {
+      "result_count_singular": "{{count}} resultaat",
+      "result_count_plural": "{{count}} resultaten",
+      "scroll_left": "Scroll naar links",
+      "scroll_right": "Scroll naar rechts",
+      "no_match": "Geen overeenkomende merken.",
+      "try_modify_filters": "Probeer uw filters of zoekopdracht te wijzigen."
+    },
+    "products": {
+      "no_products": "Nog geen producten",
+      "add_first": "Begin met het toevoegen van uw eerste product!",
+      "no_results": "Uw zoekopdracht heeft geen resultaten opgeleverd...",
+      "try_other_keywords": "Probeer andere zoekwoorden"
+    },
+    "info": {
+      "price_range": "Prijsklasse",
+      "select_price_range": "Selecteer een klasse",
+      "price_range_economy": "€ - Economisch",
+      "price_range_mid": "€€ - Middensegment",
+      "price_range_premium": "€€€ - Premium",
+      "about_title": "Over het merk",
+      "where_title": "Waar ons te vinden",
+      "other_title": "Andere informatie",
+      "practical_info": "Praktische informatie",
+      "not_specified": "Niet gespecificeerd",
+      "main_deposit": "Hoofdmagazijn",
+      "add_address": "Adres toevoegen"
+    },
+    "back_to_brands": "Terug naar merken",
+    "card": {
+      "logo_alt": "{{name}} logo",
+      "ethics_production": "Ethiek (productie)",
+      "ethics_transport": "Ethiek (transport)"
+    },
+    "details": {
+      "about_us": "Over ons",
+      "about_us_placeholder": "Presenteer uw merk in detail...",
+      "where_are_we": "Waar ons te vinden",
+      "where_are_we_placeholder": "Adressen, verkooppunten...",
+      "contact": "Contact",
+      "contact_placeholder": "E-mail, telefoon, sociale media...",
+      "other_info": "Andere informatie",
+      "other_info_placeholder": "Aanvullende informatie..."
+    },
+    "logo": {
+      "alt": "Merklogo",
+      "add_logo": "Logo toevoegen",
+      "edit_logo": "Logo bewerken",
+      "modal_title": "Logo bewerken",
+      "label": "Logo"
+    },
+    "banner": {
+      "edit_button": "Banner bewerken",
+      "modal_title": "Banner bewerken",
+      "label": "Banner"
+    },
+    "all_brands": "Alle merken:",
+    "no_brands": "Geen merken om weer te geven",
+    "subscribe": "Abonneren",
+    "subscribed": "Geabonneerd ✓",
+    "about_us": "Wie zijn wij?",
+    "ethics": {
+      "categories": {
+        "title": "Categorieën",
+        "questions": "vragen",
+        "no_results": "Geen resultaten. Probeer een ander zoekwoord."
+      },
+      "production": "Ethiek (productie)",
+      "transport": "Ethiek (transport)",
+      "questionnaire_pending": "Ethische vragenlijst in te vullen",
+      "questionnaire_sent": "Vragenlijst verzonden",
+      "questionnaire_validated": "Vragenlijst gevalideerd",
+      "questionnaire_refused": "Vragenlijst geweigerd",
+      "pending_message": "Vul de vragenlijst in om uw score en labels op uw pagina weer te geven.",
+      "sent_message": "Uw antwoorden zijn verzonden. Verificatie in behandeling.",
+      "validated_message": "Uw officiële score is gepubliceerd op uw merkpagina.",
+      "refused_message": "Corrigeer uw antwoorden en verzend de vragenlijst opnieuw.",
+      "manage_button": "Beheer uw ethische informatie.",
+      "status_label": "Status:",
+      "status_updated": "Status bijgewerkt ✓",
+      "status_updating": "Status bijwerken…",
+      "view_edit_questionnaire": "Vragenlijst bekijken / bewerken →",
+      "fill_questionnaire": "Ethische vragenlijst invullen →",
+      "retry": "Opnieuw proberen",
+      "transport_production": "Transport / Productie"
+    },
+    "vendor": {
+      "no_empty_brand": "Er is geen leeg merk automatisch aangemaakt voor deze SuperVendor. Deze moet het aanvullen bij de eerste login."
+    }
+  },
+  "home": {
+    "popular_products": "Populaire producten",
+    "recommended_for_you": "Aanbevolen voor u",
+    "based_on_purchases": "Gebaseerd op uw eerdere aankopen",
+    "community_favorites": "Meest gewaardeerd door de gemeenschap",
+    "banner": {
+      "title": "Nieuwe modecollectie"
+    }
+  },
+  "admin": {
+    "accounts": {
+      "title": "Accounts beheren",
+      "invite_button": "Account uitnodigen",
+      "email": "E-mail",
+      "name": "Naam",
+      "role": "Rol",
+      "status": "Status",
+      "creation_date": "Aanmaakdatum",
+      "actions": "Acties",
+      "no_accounts": "Geen accounts om weer te geven",
+      "reinvite": "Opnieuw uitnodigen",
+      "disable": "Uitschakelen",
+      "reactivate": "Opnieuw activeren",
+      "statuses": {
+        "pending": "In behandeling",
+        "active": "Actief",
+        "disabled": "Uitgeschakeld"
+      }
+    },
+    "invite": {
+      "supervendor_created": "SuperVendor aangemaakt!",
+      "supervendor_message": "Een SuperVendor-account is aangemaakt met een leeg merk. De gebruiker ontvangt een activerings-e-mail. Na inloggen kan deze de merkinformatie aanvullen.",
+      "invitation_sent": "Uitnodiging verzonden!",
+      "invitation_message": "Een activerings-e-mail is verzonden. De gebruiker kan zijn wachtwoord instellen door op de link te klikken.",
+      "no_permission": "U heeft geen toestemming om accounts uit te nodigen.",
+      "email_label": "E-mail",
+      "email_placeholder": "voorbeeld@email.com",
+      "first_name_label": "Voornaam",
+      "first_name_placeholder": "Jan",
+      "last_name_label": "Achternaam",
+      "last_name_placeholder": "Jansen",
+      "role_label": "Rol",
+      "sending": "Verzenden...",
+      "submit_button": "Uitnodigen"
+    },
+    "ethics": {
+      "questionCard": {
+        "questionLabel": "Vraag (Label)",
+        "keyLabel": "Sleutel",
+        "answerTypeLabel": "Antwoordtype",
+        "answerType": {
+          "single": "Enkel",
+          "multiple": "Meervoudig"
+        },
+        "orderLabel": "Volgorde",
+        "deleteButton": "Verwijderen",
+        "optionsTitle": "Opties",
+        "addOptionButton": "Optie toevoegen",
+        "labelLabel": "Label",
+        "scoreLabel": "Score",
+        "noOptions": "Geen opties. Voeg er minstens 2 toe."
+      }
+    }
+  },
+  "validation": {
+    "required_field": "Dit veld is verplicht",
+    "invalid_email": "Ongeldig e-mailadres",
+    "min_length": "Minimaal {{count}} tekens",
+    "max_length": "Maximaal {{count}} tekens"
+  },
+  "errors": {
+    "generic": "Er is een fout opgetreden",
+    "network": "Verbindingsfout",
+    "not_found": "Element niet gevonden",
+    "unauthorized": "Niet geautoriseerd",
+    "forbidden": "Toegang geweigerd"
+  },
+  "sorting": {
+    "products_count": "{{count}} producten",
+    "products_count_singular": "{{count}} product",
+    "featured": "Uitgelicht",
+    "price_asc": "Prijs: oplopend",
+    "price_desc": "Prijs: aflopend"
+  },
+  "routes": {
+    "breadcrumbs": {
+      "home": "Home",
+      "brands": "Merken",
+      "aria": "Broodkruimelpad"
+    }
+  },
+  "components": {
+    "languageSwitcher": {
+      "open": "Taal wijzigen"
+    },
+    "productCard": {
+      "addToWishlist": "Toevoegen aan verlanglijst"
+    },
+    "imageUploader": {
+      "removeAria": "Afbeelding verwijderen",
+      "uploading": "Uploaden...",
+      "clickToUpload": "Klik om te uploaden",
+      "uploadError": "Fout bij uploaden afbeelding."
+    },
+    "sortableMedia": {
+      "primaryImage": "Hoofdafbeelding",
+      "setPrimary": "Instellen als hoofdafbeelding",
+      "remove": "Verwijderen",
+      "primaryBadge": "Hoofd"
+    }
+  },
+  "pages": {
+    "settings": {
+      "title": "Instellingen",
+      "subtitle": "Beheer hier uw instellingen en voorkeuren.",
+      "errors": {
+        "notAuthenticated": "Log in om toegang te krijgen tot instellingen."
+      },
+      "tabs": {
+        "profile": {
+          "label": "Mijn gegevens",
+          "description": "Profiel, identiteit, facturering"
+        },
+        "payments": {
+          "label": "Betaalmethoden",
+          "description": "Kaarten, standaard, verwijdering"
+        },
+        "notifications": {
+          "label": "Meldingen",
+          "description": "E-mails, voorkeuren"
+        }
+      },
+      "search": {
+        "profileName": {
+          "title": "Naam / Voornaam",
+          "description": "Wijzig uw persoonlijke gegevens"
+        },
+        "paymentsAddCard": {
+          "title": "Kaart toevoegen",
+          "description": "Nieuwe bankkaart registreren"
+        },
+        "paymentsDefault": {
+          "title": "Standaardkaart",
+          "description": "Kaart instellen voor toekomstige aankopen"
+        },
+        "notificationsEmail": {
+          "title": "E-mailmeldingen",
+          "description": "Marketing- en beveiligings-e-mails beheren"
+        }
+      },
+      "profile": {
+        "title": "Mijn gegevens",
+        "subtitle": "Accountinfo, contactgegevens, facturering…",
+        "name": {
+          "label": "Naam"
+        },
+        "email": {
+          "label": "E-mail"
+        },
+        "placeholder": "Hier koppelt u later uw 'profiel'-hook. Voor nu is het een schoon framework."
+      },
+      "nav": {
+        "title": "Navigatie",
+        "ariaLabel": "Instellingen navigatie",
+        "tip": "Tip: bezochte tabbladen blijven 'in het geheugen' (geen remount)."
+      }
+    },
+    "vendors": {
+      "title": "Teambeheer",
+      "subtitle": "Nodig verkopers van uw merk uit en beheer ze ({{count}})",
+      "inviteAria": "Verkoper uitnodigen",
+      "inviteButton": "Verkoper uitnodigen",
+      "searchPlaceholder": "Zoek een verkoper (naam, e-mail, status...)",
+      "noMatch": "Geen overeenkomende verkopers.",
+      "noVendors": "Nog geen verkopers.",
+      "tryAnother": "Probeer een andere naam of e-mail.",
+      "inviteFirst": "Begin met het uitnodigen van uw eerste verkoper!"
+    },
+    "paymentMethods": {
+      "title": "Betaalmethoden",
+      "subtitle": "Beheer uw geregistreerde kaarten en betaalmethoden.",
+      "addButton": "+ Toevoegen",
+      "addCardButton": "Kaart toevoegen",
+      "loading": "Uw betaalmethoden laden…",
+      "deleted": "Betaalmethode verwijderd ✅",
+      "setDefault": "Standaard betaalmethode gewijzigd ✅",
+      "defaultBadge": "Standaard",
+      "expiresOn": "Verloopt op",
+      "method": "Methode",
+      "setAsDefaultButton": "Standaard",
+      "deleteButton": "Verwijderen",
+      "empty": "U heeft nog geen betaalmethode geregistreerd.",
+      "confirmDeleteTitle": "Deze betaalmethode verwijderen?",
+      "confirmDeleteMessagePrefix": "U staat op het punt te verwijderen",
+      "confirmDeleteWarning": "⚠️ Dit was uw standaardmethode. Na verwijdering moet u een andere kiezen.",
+      "confirm": "Verwijderen",
+      "cancel": "Annuleren"
+    },
+    "moderator": {
+      "reviews": {
+        "title": "Moderatie productbeoordelingen",
+        "heroSubtitle": "Reacties worden automatisch gepubliceerd. Gebruik deze interface om te verbergen of opnieuw te activeren.",
+        "heading": "Moderatie • Productbeoordelingen",
+        "headingSubtitle": "Enabled = zichtbaar op site • Disabled = verborgen (bewaard)",
+        "reload": "Opnieuw laden",
+        "filters": {
+          "statusLabel": "Status",
+          "productIdLabel": "ProductId (optioneel)",
+          "productIdPlaceholder": "bijv. 123",
+          "pageSizeLabel": "Paginagrootte",
+          "searchLabel": "Zoeken",
+          "searchPlaceholder": "Reactie, gebruiker, product…"
+        },
+        "status": {
+          "all": "Alle",
+          "enabled": "Gepubliceerd",
+          "disabled": "Verborgen"
+        },
+        "filteredCount": "{{filtered}} / {{total}} beoordeling(en) (gefilterd)",
+        "totalCount": "{{total}} beoordeling(en)",
+        "noResults": "Geen resultaten gevonden.",
+        "noComment": "Geen reactie",
+        "createdLabel": "Aangemaakt:",
+        "action": {
+          "hideTitle": "Deze reactie verbergen",
+          "disable": "Uitschakelen",
+          "unhideTitle": "Deze reactie zichtbaar maken",
+          "enable": "Opnieuw activeren"
+        },
+        "noAction": "Geen actie",
+        "pageLabel": "Pagina"
+      }
+    }
+  },
+  "features": {
+    "vendors": {
+      "no_empty_brand": "Er is geen leeg merk automatisch aangemaakt voor deze SuperVendor. Deze moet het aanvullen bij de eerste login."
+    },
+    "settings": {
+      "title": "Instellingen",
+      "subtitle": "Beheer hier uw instellingen en voorkeuren.",
+      "errors": {
+        "notAuthenticated": "Log in om toegang te krijgen tot instellingen."
+      },
+      "tabs": {
+        "profile": {
+          "label": "Mijn gegevens",
+          "description": "Profiel, identiteit, facturering"
+        },
+        "payments": {
+          "label": "Betaalmethoden",
+          "description": "Kaarten, standaard, verwijdering"
+        },
+        "notifications": {
+          "label": "Meldingen",
+          "description": "E-mails, voorkeuren"
+        }
+      },
+      "search": {
+        "profileName": {
+          "title": "Naam / Voornaam",
+          "description": "Wijzig uw persoonlijke gegevens"
+        },
+        "paymentsAddCard": {
+          "title": "Kaart toevoegen",
+          "description": "Nieuwe bankkaart registreren"
+        },
+        "paymentsDefault": {
+          "title": "Standaardkaart",
+          "description": "Kaart instellen voor toekomstige aankopen"
+        },
+        "notificationsEmail": {
+          "title": "E-mailmeldingen",
+          "description": "Marketing- en beveiligings-e-mails beheren"
+        }
+      },
+      "profile": {
+        "title": "Mijn gegevens",
+        "subtitle": "Accountinfo, contactgegevens, facturering…",
+        "name": {
+          "label": "Naam"
+        },
+        "email": {
+          "label": "E-mail"
+        },
+        "placeholder": "Hier koppelt u later uw 'profiel'-hook. Voor nu is het een schoon framework."
+      },
+      "nav": {
+        "title": "Navigatie",
+        "ariaLabel": "Instellingen navigatie",
+        "tip": "Tip: bezochte tabbladen blijven 'in het geheugen' (geen remount)."
+      }
+    },
+    "product": {
+      "recommended_card": {
+        "no_image": "Geen afbeelding",
+        "promo_badge": "KORTING"
+      },
+      "recommendations": {
+        "frequently_bought_together": "Vaak samen gekocht"
+      },
+      "size_selector": {
+        "title": "Maat"
+      },
+      "sale_manager": {
+        "title": {
+          "new": "Nieuwe promotie",
+          "edit": "Promotie bewerken"
+        },
+        "fields": {
+          "discount": "Kortingspercentage",
+          "discount_hint": "Tussen 1% en 100%",
+          "start_date": "Begindatum",
+          "end_date": "Einddatum",
+          "description": "Beschrijving (optioneel)",
+          "description_placeholder": "Bijv: Winteruitverkoop, Einde seizoen aanbieding..."
+        },
+        "errors": {
+          "discount_range": "Korting moet tussen 1 en 100% zijn",
+          "date_range": "Begindatum moet voor einddatum liggen"
+        },
+        "actions": {
+          "cancel": "Annuleren",
+          "create": "Aanmaken",
+          "edit": "Bewerken"
+        }
+      },
+      "media_manager": {
+        "title": "Productafbeeldingen",
+        "count": "{{count}} afbeelding(en)",
+        "instructions": "Sleep en zet neer om te herschikken. De ster geeft de hoofdafbeelding aan.",
+        "upload": {
+          "uploading": "Uploaden...",
+          "add_image": "Afbeelding toevoegen",
+          "formats": "JPEG, PNG of WebP (max 10 MB)"
+        },
+        "toast": {
+          "image_added": "Afbeelding toegevoegd!",
+          "upload_error": "Fout bij uploaden afbeelding",
+          "image_removed": "Afbeelding verwijderd"
+        }
+      },
+      "image_gallery": {
+        "thumbnail_alt": "Miniatuur {{number}}",
+        "main_alt": "Productafbeelding",
+        "unavailable": "Afbeelding niet beschikbaar"
+      },
+      "edit_panel": {
+        "title": "Productacties",
+        "status": {
+          "label": "Productstatus",
+          "draft": "Concept",
+          "active": "Actief",
+          "online": "Online",
+          "disabled": "Uitgeschakeld"
+        },
+        "sale": {
+          "label": "Promotie",
+          "discount": "Korting",
+          "start": "Begin",
+          "end": "Einde",
+          "edit": "Bewerken",
+          "add": "Promotie toevoegen"
+        },
+        "save": {
+          "save": "Opslaan",
+          "saving": "Opslaan...",
+          "no_changes": "Geen wijzigingen"
+        }
+      },
+      "variants": {
+        "title": "Maten en voorraad",
+        "loading": "Maten laden...",
+        "availableCount": "{{count}} maat/maten",
+        "noConfigured": "Geen maten geconfigureerd",
+        "addPrompt": "Voeg minstens één maat toe voor dit product",
+        "stockLabel": "Voorraad:",
+        "units": "eenheden",
+        "removeTitle": "Deze maat verwijderen",
+        "selectSize": "Selecteer een maat",
+        "cancel": "Annuleren",
+        "addButton": "Maat toevoegen",
+        "allAdded": "Alle beschikbare maten voor deze categorie zijn toegevoegd"
+      }
+    }
+  },
+  "payment": {
+    "error_create_payment": "Kan betaling niet aanmaken",
+    "error_title": "Betalingsfout",
+    "retry": "Opnieuw proberen",
+    "initializing": "Betaling initialiseren...",
+    "stripe_not_loaded": "Stripe is nog niet geladen. Probeer het opnieuw.",
+    "error_processing": "Fout bij verwerken betaling",
+    "error_validation": "Fout bij valideren betaling. Neem contact op met support.",
+    "error_not_completed": "Betaling is niet voltooid. Probeer het opnieuw.",
+    "error_unexpected": "Er is een onverwachte fout opgetreden",
+    "form_title": "Betalingsinformatie",
+    "form_subtitle": "Voer uw bankgegevens in",
+    "secure_ssl": "Veilige SSL-betaling",
+    "processing": "Betaling verwerken...",
+    "submit_button": "Betaling voltooien",
+    "security_note_line1": "Uw bankinformatie is versleuteld en beveiligd.",
+    "security_note_line2": "Geen kaartgegevens worden opgeslagen op onze servers."
+  },
+  "shipping": {
+    "form": {
+      "provider_label": "Vervoerder",
+      "provider_placeholder": "PostNL, DHL...",
+      "display_name_label": "Weergavenaam",
+      "display_name_placeholder": "Standaardlevering...",
+      "type_label": "Type",
+      "type_home_delivery": "Thuisbezorging",
+      "type_locker": "Automatische locker",
+      "type_pickup_point": "Afhaalpunt",
+      "type_store_pickup": "Ophalen in winkel",
+      "price_label": "Prijs (€)",
+      "min_days_label": "Min. termijn (dagen)",
+      "max_days_label": "Max. termijn (dagen)",
+      "error_max_min": "Maximale termijn moet groter zijn dan of gelijk aan minimale termijn",
+      "adding": "Toevoegen..."
+    },
+    "list": {
+      "no_methods_configured": "Geen leveringsmethoden geconfigureerd",
+      "no_methods_available": "Geen leveringsmethoden beschikbaar",
+      "days": "dagen"
+    },
+    "manager": {
+      "title": "Leveringsmethoden",
+      "confirm_delete": "Deze leveringsmethode verwijderen?"
+    }
+  },
+  "filters": {
+    "title": "Filters",
+    "location": {
+      "label": "Locatie",
+      "city_mode": "Referentiestad",
+      "gps_mode": "Mijn locatie",
+      "choose_city": "Kies een stad...",
+      "simulated_position": "Gesimuleerde positie op",
+      "activate_gps": "Mijn positie activeren",
+      "gps_active": "GPS-positie geactiveerd",
+      "gps_loading": "Localiseren...",
+      "gps_help": "Gebruik uw echte positie om merken het dichtst bij u te vinden."
+    },
+    "sort": {
+      "label": "Sorteren op:",
+      "none": "Geen sortering",
+      "ethics_production": "Productie-ethiek",
+      "ethics_transport": "Transport-ethiek",
+      "rating": "Gebruikersbeoordeling",
+      "distance": "Afstand"
+    },
+    "distance": {
+      "label": "Max. afstand:",
+      "no_limit": "Geen limiet",
+      "unit": "km"
+    },
+    "ethics_production": {
+      "label": "Min. productie-ethiek:",
+      "none": "Geen"
+    },
+    "ethics_transport": {
+      "label": "Min. transport-ethiek:",
+      "none": "Geen"
+    },
+    "rating": {
+      "label": "Minimale beoordeling:"
+    },
+    "price_range": {
+      "label": "Prijsklasse:",
+      "all": "Alle"
+    },
+    "ethical_tags": {
+      "label": "Ethische tags:",
+      "all_required": "Merk moet ALLE aangevinkte tags hebben",
+      "loading": "Tags laden..."
+    },
+    "reset": "Filters resetten"
+  },
+  "sidebar_filters": {
+    "price": {
+      "label": "Prijs:",
+      "min": "Min",
+      "max": "Max"
+    },
+    "categories": {
+      "label": "Categorieën",
+      "t-shirt": "T-shirt",
+      "pull": "Trui",
+      "sweat": "Sweater",
+      "jeans": "Jeans"
+    },
+    "ethics": {
+      "label": "Ethiek"
+    },
+    "colors": {
+      "label": "Kleuren"
+    },
+    "size": {
+      "label": "Maat"
+    }
+  },
+  "star_rating": {
+    "aria_label": "{{count}} ster",
+    "aria_label_plural": "{{count}} sterren",
+    "minimum": "{{count}} ster minimum",
+    "minimum_plural": "{{count}} sterren minimum"
+  },
+  "supervendor_menu": {
+    "my_brand": "Mijn merk",
+    "vendors": "Verkopers beheren",
+    "products": "Producten beheren",
+    "stats": "Statistieken",
+    "customize": "Aanpassen",
+    "policies": "Beleid"
+  },
+  "vendor_menu": {
+    "my_products": "Mijn producten"
+  },
+  "admin_menu": {
+    "logs": "Logboeken bekijken",
+    "accounts": "Accounts beheren",
+    "payments": "Betaalmethoden",
+    "delivery": "Leveringsmethoden",
+    "ethics": "Ethische vragenlijst beheren"
+  },
+  "moderator_menu": {
+    "accounts": "Accountbeheer",
+    "brands": "Merken valideren",
+    "products": "Producten modereren",
+    "reviews": "Beoordelingen modereren",
+    "logs": "Logboeken bekijken"
+  },
+  "search_bar": {
+    "filters": "Filters",
+    "placeholder": {
+      "brands": "Zoeken tussen merken...",
+      "products": "Zoeken tussen producten...",
+      "wishlist": "Zoeken in uw verlanglijst...",
+      "settings": "Zoeken in instellingen...",
+      "accounts": "Zoeken tussen accounts...",
+      "default": "Zoeken op deze pagina..."
+    }
+  },
+  "add_product": {
+    "basic_info": {
+      "title": "Algemene informatie",
+      "name_label": "Productnaam",
+      "name_placeholder": "Bijv: Streetwear T-shirt",
+      "description_label": "Beschrijving",
+      "description_placeholder": "Beschrijf uw product...",
+      "edit_mode": "BEWERKINGSMODUS",
+      "name": "Productnaam",
+      "price": "Prijs (€)",
+      "characters_count": "{{count}} tekens"
+    },
+    "category": {
+      "title": "Productcategorie",
+      "loading": "Categorieën laden...",
+      "description": "Selecteer de categorie om beschikbare maten weer te geven"
+    },
+    "color": {
+      "title": "Kleur van deze variant",
+      "loading": "Kleuren laden..."
+    },
+    "group": {
+      "title": "Productgroep selecteren",
+      "placeholder": "Kies een productgroep",
+      "color_one": "kleur",
+      "color_other": "kleuren",
+      "description_label": "Groepsbeschrijving"
+    },
+    "images": {
+      "title": "Afbeeldingen van deze variant",
+      "choose": "Kies een afbeelding",
+      "uploading": "Uploaden...",
+      "primary": "Hoofd",
+      "alt": "Afbeelding {{number}}"
+    },
+    "color_editor": {
+      "title": "Hoofdkleur",
+      "loading": "Kleuren laden...",
+      "description": "Selecteer de kleur van deze productvariant"
+    },
+    "color_selector": {
+      "title": "Kleur"
+    }
+  },
+  "add_product_card": {
+    "title": "Product toevoegen",
+    "description": "Klik om een nieuw product te maken",
+    "badge": "Nieuw product"
+  },
+  "sizes": {
+    "title": "Maten en voorraad",
+    "select_category_first": "Selecteer eerst een categorie om beschikbare maten weer te geven",
+    "loading": "Maten laden...",
+    "no_sizes": "Geen maten beschikbaar voor deze categorie",
+    "description": "Selecteer beschikbare maten en stel hun voorraad in",
+    "stock": "Voorraad",
+    "units": "eenheden"
+  }
+}

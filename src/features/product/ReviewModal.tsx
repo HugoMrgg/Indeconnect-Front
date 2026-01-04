@@ -3,6 +3,7 @@ import { Star, X, Loader2 } from "lucide-react";
 import { createProductReview } from "@/api/services/products";
 import { ProductReview } from "@/types/Product";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 type Props = {
     isOpen: boolean;
@@ -12,6 +13,7 @@ type Props = {
 };
 
 export function ReviewModal({ isOpen, onClose, productId, onReviewSuccess }: Props) {
+    const { t } = useTranslation();
     const [rating, setRating] = useState(5);
     const [comment, setComment] = useState("");
     const [submitting, setSubmitting] = useState(false);
@@ -29,7 +31,7 @@ export function ReviewModal({ isOpen, onClose, productId, onReviewSuccess }: Pro
                 comment
             });
 
-            toast.success("Votre avis a été publié !");
+            toast.success(t('products.reviews.success'));
             onReviewSuccess(newReview); // On envoie le nouvel avis au parent
 
             // Reset et fermeture
@@ -37,7 +39,7 @@ export function ReviewModal({ isOpen, onClose, productId, onReviewSuccess }: Pro
             setRating(5);
             onClose();
         } catch (_error) {
-            toast.error("Erreur lors de l'envoi de l'avis.");
+            toast.error(t('products.reviews.error'));
         } finally {
             setSubmitting(false);
         }
@@ -49,7 +51,7 @@ export function ReviewModal({ isOpen, onClose, productId, onReviewSuccess }: Pro
 
                 {/* Header */}
                 <div className="flex justify-between items-center p-4 border-b">
-                    <h3 className="font-semibold text-lg">Noter ce produit</h3>
+                    <h3 className="font-semibold text-lg">{t('products.reviews.rate_product')}</h3>
                     <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded-full transition-colors">
                         <X size={20} />
                     </button>
@@ -59,7 +61,7 @@ export function ReviewModal({ isOpen, onClose, productId, onReviewSuccess }: Pro
                 <form onSubmit={handleSubmit} className="p-6 space-y-6">
                     {/* Étoiles */}
                     <div className="flex flex-col items-center gap-2">
-                        <span className="text-sm text-gray-500">Quelle note donnez-vous ?</span>
+                        <span className="text-sm text-gray-500">{t('products.reviews.rate_question')}</span>
                         <div className="flex gap-2">
                             {[1, 2, 3, 4, 5].map((star) => (
                                 <button
@@ -84,13 +86,13 @@ export function ReviewModal({ isOpen, onClose, productId, onReviewSuccess }: Pro
                     {/* Commentaire */}
                     <div>
                         <label className="block text-sm font-medium mb-2 text-gray-700">
-                            Votre commentaire
+                            {t('products.reviews.comment_label')}
                         </label>
                         <textarea
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none min-h-[120px] resize-none"
-                            placeholder="Dites-nous ce que vous en pensez..."
+                            placeholder={t('products.reviews.comment_placeholder')}
                             required
                         />
                     </div>
@@ -102,14 +104,14 @@ export function ReviewModal({ isOpen, onClose, productId, onReviewSuccess }: Pro
                             onClick={onClose}
                             className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                         >
-                            Annuler
+                            {t('common.cancel')}
                         </button>
                         <button
                             type="submit"
                             disabled={submitting || !comment.trim()}
                             className="flex-1 bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2 transition-colors"
                         >
-                            {submitting ? <Loader2 className="animate-spin" size={18} /> : "Envoyer"}
+                            {submitting ? <Loader2 className="animate-spin" size={18} /> : t('products.reviews.submit_button')}
                         </button>
                     </div>
                 </form>

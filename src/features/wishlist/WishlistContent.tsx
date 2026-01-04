@@ -1,5 +1,6 @@
 ﻿import {WishlistItem, WishlistResponse} from "@/api/services/wishlist/types";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {WishlistProductCard} from "@/features/wishlist/WishlistProdcutCard";
 
 export function WishlistContent({
@@ -15,12 +16,13 @@ export function WishlistContent({
     handleOpenProduct: (brand: string, productId: number) => void;
     handleRemove: (productId: number) => void;
 }) {
+    const { t } = useTranslation();
 
     if (!wishlist) {
         return (
             <div className="min-h-72 flex flex-col items-center justify-center bg-white">
-                <h2 className="text-2xl font-semibold mb-4">Chargement...</h2>
-                <p className="text-gray-500">Veuillez patienter</p>
+                <h2 className="text-2xl font-semibold mb-4">{t('common.loading')}</h2>
+                <p className="text-gray-500">{t('common.please_wait')}</p>
             </div>
         );
     }
@@ -39,8 +41,8 @@ export function WishlistContent({
     if (brandNames.length === 0) {
         return (
             <div className="min-h-72 flex flex-col items-center justify-center bg-white">
-                <h2 className="text-2xl font-semibold mb-4">Aucun article en favoris.</h2>
-                <p className="text-gray-500">Parcourez les produits et ajoutez-en à vos favoris !</p>
+                <h2 className="text-2xl font-semibold mb-4">{t('wishlist.empty')}</h2>
+                <p className="text-gray-500">{t('wishlist.empty_cta')}</p>
             </div>
         );
     }
@@ -50,7 +52,7 @@ export function WishlistContent({
 
             {/* HEADER */}
             <div className="flex items-center justify-between mb-8">
-                <h1 className="text-3xl font-semibold">Mes Favoris</h1>
+                <h1 className="text-3xl font-semibold">{t('wishlist.title')}</h1>
 
                 <div className="flex items-center gap-3">
                     <div className="hidden sm:flex rounded-lg border overflow-hidden">

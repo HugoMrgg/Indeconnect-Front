@@ -1,9 +1,11 @@
 ﻿import { useEffect, useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams, useNavigate } from "react-router-dom";
 import { usePayment } from "@/hooks/Payment/usePayment";
 import toast from "react-hot-toast";
 
 export function OrderConfirmation() {
+    const { t } = useTranslation();
     const { orderId } = useParams<{ orderId: string }>();
     const navigate = useNavigate();
     const { confirm } = usePayment();
@@ -60,7 +62,7 @@ export function OrderConfirmation() {
             <div className="flex items-center justify-center min-h-screen">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
-                    <p className="text-gray-600">Vérification du paiement...</p>
+                    <p className="text-gray-600">{t('common.loading')}</p>
                 </div>
             </div>
         );

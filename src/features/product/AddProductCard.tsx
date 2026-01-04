@@ -1,4 +1,5 @@
 ﻿import React from "react";
+import { useTranslation } from "react-i18next";
 import { Plus } from "lucide-react";
 
 interface AddProductCardProps {
@@ -6,6 +7,8 @@ interface AddProductCardProps {
 }
 
 export function AddProductCard({ onClick }: AddProductCardProps) {
+    const { t } = useTranslation();
+
     return (
         <button
             onClick={onClick}
@@ -27,16 +30,16 @@ export function AddProductCard({ onClick }: AddProductCardProps) {
                 {/* Texte */}
                 <div className="text-center">
                     <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                        Ajouter un produit
+                        {t('add_product_card.title')}
                     </h3>
                     <p className="text-sm text-gray-600">
-                        Cliquez pour créer un nouveau produit
+                        {t('add_product_card.description')}
                     </p>
                 </div>
 
                 {/* Badge indicatif */}
                 <div className="mt-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-full group-hover:bg-blue-700 transition-colors">
-                    Nouveau produit
+                    {t('add_product_card.badge')}
                 </div>
             </div>
 

@@ -5,6 +5,7 @@ import { Product } from "@/types/Product";
 import { calculatePrice } from "@/utils/priceCalculator";
 
 import { Heart } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 export default function ProductCard({
                                         product,
@@ -19,6 +20,7 @@ export default function ProductCard({
     showStatus?: boolean;
     editMode?: boolean;
 }) {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { brandName } = useParams();
     const encodedBrand = encodeURIComponent(brandName ?? "");
@@ -95,7 +97,7 @@ export default function ProductCard({
                         e.stopPropagation();
                         onToggleLike();
                     }}
-                    aria-label="Ajouter aux favoris"
+                    aria-label={t('components.productCard.addToWishlist')}
                     className="absolute right-3 top-3 flex items-center justify-center rounded-full bg-white/80 p-2 shadow-sm backdrop-blur-sm transition hover:bg-white z-10"
                 >
                     <Heart

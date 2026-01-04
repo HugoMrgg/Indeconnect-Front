@@ -1,4 +1,5 @@
 ﻿import { useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { GuestMenu } from "@/features/navbar/menu/user/GuestMenu";
 import { AccountMenu } from "@/features/navbar/menu/user/AccountMenu";
 import { AdminMenu } from "@/features/navbar/menu/user/AdminMenu";
@@ -13,6 +14,7 @@ export function UserMenu() {
     const [open, setOpen] = useState(false);
     const { userRole, isAuthenticated, logout } = useAuth();
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const closeMenu = useCallback(() => setOpen(false), []);
 
@@ -65,7 +67,7 @@ export function UserMenu() {
                             className="flex items-center gap-2 text-red-500 hover:text-red-400 transition-colors"
                         >
                             <LogOut size={18} />
-                            Se déconnecter
+                            {t('navigation.menu.user.logout')}
                         </button>
                     </>
                 )}

@@ -1,4 +1,5 @@
 ﻿import { useEffect, useMemo, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Truck, Package, MapPin, Store, Loader2, AlertCircle, Calendar } from "lucide-react";
 import { CartItemDto } from "@/api/services/cart/types";
 import { useShipping } from "@/hooks/Order/useShipping";
@@ -21,6 +22,7 @@ export function ShippingMethodSelector({
                                            addressId,
                                            onSelectMethod,
                                        }: Props) {
+    const { t } = useTranslation();
     const { methods, loading, error, fetchBrandMethods } = useShipping();
 
     // Ref pour éviter l'auto-sélection en boucle
@@ -131,9 +133,9 @@ export function ShippingMethodSelector({
             {methods.length === 0 ? (
                 <div className="text-center py-6">
                     <Truck className="mx-auto text-gray-400 mb-3" size={48} />
-                    <p className="text-gray-600 font-medium mb-1">Aucune méthode disponible</p>
+                    <p className="text-gray-600 font-medium mb-1">{t('common.loading')}</p>
                     <p className="text-gray-500 text-sm">
-                        Cette marque n'a pas encore configuré de méthodes de livraison.
+                        {t('common.loading')}
                     </p>
                 </div>
             ) : (
@@ -190,7 +192,7 @@ export function ShippingMethodSelector({
                                         method.price === 0 ? "text-green-600" : "text-gray-900"
                                     }`}
                                 >
-                                    {method.price === 0 ? "Gratuit" : `${method.price.toFixed(2)} €`}
+                                    {method.price === 0 ? t('checkout.free') : `${method.price.toFixed(2)} €`}
                                 </p>
                             </button>
                         );

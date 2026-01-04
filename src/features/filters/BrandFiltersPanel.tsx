@@ -1,4 +1,5 @@
 ﻿import { X, MapPin, Navigation } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { StarRating } from "@/features/filters/StarRating";
 import { belgianCities } from "@/types/belgianCities";
 import { useEthicTags } from "@/hooks/Brand/useEthicTags";
@@ -60,6 +61,8 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                                                                         gpsError = null,
                                                                         hasGPSPosition = false,
                                                                     }) => {
+
+    const { t } = useTranslation();
     const { tags, loading, error } = useEthicTags();
 
     return (
@@ -84,8 +87,9 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                 style={{ pointerEvents: open ? "auto" : "none" }}
             >
                 <div className="flex items-center justify-between p-4 border-b flex-shrink-0">
-                    <h2 className="font-semibold text-lg">Filtres</h2>
-                    <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
+                    <h2 className="font-semibold text-lg">
+                        {t('filters.title')}
+                    </h2>                    <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
                         <X className="w-5 h-5" />
                     </button>
                 </div>
@@ -94,7 +98,7 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                     {onChangeCity && onChangeLocationMode && onRequestGPS && (
                         <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200">
                             <label className="font-semibold mb-3 block text-gray-800 text-sm">
-                                Localisation
+                                {t('filters.location.label')}
                             </label>
 
                             {/* Toggle City vs GPS */}
@@ -110,7 +114,7 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                                     }
                 `}
                                 >
-                                    Ville de référence
+                                    {t('filters.location.city_mode')}
                                 </button>
                                 <button
                                     type="button"
@@ -123,7 +127,7 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                                     }
                 `}
                                 >
-                                    Ma localisation
+                                    {t('filters.location.gps_mode')}
                                 </button>
                             </div>
 
@@ -134,7 +138,7 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                                         onChange={e => onChangeCity(e.target.value)}
                                         className="rounded-xl border border-gray-300 px-3 py-2.5 w-full text-sm bg-white focus:outline-none focus:border-gray-400 transition"
                                     >
-                                        <option value="">Choisir une ville...</option>
+                                        <option value="">{t('filters.location.choose_city')}</option>
                                         {belgianCities.map(city => (
                                             <option key={city.name} value={city.name}>
                                                 {city.name} {city.province ? `(${city.province})` : ''}
@@ -144,7 +148,7 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                                     {selectedCity && (
                                         <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
                                             <MapPin className="w-3 h-3" />
-                                            Position simulée à {selectedCity}
+                                            {t('filters.location.simulated_position')} {selectedCity}
                                         </p>
                                     )}
                                 </div>
@@ -161,13 +165,11 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                                             {gpsLoading ? (
                                                 <>
                                                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                                    Localisation en cours...
-                                                </>
+                                                    {t('filters.location.gps_loading')}                                                </>
                                             ) : (
                                                 <>
                                                     <Navigation className="w-4 h-4" />
-                                                    Activer ma position
-                                                </>
+                                                    {t('filters.location.activate_gps')}                                                </>
                                             )}
                                         </button>
                                     )}
@@ -175,7 +177,7 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                                     {hasGPSPosition && (
                                         <div className="bg-white border border-gray-300 px-3 py-2.5 rounded-xl text-sm flex items-center gap-2 text-gray-700">
                                             <Navigation className="w-4 h-4 text-gray-600" />
-                                            <span className="font-medium">Position GPS activée</span>
+                                            <span className="font-medium">{t('filters.location.gps_help')}</span>
                                             <span className="ml-auto text-xl">✓</span>
                                         </div>
                                     )}
@@ -188,7 +190,7 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
 
                                     {!hasGPSPosition && !gpsError && (
                                         <p className="text-xs text-gray-500 leading-relaxed">
-                                            Utilisez votre position réelle pour trouver les marques les plus proches de vous.
+                                            {t('filters.location.gps_help')}
                                         </p>
                                     )}
                                 </div>
@@ -197,23 +199,23 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                     )}
 
                     <div>
-                        <label className="font-medium mb-2 block">Trier par :</label>
+                        <label className="font-medium mb-2 block">{t('filters.sort.label')}</label>
                         <select
                             value={sortBy}
                             onChange={e => onChangeSort(e.target.value)}
                             className="rounded-lg border px-3 py-2 w-full"
                         >
-                            <option value="">Aucun tri</option>
-                            <option value="MaterialsManufacturing">Éthique production</option>
-                            <option value="Transport">Éthique transport</option>
-                            <option value="Note">Note utilisateur</option>
-                            <option value="Distance">Distance</option>
+                            <option value="">{t('filters.sort.none')}</option>
+                            <option value="MaterialsManufacturing">{t('filters.sort.ethics_production')}</option>
+                            <option value="Transport">{t('filters.sort.ethics_transport')}</option>
+                            <option value="Note">{t('filters.sort.rating')}</option>
+                            <option value="Distance">{t('filters.sort.distance')}</option>
                         </select>
                     </div>
 
                     <div>
                         <label className="font-medium mb-2 block">
-                            Distance max : {distance ?? "Pas de limite"} km
+                            {t('filters.distance.label')} {distance ?? t('filters.distance.no_limit')} {t('filters.distance.unit')}
                         </label>
                         <input
                             type="range"
@@ -233,7 +235,7 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                     {onChangeEthicsProduction && (
                         <div>
                             <label className="font-medium mb-2 block">
-                                Éthique production min : {minEthicsProduction ?? "Aucun"}/5
+                                {t('filters.ethics_production.label')} {minEthicsProduction ?? t('filters.ethics_production.none')}/5
                             </label>
                             <input
                                 type="range"
@@ -254,7 +256,7 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                     {onChangeEthicsTransport && (
                         <div>
                             <label className="font-medium mb-2 block">
-                                Éthique transport min : {minEthicsTransport ?? "Aucun"}/5
+                                {t('filters.ethics_transport.label')} {minEthicsTransport ?? t('filters.ethics_transport.none')}/5
                             </label>
                             <input
                                 type="range"
@@ -273,7 +275,9 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                     )}
 
                     <div>
-                        <label className="font-medium mb-2 block">Note minimale :</label>
+                        <label className="font-medium mb-2 block">
+                            {t('filters.rating.label')}
+                        </label>
                         <StarRating
                             rating={minRating ?? 0}
                             onRatingChange={(rating) => onChangeRating(rating > 0 ? rating : undefined)}
@@ -281,7 +285,9 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                     </div>
 
                     <div>
-                        <label className="font-medium mb-2 block">Gamme de prix :</label>
+                        <label className="font-medium mb-2 block">
+                            {t('filters.price_range.label')}
+                        </label>
                         <div className="flex flex-wrap gap-2">
                             {[
                                 { value: "", label: "Tous" },
@@ -309,13 +315,17 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
 
                     {onChangeEthicTags && (
                         <div>
-                            <label className="font-medium mb-2 block">Tags éthiques :</label>
+                            <label className="font-medium mb-2 block">
+                                {t('filters.ethical_tags.label')}
+                            </label>
                             <p className="text-xs text-gray-500 mb-3">
-                                La marque doit avoir TOUS les tags cochés
+                                {t('filters.ethical_tags.all_required')}
                             </p>
 
                             {loading && (
-                                <p className="text-sm text-gray-400">Chargement des tags...</p>
+                                <p className="text-sm text-gray-400">
+                                    {t('filters.ethical_tags.loading')}
+                                </p>
                             )}
 
                             {error && (
@@ -351,11 +361,8 @@ export const BrandFiltersPanel: React.FC<BrandFiltersPanelProps> = ({
                 </div>
 
                 <div className="border-t p-4 bg-white rounded-b-3xl flex-shrink-0">
-                    <button
-                        onClick={onReset}
-                        className="w-full py-2.5 rounded-xl border text-sm hover:bg-gray-50 transition"
-                    >
-                        Réinitialiser les filtres
+                    <button onClick={onReset} className="...">
+                        {t('filters.reset')}
                     </button>
                 </div>
             </div>

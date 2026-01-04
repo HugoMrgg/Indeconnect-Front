@@ -13,6 +13,9 @@ import { initSentry } from "@/utils/sentry";
 import "./App.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
+// Initialiser i18n AVANT tout le reste (CRITIQUE!)
+import "./i18n";
+
 // Initialiser Sentry le plus tôt possible
 initSentry();
 

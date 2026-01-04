@@ -1,4 +1,5 @@
 ﻿import React from "react";
+import { useTranslation } from "react-i18next";
 
 type SortOption = "featured" | "price_asc" | "price_desc";
 type ViewMode = "grid" | "list";
@@ -18,9 +19,12 @@ export const SortBar: React.FC<SortBarProps> = ({
                                                     view,
                                                     setView,
                                                 }) => {
+    const { t } = useTranslation();
     return (
         <div className="flex items-center justify-between gap-4">
-            <div className="text-sm text-gray-600">{count} produits</div>
+            <div className="text-sm text-gray-600">
+                {t(count === 1 ? 'sorting.products_count_singular' : 'sorting.products_count', { count })}
+            </div>
 
             <div className="flex items-center gap-2">
                 <select
@@ -28,9 +32,9 @@ export const SortBar: React.FC<SortBarProps> = ({
                     onChange={(e) => setSort(e.target.value as SortOption)}
                     className="rounded-lg border px-3 py-2 text-sm"
                 >
-                    <option value="featured">Featured</option>
-                    <option value="price_asc">Prix: croissant</option>
-                    <option value="price_desc">Prix: décroissant</option>
+                    <option value="featured">{t('sorting.featured')}</option>
+                    <option value="price_asc">{t('sorting.price_asc')}</option>
+                    <option value="price_desc">{t('sorting.price_desc')}</option>
                 </select>
 
                 <div className="hidden sm:flex rounded-lg border overflow-hidden">

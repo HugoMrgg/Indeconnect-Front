@@ -1,4 +1,5 @@
 ﻿import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     DndContext,
     closestCenter,
@@ -33,6 +34,7 @@ interface ProductMediaManagerProps {
 }
 
 export function ProductMediaManager({ media, onMediaUpdate }: ProductMediaManagerProps) {
+    const { t } = useTranslation();
     const [uploading, setUploading] = useState(false);
 
     const sensors = useSensors(
@@ -78,10 +80,10 @@ export function ProductMediaManager({ media, onMediaUpdate }: ProductMediaManage
             };
 
             onMediaUpdate([...media, newMedia]);
-            toast.success("Image ajoutée !", { icon: "📸" });
+            toast.success(t('product.media_manager.toast.image_added'), { icon: "📸" });
         } catch (err) {
             logger.error("ProductMediaManager.uploadImage", err);
-            toast.error("Erreur lors de l'upload de l'image");
+            toast.error(t('product.media_manager.toast.upload_error'));
         } finally {
             setUploading(false);
         }
@@ -109,18 +111,20 @@ export function ProductMediaManager({ media, onMediaUpdate }: ProductMediaManage
         }));
 
         onMediaUpdate(reordered);
-        toast.success("Image supprimée", { icon: "🗑️" });
+        toast.success(t('product.media_manager.toast.image_removed'), { icon: "🗑️" });
     };
 
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-800">Images du produit</h3>
-                <span className="text-sm text-gray-600">{media.length} image(s)</span>
+                <h3 className="text-lg font-semibold text-gray-800">{t('product.media_manager.title')}</h3>
+                <span className="text-sm text-gray-600">
+                    {t('product.media_manager.count', { count: media.length })}
+                </span>
             </div>
 
             <p className="text-sm text-gray-600">
-                Glissez-déposez pour réorganiser. L'étoile indique l'image principale.
+                {t('product.media_manager.instructions')}
             </p>
 
             {/* Zone de drag & drop */}
@@ -163,14 +167,14 @@ export function ProductMediaManager({ media, onMediaUpdate }: ProductMediaManage
                         {uploading ? (
                             <div className="flex flex-col items-center gap-2 text-gray-500">
                                 <Loader2 size={32} className="animate-spin" />
-                                <span>Upload en cours...</span>
+                                <span>{t('product.media_manager.upload.uploading')}</span>
                             </div>
                         ) : (
                             <div className="flex flex-col items-center gap-2 text-blue-600">
                                 <Upload size={32} />
-                                <span className="font-medium">Ajouter une image</span>
+                                <span className="font-medium">{t('product.media_manager.upload.add_image')}</span>
                                 <span className="text-sm text-gray-500">
-                                    JPEG, PNG ou WebP (max 10 MB)
+                                    {t('product.media_manager.upload.formats')}
                                 </span>
                             </div>
                         )}

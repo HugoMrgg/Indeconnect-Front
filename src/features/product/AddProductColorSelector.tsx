@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useColors } from "@/hooks/Color/useColors";
 
 interface AddProductColorSelectorProps {
@@ -10,13 +11,14 @@ export function AddProductColorSelector({
                                             selectedColorId,
                                             onSelectColor,
                                         }: AddProductColorSelectorProps) {
+    const { t } = useTranslation();
     const { colors, loading, error } = useColors();
 
     if (loading) {
         return (
             <div className="space-y-4">
-                <h3 className="font-semibold text-lg">Couleur de cette variante</h3>
-                <div className="text-gray-500">Chargement des couleurs...</div>
+                <h3 className="font-semibold text-lg">{t('add_product.color.title')}</h3>
+                <div className="text-gray-500">{t('add_product.color.loading')}</div>
             </div>
         );
     }
@@ -24,7 +26,7 @@ export function AddProductColorSelector({
     if (error) {
         return (
             <div className="space-y-4">
-                <h3 className="font-semibold text-lg">Couleur de cette variante</h3>
+                <h3 className="font-semibold text-lg">{t('add_product.color.title')}</h3>
                 <div className="text-red-500">{error}</div>
             </div>
         );
@@ -32,7 +34,7 @@ export function AddProductColorSelector({
 
     return (
         <div className="space-y-4">
-            <h3 className="font-semibold text-lg">Couleur de cette variante</h3>
+            <h3 className="font-semibold text-lg">{t('add_product.color.title')}</h3>
             <div className="grid grid-cols-3 gap-3">
                 {colors.map((color) => (
                     <button

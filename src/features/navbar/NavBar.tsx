@@ -1,6 +1,7 @@
 import { MenuContainer } from "./menu/MenuContainer";
 import { SearchBar } from "./SearchBar";
 import { UserMenu } from "./menu/UserMenu";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 type Props = {
     /**
@@ -21,6 +22,7 @@ export function NavBar({ searchValue, onSearchChange, scope }: Props) {
                     value={searchValue}
                     onChange={onSearchChange}
                 />
+                <LanguageSwitcher />
                 <UserMenu />
             </div>
         </div>

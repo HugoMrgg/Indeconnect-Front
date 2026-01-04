@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { COLOR_MAP } from "@/constants/colors";
 
 interface SidebarFiltersProps {
@@ -39,6 +40,7 @@ export const SidebarFilters: React.FC<SidebarFiltersProps> = ({
 
                                                                   resetKey = 0,
                                                               }) => {
+    const { t } = useTranslation();
 
     const [min, setMin] = useState("");
     const [max, setMax] = useState("");
@@ -55,7 +57,7 @@ export const SidebarFilters: React.FC<SidebarFiltersProps> = ({
 
             {/* PRIX */}
             <div>
-                <div className="font-medium mb-2">Prix :</div>
+                <div className="font-medium mb-2">{t('sidebar_filters.price.label')}</div>
                 <div className="grid grid-cols-2 gap-2">
                     <input
                         value={min}
@@ -63,7 +65,7 @@ export const SidebarFilters: React.FC<SidebarFiltersProps> = ({
                             setMin(e.target.value);
                             onChangePrice?.(e.target.value, max);
                         }}
-                        placeholder="Min"
+                        placeholder={t('sidebar_filters.price.min')}
                         className="rounded-lg border px-3 py-2"
                         inputMode="numeric"
                     />
@@ -74,7 +76,7 @@ export const SidebarFilters: React.FC<SidebarFiltersProps> = ({
                             setMax(e.target.value);
                             onChangePrice?.(min, e.target.value);
                         }}
-                        placeholder="Max"
+                        placeholder={t('sidebar_filters.price.max')}
                         className="rounded-lg border px-3 py-2"
                         inputMode="numeric"
                     />
@@ -86,7 +88,7 @@ export const SidebarFilters: React.FC<SidebarFiltersProps> = ({
 
                 {/* CATEGORIES */}
                 <div>
-                    <div className="font-medium mb-2">Catégories</div>
+                    <div className="font-medium mb-2">{t('sidebar_filters.categories.label')}</div>
                     <div className="space-y-2">
                         {CATEGORIES.map((c) => (
                             <label key={c} className="flex items-center gap-2 text-sm">
@@ -97,7 +99,7 @@ export const SidebarFilters: React.FC<SidebarFiltersProps> = ({
                                         onChangeCategories?.(c, e.target.checked)
                                     }
                                 />
-                                <span className="capitalize">{c}</span>
+                                <span className="capitalize">{t(`sidebar_filters.categories.${c}`)}</span>
                             </label>
                         ))}
                     </div>
@@ -105,7 +107,7 @@ export const SidebarFilters: React.FC<SidebarFiltersProps> = ({
 
                 {/* ETHIQUE */}
                 <div>
-                    <div className="font-medium mb-2">Éthique</div>
+                    <div className="font-medium mb-2">{t('sidebar_filters.ethics.label')}</div>
                     <div className="space-y-2">
                         {availableEthics.map((label) => (
                             <label key={label} className="flex items-center gap-2 text-sm">
@@ -126,7 +128,7 @@ export const SidebarFilters: React.FC<SidebarFiltersProps> = ({
             {/* COULEURS */}
             {availableColors.length > 0 && (
                 <div>
-                    <div className="font-medium mb-2">Couleurs</div>
+                    <div className="font-medium mb-2">{t('sidebar_filters.colors.label')}</div>
 
                     <div className="grid grid-cols-6 gap-3">
                         {availableColors.map((c) => {
@@ -170,7 +172,7 @@ export const SidebarFilters: React.FC<SidebarFiltersProps> = ({
 
             {/* TAILLES */}
             <div>
-                <div className="font-medium mb-2">Taille</div>
+                <div className="font-medium mb-2">{t('sidebar_filters.size.label')}</div>
 
                 <div className="grid grid-cols-3 gap-2">
                     {SIZES.map((s) => {

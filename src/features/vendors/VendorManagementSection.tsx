@@ -6,12 +6,14 @@ import { useAccounts } from "@/hooks/Auth/useAccounts";
 import type { InviteAccountRequest } from "@/types/account";
 import { AccountTableSkeleton } from "@/components/skeletons";
 import { logger } from "@/utils/logger";
+import { useTranslation } from 'react-i18next';
 
 interface VendorManagementSectionProps {
     brandId: number;
 }
 
 export function VendorManagementSection({ brandId }: VendorManagementSectionProps) {
+    const { t } = useTranslation();
     const [openModal, setOpenModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -67,20 +69,20 @@ export function VendorManagementSection({ brandId }: VendorManagementSectionProp
                     <div className="flex justify-between items-start mb-6">
                         <div>
                             <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                                Gestion de l'équipe
+                                {t('features.vendors.title')}
                             </h2>
                             <p className="text-gray-600">
-                                Invitez et gérez les vendeurs de votre marque ({vendors.length})
+                                {t('features.vendors.subtitle', { count: vendors.length })}
                             </p>
                         </div>
 
                         <button
                             onClick={() => setOpenModal(true)}
                             className="flex items-center gap-2 bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 shadow-lg"
-                            aria-label="Inviter un vendeur"
+                            aria-label={t('features.vendors.inviteAria')}
                         >
                             <Plus size={20} aria-hidden="true" />
-                            Inviter un vendeur
+                            {t('features.vendors.inviteButton')}
                         </button>
                     </div>
 
@@ -90,7 +92,7 @@ export function VendorManagementSection({ brandId }: VendorManagementSectionProp
                             type="text"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="Rechercher un vendeur (nom, email, statut...)"
+                            placeholder={t('features.vendors.searchPlaceholder') as string}
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black transition-colors"
                         />
                     </div>
@@ -123,12 +125,12 @@ export function VendorManagementSection({ brandId }: VendorManagementSectionProp
                             {filteredVendors.length === 0 ? (
                                 <div className="text-center py-10 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
                                     <p className="text-gray-700 font-semibold">
-                                        {searchQuery ? "Aucun vendeur ne correspond." : "Aucun vendeur pour le moment."}
+                                        {searchQuery ? t('features.vendors.noMatch') : t('features.vendors.noVendors')}
                                     </p>
                                     <p className="text-gray-500 mt-1 text-sm">
                                         {searchQuery
-                                            ? "Essaie un autre nom ou email."
-                                            : "Commence par inviter ton premier vendeur !"}
+                                            ? t('features.vendors.tryAnother')
+                                            : t('features.vendors.inviteFirst')}
                                     </p>
                                 </div>
                             ) : (

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { useTranslation } from "react-i18next";
 import { logger } from "@/utils/logger";
 
 interface LoginFormProps {
@@ -23,6 +24,7 @@ export function LoginForm({
                               onSubmit,
                               onGoogleLogin,
                           }: LoginFormProps) {
+    const { t } = useTranslation();
     const [googleLoading, setGoogleLoading] = useState(false);
 
     const handleGoogleSuccess = (credentialResponse: CredentialResponse) => {
@@ -47,7 +49,7 @@ export function LoginForm({
     return (
         <form onSubmit={onSubmit} className="space-y-4">
             <h1 className="text-xl font-semibold text-gray-900 text-center">
-                Se connecter
+                {t('auth.login.title')}
             </h1>
 
             {error && (
@@ -61,7 +63,7 @@ export function LoginForm({
 
             <div>
                 <label htmlFor="email" className="block text-sm text-gray-700 mb-1">
-                    Adresse mail
+                    {t('auth.login.email_label')}
                 </label>
                 <input
                     id="email"
@@ -71,13 +73,13 @@ export function LoginForm({
                     disabled={loading || googleLoading}
                     required
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-                    placeholder="exemple@mail.com"
+                    placeholder={t('auth.login.email_placeholder')}
                 />
             </div>
 
             <div>
                 <label htmlFor="password" className="block text-sm text-gray-700 mb-1">
-                    Mot de passe
+                    {t('auth.login.password_label')}
                 </label>
                 <input
                     id="password"
@@ -87,7 +89,7 @@ export function LoginForm({
                     disabled={loading || googleLoading}
                     required
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-                    placeholder="Votre mot de passe"
+                    placeholder={t('auth.login.password_placeholder')}
                 />
             </div>
 
@@ -97,11 +99,11 @@ export function LoginForm({
                 className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition active:scale-[0.98] font-medium"
                 aria-busy={loading}
             >
-                {loading ? "Connexion..." : "Se connecter"}
+                {loading ? t('auth.login.submitting') : t('auth.login.submit_button')}
             </button>
             <div className="flex items-center gap-3 my-4">
                 <div className="flex-1 h-px bg-gray-300" />
-                <span className="text-sm text-gray-500">ou</span>
+                <span className="text-sm text-gray-500">{t('common.or')}</span>
                 <div className="flex-1 h-px bg-gray-300" />
             </div>
             <div className="flex justify-center">

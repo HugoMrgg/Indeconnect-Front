@@ -1,4 +1,5 @@
 ﻿import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next"; // ✅ Importer
 
 import { userStorage } from "@/storage/UserStorage";
 import { Product } from "@/types/Product";
@@ -21,16 +22,17 @@ interface ProductFiltersState {
 interface Props {
     filter: ProductFiltersState;
     searchQuery: string;
-    canManageProducts?: boolean; // ✅ NOUVEAU : remplace editMode
+    canManageProducts?: boolean;
     onAddProduct?: () => void;
 }
 
 export const BrandProducts: React.FC<Props> = ({
                                                    filter,
                                                    searchQuery,
-                                                   canManageProducts = false, // ✅ Par défaut false (client)
+                                                   canManageProducts = false,
                                                    onAddProduct,
                                                }) => {
+    const { t } = useTranslation(); // ✅ Hook de traduction
     const { filtered, sort, setSort, view, setView } = filter;
 
     const user = userStorage.getUser();
@@ -56,8 +58,12 @@ export const BrandProducts: React.FC<Props> = ({
         return (
             <section className="space-y-4">
                 <div className="text-center py-8 text-gray-500">
-                    <p className="text-lg font-medium mb-2">Aucun produit pour le moment</p>
-                    <p className="text-sm">Commencez par ajouter votre premier produit !</p>
+                    <p className="text-lg font-medium mb-2">
+                        {t('brands.products.no_products')} {/* ✅ Traduit */}
+                    </p>
+                    <p className="text-sm">
+                        {t('brands.products.add_first')} {/* ✅ Traduit */}
+                    </p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <AddProductCard onClick={onAddProduct} />
@@ -70,8 +76,12 @@ export const BrandProducts: React.FC<Props> = ({
     if (filteredByText.length === 0) {
         return (
             <section className="space-y-4 py-10 text-center text-gray-500">
-                <p className="text-lg">Votre recherche n'a rien donné...</p>
-                <p className="text-sm opacity-70">Essayez d'autres mots-clés</p>
+                <p className="text-lg">
+                    {t('brands.products.no_results')} {/* ✅ Traduit */}
+                </p>
+                <p className="text-sm opacity-70">
+                    {t('brands.products.try_other_keywords')} {/* ✅ Traduit */}
+                </p>
             </section>
         );
     }
@@ -88,7 +98,7 @@ export const BrandProducts: React.FC<Props> = ({
 
             {view === "grid" ? (
                 canManageProducts && onAddProduct ? (
-                    // ✅ Mode gestion : grille manuelle avec AddProductCard
+                    // Mode gestion : grille manuelle avec AddProductCard
                     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                         <AddProductCard onClick={onAddProduct} />
                         {filteredByText.map((p) => (

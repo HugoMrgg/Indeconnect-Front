@@ -1,4 +1,5 @@
 ﻿import React, { useEffect, useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { BrandSection } from "@/features/brands/BrandSection";
 import { useBrands } from "@/hooks/Brand/useBrands";
 import { useUI } from "@/context/UIContext";
@@ -25,6 +26,8 @@ interface ApiFilters {
 }
 
 export const Home: React.FC = () => {
+    const { t } = useTranslation();
+
     const [apiFilters, setApiFilters] = useState<ApiFilters>({
         page: 1,
         pageSize: 10,
@@ -183,7 +186,7 @@ export const Home: React.FC = () => {
             />
 
             <div className="items-center mt-6">
-                <BrandSection title="Toutes les marques :" brands={convertedBrands} />
+                <BrandSection title={t('brands.all_brands')} brands={convertedBrands} />
             </div>
             <RecommendationsSection />
         </BrandPageLayout>

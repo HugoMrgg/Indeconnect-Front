@@ -1,70 +1,4 @@
-﻿/*
-import React, { useMemo, useState } from "react";
-import { SettingsNav, type TabKey, type TabItem } from "./SettingsNav";
-import {ProfileTab} from "@/pages/settings/ProfileTab";
-import {PaymentMethodsTab} from "@/pages/settings/PaymentMethodsTab";
-import {SecurityTab} from "@/pages/settings/SecurityTab";
-import {NotificationsTab} from "@/pages/settings/NotificationsTab";
-
-export const SettingsPage: React.FC = () => {
-    const tabs: TabItem[] = useMemo(
-        () => [
-            { key: "profile", label: "Mes informations", description: "Profil, facturation, identité", element: <ProfileTab /> },
-            { key: "payments", label: "Moyens de paiement", description: "Cartes et méthode par défaut", element: <PaymentMethodsTab /> },
-            { key: "security", label: "Sécurité", description: "Mot de passe, 2FA, sessions", element: <SecurityTab /> },
-            { key: "notifications", label: "Notifications", description: "Emails, push, préférences", element: <NotificationsTab /> },
-        ],
-        []
-    );
-
-    const [active, setActive] = useState<TabKey>("profile");
-
-    // Keep-alive: on ne monte une tab qu'à la 1ère visite, puis on la garde montée
-    const [mounted, setMounted] = useState<Record<TabKey, boolean>>({
-        profile: true,
-        payments: false,
-        security: false,
-        notifications: false,
-    });
-
-    const handleChangeTab = (key: TabKey) => {
-        setActive(key);
-        setMounted((prev) => (prev[key] ? prev : { ...prev, [key]: true }));
-    };
-
-    return (
-        <div className="min-h-screen bg-gray-50">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-                <header className="mb-6">
-                    <h1 className="text-3xl font-bold text-gray-900">Paramètres</h1>
-                </header>
-
-                <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6">
-                    <aside className="lg:sticky lg:top-6 h-fit">
-                        <SettingsNav tabs={tabs} active={active} onChange={handleChangeTab} />
-                    </aside>
-
-                    <main className="bg-white border border-gray-200 rounded-xl shadow-sm">
-                        {/!* On rend les panels visités seulement, et on les cache sans les démonter *!/}
-                        {tabs.map((t) =>
-                            mounted[t.key] ? (
-                                <section
-                                    key={t.key}
-                                    aria-hidden={active !== t.key}
-                                    className={active === t.key ? "block" : "hidden"}
-                                >
-                                    {t.element}
-                                </section>
-                            ) : null
-                        )}
-                    </main>
-                </div>
-            </div>
-        </div>
-    );
-};
-*/
-import { useNavigate, useParams } from "react-router-dom";
+﻿import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import { SettingsPageLayout } from "@/features/settings/SettingsPageLayout";
@@ -78,8 +12,10 @@ import {PaymentMethodsTab} from "@/pages/settings/PaymentMethodsTab";
 import {NotificationsTab} from "@/pages/settings/NotificationsTab";
 import {TabItem, TabKey} from "@/pages/settings/SettingsNav";
 import {SettingsContent, SettingsSearchItem} from "@/features/settings/SettingsContent";
+import { useTranslation } from 'react-i18next';
 
 export function SettingsPage() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { tab } = useParams<{ tab?: string }>();
 
@@ -87,17 +23,17 @@ export function SettingsPage() {
 
     const user = userStorage.getUser();
     if (user === null) {
-        toast.error("Connecte-toi pour accéder aux paramètres 🔧");
+        toast.error(t('pages.settings.errors.notAuthenticated'));
         navigate("/");
     }
 
     const tabs: TabItem[] = useMemo(
         () => [
-            { key: "profile", label: "Mes informations", description: "Profil, identité, facturation", element: <ProfileTab /> },
-            { key: "payments", label: "Moyens de paiement", description: "Cartes, défaut, suppression", element: <PaymentMethodsTab /> },
-            { key: "notifications", label: "Notifications", description: "Emails, préférences", element: <NotificationsTab /> },
+            { key: "profile", label: t('pages.settings.tabs.profile.label'), description: t('pages.settings.tabs.profile.description'), element: <ProfileTab /> },
+            { key: "payments", label: t('pages.settings.tabs.payments.label'), description: t('pages.settings.tabs.payments.description'), element: <PaymentMethodsTab /> },
+            { key: "notifications", label: t('pages.settings.tabs.notifications.label'), description: t('pages.settings.tabs.notifications.description'), element: <NotificationsTab /> },
         ],
-        []
+        [t]
     );
 
     const safeTab = (value?: string): TabKey => {
@@ -133,33 +69,33 @@ export function SettingsPage() {
             {
                 id: "profile-name",
                 tab: "profile",
-                title: "Nom / Prénom",
-                description: "Modifier tes informations personnelles",
+                title: t('pages.settings.search.profileName.title'),
+                description: t('pages.settings.search.profileName.description'),
                 keywords: ["profil", "nom", "prénom", "identité", "coordonnées", "facturation"],
             },
             {
                 id: "payments-add-card",
                 tab: "payments",
-                title: "Ajouter une carte",
-                description: "Enregistrer une nouvelle carte bancaire",
+                title: t('pages.settings.search.paymentsAddCard.title'),
+                description: t('pages.settings.search.paymentsAddCard.description'),
                 keywords: ["paiement", "carte", "visa", "mastercard", "banque", "ajouter"],
             },
             {
                 id: "payments-default",
                 tab: "payments",
-                title: "Carte par défaut",
-                description: "Définir une carte pour les futurs achats",
+                title: t('pages.settings.search.paymentsDefault.title'),
+                description: t('pages.settings.search.paymentsDefault.description'),
                 keywords: ["paiement", "par défaut", "default", "carte", "checkout"],
             },
             {
                 id: "notifications-email",
                 tab: "notifications",
-                title: "Notifications email",
-                description: "Gérer emails marketing et sécurité",
+                title: t('pages.settings.search.notificationsEmail.title'),
+                description: t('pages.settings.search.notificationsEmail.description'),
                 keywords: ["notifications", "email", "marketing", "alertes"],
             },
         ],
-        []
+        [t]
     );
 
     const goToResult = (item: SettingsSearchItem) => {
@@ -176,8 +112,8 @@ export function SettingsPage() {
         <SettingsPageLayout searchQuery={searchQuery} onSearchChange={setSearchQuery}>
             <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
                 <header className="mb-6">
-                    <h1 className="text-3xl font-bold text-gray-900">Paramètres</h1>
-                    <p className="text-gray-600 mt-1">Gérer ici vos paramètres et préférences.</p>
+                    <h1 className="text-3xl font-bold text-gray-900">{t('pages.settings.title')}</h1>
+                    <p className="text-gray-600 mt-1">{t('pages.settings.subtitle')}</p>
                 </header>
 
                 <SettingsContent

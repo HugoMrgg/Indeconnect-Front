@@ -1,4 +1,5 @@
 ﻿import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { X, Percent } from "lucide-react";
 
 interface SaleData {
@@ -20,6 +21,7 @@ export function ProductSaleManager({
                                        onSave,
                                        onClose,
                                    }: ProductSaleManagerProps) {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState<SaleData>({
         discountPercentage: currentSale?.discountPercentage || 10,
         startDate: currentSale?.startDate || new Date().toISOString().split('T')[0],
@@ -33,11 +35,11 @@ export function ProductSaleManager({
         const errs: string[] = [];
 
         if (formData.discountPercentage <= 0 || formData.discountPercentage > 100) {
-            errs.push("La réduction doit être entre 1 et 100%");
+            errs.push(t('product.sale_manager.errors.discount_range'));
         }
 
         if (new Date(formData.startDate) >= new Date(formData.endDate)) {
-            errs.push("La date de début doit être avant la date de fin");
+            errs.push(t('product.sale_manager.errors.date_range'));
         }
 
         setErrors(errs);
@@ -59,7 +61,7 @@ export function ProductSaleManager({
                 <div className="flex items-center justify-between mb-6">
                     <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
                         <Percent size={28} className="text-red-600" />
-                        {currentSale ? "Modifier la promotion" : "Nouvelle promotion"}
+                        {currentSale ? t('product.sale_manager.title.edit') : t('product.sale_manager.title.new')}
                     </h2>
                     <button
                         onClick={onClose}
@@ -82,7 +84,7 @@ export function ProductSaleManager({
                     {/* Pourcentage de réduction */}
                     <div>
                         <label className="block text-sm font-semibold mb-2 text-gray-700">
-                            Pourcentage de réduction <span className="text-red-500">*</span>
+                            {t('product.sale_manager.fields.discount')} <span className="text-red-500">*</span>
                         </label>
                         <div className="relative">
                             <input
@@ -104,7 +106,7 @@ export function ProductSaleManager({
                             </div>
                         </div>
                         <p className="text-sm text-gray-500 mt-2 text-center">
-                            Entre 1% et 100%
+                            {t('product.sale_manager.fields.discount_hint')}
                         </p>
                     </div>
 
@@ -112,7 +114,7 @@ export function ProductSaleManager({
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-semibold mb-2 text-gray-700">
-                                Date de début <span className="text-red-500">*</span>
+                                {t('product.sale_manager.fields.start_date')} <span className="text-red-500">*</span>
                             </label>
                             <input
                                 type="date"
@@ -127,7 +129,7 @@ export function ProductSaleManager({
 
                         <div>
                             <label className="block text-sm font-semibold mb-2 text-gray-700">
-                                Date de fin <span className="text-red-500">*</span>
+                                {t('product.sale_manager.fields.end_date')} <span className="text-red-500">*</span>
                             </label>
                             <input
                                 type="date"
@@ -144,7 +146,7 @@ export function ProductSaleManager({
                     {/* Description (optionnel) */}
                     <div>
                         <label className="block text-sm font-semibold mb-2 text-gray-700">
-                            Description (optionnel)
+                            {t('product.sale_manager.fields.description')}
                         </label>
                         <textarea
                             value={formData.description}
@@ -153,7 +155,7 @@ export function ProductSaleManager({
                             }
                             className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none resize-none"
                             rows={3}
-                            placeholder="Ex: Soldes d'hiver, Promotion de fin de saison..."
+                            placeholder={t('product.sale_manager.fields.description_placeholder')}
                         />
                     </div>
 
@@ -164,13 +166,13 @@ export function ProductSaleManager({
                             onClick={onClose}
                             className="flex-1 px-6 py-3 border-2 border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition"
                         >
-                            Annuler
+                            {t('product.sale_manager.actions.cancel')}
                         </button>
                         <button
                             type="submit"
                             className="flex-1 px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition"
                         >
-                            {currentSale ? "Modifier" : "Créer"}
+                            {currentSale ? t('product.sale_manager.actions.edit') : t('product.sale_manager.actions.create')}
                         </button>
                     </div>
                 </form>

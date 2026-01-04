@@ -2,6 +2,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Star, X, GripVertical } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 interface MediaItem {
     url: string;
@@ -17,6 +18,7 @@ interface SortableMediaItemProps {
 }
 
 export function SortableMediaItem({ item, onSetPrimary, onRemove }: SortableMediaItemProps) {
+    const { t } = useTranslation();
     const {
         attributes,
         listeners,
@@ -68,7 +70,7 @@ export function SortableMediaItem({ item, onSetPrimary, onRemove }: SortableMedi
                             ? "bg-yellow-400 text-white"
                             : "bg-white/90 text-gray-700 opacity-0 group-hover:opacity-100"
                     }`}
-                    title={item.isPrimary ? "Image principale" : "Définir comme principale"}
+                    title={item.isPrimary ? t('components.sortableMedia.primaryImage') : t('components.sortableMedia.setPrimary')}
                 >
                     <Star size={20} fill={item.isPrimary ? "white" : "none"} />
                 </button>
@@ -77,7 +79,7 @@ export function SortableMediaItem({ item, onSetPrimary, onRemove }: SortableMedi
                 <button
                     onClick={onRemove}
                     className="absolute bottom-2 right-2 p-2 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
-                    title="Supprimer"
+                    title={t('components.sortableMedia.remove')}
                 >
                     <X size={20} />
                 </button>
@@ -87,7 +89,7 @@ export function SortableMediaItem({ item, onSetPrimary, onRemove }: SortableMedi
             {item.isPrimary && (
                 <div className="absolute bottom-2 left-2 px-3 py-1 bg-yellow-400 text-white text-xs font-bold rounded-full flex items-center gap-1">
                     <Star size={14} fill="white" />
-                    Principale
+                    {t('components.sortableMedia.primaryBadge')}
                 </div>
             )}
         </div>

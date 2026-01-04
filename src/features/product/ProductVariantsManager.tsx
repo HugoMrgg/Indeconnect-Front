@@ -1,6 +1,7 @@
 ﻿import React, { useState } from "react";
 import { useSizes } from "@/hooks/Sizes/useSizes";
 import { Loader2, Plus, Trash2 } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 interface VariantData {
     sizeId: number;
@@ -17,11 +18,11 @@ interface ProductVariantsManagerProps {
 }
 
 export function ProductVariantsManager({
-                                           productId: _productId,
                                            categoryId,
                                            variants,
                                            onVariantsUpdate,
                                        }: ProductVariantsManagerProps) {
+    const { t } = useTranslation();
     const { sizes: availableSizes, loading, error } = useSizes(categoryId);
     const [showAddSize, setShowAddSize] = useState(false);
 
@@ -56,10 +57,10 @@ export function ProductVariantsManager({
     if (loading) {
         return (
             <div className="mt-6 space-y-4">
-                <h3 className="text-lg font-semibold text-gray-800">Tailles et stocks</h3>
+                <h3 className="text-lg font-semibold text-gray-800">{t('features.product.variants.title')}</h3>
                 <div className="flex items-center gap-2 text-gray-500">
                     <Loader2 size={20} className="animate-spin" />
-                    Chargement des tailles...
+                    {t('features.product.variants.loading')}
                 </div>
             </div>
         );
@@ -68,7 +69,7 @@ export function ProductVariantsManager({
     if (error) {
         return (
             <div className="mt-6 space-y-4">
-                <h3 className="text-lg font-semibold text-gray-800">Tailles et stocks</h3>
+                <h3 className="text-lg font-semibold text-gray-800">{t('features.product.variants.title')}</h3>
                 <div className="text-red-500 bg-red-50 rounded-lg p-4">{error}</div>
             </div>
         );
@@ -83,10 +84,10 @@ export function ProductVariantsManager({
         <div className="mt-6 space-y-4">
             <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-gray-800">
-                    Tailles et stocks <span className="text-red-500">*</span>
+                    {t('features.product.variants.title')} <span className="text-red-500">*</span>
                 </h3>
                 <span className="text-sm text-gray-600">
-                    {variants.length} taille(s) disponible(s)
+                    {t('features.product.variants.availableCount', { count: variants.length })}
                 </span>
             </div>
 
@@ -94,10 +95,8 @@ export function ProductVariantsManager({
             <div className="space-y-3">
                 {variants.length === 0 ? (
                     <div className="text-center py-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                        <p className="text-gray-600">Aucune taille configurée</p>
-                        <p className="text-sm text-gray-500 mt-2">
-                            Ajoutez au moins une taille pour ce produit
-                        </p>
+                        <p className="text-gray-600">{t('features.product.variants.noConfigured')}</p>
+                        <p className="text-sm text-gray-500 mt-2">{t('features.product.variants.addPrompt')}</p>
                     </div>
                 ) : (
                     variants.map((variant) => (
@@ -113,7 +112,7 @@ export function ProductVariantsManager({
                             {/* Input stock */}
                             <div className="flex-1 flex items-center gap-2">
                                 <label className="text-sm font-medium text-gray-700">
-                                    Stock:
+                                    {t('features.product.variants.stockLabel')}
                                 </label>
                                 <input
                                     type="number"
@@ -127,14 +126,14 @@ export function ProductVariantsManager({
                                     }
                                     className="w-24 px-3 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                 />
-                                <span className="text-sm text-gray-600">unités</span>
+                                <span className="text-sm text-gray-600">{t('features.product.variants.units')}</span>
                             </div>
 
                             {/* Bouton supprimer */}
                             <button
                                 onClick={() => handleRemoveVariant(variant.sizeId)}
                                 className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
-                                title="Supprimer cette taille"
+                                title={t('features.product.variants.removeTitle')}
                             >
                                 <Trash2 size={20} />
                             </button>
@@ -149,14 +148,12 @@ export function ProductVariantsManager({
                     {showAddSize ? (
                         <div className="bg-gray-50 rounded-lg p-4 border-2 border-blue-300">
                             <div className="flex items-center justify-between mb-3">
-                                <span className="font-semibold text-gray-800">
-                                    Sélectionnez une taille
-                                </span>
+                                <span className="font-semibold text-gray-800">{t('features.product.variants.selectSize')}</span>
                                 <button
                                     onClick={() => setShowAddSize(false)}
                                     className="text-gray-600 hover:text-gray-800"
                                 >
-                                    Annuler
+                                    {t('features.product.variants.cancel')}
                                 </button>
                             </div>
                             <div className="grid grid-cols-4 gap-2">
@@ -177,7 +174,7 @@ export function ProductVariantsManager({
                             className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-50 border-2 border-blue-300 rounded-lg text-blue-700 font-semibold hover:bg-blue-100 transition"
                         >
                             <Plus size={20} />
-                            Ajouter une taille
+                            {t('features.product.variants.addButton')}
                         </button>
                     )}
                 </div>
@@ -186,7 +183,7 @@ export function ProductVariantsManager({
             {/* Info si toutes les tailles sont déjà ajoutées */}
             {sizesToAdd.length === 0 && variants.length > 0 && (
                 <p className="text-sm text-gray-500 text-center py-2">
-                    Toutes les tailles disponibles pour cette catégorie ont été ajoutées
+                    {t('features.product.variants.allAdded')}
                 </p>
             )}
         </div>

@@ -1,4 +1,5 @@
 ﻿import React from "react";
+import { useTranslation } from "react-i18next";
 import { SidebarFilters } from "@/features/filters/SidebarFilters";
 import { X } from "lucide-react";
 
@@ -45,6 +46,8 @@ export const FiltersPanel: React.FC<FiltersPanelProps> = ({
                                                               colorsAvailable,
                                                               ethicsAvailable,
                                                           }) => {
+    const { t } = useTranslation();
+
     return (
         <>
             {/* Overlay flouté */}
@@ -68,7 +71,7 @@ export const FiltersPanel: React.FC<FiltersPanelProps> = ({
             >
                 {/* Header compact */}
                 <div className="flex items-center justify-between p-3 border-b">
-                    <h2 className="font-semibold text-lg">Filtres</h2>
+                    <h2 className="font-semibold text-lg">{t('filters.title')}</h2>
                     <button
                         onClick={onClose}
                         className="p-2 hover:bg-gray-100 rounded-lg"
@@ -102,7 +105,7 @@ export const FiltersPanel: React.FC<FiltersPanelProps> = ({
                         onClick={onReset}
                         className="w-full py-2.5 rounded-xl border text-sm hover:bg-gray-50 transition"
                     >
-                        Réinitialiser les filtres
+                        {t('filters.reset')}
                     </button>
                 </div>
             </div>

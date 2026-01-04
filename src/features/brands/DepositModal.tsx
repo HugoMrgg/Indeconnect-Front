@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
     UpsertBrandDepositRequest,
     DepositDTO,
@@ -19,14 +20,14 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                                                               initialDeposit,
                                                               onSaved,
                                                           }) => {
+    const { t } = useTranslation();
+
     const [form, setForm] = useState<UpsertBrandDepositRequest>({
         number: 0,
         street: "",
         postalCode: "",
         city: "",
-        country: "Belgique",
-        // Latitude/longitude are no longer user-provided fields
-        // Either remove from type or set to 0 for backend recalculation
+        country: t('brands.deposit.default_country'),
         latitude: 0,
         longitude: 0,
     });
@@ -37,26 +38,23 @@ export const DepositModal: React.FC<DepositModalProps> = ({
         if (!open) return;
 
         if (!initialDeposit) {
-            // Reset form fields for creating a new deposit
             setForm((f) => ({
                 ...f,
                 number: 0,
                 street: "",
                 postalCode: "",
                 city: "",
-                country: "Belgique",
+                country: t('brands.deposit.default_country'),
             }));
             return;
         }
 
-        // Prefill form with city from existing deposit
         setForm((f) => ({
             ...f,
             city: initialDeposit.city ?? "",
-            country: "Belgique",
+            country: t('brands.deposit.default_country'),
         }));
-        // Optional: parse initialDeposit.fullAddress to populate number/street/postalCode
-    }, [open, initialDeposit]);
+    }, [open, initialDeposit, t]);
 
     const handleChange =
         (field: keyof UpsertBrandDepositRequest) =>
@@ -82,13 +80,15 @@ export const DepositModal: React.FC<DepositModalProps> = ({
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
             <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl">
-                <h3 className="text-xl font-semibold mb-4">Dépôt principal</h3>
+                <h3 className="text-xl font-semibold mb-4">
+                    {t('brands.deposit.title')}
+                </h3>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="flex gap-3">
                         <div className="w-20">
                             <label className="block text-xs font-medium text-gray-700 mb-1">
-                                N°
+                                {t('brands.deposit.number_label')}
                             </label>
                             <input
                                 type="number"
@@ -100,7 +100,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                         </div>
                         <div className="flex-1">
                             <label className="block text-xs font-medium text-gray-700 mb-1">
-                                Rue
+                                {t('brands.deposit.street_label')}
                             </label>
                             <input
                                 type="text"
@@ -115,7 +115,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                     <div className="flex gap-3">
                         <div className="w-28">
                             <label className="block text-xs font-medium text-gray-700 mb-1">
-                                Code postal
+                                {t('brands.deposit.postal_code_label')}
                             </label>
                             <input
                                 type="text"
@@ -127,7 +127,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                         </div>
                         <div className="flex-1">
                             <label className="block text-xs font-medium text-gray-700 mb-1">
-                                Ville
+                                {t('brands.deposit.city_label')}
                             </label>
                             <input
                                 type="text"
@@ -141,7 +141,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
 
                     <div>
                         <label className="block text-xs font-medium text-gray-700 mb-1">
-                            Pays
+                            {t('brands.deposit.country_label')}
                         </label>
                         <input
                             type="text"
@@ -164,7 +164,7 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                             className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
                             disabled={saving}
                         >
-                            Annuler
+                            {t('common.cancel')}
                         </button>
                         <button
                             type="submit"
@@ -174,10 +174,10 @@ export const DepositModal: React.FC<DepositModalProps> = ({
                             {saving ? (
                                 <>
                                     <Loader2 size={16} className="animate-spin" />
-                                    Enregistrement...
+                                    {t('brands.deposit.saving')}
                                 </>
                             ) : (
-                                "Enregistrer"
+                                t('common.save')
                             )}
                         </button>
                     </div>

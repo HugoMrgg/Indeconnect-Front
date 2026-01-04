@@ -1,5 +1,6 @@
 ﻿// src/features/cart/CartModal.tsx
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { X } from "lucide-react";
 
 export const CartModal = ({
@@ -11,6 +12,7 @@ export const CartModal = ({
     onClose: () => void;
     children?: React.ReactNode;
 }) => {
+    const { t } = useTranslation();
     return (
         <>
             {/* Overlay */}
@@ -33,7 +35,7 @@ export const CartModal = ({
             >
                 {/* Header */}
                 <div className="flex items-center justify-between p-4 border-b">
-                    <h2 className="font-semibold text-lg">Votre panier</h2>
+                    <h2 className="font-semibold text-lg">{t('cart.title')}</h2>
                     <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
                         <X className="w-5 h-5" />
                     </button>

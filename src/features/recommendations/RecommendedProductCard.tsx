@@ -1,4 +1,5 @@
 ﻿import React from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Star } from "lucide-react";
 import type { RecommendedProduct } from "@/api/services/recommendations";
@@ -12,6 +13,7 @@ export function RecommendedProductCard({
                                            product,
                                            showReason = true
                                        }: RecommendedProductCardProps) {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     // Gestion sécurisée des prix
@@ -39,7 +41,7 @@ export function RecommendedProductCard({
                     />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400">
-                        <span className="text-sm">Pas d'image</span>
+                        <span className="text-sm">{t('product.recommended_card.no_image')}</span>
                     </div>
                 )}
 
@@ -53,7 +55,7 @@ export function RecommendedProductCard({
                 {/* Badge de réduction */}
                 {hasDiscount && (
                     <div className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                        PROMO
+                        {t('product.recommended_card.promo_badge')}
                     </div>
                 )}
             </div>

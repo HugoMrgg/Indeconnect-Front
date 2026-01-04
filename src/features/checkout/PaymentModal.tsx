@@ -1,5 +1,6 @@
 import { X } from "lucide-react";
 import { PaymentSection } from "./PaymentSection";
+import { useTranslation } from 'react-i18next';
 
 type PaymentModalProps = {
     isOpen: boolean;
@@ -9,6 +10,7 @@ type PaymentModalProps = {
 };
 
 export function PaymentModal({ isOpen, onClose, orderId, onPaymentSuccess }: PaymentModalProps) {
+    const { t } = useTranslation();
     if (!isOpen || !orderId) return null;
 
     return (
@@ -30,12 +32,12 @@ export function PaymentModal({ isOpen, onClose, orderId, onPaymentSuccess }: Pay
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b border-gray-200">
                     <h2 className="text-2xl font-bold text-gray-900">
-                        Finaliser le paiement
+                        {t('pages.checkout.finalizePayment')}
                     </h2>
                     <button
                         onClick={onClose}
                         className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-                        aria-label="Fermer"
+                        aria-label={t('common.close')}
                     >
                         <X className="w-5 h-5 text-gray-600" />
                     </button>
