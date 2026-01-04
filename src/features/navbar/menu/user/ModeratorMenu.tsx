@@ -11,10 +11,8 @@ export function ModeratorMenu() {
 
     const menuItems = [
         { icon: Users, label: t('moderator_menu.accounts'), path: "/admin/accounts" },
-        { icon: CheckCircle, label: t('moderator_menu.brands'), path: "/moderator/brands" },
         { icon: Package, label: t('moderator_menu.products'), path: "/moderator/products" },
-        { icon: MessageSquare, label: t('moderator_menu.reviews'), path: "/moderator/reviews" },
-        { icon: Logs, label: t('moderator_menu.logs'), path: "/moderator/logs" }
+        { icon: MessageSquare, label: t('moderator_menu.reviews'), path: "/moderator/reviews" }
     ];
 
     return (

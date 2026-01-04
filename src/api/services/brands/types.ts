@@ -111,3 +111,11 @@ export interface UpsertBrandDepositRequest {
     latitude: number;
     longitude: number;
 }
+
+export type BecomeBrandRequestPayload = {
+    brandName: string;
+    contactName?: string | null;
+    email: string;
+    website?: string | null;
+    message?: string | null;
+};

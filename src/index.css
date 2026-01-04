@@ -54,6 +54,11 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.search-highlight {
+    @apply ring-2 ring-yellow-300 bg-yellow-50 transition;
+}
+
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

@@ -16,11 +16,14 @@ import {OrderConfirmation} from "@/pages/checkout/OrderConfirmation";
 import {OrdersPage} from "@/pages/order/OrdersPage";
 import {OrderDetailsPage} from "@/pages/order/OrderDetailsPage";
 import {PaymentMethodsManagement} from "@/pages/admin/PaymentMethodsManagement";
+import {ModeratorProductReviewsPage} from "@/pages/moderator/ModeratorProductReviewsPage";
+import {BecomeBrandPage} from "@/pages/brands/BecomeBrandPage";
 
 export default function AppRouter() {
     return (
         <Routes>
             {/* Routes publiques */}
+            <Route path="/devenir-marque" element={<BecomeBrandPage />} />
             <Route path="/" element={<Home />} />
             <Route path="/brand/:brandName" element={<BrandPageWrapper />} />
             <Route path="/brand/:brandName/product/:productId" element={<ProductPage />} />
