@@ -1,4 +1,4 @@
-﻿import React, { useMemo, useState } from "react";
+﻿import React, {useEffect, useMemo, useState} from "react";
 import { Plus } from "lucide-react";
 import { InviteAccountModal } from "@/features/admin/InviteAccountModal";
 import { AccountsTable } from "@/features/admin/AccountsTable";
@@ -6,17 +6,34 @@ import { useAccounts } from "@/hooks/Auth/useAccounts";
 import type { InviteAccountRequest } from "@/types/account";
 import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
+import {useLocation, useNavigate} from "react-router-dom";
 
 export function AccountsManagement() {
     const [searchQuery, setSearchQuery] = useState<string>("");
 
     const [openModal, setOpenModal] = useState(false);
+    const location = useLocation();
+    const nav = useNavigate();
+    
     const { accounts, loading, error, refetch, toggleStatus, resendInvitation } = useAccounts();
 
     const handleInviteSuccess = () => {
         setOpenModal(false);
         refetch();
     };
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const shouldOpen = params.get("invite") === "1";
+
+        if (shouldOpen) {
+            setOpenModal(true);
+
+            // optionnel : nettoyer l’URL après ouverture (évite réouverture au refresh)
+            params.delete("invite");
+            nav({ pathname: location.pathname, search: params.toString() ? `?${params.toString()}` : "" }, { replace: true });
+        }
+    }, [location.pathname, location.search, nav]);
 
     const handleToggleStatus = async (accountId: number, currentStatus: boolean): Promise<void> => {
         try {

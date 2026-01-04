@@ -4,7 +4,7 @@ import {
     BrandsListResponse,
     BrandDetailDTO,
     BrandsQueryParams,
-    UpdateBrandRequest, UpsertBrandDepositRequest, DepositDTO
+    UpdateBrandRequest, UpsertBrandDepositRequest, DepositDTO, BecomeBrandRequestPayload
 } from "@/api/services/brands/types";
 
 export const brandsService = {
@@ -52,5 +52,9 @@ export const brandsService = {
             data
         );
         return response.data;
+    },
+
+    request: async (data: BecomeBrandRequestPayload): Promise<void> => {
+        await axiosInstance.post(BRANDS_ROUTES.request, data);
     },
 };
