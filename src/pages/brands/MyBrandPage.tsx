@@ -19,6 +19,9 @@ import { useAuthContext } from "@/hooks/Auth/useAuthContext";
 import { PageSkeleton } from "@/components/skeletons";
 import { logger } from "@/utils/logger";
 import { VendorManagementSection } from "@/features/vendors/VendorManagementSection";
+import {BrandStatusBadge} from "@/features/brands/BrandStatusBadge";
+import {BrandStatus} from "@/api/services/brands/types";
+import {BrandSubmitSection} from "@/features/brands/BrandSubmitSection";
 
 export function MyBrandPage() {
     const { userRole } = useAuthContext();
@@ -28,7 +31,7 @@ export function MyBrandPage() {
     const [showPreview, setShowPreview] = useState(false);
     const [activeTab, setActiveTab] = useState<"products" | "about" | "shipping" | "team">("products");
     const [depositModalOpen, setDepositModalOpen] = useState(false);
-    const [setEthicsModalOpen] = useState(false);
+    const [ethicsModalOpen, setEthicsModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [showAddProduct, setShowAddProduct] = useState(false);
 
@@ -168,6 +171,12 @@ export function MyBrandPage() {
                 {/* Tabs - cachés pour les Vendors qui voient uniquement les produits */}
                 {!isVendor && (
                     <div className="bg-gradient-to-b from-gray-50 to-white py-4">
+                        {/* ➕ NOUVEAU - Badge de status */}
+                        {brand.status && (
+                            <div className="mx-auto max-w-3xl px-4 mb-4">
+                                <BrandStatusBadge status={brand.status as BrandStatus} />
+                            </div>
+                        )}
                         <div className="mx-auto max-w-3xl px-4">
                             <div className="bg-gray-100 rounded-2xl p-1.5 shadow-inner">
                                 <div className="flex gap-1.5">
@@ -223,18 +232,39 @@ export function MyBrandPage() {
                         </div>
                     </div>
                 )}
-
+                {/* Section de soumission (visible uniquement pour SuperVendor) */}
+                {!isVendor && brand.status && (
+                    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-6">
+                        <BrandSubmitSection
+                            brandId={brand.id}
+                            status={brand.status as BrandStatus}
+                            latestRejectionComment={brand.latestRejectionComment}
+                            onSubmitted={refetch}
+                        />
+                    </div>
+                )}
                 {/* Onglet Produits - toujours affiché pour les Vendors */}
                 {(activeTab === "products" || isVendor) && (
                     <>
-                        <BrandPage
-                            brandId={brand.id}
-                            brandData={displayBrand}
-                            editMode={!isVendor} // ✅ Vendor ne peut PAS éditer la marque
-                            canManageProducts={true} // ✅ Mais PEUT gérer les produits
-                            onUpdateField={isVendor ? undefined : editing.updateField}
-                            onAddProduct={() => setShowAddProduct(true)}
-                        />
+                        {(() => {
+                            const isWaitingValidation =
+                                brand.status === "Submitted" ||
+                                brand.status === "PendingUpdate";
+
+                            const canEdit = !isVendor && !isWaitingValidation;
+
+                            return (
+                                <BrandPage
+                                    brandId={brand.id}
+                                    brandData={displayBrand}
+                                    editMode={canEdit}
+                                    canManageProducts={true}
+                                    onUpdateField={canEdit ? editing.updateField : undefined}
+                                    onAddProduct={() => setShowAddProduct(true)}
+                                />
+                            );
+                        })()}
+
 
                         {showAddProduct && (
                             <AddProductForm

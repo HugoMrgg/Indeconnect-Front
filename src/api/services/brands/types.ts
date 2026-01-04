@@ -60,6 +60,8 @@ export interface BrandDetailDTO {
     address: string | null;
     distanceKm: number | null;
     accentColor: string | null;
+    status?: BrandStatus;
+    latestRejectionComment?: string | null;
 }
 
 // Paramètres de requête pour getBrands
@@ -119,3 +121,66 @@ export type BecomeBrandRequestPayload = {
     website?: string | null;
     message?: string | null;
 };
+// ============================================================================
+// MODERATION TYPES
+// ============================================================================
+
+export enum BrandStatus {
+    Draft = "Draft",
+    Submitted = "Submitted",
+    Approved = "Approved",
+    Rejected = "Rejected",
+    Disabled = "Disabled",
+    PendingUpdate = "PendingUpdate"
+}
+
+export enum ModerationAction {
+    Submitted = "Submitted",
+    Approved = "Approved",
+    Rejected = "Rejected"
+}
+
+export interface ModerationHistoryDTO {
+    id: number;
+    moderatorEmail: string;
+    action: ModerationAction;
+    comment: string | null;
+    createdAt: string;
+}
+
+export interface BrandModerationListDTO {
+    id: number;
+    name: string;
+    logoUrl: string | null;
+    status: BrandStatus;
+    superVendorEmail: string;
+    submittedAt: string | null;
+    isUpdate: boolean;
+}
+
+export interface BrandModerationDetailDTO {
+    id: number;
+    name: string;
+    logoUrl: string | null;
+    bannerUrl: string | null;
+    description: string | null;
+    aboutUs: string | null;
+    whereAreWe: string | null;
+    otherInfo: string | null;
+    contact: string | null;
+    priceRange: string | null;
+    accentColor: string | null;
+    status: BrandStatus;
+    superVendorEmail: string;
+    superVendorUserId: number;
+    deposits: DepositDTO[];
+    ethicTags: string[];
+    ethicsScoreProduction: number;
+    ethicsScoreTransport: number;
+    history: ModerationHistoryDTO[];
+    latestRejectionComment: string | null;
+}
+
+export interface RejectBrandRequest {
+    reason: string;
+}

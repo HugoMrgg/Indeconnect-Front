@@ -114,7 +114,7 @@ export const BrandCard: React.FC<Brand> = ({
                     <div className="mt-1 flex items-center gap-2">
                         <StarRating value={userRating} size={16} />
                         <span className="text-sm text-gray-600">
-                            {userRating !== undefined && userRating !== null ? userRating.toFixed(1) : t('common.not_available_short')}
+                            {userRating === undefined || userRating === null || userRating === 0 ? t('common.not_available_short') : userRating.toFixed(1)}
                         </span>
                     </div>
                 </div>

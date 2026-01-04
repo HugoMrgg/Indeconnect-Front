@@ -6,7 +6,7 @@ import { ApiError, BackendErrorResponse } from "@/api/errors";
 import { logger } from "@/utils/logger";
 import i18n from "@/i18n";
 
-const API_BASE_URL = import.meta.env.VITE_API_HOST + "/indeconnect";
+const API_BASE_URL =import.meta.env.VITE_API_HOST + "/indeconnect";
 //const API_BASE_URL_LOCAL = "http://localhost:5237/indeconnect";
 const REQUEST_TIMEOUT = 10000;
 

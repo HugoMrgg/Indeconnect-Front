@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {BadgeCheck, Dices} from "lucide-react";
+import {useTranslation} from "react-i18next";
 
 export function BrandMenu() {
     const [ ,setOpen] = useState(false);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     return (
         <>
@@ -21,16 +23,17 @@ export function BrandMenu() {
                     IndeConnect
                 </button>
 
-                <button
-                    onClick={() => {
-                        setOpen(false);
-                        navigate("/devenir-marque");
-                    }}
-                    className="flex items-center gap-2 hover:text-gray-300 transition"
-                >
-                    <BadgeCheck size={16} />
-                    Devenir une marque
-                </button>
+            <button
+                onClick={() => {
+                    setOpen(false);
+                    navigate("/devenir-marque");
+                }}
+                className="flex items-center gap-2 hover:text-gray-300 transition"
+            >
+                <BadgeCheck size={16} />
+                {t("brand_menu.become_brand")}
+            </button>
+
             {/*</div>*/}
         </>
     );

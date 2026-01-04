@@ -1,8 +1,6 @@
 ﻿import React from "react";
-import { Banner } from "@/features/banners/Banner";
 import { AuthPanel } from "@/features/user/auth/AuthPanel";
 import { NavBar } from "@/features/navbar/NavBar";
-import {Building2, Leaf, MapPin, ShieldCheck, Sparkles} from "lucide-react";
 
 interface Props {
     children: React.ReactNode;

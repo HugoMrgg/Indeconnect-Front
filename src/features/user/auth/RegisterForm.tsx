@@ -1,7 +1,10 @@
+// RegisterForm.tsx - version finale
 import React, { useState } from "react";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import { useTranslation } from "react-i18next";
 import { logger } from "@/utils/logger";
+import { PasswordStrengthIndicator } from "@/features/user/auth/PasswordStrengthIndicator";
+import { AlertCircle } from "lucide-react";
 
 interface RegisterFormProps {
     firstName: string;
@@ -38,6 +41,8 @@ export function RegisterForm({
                              }: RegisterFormProps) {
     const { t } = useTranslation();
     const [googleLoading, setGoogleLoading] = useState(false);
+    const [showPasswordStrength, setShowPasswordStrength] = useState(false);
+    const [passwordTouched, setPasswordTouched] = useState(false);
 
     const handleGoogleSuccess = (credentialResponse: CredentialResponse) => {
         if (credentialResponse.credential) {
@@ -58,18 +63,42 @@ export function RegisterForm({
         setGoogleLoading(false);
     };
 
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onPassword(e.target.value);
+        if (!passwordTouched) {
+            setPasswordTouched(true);
+        }
+    };
+
+    const handlePasswordFocus = () => {
+        setShowPasswordStrength(true);
+        setPasswordTouched(true);
+    };
+
+    // Validation du confirmPassword
+    const passwordsMatch = password === confirmPassword;
+    const showPasswordMismatch = confirmPassword.length > 0 && !passwordsMatch;
+
     return (
         <form onSubmit={onSubmit} className="space-y-4">
             <h1 className="text-xl font-semibold text-gray-900 text-center">
                 {t('auth.register.title')}
             </h1>
 
+            {/* Affichage amélioré des erreurs */}
             {error && (
                 <div
                     role="alert"
-                    className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-2"
+                    className="flex items-start gap-2 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg p-3"
                 >
-                    {error}
+                    <AlertCircle size={18} className="mt-0.5 flex-shrink-0" />
+                    <div className="flex-1">
+                        {error.split(". ").map((err, idx) => (
+                            <div key={idx} className="mb-1 last:mb-0">
+                                • {err}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             )}
 
@@ -131,7 +160,8 @@ export function RegisterForm({
                         id="password"
                         type="password"
                         value={password}
-                        onChange={(e) => onPassword(e.target.value)}
+                        onChange={handlePasswordChange}
+                        onFocus={handlePasswordFocus}
                         disabled={loading || googleLoading}
                         required
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
@@ -149,11 +179,27 @@ export function RegisterForm({
                         onChange={(e) => onConfirmPassword(e.target.value)}
                         disabled={loading || googleLoading}
                         required
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-black focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                        className={`w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed ${
+                            showPasswordMismatch
+                                ? 'border-red-300 focus:ring-red-500'
+                                : 'border-gray-300 focus:ring-black'
+                        }`}
                         placeholder={t('auth.register.confirm_password_placeholder')}
                     />
+                    {showPasswordMismatch && (
+                        <p className="text-xs text-red-600 mt-1 flex items-center gap-1">
+                            <AlertCircle size={12} />
+                            {t('auth.register.passwords_dont_match')}
+                        </p>
+                    )}
                 </div>
             </div>
+
+            {/* Indicateur de force du mot de passe */}
+            <PasswordStrengthIndicator
+                password={password}
+                show={showPasswordStrength && passwordTouched}
+            />
 
             <button
                 type="submit"

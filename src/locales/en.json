@@ -22,6 +22,19 @@
     "locale": "en-US"
   },
   "auth": {
+    "password_strength": {
+      "weak": "Weak",
+      "fair": "Fair",
+      "good": "Good",
+      "strong": "Strong"
+    },
+    "password_criteria": {
+      "min_length": "At least 8 characters",
+      "lowercase": "At least one lowercase letter",
+      "uppercase": "At least one uppercase letter",
+      "digit": "At least one digit",
+      "special_char": "At least one special character"
+    },
     "login": {
       "title": "Log in",
       "email_label": "Email address",
@@ -371,6 +384,7 @@
       "hint": "Tip: click \"Filters\" at the bottom to refine (distance, price, ethics…)."
     },
     "loading": "Loading brands...",
+    "load_more": "Load more",
     "popular_products": "Popular products",
     "recommended_for_you": "Recommended for you",
     "based_on_purchases": "Based on your previous purchases",
@@ -569,6 +583,57 @@
       "cancel": "Cancel"
     },
     "moderator": {
+      "brands_list": {
+        "loading": "Loading brands...",
+        "error_title": "Error",
+        "retry": "Retry",
+        "subtitle": "Moderation space",
+        "title": "Brand moderation",
+        "description": "Approve or reject new brands and updates submitted by SuperVendors.",
+        "stats": {
+          "total_pending": "Total pending",
+          "new_brands": "New brands",
+          "updates": "Updates"
+        },
+        "search_placeholder": "Search by brand name or email...",
+        "no_brands_title": "No pending brands",
+        "no_search_results": "No results for this search",
+        "all_processed": "All brands have been processed",
+        "update_badge": "Update",
+        "submitted": "Submitted"
+      },
+      "brand_detail": {
+        "loading": "Loading brand...",
+        "error_title": "Error",
+        "error_not_found": "Brand not found",
+        "back_to_list": "Back to list",
+        "existing_brand_update": "Update of an existing brand",
+        "price_range": "Price range: {range}",
+        "approve_button": "Approve this brand",
+        "approving": "Approving...",
+        "reject_button": "Reject",
+        "score_production": "Production Score",
+        "score_transport": "Transport Score",
+        "description_title": "Description",
+        "about_title": "About",
+        "where_to_find_title": "Where to find us",
+        "other_info_title": "Other information",
+        "stores_title": "Stores",
+        "ethic_tags_title": "Ethics tags",
+        "history_title": "History",
+        "action_approved": "Approved",
+        "action_rejected": "Rejected",
+        "action_submitted": "Submitted",
+        "action_by": "by {moderator}",
+        "reject_modal_title": "Reject brand",
+        "reject_modal_reason_label": "Rejection reason",
+        "reject_modal_reason_required": "*",
+        "reject_modal_placeholder": "Explain why this brand is rejected...",
+        "reject_modal_hint": "The SuperVendor will receive this message and will be able to modify their brand.",
+        "reject_modal_cancel": "Cancel",
+        "reject_modal_confirm": "Confirm rejection",
+        "reject_modal_rejecting": "Rejecting..."
+      },
       "reviews": {
         "title": "Product review moderation",
         "heroSubtitle": "Comments are published automatically. Use this interface to hide or reactivate.",
@@ -971,5 +1036,90 @@
     "description": "Select available sizes and set their stock levels",
     "stock": "Stock",
     "units": "units"
+  },
+  "brand_menu": {
+    "become_brand": "Become a brand"
+  },
+  "become_brand": {
+    "menu_button": "Become a brand",
+    "hero": {
+      "subtitle": "IndeConnect • Responsible brands",
+      "title": "Become a brand",
+      "description": "Join the platform and make your brand visible to customers who seek meaning: ethics, transparency, proximity and quality."
+    },
+    "cta": {
+      "view_brands": "View brands",
+      "contact_us": "Contact us"
+    },
+    "why_join": {
+      "title": "Why join us?",
+      "visibility": "Highlighting your approach (production & transport).",
+      "local": "Local visibility via city / GPS and distance.",
+      "trust": "Trust: reviews, transparency and clear criteria."
+    },
+    "how_it_works": {
+      "title": "How does it work?",
+      "step1": {
+        "label": "Step 1",
+        "title": "Application",
+        "description": "You send us your brand information."
+      },
+      "step2": {
+        "label": "Step 2",
+        "title": "Validation",
+        "description": "We verify consistency and criteria."
+      },
+      "step3": {
+        "label": "Step 3",
+        "title": "Publication",
+        "description": "Your brand appears and customers find you."
+      },
+      "goal": "Goal: a \"quality\" selection rather than a giant directory. Here, we prefer 100 solid brands over 10,000 copy-pastes."
+    },
+    "contact_form": {
+      "title": "Submit a request",
+      "subtitle": "Dev version: the form logs to console. You'll connect your API when the backend is running.",
+      "brand_name_label": "Brand name *",
+      "brand_name_placeholder": "E.g: Ethical Denim",
+      "email_label": "Email *",
+      "email_placeholder": "contact@brand.com",
+      "contact_name_label": "Contact name",
+      "contact_name_placeholder": "First Last",
+      "website_label": "Website",
+      "website_placeholder": "https://...",
+      "message_label": "Message",
+      "message_placeholder": "Tell us what you do, where you produce, your commitments, etc.",
+      "submit_button": "Send request",
+      "back_home": "Back to home",
+      "success_message": "Thank you! An administrator will contact you to start creating/updating your brand and adding your products.",
+      "error_message": "Unable to send the request."
+    }
+  },
+  "brand": {
+    "status": {
+      "approved": "Approved",
+      "submitted": "Awaiting validation",
+      "pending_update": "Updates pending",
+      "rejected": "Rejected",
+      "disabled": "Disabled",
+      "draft": "Draft"
+    },
+    "submit": {
+      "success_toast": "Brand submitted for validation!",
+      "error_toast": "Unable to submit brand",
+      "rejected_title": "Brand rejected by moderator",
+      "reason_label": "Reason:",
+      "rejected_message": "Make the necessary changes and resubmit your brand.",
+      "resubmit_button": "Resubmit",
+      "submitting": "Submitting...",
+      "pending_title": "Brand under review",
+      "pending_update_title": "Updates under review",
+      "pending_message": "A moderator will review your {type} shortly. You will be notified once a decision is made.",
+      "type_brand": "brand",
+      "type_update": "update request",
+      "draft_title": "Ready to submit your brand?",
+      "draft_message": "Once submitted, your brand will be reviewed by a moderator before being published on the site.",
+      "submit_button": "Submit for validation"
+    }
   }
 }

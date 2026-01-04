@@ -17,6 +17,8 @@ import {OrdersPage} from "@/pages/order/OrdersPage";
 import {OrderDetailsPage} from "@/pages/order/OrderDetailsPage";
 import {PaymentMethodsManagement} from "@/pages/admin/PaymentMethodsManagement";
 import {BecomeBrandPage} from "@/pages/brands/BecomeBrandPage";
+import {BrandsModerationPage} from "@/pages/admin/BrandsModerationPage";
+import {BrandModerationDetailPage} from "@/pages/admin/BrandModerationDetailPage";
 
 export default function AppRouter() {
     return (
@@ -94,6 +96,23 @@ export default function AppRouter() {
                     </ProtectedRoute>
                 }
             />
+            <Route
+                path="/moderator/brands"
+                element={
+                    <ProtectedRoute requiredRoles={["Moderator", "Administrator"]}>
+                        <BrandsModerationPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/moderator/brands/:brandId"
+                element={
+                    <ProtectedRoute requiredRoles={["Moderator", "Administrator"]}>
+                        <BrandModerationDetailPage />
+                    </ProtectedRoute>
+                }
+            />
+
             {/* SuperVendor & Vendor Routes */}
             <Route
                 path="/my-brand"

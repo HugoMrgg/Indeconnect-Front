@@ -2,6 +2,9 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { AuthService } from "@/api/services/auth";
 import { AlertCircle, CheckCircle } from "lucide-react";
+import { PasswordStrengthIndicator } from "@/features/user/auth/PasswordStrengthIndicator";
+import { validatePassword } from "@/utils/passwordValidation";
+import toast from "react-hot-toast";
 
 export function SetPassword() {
     const [searchParams] = useSearchParams();
@@ -13,6 +16,21 @@ export function SetPassword() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
+    const [showPasswordStrength, setShowPasswordStrength] = useState(false);
+    const [passwordTouched, setPasswordTouched] = useState(false);
+
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(e.target.value);
+        setError(null);
+        if (!passwordTouched) {
+            setPasswordTouched(true);
+        }
+    };
+
+    const handlePasswordFocus = () => {
+        setShowPasswordStrength(true);
+        setPasswordTouched(true);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -24,12 +42,22 @@ export function SetPassword() {
         }
 
         if (password !== confirmPassword) {
-            setError("Les mots de passe ne correspondent pas.");
+            const msg = "Les mots de passe ne correspondent pas.";
+            setError(msg);
+            toast.error(msg);
             return;
         }
 
-        if (password.length < 6) {
-            setError("Le mot de passe doit contenir au moins 6 caractères.");
+        // Validation du mot de passe
+        const passwordValidation = validatePassword(password);
+        if (!passwordValidation.isValid) {
+            const errorMsg = passwordValidation.errors.join(". ");
+            setError(errorMsg);
+
+            // Afficher chaque erreur dans un toast
+            passwordValidation.errors.forEach((err) => {
+                toast.error(err, { duration: 4000 });
+            });
             return;
         }
 
@@ -41,16 +69,47 @@ export function SetPassword() {
                 confirmPassword
             });
             setSuccess(true);
+            toast.success("Compte activé avec succès !");
             setTimeout(() => navigate("/"), 3000);
-        } catch (err: unknown) {
-            const apiError =
-                (err as { response?: { data?: { error?: string; message?: string } } }).response?.data?.error ||
-                (err as { response?: { data?: { error?: string; message?: string } } }).response?.data?.message;
-            setError(apiError || "Erreur lors de l'activation du compte.");
-        }finally {
+        } catch (err: any) {
+            let msg = "Erreur lors de l'activation du compte.";
+
+            // Parser les erreurs de l'API (format ASP.NET)
+            if (err?.response?.data?.errors) {
+                const apiErrors = err.response.data.errors;
+                const errorMessages: string[] = [];
+
+                Object.entries(apiErrors).forEach(([field, errors]: [string, any]) => {
+                    if (Array.isArray(errors)) {
+                        errors.forEach(errorMsg => {
+                            errorMessages.push(errorMsg);
+                        });
+                    }
+                });
+
+                if (errorMessages.length > 0) {
+                    msg = errorMessages.join(". ");
+                }
+            } else if (err?.response?.data?.message) {
+                msg = err.response.data.message;
+            } else if (err?.response?.data?.error) {
+                msg = err.response.data.error;
+            } else if (err?.response?.data?.title) {
+                msg = err.response.data.title;
+            } else if (err instanceof Error) {
+                msg = err.message;
+            }
+
+            setError(msg);
+            toast.error(msg, { duration: 5000 });
+        } finally {
             setLoading(false);
         }
     };
+
+    // Validation visuelle
+    const passwordsMatch = password === confirmPassword;
+    const showPasswordMismatch = confirmPassword.length > 0 && !passwordsMatch;
 
     if (!token) {
         return (
@@ -89,10 +148,17 @@ export function SetPassword() {
             <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
                 <h1 className="text-2xl font-bold mb-6 text-center">Activation du compte</h1>
 
+                {/* Affichage amélioré des erreurs */}
                 {error && (
-                    <div className="flex items-center gap-2 bg-red-50 text-red-700 p-4 rounded-lg mb-6">
-                        <AlertCircle size={20} />
-                        <p>{error}</p>
+                    <div className="flex items-start gap-2 bg-red-50 text-red-700 p-4 rounded-lg mb-6">
+                        <AlertCircle size={20} className="mt-0.5 flex-shrink-0" />
+                        <div className="flex-1">
+                            {error.split(". ").map((err, idx) => (
+                                <div key={idx} className="mb-1 last:mb-0">
+                                    • {err}
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 )}
 
@@ -105,7 +171,8 @@ export function SetPassword() {
                             id="password"
                             type="password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={handlePasswordChange}
+                            onFocus={handlePasswordFocus}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                             placeholder="Entrez votre mot de passe"
                             required
@@ -120,17 +187,36 @@ export function SetPassword() {
                             id="confirmPassword"
                             type="password"
                             value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                            onChange={(e) => {
+                                setConfirmPassword(e.target.value);
+                                setError(null);
+                            }}
+                            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                                showPasswordMismatch
+                                    ? 'border-red-300 focus:ring-red-500'
+                                    : 'border-gray-300 focus:ring-black'
+                            }`}
                             placeholder="Confirmez votre mot de passe"
                             required
                         />
+                        {showPasswordMismatch && (
+                            <p className="text-xs text-red-600 mt-1 flex items-center gap-1">
+                                <AlertCircle size={12} />
+                                Les mots de passe ne correspondent pas
+                            </p>
+                        )}
                     </div>
+
+                    {/* Indicateur de force du mot de passe */}
+                    <PasswordStrengthIndicator
+                        password={password}
+                        show={showPasswordStrength && passwordTouched}
+                    />
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-black text-white py-2 rounded-lg font-medium hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full bg-black text-white py-2 rounded-lg font-medium hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition active:scale-[0.98]"
                     >
                         {loading ? "Activation en cours..." : "Activer mon compte"}
                     </button>

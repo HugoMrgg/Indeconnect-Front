@@ -20,14 +20,16 @@ export function useBrands(filters: BrandFilters = {}) {
     const { data, isLoading, error } = useQuery({
         queryKey: ['brands', filters],
         queryFn: async () => {
-            const response = await brandsService.getBrands(filters);
-            return response.brands ?? [];
+            return await brandsService.getBrands(filters);
         },
         staleTime: 3 * 60 * 1000, // 3 minutes (données des marques changent peu)
     });
 
     return {
-        brands: data ?? [],
+        brands: data?.brands ?? [],
+        totalCount: data?.totalCount ?? 0,
+        page: data?.page ?? 1,
+        pageSize: data?.pageSize ?? 10,
         loading: isLoading,
         error: error ? "Impossible de charger les marques." : null
     };

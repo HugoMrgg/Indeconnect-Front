@@ -1,14 +1,16 @@
-﻿import { useState, useCallback } from "react";
+﻿// src/hooks/Auth/useAuth.ts
+
+import { useState, useCallback } from "react";
 import { AuthService } from "@/api/services/auth";
 import { useAuthContext } from "@/hooks/Auth/useAuthContext";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { validatePassword } from "@/utils/passwordValidation";
 import type { AuthResponse, LoginPayload, RegisterPayload } from "@/api/services/auth/types";
+import { useTranslation } from "react-i18next";
 
-/**
- * Hook principal pour la gestion de l'authentification
- */
 export function useAuth() {
+    const { t } = useTranslation();
     const { token, user, userRole, isLoading, login: loginContext, logout: logoutContext, setLoading } =
         useAuthContext();
     const [error, setError] = useState<string | null>(null);
@@ -34,8 +36,31 @@ export function useAuth() {
                 });
 
                 return res;
-            } catch (err) {
-                const msg = err instanceof Error ? err.message : "Erreur de connexion";
+            } catch (err: any) {
+                let msg = "Erreur de connexion";
+
+                // Parser les erreurs de l'API
+                if (err?.response?.data?.errors) {
+                    const apiErrors = err.response.data.errors;
+                    const errorMessages: string[] = [];
+
+                    Object.values(apiErrors).forEach((errors: any) => {
+                        if (Array.isArray(errors)) {
+                            errorMessages.push(...errors);
+                        }
+                    });
+
+                    if (errorMessages.length > 0) {
+                        msg = errorMessages.join(". ");
+                    }
+                } else if (err?.response?.data?.message) {
+                    msg = err.response.data.message;
+                } else if (err?.response?.data?.title) {
+                    msg = err.response.data.title;
+                } else if (err instanceof Error) {
+                    msg = err.message;
+                }
+
                 setError(msg);
                 toast.error(msg);
                 throw err;
@@ -59,10 +84,39 @@ export function useAuth() {
                 toast.success(`Compte créé, bienvenue ${res.user.firstName}!`);
 
                 return res;
-            } catch (err) {
-                const msg = err instanceof Error ? err.message : "Erreur lors de l'inscription";
+            } catch (err: any) {
+                let msg = "Erreur lors de l'inscription";
+
+                // Parser les erreurs de validation de l'API (format ASP.NET)
+                if (err?.response?.data?.errors) {
+                    const apiErrors = err.response.data.errors;
+                    const errorMessages: string[] = [];
+
+                    // Le backend renvoie { "Password": ["error1", "error2"], "Email": ["error3"] }
+                    Object.entries(apiErrors).forEach(([field, errors]: [string, any]) => {
+                        if (Array.isArray(errors)) {
+                            errors.forEach(errorMsg => {
+                                errorMessages.push(errorMsg);
+                            });
+                        }
+                    });
+
+                    if (errorMessages.length > 0) {
+                        msg = errorMessages.join(". ");
+                    }
+                } else if (err?.response?.data?.message) {
+                    msg = err.response.data.message;
+                } else if (err?.response?.data?.title) {
+                    msg = err.response.data.title;
+                } else if (err instanceof Error) {
+                    msg = err.message;
+                }
+
                 setError(msg);
-                toast.error(msg);
+
+                // Afficher l'erreur dans un toast
+                toast.error(msg, { duration: 5000 });
+
                 throw err;
             } finally {
                 setLoading(false);
@@ -90,8 +144,15 @@ export function useAuth() {
                 });
 
                 return res;
-            } catch (err) {
-                const msg = err instanceof Error ? err.message : "Erreur d'authentification Google";
+            } catch (err: any) {
+                let msg = "Erreur d'authentification Google";
+
+                if (err?.response?.data?.message) {
+                    msg = err.response.data.message;
+                } else if (err instanceof Error) {
+                    msg = err.message;
+                }
+
                 setError(msg);
                 toast.error(msg);
                 throw err;

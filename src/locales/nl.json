@@ -45,6 +45,22 @@
     "locale": "nl-NL"
   },
   "auth": {
+    "auth": {
+      "password_strength": {
+        "weak": "Zwak",
+        "fair": "Gemiddeld",
+        "good": "Goed",
+        "strong": "Sterk"
+      },
+      "password_criteria": {
+        "min_length": "Minstens 8 tekens",
+        "lowercase": "Minstens één kleine letter",
+        "uppercase": "Minstens één hoofdletter",
+        "digit": "Minstens één cijfer",
+        "special_char": "Minstens één speciaal teken"
+      }
+    },
+
     "login": {
       "title": "Inloggen",
       "email_label": "E-mailadres",
@@ -394,6 +410,7 @@
       "hint": "Tip: klik op \"Filters\" onderaan om te verfijnen (afstand, prijs, ethiek…)."
     },
     "loading": "Merken laden...",
+    "load_more": "Meer laden",
     "popular_products": "Populaire producten",
     "recommended_for_you": "Aanbevolen voor u",
     "based_on_purchases": "Gebaseerd op uw eerdere aankopen",
@@ -592,6 +609,57 @@
       "cancel": "Annuleren"
     },
     "moderator": {
+      "brands_list": {
+        "loading": "Merken laden...",
+        "error_title": "Fout",
+        "retry": "Opnieuw proberen",
+        "subtitle": "Moderatieruimte",
+        "title": "Merkmoderatie",
+        "description": "Keur nieuwe merken en wijzigingen ingediend door SuperVendors goed of wijs ze af.",
+        "stats": {
+          "total_pending": "Totaal in afwachting",
+          "new_brands": "Nieuwe merken",
+          "updates": "Wijzigingen"
+        },
+        "search_placeholder": "Zoek op merknaam of e-mail...",
+        "no_brands_title": "Geen merken in afwachting",
+        "no_search_results": "Geen resultaten voor deze zoekopdracht",
+        "all_processed": "Alle merken zijn verwerkt",
+        "update_badge": "Wijziging",
+        "submitted": "Ingediend"
+      },
+      "brand_detail": {
+        "loading": "Merk laden...",
+        "error_title": "Fout",
+        "error_not_found": "Merk niet gevonden",
+        "back_to_list": "Terug naar lijst",
+        "existing_brand_update": "Wijziging van een bestaand merk",
+        "price_range": "Prijsklasse: {range}",
+        "approve_button": "Keur dit merk goed",
+        "approving": "Goedkeuren...",
+        "reject_button": "Afwijzen",
+        "score_production": "Productiescore",
+        "score_transport": "Transportscore",
+        "description_title": "Beschrijving",
+        "about_title": "Over ons",
+        "where_to_find_title": "Waar ons te vinden",
+        "other_info_title": "Andere informatie",
+        "stores_title": "Winkels",
+        "ethic_tags_title": "Ethische tags",
+        "history_title": "Geschiedenis",
+        "action_approved": "Goedgekeurd",
+        "action_rejected": "Afgewezen",
+        "action_submitted": "Ingediend",
+        "action_by": "door {moderator}",
+        "reject_modal_title": "Merk afwijzen",
+        "reject_modal_reason_label": "Reden voor afwijzing",
+        "reject_modal_reason_required": "*",
+        "reject_modal_placeholder": "Leg uit waarom dit merk wordt afgewezen...",
+        "reject_modal_hint": "De SuperVendor ontvangt dit bericht en kan zijn merk aanpassen.",
+        "reject_modal_cancel": "Annuleren",
+        "reject_modal_confirm": "Afwijzing bevestigen",
+        "reject_modal_rejecting": "Afwijzen..."
+      },
       "reviews": {
         "title": "Moderatie productbeoordelingen",
         "heroSubtitle": "Reacties worden automatisch gepubliceerd. Gebruik deze interface om te verbergen of opnieuw te activeren.",
@@ -994,5 +1062,90 @@
     "description": "Selecteer beschikbare maten en stel hun voorraad in",
     "stock": "Voorraad",
     "units": "eenheden"
+  },
+  "brand_menu": {
+    "become_brand": "Een merk worden"
+  },
+  "become_brand": {
+    "menu_button": "Word een merk",
+    "hero": {
+      "subtitle": "IndeConnect • Verantwoorde merken",
+      "title": "Word een merk",
+      "description": "Sluit je aan bij het platform en maak je merk zichtbaar voor klanten die op zoek zijn naar betekenis: ethiek, transparantie, nabijheid en kwaliteit."
+    },
+    "cta": {
+      "view_brands": "Bekijk de merken",
+      "contact_us": "Contacteer ons"
+    },
+    "why_join": {
+      "title": "Waarom bij ons aansluiten?",
+      "visibility": "Jouw aanpak in de spotlight (productie & transport).",
+      "local": "Lokale zichtbaarheid via stad / GPS en afstand.",
+      "trust": "Vertrouwen: beoordelingen, transparantie en duidelijke criteria."
+    },
+    "how_it_works": {
+      "title": "Hoe werkt het?",
+      "step1": {
+        "label": "Stap 1",
+        "title": "Aanvraag",
+        "description": "Je stuurt ons de info van je merk."
+      },
+      "step2": {
+        "label": "Stap 2",
+        "title": "Validatie",
+        "description": "We controleren de coherentie en criteria."
+      },
+      "step3": {
+        "label": "Stap 3",
+        "title": "Publicatie",
+        "description": "Je merk verschijnt en klanten vinden je."
+      },
+      "goal": "Doel: een \"kwaliteit\" selectie in plaats van een gigantische lijst. Hier verkiezen we 100 solide merken boven 10.000 kopiëren-plakken."
+    },
+    "contact_form": {
+      "title": "Dien een aanvraag in",
+      "subtitle": "Dev versie: het formulier logt in de console. Je zult je API aansluiten wanneer de backend draait.",
+      "brand_name_label": "Naam van het merk *",
+      "brand_name_placeholder": "Bijv: Ethische Denim",
+      "email_label": "E-mail *",
+      "email_placeholder": "contact@merk.com",
+      "contact_name_label": "Naam van de contactpersoon",
+      "contact_name_placeholder": "Voornaam Achternaam",
+      "website_label": "Website",
+      "website_placeholder": "https://...",
+      "message_label": "Bericht",
+      "message_placeholder": "Vertel ons wat je doet, waar je produceert, je toezeggingen, enz.",
+      "submit_button": "Verstuur de aanvraag",
+      "back_home": "Terug naar home",
+      "success_message": "Bedankt! Een beheerder zal contact met je opnemen om de creatie/wijziging van je merk en het toevoegen van je artikelen te starten.",
+      "error_message": "Kan de aanvraag niet versturen."
+    }
+  },
+  "brand": {
+    "status": {
+      "approved": "Goedgekeurd",
+      "submitted": "Wacht op validatie",
+      "pending_update": "Wijzigingen in afwachting",
+      "rejected": "Afgewezen",
+      "disabled": "Uitgeschakeld",
+      "draft": "Concept"
+    },
+    "submit": {
+      "success_toast": "Merk ingediend ter validatie!",
+      "error_toast": "Kan merk niet indienen",
+      "rejected_title": "Merk afgewezen door moderator",
+      "reason_label": "Reden:",
+      "rejected_message": "Breng de nodige wijzigingen aan en dien uw merk opnieuw in.",
+      "resubmit_button": "Opnieuw indienen",
+      "submitting": "Indienen...",
+      "pending_title": "Merk in behandeling",
+      "pending_update_title": "Wijzigingen in behandeling",
+      "pending_message": "Een moderator zal binnenkort uw {type} beoordelen. U wordt op de hoogte gebracht zodra er een beslissing is genomen.",
+      "type_brand": "merk",
+      "type_update": "wijzigingsverzoek",
+      "draft_title": "Klaar om uw merk in te dienen?",
+      "draft_message": "Na indiening wordt uw merk beoordeeld door een moderator voordat het op de site wordt gepubliceerd.",
+      "submit_button": "Indienen ter validatie"
+    }
   }
 }

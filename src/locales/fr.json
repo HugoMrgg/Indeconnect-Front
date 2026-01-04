@@ -23,6 +23,22 @@
   },
 
   "auth": {
+    "auth": {
+      "password_strength": {
+        "weak": "Faible",
+        "fair": "Moyen",
+        "good": "Bon",
+        "strong": "Fort"
+      },
+      "password_criteria": {
+        "min_length": "Au moins 8 caractères",
+        "lowercase": "Au moins une lettre minuscule",
+        "uppercase": "Au moins une lettre majuscule",
+        "digit": "Au moins un chiffre",
+        "special_char": "Au moins un caractère spécial"
+      }
+    },
+
     "login": {
       "title": "Se connecter",
       "email_label": "Adresse mail",
@@ -380,6 +396,7 @@
       "hint": "Astuce : clique sur \"Filtres\" en bas pour affiner (distance, prix, éthique…)."
     },
     "loading": "Chargement des marques...",
+    "load_more": "Charger plus",
     "popular_products": "Produits populaires",
     "recommended_for_you": "Recommandé pour vous",
     "based_on_purchases": "Basé sur vos achats précédents",
@@ -591,6 +608,57 @@
     },
 
     "moderator": {
+      "brands_list": {
+        "loading": "Chargement des marques...",
+        "error_title": "Erreur",
+        "retry": "Réessayer",
+        "subtitle": "Espace modération",
+        "title": "Modération des marques",
+        "description": "Validez ou rejetez les nouvelles marques et modifications soumises par les SuperVendors.",
+        "stats": {
+          "total_pending": "Total en attente",
+          "new_brands": "Nouvelles marques",
+          "updates": "Modifications"
+        },
+        "search_placeholder": "Rechercher par nom de marque ou email...",
+        "no_brands_title": "Aucune marque en attente",
+        "no_search_results": "Aucun résultat pour cette recherche",
+        "all_processed": "Toutes les marques ont été traitées",
+        "update_badge": "Modification",
+        "submitted": "Soumis"
+      },
+      "brand_detail": {
+        "loading": "Chargement de la marque...",
+        "error_title": "Erreur",
+        "error_not_found": "Marque introuvable",
+        "back_to_list": "Retour à la liste",
+        "existing_brand_update": "Modification d'une marque existante",
+        "price_range": "Gamme de prix : {range}",
+        "approve_button": "Approuver cette marque",
+        "approving": "Approbation en cours...",
+        "reject_button": "Rejeter",
+        "score_production": "Score Production",
+        "score_transport": "Score Transport",
+        "description_title": "Description",
+        "about_title": "À propos",
+        "where_to_find_title": "Où nous trouver",
+        "other_info_title": "Autres informations",
+        "stores_title": "Points de vente",
+        "ethic_tags_title": "Tags éthiques",
+        "history_title": "Historique",
+        "action_approved": "Approuvé",
+        "action_rejected": "Rejeté",
+        "action_submitted": "Soumis",
+        "action_by": "par {moderator}",
+        "reject_modal_title": "Rejeter la marque",
+        "reject_modal_reason_label": "Raison du rejet",
+        "reject_modal_reason_required": "*",
+        "reject_modal_placeholder": "Expliquez pourquoi cette marque est rejetée...",
+        "reject_modal_hint": "Le SuperVendor recevra ce message et pourra modifier sa marque.",
+        "reject_modal_cancel": "Annuler",
+        "reject_modal_confirm": "Confirmer le rejet",
+        "reject_modal_rejecting": "Rejet en cours..."
+      },
       "reviews": {
         "title": "Modération des avis produits",
         "heroSubtitle": "Les commentaires sont publiés automatiquement. Utilisez cette interface pour masquer ou réactiver.",
@@ -974,5 +1042,90 @@
     "description": "Sélectionnez les tailles disponibles et définissez leurs stocks",
     "stock": "Stock",
     "units": "unités"
+  },
+  "brand_menu": {
+    "become_brand": "Devenir une marque"
+  },
+  "become_brand": {
+    "menu_button": "Devenir une marque",
+    "hero": {
+      "subtitle": "IndeConnect • Marques responsables",
+      "title": "Devenir une marque",
+      "description": "Rejoins la plateforme et rends ta marque visible auprès de clients qui cherchent du sens : éthique, transparence, proximité et qualité."
+    },
+    "cta": {
+      "view_brands": "Voir les marques",
+      "contact_us": "Nous contacter"
+    },
+    "why_join": {
+      "title": "Pourquoi nous rejoindre ?",
+      "visibility": "Mise en avant de ta démarche (production & transport).",
+      "local": "Visibilité locale via ville / GPS et distance.",
+      "trust": "Confiance : avis, transparence et critères clairs."
+    },
+    "how_it_works": {
+      "title": "Comment ça marche ?",
+      "step1": {
+        "label": "Étape 1",
+        "title": "Candidature",
+        "description": "Tu nous envoies les infos de ta marque."
+      },
+      "step2": {
+        "label": "Étape 2",
+        "title": "Validation",
+        "description": "On vérifie la cohérence et les critères."
+      },
+      "step3": {
+        "label": "Étape 3",
+        "title": "Publication",
+        "description": "Ta marque apparaît et les clients te trouvent."
+      },
+      "goal": "Objectif : une sélection \"qualité\" plutôt qu'un annuaire géant. Ici, on préfère 100 marques solides que 10 000 copies-collées."
+    },
+    "contact_form": {
+      "title": "Déposer une demande",
+      "subtitle": "Version dev : le formulaire log en console. Tu brancheras ton API quand le backend tourne.",
+      "brand_name_label": "Nom de la marque *",
+      "brand_name_placeholder": "Ex: Denim Éthique",
+      "email_label": "Email *",
+      "email_placeholder": "contact@marque.com",
+      "contact_name_label": "Nom du contact",
+      "contact_name_placeholder": "Prénom Nom",
+      "website_label": "Site web",
+      "website_placeholder": "https://...",
+      "message_label": "Message",
+      "message_placeholder": "Dis-nous ce que vous faites, où vous produisez, vos engagements, etc.",
+      "submit_button": "Envoyer la demande",
+      "back_home": "Retour à l'accueil",
+      "success_message": "Merci ! Un administrateur va te recontacter pour démarrer la création/modification de ta marque et l'ajout de tes articles.",
+      "error_message": "Impossible d'envoyer la demande."
+    }
+  },
+  "brand": {
+    "status": {
+      "approved": "Approuvée",
+      "submitted": "En attente de validation",
+      "pending_update": "Modifications en attente",
+      "rejected": "Rejetée",
+      "disabled": "Désactivée",
+      "draft": "Brouillon"
+    },
+    "submit": {
+      "success_toast": "Marque soumise pour validation !",
+      "error_toast": "Impossible de soumettre la marque",
+      "rejected_title": "Marque rejetée par un modérateur",
+      "reason_label": "Raison :",
+      "rejected_message": "Apportez les modifications nécessaires puis soumettez à nouveau votre marque.",
+      "resubmit_button": "Soumettre à nouveau",
+      "submitting": "Envoi en cours...",
+      "pending_title": "Marque en cours de validation",
+      "pending_update_title": "Modifications en cours de validation",
+      "pending_message": "Un modérateur va examiner votre {type} prochainement. Vous serez notifié dès qu'une décision sera prise.",
+      "type_brand": "marque",
+      "type_update": "demande de modification",
+      "draft_title": "Prêt à soumettre votre marque ?",
+      "draft_message": "Une fois soumise, votre marque sera examinée par un modérateur avant d'être publiée sur le site.",
+      "submit_button": "Soumettre pour validation"
+    }
   }
 }

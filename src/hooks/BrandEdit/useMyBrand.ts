@@ -1,4 +1,4 @@
-﻿import { useQuery } from "@tanstack/react-query";
+﻿import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { brandsService } from "@/api/services/brands";
 import { BrandDetailDTO } from "@/api/services/brands/types";
 
@@ -10,6 +10,8 @@ interface UseMyBrandReturn {
 }
 
 export function useMyBrand(): UseMyBrandReturn {
+    const queryClient = useQueryClient();
+
     const { data, isLoading, error, refetch } = useQuery({
         queryKey: ['my-brand'],
         queryFn: async () => {
@@ -18,10 +20,14 @@ export function useMyBrand(): UseMyBrandReturn {
         staleTime: 2 * 60 * 1000, // 2 minutes
     });
 
+    const invalidate = () => {
+        queryClient.invalidateQueries({ queryKey: ['my-brand'] });
+    };
+
     return {
         brand: data ?? null,
         loading: isLoading,
         error: error ? "Impossible de charger votre marque." : null,
-        refetch
+        refetch: invalidate  // ➕ Utiliser invalidate au lieu de refetch
     };
 }
