@@ -11,7 +11,30 @@
     "add": "Toevoegen",
     "close": "Sluiten",
     "back": "Terug",
-    "or": "of",
+    "or": "of","hero": {
+      "subtitle": "Platform voor verantwoorde merken",
+      "title": "Vind merken die het beter doen, niet alleen \"meer\".",
+      "description": "Hier refereren we merken die geselecteerd zijn voor hun aanpak: ethischer productie, coherenter transport, transparantie over oorsprong en kwaliteit. Je filtert, vergelijkt en kiest — zonder te verdrinken in greenwashing."
+    },
+    "features": {
+      "ethics": {
+        "title": "Ethiek",
+        "description": "Scores \"productie\" & \"transport\" om in 10 seconden te beslissen."
+      },
+      "proximity": {
+        "title": "Nabijheid",
+        "description": "Filter op stad of GPS om lokaal te bevoorrechten wanneer mogelijk."
+      },
+      "trust": {
+        "title": "Vertrouwen",
+        "description": "Gebruikersbeoordelingen + duidelijke info: je weet waarom een merk hier staat."
+      }
+    },
+    "cta": {
+      "discover": "Ontdek de merken",
+      "hint": "Tip: klik op \"Filters\" onderaan om te verfijnen (afstand, prijs, ethiek…)."
+    },
+    "loading": "Merken laden...",
     "please_wait": "Even geduld",
     "editable": {
       "click_to_edit": "Klik om te bewerken"
@@ -347,6 +370,30 @@
     }
   },
   "home": {
+    "hero": {
+      "subtitle": "Platform voor verantwoorde merken",
+      "title": "Vind merken die het beter doen, niet alleen \"meer\".",
+      "description": "Hier refereren we merken die geselecteerd zijn voor hun aanpak: ethischer productie, coherenter transport, transparantie over oorsprong en kwaliteit. Je filtert, vergelijkt en kiest — zonder te verdrinken in greenwashing."
+    },
+    "features": {
+      "ethics": {
+        "title": "Ethiek",
+        "description": "Scores \"productie\" & \"transport\" om in 10 seconden te beslissen."
+      },
+      "proximity": {
+        "title": "Nabijheid",
+        "description": "Filter op stad of GPS om lokaal te bevoorrechten wanneer mogelijk."
+      },
+      "trust": {
+        "title": "Vertrouwen",
+        "description": "Gebruikersbeoordelingen + duidelijke info: je weet waarom een merk hier staat."
+      }
+    },
+    "cta": {
+      "discover": "Ontdek de merken",
+      "hint": "Tip: klik op \"Filters\" onderaan om te verfijnen (afstand, prijs, ethiek…)."
+    },
+    "loading": "Merken laden...",
     "popular_products": "Populaire producten",
     "recommended_for_you": "Aanbevolen voor u",
     "based_on_purchases": "Gebaseerd op uw eerdere aankopen",

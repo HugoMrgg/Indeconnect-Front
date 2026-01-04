@@ -347,6 +347,30 @@
     }
   },
   "home": {
+    "hero": {
+      "subtitle": "Plattform für verantwortungsvolle Marken",
+      "title": "Finden Sie Marken, die es besser machen, nicht nur \"mehr\".",
+      "description": "Hier verweisen wir auf Marken, die für ihren Ansatz ausgewählt wurden: ethischere Produktion, kohärenterer Transport, Transparenz über Herkunft und Qualität. Sie filtern, vergleichen, wählen — ohne im Greenwashing zu ertrinken."
+    },
+    "features": {
+      "ethics": {
+        "title": "Ethik",
+        "description": "\"Produktions\"- & \"Transport\"-Scores, um in 10 Sekunden zu entscheiden."
+      },
+      "proximity": {
+        "title": "Nähe",
+        "description": "Nach Stadt oder GPS filtern, um Lokales zu bevorzugen, wenn möglich."
+      },
+      "trust": {
+        "title": "Vertrauen",
+        "description": "Nutzerbewertungen + klare Infos: Sie wissen, warum eine Marke hier ist."
+      }
+    },
+    "cta": {
+      "discover": "Marken entdecken",
+      "hint": "Tipp: Klicken Sie unten auf \"Filter\", um zu verfeinern (Entfernung, Preis, Ethik…)."
+    },
+    "loading": "Marken werden geladen...",
     "popular_products": "Beliebte Produkte",
     "recommended_for_you": "Für Sie empfohlen",
     "based_on_purchases": "Basierend auf Ihren vorherigen Käufen",

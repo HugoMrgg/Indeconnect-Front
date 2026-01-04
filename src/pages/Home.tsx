@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState, useMemo } from "react";
+﻿import React, {useEffect, useState, useMemo, useCallback} from "react";
 import { useTranslation } from "react-i18next";
 import { BrandSection } from "@/features/brands/BrandSection";
 import { useBrands } from "@/hooks/Brand/useBrands";
@@ -79,6 +79,10 @@ export const Home: React.FC = () => {
 
     const { setScope, filtersOpen, closeFilters } = useUI();
 
+    const scrollToBrands = useCallback(() => {
+        document.getElementById("brands-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, []);
+
     useEffect(() => {
         setScope("brands");
         return () => closeFilters();
@@ -149,9 +153,6 @@ export const Home: React.FC = () => {
             </BrandPageLayout>
         );
     }
-    const scrollToBrands = useCallback(() => {
-        document.getElementById("brands-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, []);
 
     return (
         <BrandPageLayout searchQuery={searchQuery} onSearchChange={setSearchQuery}>
@@ -189,43 +190,41 @@ export const Home: React.FC = () => {
                     <div className="flex flex-col gap-4">
                         <div>
                             <p className="text-xs tracking-widest uppercase text-gray-400">
-                                Plateforme de marques responsables
+                                {t('home.hero.subtitle')}
                             </p>
                             <h1 className="mt-2 text-2xl sm:text-3xl font-semibold tracking-tight text-gray-900">
-                                Trouve des marques qui font mieux, pas juste “plus”.
+                                {t('home.hero.title')}
                             </h1>
                             <p className="mt-2 text-sm sm:text-base text-gray-600 leading-relaxed max-w-2xl">
-                                Ici, on référence des marques sélectionnées pour leur démarche : production plus éthique,
-                                transport plus cohérent, transparence sur l’origine et la qualité. Tu filtres, tu compares,
-                                tu choisis — sans te noyer dans le greenwashing.
+                                {t('home.hero.description')}
                             </p>
                         </div>
 
                         <div className="grid sm:grid-cols-3 gap-3">
                             <div className="rounded-2xl bg-gray-50 border border-gray-100 p-4">
                                 <div className="flex items-center gap-2 text-gray-900 font-medium">
-                                    <Leaf size={18} /> Éthique
+                                    <Leaf size={18} /> {t('home.features.ethics.title')}
                                 </div>
                                 <p className="mt-1 text-sm text-gray-600">
-                                    Scores “production” & “transport” pour décider en 10 secondes.
+                                    {t('home.features.ethics.description')}
                                 </p>
                             </div>
 
                             <div className="rounded-2xl bg-gray-50 border border-gray-100 p-4">
                                 <div className="flex items-center gap-2 text-gray-900 font-medium">
-                                    <MapPin size={18} /> Proximité
+                                    <MapPin size={18} /> {t('home.features.proximity.title')}
                                 </div>
                                 <p className="mt-1 text-sm text-gray-600">
-                                    Filtre par ville ou GPS pour privilégier le local quand c’est possible.
+                                    {t('home.features.proximity.description')}
                                 </p>
                             </div>
 
                             <div className="rounded-2xl bg-gray-50 border border-gray-100 p-4">
                                 <div className="flex items-center gap-2 text-gray-900 font-medium">
-                                    <ShieldCheck size={18} /> Confiance
+                                    <ShieldCheck size={18} /> {t('home.features.trust.title')}
                                 </div>
                                 <p className="mt-1 text-sm text-gray-600">
-                                    Avis utilisateurs + infos claires : tu sais pourquoi une marque est là.
+                                    {t('home.features.trust.description')}
                                 </p>
                             </div>
                         </div>
@@ -237,11 +236,11 @@ export const Home: React.FC = () => {
                                 className="inline-flex items-center justify-center gap-2 rounded-full bg-black text-white px-5 py-2.5
                            hover:bg-black/90 transition"
                             >
-                                Découvrir les marques <ArrowDownRight size={18} />
+                                {t('home.cta.discover')} <ArrowDownRight size={18} />
                             </button>
 
                             <p className="text-xs text-gray-400">
-                                Astuce : clique sur “Filtres” en bas pour affiner (distance, prix, éthique…).
+                                {t('home.cta.hint')}
                             </p>
                         </div>
                     </div>
@@ -252,19 +251,13 @@ export const Home: React.FC = () => {
                 <BrandSection title={t('brands.all_brands')} brands={convertedBrands} />
                 {loading && (
                     <div className="flex justify-center items-center mt-8">
-                        <p className="text-gray-500 animate-pulse">Chargement des marques...</p>
+                        <p className="text-gray-500 animate-pulse">{t('home.loading')}</p>
                     </div>
                 )}
 
                 {error && (
                     <div className="flex justify-center items-center mt-8">
                         <p className="text-red-600">{error}</p>
-                    </div>
-                )}
-
-                {!loading && !error && (
-                    <div id="brands-section" className="scroll-mt-24">
-                        <BrandSection title="Toutes les marques :" brands={convertedBrands} />
                     </div>
                 )}
             </div>

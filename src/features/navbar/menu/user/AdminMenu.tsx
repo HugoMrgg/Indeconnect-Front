@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Logs, Users, CreditCard, Truck, ListChecks } from "lucide-react";
 import { Users, CreditCard, ListChecks } from "lucide-react";
 
 export function AdminMenu() {

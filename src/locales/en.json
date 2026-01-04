@@ -347,6 +347,30 @@
     }
   },
   "home": {
+    "hero": {
+      "subtitle": "Responsible brands platform",
+      "title": "Find brands that do better, not just \"more\".",
+      "description": "Here, we reference brands selected for their approach: more ethical production, more coherent transport, transparency about origin and quality. You filter, compare, choose — without drowning in greenwashing."
+    },
+    "features": {
+      "ethics": {
+        "title": "Ethics",
+        "description": "\"Production\" & \"transport\" scores to decide in 10 seconds."
+      },
+      "proximity": {
+        "title": "Proximity",
+        "description": "Filter by city or GPS to prioritize local when possible."
+      },
+      "trust": {
+        "title": "Trust",
+        "description": "User reviews + clear info: you know why a brand is here."
+      }
+    },
+    "cta": {
+      "discover": "Discover brands",
+      "hint": "Tip: click \"Filters\" at the bottom to refine (distance, price, ethics…)."
+    },
+    "loading": "Loading brands...",
     "popular_products": "Popular products",
     "recommended_for_you": "Recommended for you",
     "based_on_purchases": "Based on your previous purchases",

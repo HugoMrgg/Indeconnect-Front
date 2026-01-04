@@ -356,6 +356,30 @@
   },
 
   "home": {
+    "hero": {
+      "subtitle": "Plateforme de marques responsables",
+      "title": "Trouve des marques qui font mieux, pas juste \"plus\".",
+      "description": "Ici, on référence des marques sélectionnées pour leur démarche : production plus éthique, transport plus cohérent, transparence sur l'origine et la qualité. Tu filtres, tu compares, tu choisis — sans te noyer dans le greenwashing."
+    },
+    "features": {
+      "ethics": {
+        "title": "Éthique",
+        "description": "Scores \"production\" & \"transport\" pour décider en 10 secondes."
+      },
+      "proximity": {
+        "title": "Proximité",
+        "description": "Filtre par ville ou GPS pour privilégier le local quand c'est possible."
+      },
+      "trust": {
+        "title": "Confiance",
+        "description": "Avis utilisateurs + infos claires : tu sais pourquoi une marque est là."
+      }
+    },
+    "cta": {
+      "discover": "Découvrir les marques",
+      "hint": "Astuce : clique sur \"Filtres\" en bas pour affiner (distance, prix, éthique…)."
+    },
+    "loading": "Chargement des marques...",
     "popular_products": "Produits populaires",
     "recommended_for_you": "Recommandé pour vous",
     "based_on_purchases": "Basé sur vos achats précédents",
