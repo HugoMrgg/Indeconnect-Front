@@ -697,7 +697,16 @@
 
   "features": {
     "vendors": {
-      "no_empty_brand": "Aucune marque vide a été automatiquement créée pour ce SuperVendor. Il devra la compléter lors de sa première connexion."
+      "no_empty_brand": "Aucune marque vide a été automatiquement créée pour ce SuperVendor. Il devra la compléter lors de sa première connexion.",
+      "title": "Gestion de l'équipe",
+      "subtitle": "Invitez et gérez les vendeurs de votre marque ({{count}})",
+      "inviteAria": "Inviter un vendeur",
+      "inviteButton": "Inviter un vendeur",
+      "searchPlaceholder": "Rechercher un vendeur (nom, email, statut...)",
+      "noMatch": "Aucun vendeur ne correspond.",
+      "noVendors": "Aucun vendeur pour le moment.",
+      "tryAnother": "Essaie un autre nom ou email.",
+      "inviteFirst": "Commence par inviter ton premier vendeur !"
     },
     "settings": {
       "title": "Paramètres",
@@ -728,100 +737,101 @@
         "ariaLabel": "Navigation paramètres",
         "tip": "Astuce: les onglets visités restent “en mémoire” (pas de remount)."
       }
-    },
-    "product": {
-      "recommended_card": {
-        "no_image": "Pas d'image",
-        "promo_badge": "PROMO"
-      },
-      "recommendations": {
-        "frequently_bought_together": "Fréquemment achetés ensemble"
-      },
-      "size_selector": {
-        "title": "Taille"
-      },
-      "sale_manager": {
-        "title": {
-          "new": "Nouvelle promotion",
-          "edit": "Modifier la promotion"
-        },
-        "fields": {
-          "discount": "Pourcentage de réduction",
-          "discount_hint": "Entre 1% et 100%",
-          "start_date": "Date de début",
-          "end_date": "Date de fin",
-          "description": "Description (optionnel)",
-          "description_placeholder": "Ex: Soldes d'hiver, Promotion de fin de saison..."
-        },
-        "errors": {
-          "discount_range": "La réduction doit être entre 1 et 100%",
-          "date_range": "La date de début doit être avant la date de fin"
-        },
-        "actions": {
-          "cancel": "Annuler",
-          "create": "Créer",
-          "edit": "Modifier"
-        }
-      },
-      "media_manager": {
-        "title": "Images du produit",
-        "count": "{{count}} image(s)",
-        "instructions": "Glissez-déposez pour réorganiser. L'étoile indique l'image principale.",
-        "upload": {
-          "uploading": "Upload en cours...",
-          "add_image": "Ajouter une image",
-          "formats": "JPEG, PNG ou WebP (max 10 MB)"
-        },
-        "toast": {
-          "image_added": "Image ajoutée !",
-          "upload_error": "Erreur lors de l'upload de l'image",
-          "image_removed": "Image supprimée"
-        }
-      },
-      "image_gallery": {
-        "thumbnail_alt": "Miniature {{number}}",
-        "main_alt": "Image du produit",
-        "unavailable": "Image indisponible"
-      },
-      "edit_panel": {
-        "title": "Actions produit",
-        "status": {
-          "label": "Statut du produit",
-          "draft": "Brouillon",
-          "active": "Actif",
-          "online": "En ligne",
-          "disabled": "Désactivé"
-        },
-        "sale": {
-          "label": "Promotion",
-          "discount": "Réduction",
-          "start": "Début",
-          "end": "Fin",
-          "edit": "Modifier",
-          "add": "Ajouter une promotion"
-        },
-        "save": {
-          "save": "Enregistrer",
-          "saving": "Enregistrement...",
-          "no_changes": "Aucune modification"
-        }
-      },
-      "variants": {
-        "title": "Tailles et stocks",
-        "loading": "Chargement des tailles...",
-        "availableCount": "{{count}} taille(s)",
-        "noConfigured": "Aucune taille configurée",
-        "addPrompt": "Ajoutez au moins une taille pour ce produit",
-        "stockLabel": "Stock:",
-        "units": "unités",
-        "removeTitle": "Supprimer cette taille",
-        "selectSize": "Sélectionnez une taille",
-        "cancel": "Annuler",
-        "addButton": "Ajouter une taille",
-        "allAdded": "Toutes les tailles disponibles pour cette catégorie ont été ajoutées"
-      }
     }
   },
+  "product": {
+    "recommended_card": {
+      "no_image": "Pas d'image",
+      "promo_badge": "PROMO"
+    },
+    "recommendations": {
+      "frequently_bought_together": "Fréquemment achetés ensemble"
+    },
+    "size_selector": {
+      "title": "Taille"
+    },
+    "sale_manager": {
+      "title": {
+        "new": "Nouvelle promotion",
+        "edit": "Modifier la promotion"
+      },
+      "fields": {
+        "discount": "Pourcentage de réduction",
+        "discount_hint": "Entre 1% et 100%",
+        "start_date": "Date de début",
+        "end_date": "Date de fin",
+        "description": "Description (optionnel)",
+        "description_placeholder": "Ex: Soldes d'hiver, Promotion de fin de saison..."
+      },
+      "errors": {
+        "discount_range": "La réduction doit être entre 1 et 100%",
+        "date_range": "La date de début doit être avant la date de fin"
+      },
+      "actions": {
+        "cancel": "Annuler",
+        "create": "Créer",
+        "edit": "Modifier"
+      }
+    },
+    "media_manager": {
+      "title": "Images du produit",
+      "count": "{{count}} image(s)",
+      "instructions": "Glissez-déposez pour réorganiser. L'étoile indique l'image principale.",
+      "upload": {
+        "uploading": "Upload en cours...",
+        "add_image": "Ajouter une image",
+        "formats": "JPEG, PNG ou WebP (max 10 MB)"
+      },
+      "toast": {
+        "image_added": "Image ajoutée !",
+        "upload_error": "Erreur lors de l'upload de l'image",
+        "image_removed": "Image supprimée"
+      }
+    },
+    "image_gallery": {
+      "thumbnail_alt": "Miniature {{number}}",
+      "main_alt": "Image du produit",
+      "unavailable": "Image indisponible"
+    },
+    "edit_panel": {
+      "title": "Actions produit",
+      "status": {
+        "label": "Statut du produit",
+        "draft": "Brouillon",
+        "active": "Actif",
+        "online": "En ligne",
+        "disabled": "Désactivé"
+      },
+      "sale": {
+        "label": "Promotion",
+        "discount": "Réduction",
+        "start": "Début",
+        "end": "Fin",
+        "edit": "Modifier",
+        "add": "Ajouter une promotion"
+      },
+      "save": {
+        "save": "Enregistrer",
+        "saving": "Enregistrement...",
+        "no_changes": "Aucune modification"
+      }
+    },
+    "variants": {
+      "title": "Tailles et stocks",
+      "loading": "Chargement des tailles...",
+      "availableCount": "{{count}} taille(s)",
+      "noConfigured": "Aucune taille configurée",
+      "addPrompt": "Ajoutez au moins une taille pour ce produit",
+      "stockLabel": "Stock:",
+      "units": "unités",
+      "removeTitle": "Supprimer cette taille",
+      "selectSize": "Sélectionnez une taille",
+      "cancel": "Annuler",
+      "addButton": "Ajouter une taille",
+      "allAdded": "Toutes les tailles disponibles pour cette catégorie ont été ajoutées"
+    }
+  },
+
   "payment": {
     "error_create_payment": "Impossible de créer le paiement",
     "error_title": "Erreur de paiement",
@@ -986,7 +996,12 @@
       "name_label": "Nom du produit",
       "name_placeholder": "Ex: T-shirt Streetwear",
       "description_label": "Description",
-      "description_placeholder": "Décrivez votre produit..."
+      "description_placeholder": "Décrivez votre produit...",
+      "edit_mode": "MODE ÉDITION",
+      "name": "Nom du produit",
+      "price": "Prix (€)",
+      "description": "Description",
+      "characters_count": "{{count}} caractères"
     },
     "category": {
       "title": "Catégorie du produit",
@@ -1010,15 +1025,6 @@
       "uploading": "Upload en cours...",
       "primary": "Principale",
       "alt": "Image {{number}}"
-    },
-    "basic_info": {
-      "edit_mode": "MODE ÉDITION",
-      "name": "Nom du produit",
-      "name_placeholder": "Ex: T-shirt Organic Cotton - Red",
-      "price": "Prix (€)",
-      "description": "Description",
-      "description_placeholder": "Décrivez votre produit en détail...",
-      "characters_count": "{{count}} caractères"
     },
     "color_editor": {
       "title": "Couleur principale",

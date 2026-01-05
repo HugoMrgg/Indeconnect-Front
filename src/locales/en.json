@@ -671,7 +671,16 @@
   },
   "features": {
     "vendors": {
-      "no_empty_brand": "No empty brand was automatically created for this SuperVendor. They will need to complete it upon first login."
+      "no_empty_brand": "No empty brand was automatically created for this SuperVendor. They will need to complete it upon first login.",
+      "title": "Team management",
+      "subtitle": "Invite and manage vendors for your brand ({{count}})",
+      "inviteAria": "Invite a vendor",
+      "inviteButton": "Invite a vendor",
+      "searchPlaceholder": "Search for a vendor (name, email, status...)",
+      "noMatch": "No vendors match your search.",
+      "noVendors": "No vendors yet.",
+      "tryAnother": "Try a different name or email.",
+      "inviteFirst": "Start by inviting your first vendor!"
     },
     "settings": {
       "title": "Settings",
@@ -727,98 +736,98 @@
         "ariaLabel": "Settings navigation",
         "tip": "Tip: visited tabs remain 'in memory' (no remount)."
       }
+    }
+  },
+  "product": {
+    "recommended_card": {
+      "no_image": "No image",
+      "promo_badge": "SALE"
     },
-    "product": {
-      "recommended_card": {
-        "no_image": "No image",
-        "promo_badge": "SALE"
+    "recommendations": {
+      "frequently_bought_together": "Frequently bought together"
+    },
+    "size_selector": {
+      "title": "Size"
+    },
+    "sale_manager": {
+      "title": {
+        "new": "New sale",
+        "edit": "Edit sale"
       },
-      "recommendations": {
-        "frequently_bought_together": "Frequently bought together"
+      "fields": {
+        "discount": "Discount percentage",
+        "discount_hint": "Between 1% and 100%",
+        "start_date": "Start date",
+        "end_date": "End date",
+        "description": "Description (optional)",
+        "description_placeholder": "E.g: Winter sale, End of season promotion..."
       },
-      "size_selector": {
-        "title": "Size"
+      "errors": {
+        "discount_range": "Discount must be between 1 and 100%",
+        "date_range": "Start date must be before end date"
       },
-      "sale_manager": {
-        "title": {
-          "new": "New sale",
-          "edit": "Edit sale"
-        },
-        "fields": {
-          "discount": "Discount percentage",
-          "discount_hint": "Between 1% and 100%",
-          "start_date": "Start date",
-          "end_date": "End date",
-          "description": "Description (optional)",
-          "description_placeholder": "E.g: Winter sale, End of season promotion..."
-        },
-        "errors": {
-          "discount_range": "Discount must be between 1 and 100%",
-          "date_range": "Start date must be before end date"
-        },
-        "actions": {
-          "cancel": "Cancel",
-          "create": "Create",
-          "edit": "Edit"
-        }
-      },
-      "media_manager": {
-        "title": "Product images",
-        "count": "{{count}} image(s)",
-        "instructions": "Drag and drop to reorder. The star indicates the primary image.",
-        "upload": {
-          "uploading": "Uploading...",
-          "add_image": "Add an image",
-          "formats": "JPEG, PNG or WebP (max 10 MB)"
-        },
-        "toast": {
-          "image_added": "Image added!",
-          "upload_error": "Error uploading image",
-          "image_removed": "Image removed"
-        }
-      },
-      "image_gallery": {
-        "thumbnail_alt": "Thumbnail {{number}}",
-        "main_alt": "Product image",
-        "unavailable": "Image unavailable"
-      },
-      "edit_panel": {
-        "title": "Product actions",
-        "status": {
-          "label": "Product status",
-          "draft": "Draft",
-          "active": "Active",
-          "online": "Online",
-          "disabled": "Disabled"
-        },
-        "sale": {
-          "label": "Sale",
-          "discount": "Discount",
-          "start": "Start",
-          "end": "End",
-          "edit": "Edit",
-          "add": "Add a sale"
-        },
-        "save": {
-          "save": "Save",
-          "saving": "Saving...",
-          "no_changes": "No changes"
-        }
-      },
-      "variants": {
-        "title": "Sizes and stock",
-        "loading": "Loading sizes...",
-        "availableCount": "{{count}} size(s)",
-        "noConfigured": "No sizes configured",
-        "addPrompt": "Add at least one size for this product",
-        "stockLabel": "Stock:",
-        "units": "units",
-        "removeTitle": "Remove this size",
-        "selectSize": "Select a size",
+      "actions": {
         "cancel": "Cancel",
-        "addButton": "Add a size",
-        "allAdded": "All available sizes for this category have been added"
+        "create": "Create",
+        "edit": "Edit"
       }
+    },
+    "media_manager": {
+      "title": "Product images",
+      "count": "{{count}} image(s)",
+      "instructions": "Drag and drop to reorder. The star indicates the primary image.",
+      "upload": {
+        "uploading": "Uploading...",
+        "add_image": "Add an image",
+        "formats": "JPEG, PNG or WebP (max 10 MB)"
+      },
+      "toast": {
+        "image_added": "Image added!",
+        "upload_error": "Error uploading image",
+        "image_removed": "Image removed"
+      }
+    },
+    "image_gallery": {
+      "thumbnail_alt": "Thumbnail {{number}}",
+      "main_alt": "Product image",
+      "unavailable": "Image unavailable"
+    },
+    "edit_panel": {
+      "title": "Product actions",
+      "status": {
+        "label": "Product status",
+        "draft": "Draft",
+        "active": "Active",
+        "online": "Online",
+        "disabled": "Disabled"
+      },
+      "sale": {
+        "label": "Sale",
+        "discount": "Discount",
+        "start": "Start",
+        "end": "End",
+        "edit": "Edit",
+        "add": "Add a sale"
+      },
+      "save": {
+        "save": "Save",
+        "saving": "Saving...",
+        "no_changes": "No changes"
+      }
+    },
+    "variants": {
+      "title": "Sizes and stock",
+      "loading": "Loading sizes...",
+      "availableCount": "{{count}} size(s)",
+      "noConfigured": "No sizes configured",
+      "addPrompt": "Add at least one size for this product",
+      "stockLabel": "Stock:",
+      "units": "units",
+      "removeTitle": "Remove this size",
+      "selectSize": "Select a size",
+      "cancel": "Cancel",
+      "addButton": "Add a size",
+      "allAdded": "All available sizes for this category have been added"
     }
   },
   "payment": {

@@ -697,7 +697,16 @@
   },
   "features": {
     "vendors": {
-      "no_empty_brand": "Er is geen leeg merk automatisch aangemaakt voor deze SuperVendor. Deze moet het aanvullen bij de eerste login."
+      "no_empty_brand": "Er is geen leeg merk automatisch aangemaakt voor deze SuperVendor. Deze moet het aanvullen bij de eerste login.",
+      "title": "Teambeheer",
+      "subtitle": "Nodig verkopers uit en beheer ze voor je merk ({{count}})",
+      "inviteAria": "Een verkoper uitnodigen",
+      "inviteButton": "Verkoper uitnodigen",
+      "searchPlaceholder": "Zoek een verkoper (naam, e-mail, status...)",
+      "noMatch": "Geen verkopers gevonden voor je zoekopdracht.",
+      "noVendors": "Nog geen verkopers.",
+      "tryAnother": "Probeer een andere naam of e-mail.",
+      "inviteFirst": "Begin met het uitnodigen van je eerste verkoper!"
     },
     "settings": {
       "title": "Instellingen",
@@ -753,100 +762,101 @@
         "ariaLabel": "Instellingen navigatie",
         "tip": "Tip: bezochte tabbladen blijven 'in het geheugen' (geen remount)."
       }
-    },
-    "product": {
-      "recommended_card": {
-        "no_image": "Geen afbeelding",
-        "promo_badge": "KORTING"
-      },
-      "recommendations": {
-        "frequently_bought_together": "Vaak samen gekocht"
-      },
-      "size_selector": {
-        "title": "Maat"
-      },
-      "sale_manager": {
-        "title": {
-          "new": "Nieuwe promotie",
-          "edit": "Promotie bewerken"
-        },
-        "fields": {
-          "discount": "Kortingspercentage",
-          "discount_hint": "Tussen 1% en 100%",
-          "start_date": "Begindatum",
-          "end_date": "Einddatum",
-          "description": "Beschrijving (optioneel)",
-          "description_placeholder": "Bijv: Winteruitverkoop, Einde seizoen aanbieding..."
-        },
-        "errors": {
-          "discount_range": "Korting moet tussen 1 en 100% zijn",
-          "date_range": "Begindatum moet voor einddatum liggen"
-        },
-        "actions": {
-          "cancel": "Annuleren",
-          "create": "Aanmaken",
-          "edit": "Bewerken"
-        }
-      },
-      "media_manager": {
-        "title": "Productafbeeldingen",
-        "count": "{{count}} afbeelding(en)",
-        "instructions": "Sleep en zet neer om te herschikken. De ster geeft de hoofdafbeelding aan.",
-        "upload": {
-          "uploading": "Uploaden...",
-          "add_image": "Afbeelding toevoegen",
-          "formats": "JPEG, PNG of WebP (max 10 MB)"
-        },
-        "toast": {
-          "image_added": "Afbeelding toegevoegd!",
-          "upload_error": "Fout bij uploaden afbeelding",
-          "image_removed": "Afbeelding verwijderd"
-        }
-      },
-      "image_gallery": {
-        "thumbnail_alt": "Miniatuur {{number}}",
-        "main_alt": "Productafbeelding",
-        "unavailable": "Afbeelding niet beschikbaar"
-      },
-      "edit_panel": {
-        "title": "Productacties",
-        "status": {
-          "label": "Productstatus",
-          "draft": "Concept",
-          "active": "Actief",
-          "online": "Online",
-          "disabled": "Uitgeschakeld"
-        },
-        "sale": {
-          "label": "Promotie",
-          "discount": "Korting",
-          "start": "Begin",
-          "end": "Einde",
-          "edit": "Bewerken",
-          "add": "Promotie toevoegen"
-        },
-        "save": {
-          "save": "Opslaan",
-          "saving": "Opslaan...",
-          "no_changes": "Geen wijzigingen"
-        }
-      },
-      "variants": {
-        "title": "Maten en voorraad",
-        "loading": "Maten laden...",
-        "availableCount": "{{count}} maat/maten",
-        "noConfigured": "Geen maten geconfigureerd",
-        "addPrompt": "Voeg minstens één maat toe voor dit product",
-        "stockLabel": "Voorraad:",
-        "units": "eenheden",
-        "removeTitle": "Deze maat verwijderen",
-        "selectSize": "Selecteer een maat",
-        "cancel": "Annuleren",
-        "addButton": "Maat toevoegen",
-        "allAdded": "Alle beschikbare maten voor deze categorie zijn toegevoegd"
-      }
     }
   },
+  "product": {
+    "recommended_card": {
+      "no_image": "Geen afbeelding",
+      "promo_badge": "KORTING"
+    },
+    "recommendations": {
+      "frequently_bought_together": "Vaak samen gekocht"
+    },
+    "size_selector": {
+      "title": "Maat"
+    },
+    "sale_manager": {
+      "title": {
+        "new": "Nieuwe promotie",
+        "edit": "Promotie bewerken"
+      },
+      "fields": {
+        "discount": "Kortingspercentage",
+        "discount_hint": "Tussen 1% en 100%",
+        "start_date": "Begindatum",
+        "end_date": "Einddatum",
+        "description": "Beschrijving (optioneel)",
+        "description_placeholder": "Bijv: Winteruitverkoop, Einde seizoen aanbieding..."
+      },
+      "errors": {
+        "discount_range": "Korting moet tussen 1 en 100% zijn",
+        "date_range": "Begindatum moet voor einddatum liggen"
+      },
+      "actions": {
+        "cancel": "Annuleren",
+        "create": "Aanmaken",
+        "edit": "Bewerken"
+      }
+    },
+    "media_manager": {
+      "title": "Productafbeeldingen",
+      "count": "{{count}} afbeelding(en)",
+      "instructions": "Sleep en zet neer om te herschikken. De ster geeft de hoofdafbeelding aan.",
+      "upload": {
+        "uploading": "Uploaden...",
+        "add_image": "Afbeelding toevoegen",
+        "formats": "JPEG, PNG of WebP (max 10 MB)"
+      },
+      "toast": {
+        "image_added": "Afbeelding toegevoegd!",
+        "upload_error": "Fout bij uploaden afbeelding",
+        "image_removed": "Afbeelding verwijderd"
+      }
+    },
+    "image_gallery": {
+      "thumbnail_alt": "Miniatuur {{number}}",
+      "main_alt": "Productafbeelding",
+      "unavailable": "Afbeelding niet beschikbaar"
+    },
+    "edit_panel": {
+      "title": "Productacties",
+      "status": {
+        "label": "Productstatus",
+        "draft": "Concept",
+        "active": "Actief",
+        "online": "Online",
+        "disabled": "Uitgeschakeld"
+      },
+      "sale": {
+        "label": "Promotie",
+        "discount": "Korting",
+        "start": "Begin",
+        "end": "Einde",
+        "edit": "Bewerken",
+        "add": "Promotie toevoegen"
+      },
+      "save": {
+        "save": "Opslaan",
+        "saving": "Opslaan...",
+        "no_changes": "Geen wijzigingen"
+      }
+    },
+    "variants": {
+      "title": "Maten en voorraad",
+      "loading": "Maten laden...",
+      "availableCount": "{{count}} maat/maten",
+      "noConfigured": "Geen maten geconfigureerd",
+      "addPrompt": "Voeg minstens één maat toe voor dit product",
+      "stockLabel": "Voorraad:",
+      "units": "eenheden",
+      "removeTitle": "Deze maat verwijderen",
+      "selectSize": "Selecteer een maat",
+      "cancel": "Annuleren",
+      "addButton": "Maat toevoegen",
+      "allAdded": "Alle beschikbare maten voor deze categorie zijn toegevoegd"
+    }
+  },
+
   "payment": {
     "error_create_payment": "Kan betaling niet aanmaken",
     "error_title": "Betalingsfout",

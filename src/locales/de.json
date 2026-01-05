@@ -671,7 +671,16 @@
   },
   "features": {
     "vendors": {
-      "no_empty_brand": "Für diesen SuperVendor wurde keine leere Marke automatisch erstellt. Er muss sie beim ersten Login ausfüllen."
+      "no_empty_brand": "Für diesen SuperVendor wurde keine leere Marke automatisch erstellt. Er muss sie beim ersten Login ausfüllen.",
+      "title": "Teamverwaltung",
+      "subtitle": "Laden Sie Verkäufer für Ihre Marke ein und verwalten Sie sie ({{count}})",
+      "inviteAria": "Einen Verkäufer einladen",
+      "inviteButton": "Verkäufer einladen",
+      "searchPlaceholder": "Verkäufer suchen (Name, E-Mail, Status...)",
+      "noMatch": "Keine passenden Verkäufer gefunden.",
+      "noVendors": "Noch keine Verkäufer.",
+      "tryAnother": "Versuche es mit einem anderen Namen oder einer anderen E-Mail.",
+      "inviteFirst": "Lade zuerst deinen ersten Verkäufer ein!"
     },
     "settings": {
       "title": "Einstellungen",
@@ -727,100 +736,101 @@
         "ariaLabel": "Einstellungen Navigation",
         "tip": "Tipp: Besuchte Tabs bleiben 'im Speicher' (kein Remount)."
       }
-    },
-    "product": {
-      "recommended_card": {
-        "no_image": "Kein Bild",
-        "promo_badge": "ANGEBOT"
-      },
-      "recommendations": {
-        "frequently_bought_together": "Häufig zusammen gekauft"
-      },
-      "size_selector": {
-        "title": "Größe"
-      },
-      "sale_manager": {
-        "title": {
-          "new": "Neue Aktion",
-          "edit": "Aktion bearbeiten"
-        },
-        "fields": {
-          "discount": "Rabattprozentsatz",
-          "discount_hint": "Zwischen 1% und 100%",
-          "start_date": "Startdatum",
-          "end_date": "Enddatum",
-          "description": "Beschreibung (optional)",
-          "description_placeholder": "Z.B: Winterschlussverkauf, Saisonende-Aktion..."
-        },
-        "errors": {
-          "discount_range": "Rabatt muss zwischen 1 und 100% liegen",
-          "date_range": "Startdatum muss vor Enddatum liegen"
-        },
-        "actions": {
-          "cancel": "Abbrechen",
-          "create": "Erstellen",
-          "edit": "Bearbeiten"
-        }
-      },
-      "media_manager": {
-        "title": "Produktbilder",
-        "count": "{{count}} Bild(er)",
-        "instructions": "Ziehen und ablegen zum Neuanordnen. Der Stern zeigt das Hauptbild an.",
-        "upload": {
-          "uploading": "Hochladen...",
-          "add_image": "Bild hinzufügen",
-          "formats": "JPEG, PNG oder WebP (max 10 MB)"
-        },
-        "toast": {
-          "image_added": "Bild hinzugefügt!",
-          "upload_error": "Fehler beim Hochladen des Bildes",
-          "image_removed": "Bild entfernt"
-        }
-      },
-      "image_gallery": {
-        "thumbnail_alt": "Vorschau {{number}}",
-        "main_alt": "Produktbild",
-        "unavailable": "Bild nicht verfügbar"
-      },
-      "edit_panel": {
-        "title": "Produktaktionen",
-        "status": {
-          "label": "Produktstatus",
-          "draft": "Entwurf",
-          "active": "Aktiv",
-          "online": "Online",
-          "disabled": "Deaktiviert"
-        },
-        "sale": {
-          "label": "Aktion",
-          "discount": "Rabatt",
-          "start": "Beginn",
-          "end": "Ende",
-          "edit": "Bearbeiten",
-          "add": "Aktion hinzufügen"
-        },
-        "save": {
-          "save": "Speichern",
-          "saving": "Speichern...",
-          "no_changes": "Keine Änderungen"
-        }
-      },
-      "variants": {
-        "title": "Größen und Lagerbestand",
-        "loading": "Größen werden geladen...",
-        "availableCount": "{{count}} Größe(n)",
-        "noConfigured": "Keine Größen konfiguriert",
-        "addPrompt": "Fügen Sie mindestens eine Größe für dieses Produkt hinzu",
-        "stockLabel": "Lagerbestand:",
-        "units": "Einheiten",
-        "removeTitle": "Diese Größe entfernen",
-        "selectSize": "Wählen Sie eine Größe",
-        "cancel": "Abbrechen",
-        "addButton": "Größe hinzufügen",
-        "allAdded": "Alle verfügbaren Größen für diese Kategorie wurden hinzugefügt"
-      }
     }
   },
+  "product": {
+    "recommended_card": {
+      "no_image": "Kein Bild",
+      "promo_badge": "ANGEBOT"
+    },
+    "recommendations": {
+      "frequently_bought_together": "Häufig zusammen gekauft"
+    },
+    "size_selector": {
+      "title": "Größe"
+    },
+    "sale_manager": {
+      "title": {
+        "new": "Neue Aktion",
+        "edit": "Aktion bearbeiten"
+      },
+      "fields": {
+        "discount": "Rabattprozentsatz",
+        "discount_hint": "Zwischen 1% und 100%",
+        "start_date": "Startdatum",
+        "end_date": "Enddatum",
+        "description": "Beschreibung (optional)",
+        "description_placeholder": "Z.B: Winterschlussverkauf, Saisonende-Aktion..."
+      },
+      "errors": {
+        "discount_range": "Rabatt muss zwischen 1 und 100% liegen",
+        "date_range": "Startdatum muss vor Enddatum liegen"
+      },
+      "actions": {
+        "cancel": "Abbrechen",
+        "create": "Erstellen",
+        "edit": "Bearbeiten"
+      }
+    },
+    "media_manager": {
+      "title": "Produktbilder",
+      "count": "{{count}} Bild(er)",
+      "instructions": "Ziehen und ablegen zum Neuanordnen. Der Stern zeigt das Hauptbild an.",
+      "upload": {
+        "uploading": "Hochladen...",
+        "add_image": "Bild hinzufügen",
+        "formats": "JPEG, PNG oder WebP (max 10 MB)"
+      },
+      "toast": {
+        "image_added": "Bild hinzugefügt!",
+        "upload_error": "Fehler beim Hochladen des Bildes",
+        "image_removed": "Bild entfernt"
+      }
+    },
+    "image_gallery": {
+      "thumbnail_alt": "Vorschau {{number}}",
+      "main_alt": "Produktbild",
+      "unavailable": "Bild nicht verfügbar"
+    },
+    "edit_panel": {
+      "title": "Produktaktionen",
+      "status": {
+        "label": "Produktstatus",
+        "draft": "Entwurf",
+        "active": "Aktiv",
+        "online": "Online",
+        "disabled": "Deaktiviert"
+      },
+      "sale": {
+        "label": "Aktion",
+        "discount": "Rabatt",
+        "start": "Beginn",
+        "end": "Ende",
+        "edit": "Bearbeiten",
+        "add": "Aktion hinzufügen"
+      },
+      "save": {
+        "save": "Speichern",
+        "saving": "Speichern...",
+        "no_changes": "Keine Änderungen"
+      }
+    },
+    "variants": {
+      "title": "Größen und Lagerbestand",
+      "loading": "Größen werden geladen...",
+      "availableCount": "{{count}} Größe(n)",
+      "noConfigured": "Keine Größen konfiguriert",
+      "addPrompt": "Fügen Sie mindestens eine Größe für dieses Produkt hinzu",
+      "stockLabel": "Lagerbestand:",
+      "units": "Einheiten",
+      "removeTitle": "Diese Größe entfernen",
+      "selectSize": "Wählen Sie eine Größe",
+      "cancel": "Abbrechen",
+      "addButton": "Größe hinzufügen",
+      "allAdded": "Alle verfügbaren Größen für diese Kategorie wurden hinzugefügt"
+    }
+  },
+
   "payment": {
     "error_create_payment": "Zahlung kann nicht erstellt werden",
     "error_title": "Zahlungsfehler",
