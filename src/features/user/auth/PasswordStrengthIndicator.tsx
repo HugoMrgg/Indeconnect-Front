@@ -1,6 +1,4 @@
-﻿// src/components/Auth/PasswordStrengthIndicator.tsx
-
-import { useMemo } from "react";
+﻿import { useMemo } from "react";
 import { getPasswordCriteria } from "@/utils/passwordValidation";
 import { Check, X } from "lucide-react";
 import { useTranslation } from "react-i18next";

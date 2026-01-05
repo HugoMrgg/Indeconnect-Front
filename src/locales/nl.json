@@ -45,20 +45,18 @@
     "locale": "nl-NL"
   },
   "auth": {
-    "auth": {
-      "password_strength": {
-        "weak": "Zwak",
-        "fair": "Gemiddeld",
-        "good": "Goed",
-        "strong": "Sterk"
-      },
-      "password_criteria": {
-        "min_length": "Minstens 8 tekens",
-        "lowercase": "Minstens één kleine letter",
-        "uppercase": "Minstens één hoofdletter",
-        "digit": "Minstens één cijfer",
-        "special_char": "Minstens één speciaal teken"
-      }
+    "password_strength": {
+      "weak": "Zwak",
+      "fair": "Gemiddeld",
+      "good": "Goed",
+      "strong": "Sterk"
+    },
+    "password_criteria": {
+      "min_length": "Minstens 8 tekens",
+      "lowercase": "Minstens één kleine letter",
+      "uppercase": "Minstens één hoofdletter",
+      "digit": "Minstens één cijfer",
+      "special_char": "Minstens één speciaal teken"
     },
 
     "login": {

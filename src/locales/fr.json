@@ -23,20 +23,18 @@
   },
 
   "auth": {
-    "auth": {
-      "password_strength": {
-        "weak": "Faible",
-        "fair": "Moyen",
-        "good": "Bon",
-        "strong": "Fort"
-      },
-      "password_criteria": {
-        "min_length": "Au moins 8 caractères",
-        "lowercase": "Au moins une lettre minuscule",
-        "uppercase": "Au moins une lettre majuscule",
-        "digit": "Au moins un chiffre",
-        "special_char": "Au moins un caractère spécial"
-      }
+    "password_strength": {
+      "weak": "Faible",
+      "fair": "Moyen",
+      "good": "Bon",
+      "strong": "Fort"
+    },
+    "password_criteria": {
+      "min_length": "Au moins 8 caractères",
+      "lowercase": "Au moins une lettre minuscule",
+      "uppercase": "Au moins une lettre majuscule",
+      "digit": "Au moins un chiffre",
+      "special_char": "Au moins un caractère spécial"
     },
 
     "login": {
